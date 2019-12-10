@@ -1,24 +1,35 @@
 // @flow
 
 import React from "react";
-import {ScrollView, StatusBar, StyleSheet, Text} from "react-native";
+import {ScrollView, StyleSheet, Text, TouchableOpacity} from "react-native";
 import Colors from "../Colors";
 import Input from "../forms/Input";
 import validateEmail from "../forms/EmailValidator";
+import {Wrapper} from "../views/View";
 
-const RegisterScreen = ({navigation}) => <>
-    <StatusBar/>
+const RegisterScreen = ({navigation}) => <Wrapper>
     <ScrollView style={{paddingLeft: '10%', paddingRight: '10%', paddingBottom: '10%'}}>
         <Text style={styles.logo}>two.</Text>
         <Text style={styles.heading}>Sign Up</Text>
 
-        <Input attributes={{placeholder: "First Name"}} isValid={v => v.length > 2} label={"First Name"}/>
-        <Input attributes={{placeholder: "Last Name"}} isValid={v => v.length > 2} label={"Last Name"}/>
-        <Input attributes={{placeholder: "you@email.com"}} isValid={v => validateEmail(v)} label={"Email"}/>
-        <Input attributes={{placeholder: "Secure Password"}} isValid={v => v.length > 3} label={"Password"}/>
+        <Input attributes={{placeholder: "First Name"}}
+               isValid={v => v.length > 2} label={"First Name"}/>
+
+        <Input attributes={{placeholder: "Last Name"}}
+               isValid={v => v.length > 2} label={"Last Name"}/>
+
+        <Input attributes={{placeholder: "you@email.com"}}
+               isValid={v => validateEmail(v)} label={"Email"}/>
+
+        <Input attributes={{placeholder: "Secure Password", secureTextEntry: true}}
+               isValid={v => v.length > 3}
+               label={"Password"}/>
+
+        <TouchableOpacity style={styles.submitButton} onPress={() => navigation.navigate("Login")}>
+            <Text style={styles.submitText}>Join Two</Text>
+        </TouchableOpacity>
     </ScrollView>
-    {/*<Button style={{marginTop: 200}} title={"Sign In"} onPress={() => navigation.navigate("Login")}/>*/}
-</>;
+</Wrapper>;
 
 RegisterScreen.navigationOptions = {
     title: 'Sign In',
@@ -38,6 +49,17 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: "bold",
         color: Colors.DARK
+    },
+    submitButton: {
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: Colors.SALMON,
+        padding: 15,
+        marginTop: 25
+    },
+    submitText: {
+        color: "white",
+        fontWeight: "bold"
     }
 });
 
