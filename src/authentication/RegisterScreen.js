@@ -12,16 +12,16 @@ const RegisterScreen = ({navigation}) => <Wrapper>
         <Text style={styles.logo}>two.</Text>
         <Text style={styles.heading}>Sign Up</Text>
 
-        <Input attributes={{placeholder: "First Name"}}
+        <Input attributes={{placeholder: "First Name", autoCompleteType: "name"}}
                isValid={v => v.length > 2} label={"First Name"}/>
 
         <Input attributes={{placeholder: "Last Name"}}
                isValid={v => v.length > 2} label={"Last Name"}/>
 
-        <Input attributes={{placeholder: "you@email.com"}}
+        <Input attributes={{placeholder: "you@email.com", autoCompleteType: "email"}}
                isValid={v => validateEmail(v)} label={"Email"}/>
 
-        <Input attributes={{placeholder: "Secure Password", secureTextEntry: true}}
+        <Input attributes={{placeholder: "Secure Password", autoCompleteType: "password", secureTextEntry: true}}
                isValid={v => v.length > 3}
                label={"Password"}/>
 
@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         backgroundColor: Colors.SALMON,
         padding: 15,
-        marginTop: 25
+        marginTop: 25,
+        marginBottom: 25
     },
     submitText: {
         color: "white",

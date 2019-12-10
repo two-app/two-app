@@ -1,6 +1,4 @@
-/**
- * @format
- */
+// @flow
 
 import 'react-native';
 import React from 'react';
@@ -9,6 +7,6 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import LoginScreen from "../../src/authentication/LoginScreen";
 
-it('should render correctly', () => {
+test('should render correctly', () => {
     expect(renderer.create(<LoginScreen/>).toJSON()).toMatchSnapshot();
 });
