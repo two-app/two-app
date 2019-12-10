@@ -6,7 +6,7 @@ import Colors from "../Colors";
 const Label = ({text}) => <Text style={styles.label}>{text}</Text>;
 
 Label.propTypes = {
-    text: PropTypes.string
+    text: PropTypes.string.isRequired
 };
 
 const styles = StyleSheet.create({
