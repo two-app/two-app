@@ -14,18 +14,16 @@ const DismissKeyboardHOC = (Comp) => {
 const DismissKeyboardView = DismissKeyboardHOC(View);
 
 const Wrapper = (props) => (
-    <View>
-        <StatusBar/>
+    <>
+        <StatusBar style={{backgroundColor: "blue"}}/>
         <SafeAreaView style={{flex: 1}}>
             <KeyboardAvoidingView style={{flex: 1}}>
-                <DismissKeyboardView style={{flex: 1}}>
-                    <View style={{flex: 1, marginLeft: '10%', marginRight: '10%'}}>
-                        {props.children}
-                    </View>
-                </DismissKeyboardView>
+                <View style={{flex: 1, marginLeft: "10%", marginRight: "10%"}}>
+                    {props.children}
+                </View>
             </KeyboardAvoidingView>
         </SafeAreaView>
-    </View>
+    </>
 );
 
 export {KeyboardAvoidingView, Wrapper};

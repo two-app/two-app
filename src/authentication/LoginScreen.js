@@ -4,8 +4,9 @@
 
 import React from "react";
 import {Text} from "react-native";
+import {Wrapper} from "../views/View";
 
-const LoginScreen = () => <Text>Hello</Text>;
+const LoginScreen = () => <Wrapper><Text>Hello</Text></Wrapper>;
 
 LoginScreen.navigationOptions = {
     title: 'Login',
