@@ -5,11 +5,11 @@
 import React from "react";
 import {Text} from "react-native";
 
-const LoginComponent = () => <Text>Hello</Text>;
+const LoginScreen = () => <Text>Hello</Text>;
 
-LoginComponent.navigationOptions = {
+LoginScreen.navigationOptions = {
     title: 'Login',
     header: null
 };
 
-export default LoginComponent;
+export default LoginScreen;

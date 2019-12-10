@@ -1,7 +1,4 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
  * @format
  * @flow
  */
@@ -23,8 +20,20 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {createStackNavigator} from "react-navigation-stack";
+import LoginScreen from "./src/authentication/LoginScreen";
+import {createAppContainer} from "react-navigation";
 
-const App: () => React$Node = () => {
+const navigator = createStackNavigator({
+  Login: {screen: LoginScreen}
+}, {
+  initialRouteName: "Login"
+});
+
+const App = createAppContainer(navigator);
+export default App;
+
+/*const App: () => React$Node = () => {
   return (
     <>
       <StatusBar/>
@@ -112,3 +121,4 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+*/
