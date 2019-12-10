@@ -5,8 +5,8 @@ import React from 'react';
 
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
-import LoginScreen from "../../src/authentication/LoginScreen";
+import Label from "../../src/forms/Label";
 
 test('should maintain snapshot', () => {
-    expect(renderer.create(<LoginScreen/>).toJSON()).toMatchSnapshot();
+    expect(renderer.create(<Label text={"Test Label"}/>)).toMatchSnapshot();
 });
