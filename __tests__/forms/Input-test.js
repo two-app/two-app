@@ -65,7 +65,15 @@ describe('On Blur', () => {
 });
 
 describe('With label', () => {
+    test('creates the label', () => expect(new TestBed("lbl").wrapper.exists("Label")).toBe(true));
 
+    test('passes label text in', () => {
+        expect(new TestBed("lbl").wrapper.find("Label").prop("text")).toEqual("lbl");
+    });
+
+    test('does not create a label if none provided', () => {
+        expect(new TestBed().wrapper.exists("Label")).toBe(false);
+    })
 });
 
 class TestBed {
@@ -73,7 +81,13 @@ class TestBed {
         this.attributes = {placeholder: "Test Placeholder"};
         this.isValidFn = jest.fn();
         this.onEmitFn = jest.fn();
-        this.wrapper = shallow(<Input attributes={this.attributes} isValid={this.isValidFn} onEmit={this.onEmitFn}/>);
+        if (label == null) {
+            this.wrapper = shallow(<Input attributes={this.attributes} isValid={this.isValidFn}
+                                          onEmit={this.onEmitFn}/>);
+        } else {
+            this.wrapper = shallow(<Input attributes={this.attributes} isValid={this.isValidFn}
+                                          onEmit={this.onEmitFn} label={label}/>);
+        }
         this.input = this.wrapper.find("TextInput");
     }
 
