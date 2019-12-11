@@ -19,13 +19,13 @@ test('Render has Sign In header', () => {
 });
 
 test('it should navigate when Sign Up is clicked', () => {
-    const mockNavigate = jest.fn();
-    const wrapper = shallow(<LoginScreen navigation={{navigate: mockNavigate}}/>);
+    const navigate = jest.fn();
+    const wrapper = shallow(<LoginScreen navigation={{navigate}}/>);
 
     expect(wrapper.exists("Button")).toBeTruthy();
     const signUpButton = wrapper.find("Button[title='Sign Up']").first();
 
     signUpButton.simulate('press');
-    expect(mockNavigate.mock.calls.length).toEqual(1);
-    expect(mockNavigate.mock.calls[0]).toEqual(['Register']);
+    expect(navigate.mock.calls.length).toEqual(1);
+    expect(navigate.mock.calls[0]).toEqual(['Register']);
 });

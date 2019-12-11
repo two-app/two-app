@@ -4,8 +4,8 @@ import React from "react";
 import {ScrollView, StyleSheet, Text, TouchableOpacity} from "react-native";
 import Colors from "../Colors";
 import Input from "../forms/Input";
-import validateEmail from "../forms/EmailValidator";
 import {Wrapper} from "../views/View";
+import EmailValidator from "../forms/EmailValidator";
 
 const RegisterScreen = ({navigation}) => <Wrapper>
     <ScrollView style={{paddingLeft: '10%', paddingRight: '10%', paddingBottom: '10%'}}>
@@ -19,13 +19,13 @@ const RegisterScreen = ({navigation}) => <Wrapper>
                isValid={v => v.length > 2} label={"Last Name"}/>
 
         <Input attributes={{placeholder: "you@email.com", autoCompleteType: "email"}}
-               isValid={v => validateEmail(v)} label={"Email"}/>
+               isValid={v => EmailValidator.validateEmail(v)} label={"Email"}/>
 
         <Input attributes={{placeholder: "Secure Password", autoCompleteType: "password", secureTextEntry: true}}
                isValid={v => v.length > 3}
                label={"Password"}/>
 
-        <TouchableOpacity style={styles.submitButton} onPress={() => navigation.navigate("Login")}>
+        <TouchableOpacity style={styles.submitButton} onPress={() => navigation.navigate("Login")} id="submit">
             <Text style={styles.submitText}>Join Two</Text>
         </TouchableOpacity>
     </ScrollView>
