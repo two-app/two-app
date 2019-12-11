@@ -8,9 +8,7 @@ import {shallow} from "enzyme";
 import RegisterScreen from "../../src/authentication/RegisterScreen";
 import EmailValidator from "../../src/forms/EmailValidator";
 
-test('should maintain snapshot', () => {
-    expect(renderer.create(<RegisterScreen/>)).toMatchSnapshot();
-});
+test('should maintain snapshot', () => expect(renderer.create(<RegisterScreen/>)).toMatchSnapshot());
 
 describe('Navigation Tests', () => {
     test('it should navigate when Join Two is clicked', () => {

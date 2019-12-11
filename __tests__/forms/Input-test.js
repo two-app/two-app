@@ -56,8 +56,7 @@ describe('On Blur', () => {
 
     test('gets a salmon border when invalid', () => {
         tb.isValidFn.mockReturnValue(false);
-        tb.input.prop("onBlur")();
-        tb.refresh();
+        tb.blurInput("");
         expect(tb.input.prop("style")[2]).toHaveProperty("borderBottomColor", Colors.SALMON);
     });
 });

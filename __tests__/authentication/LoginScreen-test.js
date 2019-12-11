@@ -7,9 +7,7 @@ import renderer from 'react-test-renderer';
 import LoginScreen from "../../src/authentication/LoginScreen";
 import {shallow} from "enzyme";
 
-test('should maintain snapshot', () => {
-    expect(renderer.create(<LoginScreen/>).toJSON()).toMatchSnapshot();
-});
+test('should maintain snapshot', () => expect(renderer.create(<LoginScreen/>).toJSON()).toMatchSnapshot());
 
 test('Render has Sign In header', () => {
     const wrapper = shallow(<LoginScreen/>);
