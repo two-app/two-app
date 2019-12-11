@@ -7,9 +7,7 @@ import renderer from 'react-test-renderer';
 import {shallow} from "enzyme";
 import Label from "../../src/forms/Label";
 
-test('should maintain snapshot', () => {
-    expect(renderer.create(<Label text={"Test Label"}/>)).toMatchSnapshot();
-});
+test('should maintain snapshot', () => expect(renderer.create(<Label text={"Test Label"}/>)).toMatchSnapshot());
 
 describe('Render Tests', () => {
     const label = "Test Label Text";
@@ -19,10 +17,10 @@ describe('Render Tests', () => {
 
     test('it should create a text element', () => expect(wrapper.exists("Text")).toBe(true));
 
-    test('it should render the label text', () => expect(wrapper.find("Text").first().render().text()).toContain(label));
+    test('it should render the label text', () => expect(wrapper.find("Text").render().text()).toContain(label));
 
     test('it should style the label', () => {
-        const appliedStyle = wrapper.find("Text").first().prop("style");
+        const appliedStyle = wrapper.find("Text").prop("style");
         expect(appliedStyle).toHaveProperty("fontWeight", "bold");
     });
 });
