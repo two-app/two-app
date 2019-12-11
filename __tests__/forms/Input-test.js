@@ -14,9 +14,7 @@ describe('Input', () => {
     let tb;
     beforeEach(() => tb = new TestBed());
 
-    test('should maintain snapshot', () => {
-        expect(renderer.create(<Input/>)).toMatchSnapshot();
-    });
+    test('should maintain snapshot', () => expect(renderer.create(<Input/>)).toMatchSnapshot());
 
     test('starts with an empty value', () => expect(tb.input.prop("value")).toEqual(""));
 
