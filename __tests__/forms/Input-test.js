@@ -13,7 +13,7 @@ describe('Input', () => {
 
     let tb;
     beforeEach(() => tb = new TestBed());
-    
+
     test('should maintain snapshot', () => {
         expect(renderer.create(<Input/>)).toMatchSnapshot();
     });
@@ -64,8 +64,12 @@ describe('On Blur', () => {
     });
 });
 
+describe('With label', () => {
+
+});
+
 class TestBed {
-    constructor() {
+    constructor(label) {
         this.attributes = {placeholder: "Test Placeholder"};
         this.isValidFn = jest.fn();
         this.onEmitFn = jest.fn();
