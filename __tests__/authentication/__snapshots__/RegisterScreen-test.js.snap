@@ -1,0 +1,231 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should maintain snapshot 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+>
+  <RCTScrollView
+    style={
+      Object {
+        "paddingBottom": "10%",
+        "paddingLeft": "10%",
+        "paddingRight": "10%",
+      }
+    }
+  >
+    <View>
+      <Text
+        style={
+          Object {
+            "color": "#EE7674",
+            "fontSize": 50,
+            "fontWeight": "bold",
+            "paddingBottom": 20,
+            "paddingTop": 20,
+            "textAlign": "center",
+          }
+        }
+      >
+        two.
+      </Text>
+      <Text
+        style={
+          Object {
+            "color": "rgba(0, 0, 0, 0.8)",
+            "fontSize": 25,
+            "fontWeight": "bold",
+          }
+        }
+      >
+        Sign Up
+      </Text>
+      <Text
+        style={
+          Object {
+            "color": "rgba(0, 0, 0, 0.8)",
+            "fontSize": 12,
+            "fontWeight": "bold",
+            "marginTop": 20,
+          }
+        }
+      >
+        First Name
+      </Text>
+      <TextInput
+        allowFontScaling={true}
+        autoCompleteType="name"
+        onBlur={[Function]}
+        onChangeText={[Function]}
+        onFocus={[Function]}
+        placeholder="First Name"
+        rejectResponderTermination={true}
+        style={
+          Array [
+            Object {
+              "borderBottomColor": "rgba(0, 0, 0, 0.20)",
+              "borderBottomWidth": 1,
+              "fontSize": 15,
+              "paddingBottom": 10,
+              "paddingHorizontal": 0,
+              "paddingTop": 10,
+              "width": "100%",
+            },
+            undefined,
+            undefined,
+          ]
+        }
+        underlineColorAndroid="transparent"
+        value=""
+      />
+      <Text
+        style={
+          Object {
+            "color": "rgba(0, 0, 0, 0.8)",
+            "fontSize": 12,
+            "fontWeight": "bold",
+            "marginTop": 20,
+          }
+        }
+      >
+        Last Name
+      </Text>
+      <TextInput
+        allowFontScaling={true}
+        onBlur={[Function]}
+        onChangeText={[Function]}
+        onFocus={[Function]}
+        placeholder="Last Name"
+        rejectResponderTermination={true}
+        style={
+          Array [
+            Object {
+              "borderBottomColor": "rgba(0, 0, 0, 0.20)",
+              "borderBottomWidth": 1,
+              "fontSize": 15,
+              "paddingBottom": 10,
+              "paddingHorizontal": 0,
+              "paddingTop": 10,
+              "width": "100%",
+            },
+            undefined,
+            undefined,
+          ]
+        }
+        underlineColorAndroid="transparent"
+        value=""
+      />
+      <Text
+        style={
+          Object {
+            "color": "rgba(0, 0, 0, 0.8)",
+            "fontSize": 12,
+            "fontWeight": "bold",
+            "marginTop": 20,
+          }
+        }
+      >
+        Email
+      </Text>
+      <TextInput
+        allowFontScaling={true}
+        autoCompleteType="email"
+        onBlur={[Function]}
+        onChangeText={[Function]}
+        onFocus={[Function]}
+        placeholder="you@email.com"
+        rejectResponderTermination={true}
+        style={
+          Array [
+            Object {
+              "borderBottomColor": "rgba(0, 0, 0, 0.20)",
+              "borderBottomWidth": 1,
+              "fontSize": 15,
+              "paddingBottom": 10,
+              "paddingHorizontal": 0,
+              "paddingTop": 10,
+              "width": "100%",
+            },
+            undefined,
+            undefined,
+          ]
+        }
+        underlineColorAndroid="transparent"
+        value=""
+      />
+      <Text
+        style={
+          Object {
+            "color": "rgba(0, 0, 0, 0.8)",
+            "fontSize": 12,
+            "fontWeight": "bold",
+            "marginTop": 20,
+          }
+        }
+      >
+        Password
+      </Text>
+      <TextInput
+        allowFontScaling={true}
+        autoCompleteType="password"
+        onBlur={[Function]}
+        onChangeText={[Function]}
+        onFocus={[Function]}
+        placeholder="Secure Password"
+        rejectResponderTermination={true}
+        secureTextEntry={true}
+        style={
+          Array [
+            Object {
+              "borderBottomColor": "rgba(0, 0, 0, 0.20)",
+              "borderBottomWidth": 1,
+              "fontSize": 15,
+              "paddingBottom": 10,
+              "paddingHorizontal": 0,
+              "paddingTop": 10,
+              "width": "100%",
+            },
+            undefined,
+            undefined,
+          ]
+        }
+        underlineColorAndroid="transparent"
+        value=""
+      />
+      <View
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#EE7674",
+            "justifyContent": "center",
+            "marginBottom": 25,
+            "marginTop": 25,
+            "opacity": 1,
+            "padding": 15,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "white",
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Join Two
+        </Text>
+      </View>
+    </View>
+  </RCTScrollView>
+</RCTSafeAreaView>
+`;
