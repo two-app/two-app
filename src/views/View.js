@@ -17,11 +17,7 @@ const Wrapper = (props) => (
     <>
         <StatusBar/>
         <SafeAreaView>
-            {/*<KeyboardAvoidingView style={{flex: 1}}>*/}
-            {/*    <View style={{flex: 1, marginLeft: "10%", marginRight: "10%"}}>*/}
-                    {props.children}
-                {/*</View>*/}
-            {/*</KeyboardAvoidingView>*/}
+            {props.children}
         </SafeAreaView>
     </>
 );
