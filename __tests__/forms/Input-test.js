@@ -8,85 +8,86 @@ import {shallow} from "enzyme";
 import Input from "../../src/forms/Input";
 import Colors from "../../src/Colors";
 
-test('should maintain snapshot', () => {
-    expect(renderer.create(<Input/>)).toMatchSnapshot();
-});
 
-const testInput = shallow(<Input/>);
+describe('Input', () => {
 
-test('should create a TextInput', () => expect(testInput.exists("TextInput")).toBe(true));
-test('should have an empty value to start', () => expect(testInput.find("TextInput").prop("value")).toEqual(""));
-
-describe('On Blur', () => {
-    const attributes = {placeholder: "Test Placeholder"};
-    let isValidFn = jest.fn();
-    let onEmitFn = jest.fn();
-    let wrapper = shallow(<Input attributes={attributes} isValid={isValidFn} onEmit={onEmitFn}/>);
-    let input = wrapper.find("TextInput");
-
-    beforeEach(() => {
-        isValidFn = jest.fn();
-        onEmitFn = jest.fn();
-        wrapper = shallow(<Input attributes={attributes} isValid={isValidFn} onEmit={onEmitFn}/>);
-        input = wrapper.find("TextInput");
+    let tb;
+    beforeEach(() => tb = new TestBed());
+    
+    test('should maintain snapshot', () => {
+        expect(renderer.create(<Input/>)).toMatchSnapshot();
     });
 
-    const refresh = () => {
-        wrapper.update();
-        input = wrapper.find("TextInput");
-    };
+    test('starts with an empty value', () => expect(tb.input.prop("value")).toEqual(""));
 
-    const setValue = value => {
-        input.prop("onChangeText")(value);
-        refresh();
-    };
+    test('applies supplied attributes', () => expect(tb.input.prop("placeholder")).toEqual(tb.attributes.placeholder));
 
     test('maintains the input value', () => {
-        expect(input.prop("value")).toEqual("");
-        setValue("New Value");
-        expect(input.prop("value")).toEqual("New Value");
+        expect(tb.getInputValue()).toEqual("");
+        tb.setInputValue("New Value");
+        expect(tb.getInputValue()).toEqual("New Value");
     });
+});
 
-    test('applies supplied attributes', () => {
-        expect(input.prop("placeholder")).toEqual(attributes.placeholder);
-    });
+describe('On Blur', () => {
+    let tb;
+    beforeEach(() => tb = new TestBed());
 
     test('checks if input is valid', () => {
-        setValue("Test Text");
-
-        input.prop("onBlur")();
-
-        expect(isValidFn).toHaveBeenCalledWith("Test Text");
+        tb.blurInput("Test Text");
+        expect(tb.isValidFn).toHaveBeenCalledWith("Test Text");
     });
 
     test('emits if input is valid', () => {
-        setValue("Test Text");
-        isValidFn.mockReturnValue(true);
-
-        input.prop("onBlur")();
-
-        expect(onEmitFn).toHaveBeenCalledWith("Test Text");
+        tb.isValidFn.mockReturnValue(true);
+        tb.blurInput("Test Text");
+        expect(tb.onEmitFn).toHaveBeenCalledWith("Test Text");
     });
 
     test('does not emit if input is invalid', () => {
-        setValue("Invalid Input");
-        isValidFn.mockReturnValue(false);
-
-        input.prop("onBlur")();
-
-        expect(onEmitFn).not.toHaveBeenCalled();
+        tb.isValidFn.mockReturnValue(false);
+        tb.blurInput("Invalid Input");
+        expect(tb.onEmitFn).not.toHaveBeenCalled();
     });
 
     test('gets a dark border when focused', () => {
-        input.prop("onFocus")();
-        refresh();
-        expect(input.prop("style")[1]).toHaveProperty("borderBottomColor", Colors.DARK);
+        tb.input.prop("onFocus")();
+        tb.refresh();
+        expect(tb.input.prop("style")[1]).toHaveProperty("borderBottomColor", Colors.DARK);
     });
 
     test('gets a salmon border when invalid', () => {
-        isValidFn.mockReturnValue(false);
-        input.prop("onBlur")();
-        refresh();
-        expect(input.prop("style")[2]).toHaveProperty("borderBottomColor", Colors.SALMON);
+        tb.isValidFn.mockReturnValue(false);
+        tb.input.prop("onBlur")();
+        tb.refresh();
+        expect(tb.input.prop("style")[2]).toHaveProperty("borderBottomColor", Colors.SALMON);
     });
 });
+
+class TestBed {
+    constructor() {
+        this.attributes = {placeholder: "Test Placeholder"};
+        this.isValidFn = jest.fn();
+        this.onEmitFn = jest.fn();
+        this.wrapper = shallow(<Input attributes={this.attributes} isValid={this.isValidFn} onEmit={this.onEmitFn}/>);
+        this.input = this.wrapper.find("TextInput");
+    }
+
+    refresh = () => {
+        this.wrapper.update();
+        this.input = this.wrapper.find("TextInput");
+    };
+
+    setInputValue = value => {
+        this.input.prop("onChangeText")(value);
+        this.refresh();
+    };
+
+    blurInput = value => {
+        this.setInputValue(value);
+        this.input.prop("onBlur")();
+        this.refresh();
+    };
+
+    getInputValue = () => this.input.prop("value");
+}
