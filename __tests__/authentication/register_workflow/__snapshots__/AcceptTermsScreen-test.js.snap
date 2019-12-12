@@ -1,0 +1,304 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should maintain snapshot 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+>
+  <RCTScrollView
+    style={
+      Object {
+        "paddingBottom": "10%",
+        "paddingLeft": "10%",
+        "paddingRight": "10%",
+      }
+    }
+  >
+    <View>
+      <Text
+        style={
+          Object {
+            "color": "#EE7674",
+            "fontSize": 50,
+            "fontWeight": "bold",
+            "paddingBottom": 20,
+            "paddingTop": 20,
+            "textAlign": "center",
+          }
+        }
+      >
+        two.
+      </Text>
+      <Text
+        id="heading"
+        style={
+          Object {
+            "color": "rgba(0, 0, 0, 0.8)",
+            "fontSize": 25,
+            "fontWeight": "bold",
+          }
+        }
+      >
+        Terms & Conditions
+      </Text>
+      <View
+        id="container"
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "rgba(0, 0, 0, 0.1)",
+              "borderRadius": 10,
+              "borderWidth": 1,
+              "flex": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "marginTop": 20,
+              "padding": 20,
+            },
+            Object {
+              "borderColor": "rgba(0, 0, 0, 0.8)",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "rgba(0, 0, 0, 0.8)",
+              "width": "80%",
+            }
+          }
+        >
+          I agree to the 
+          <Text
+            style={
+              Object {
+                "fontWeight": "bold",
+              }
+            }
+          >
+            Terms & Conditions
+          </Text>
+           and
+          <Text
+            style={
+              Object {
+                "fontWeight": "bold",
+              }
+            }
+          >
+             Privacy Policy.
+          </Text>
+        </Text>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "justifyContent": "center",
+              "width": "20%",
+            }
+          }
+        >
+          <RCTSwitch
+            accessibilityRole="button"
+            onChange={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Array [
+                Object {
+                  "height": 31,
+                  "width": 51,
+                },
+                Object {
+                  "transform": Array [
+                    Object {
+                      "scaleX": 0.8,
+                    },
+                    Object {
+                      "scaleY": 0.8,
+                    },
+                  ],
+                },
+              ]
+            }
+            value={false}
+          />
+        </View>
+      </View>
+      <View
+        id="container"
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "rgba(0, 0, 0, 0.1)",
+              "borderRadius": 10,
+              "borderWidth": 1,
+              "flex": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "marginTop": 20,
+              "padding": 20,
+            },
+            Object {
+              "borderColor": "rgba(0, 0, 0, 0.8)",
+            },
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "rgba(0, 0, 0, 0.8)",
+              "width": "80%",
+            }
+          }
+        >
+          I am over the age of 16.
+        </Text>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "justifyContent": "center",
+              "width": "20%",
+            }
+          }
+        >
+          <RCTSwitch
+            accessibilityRole="button"
+            onChange={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Array [
+                Object {
+                  "height": 31,
+                  "width": 51,
+                },
+                Object {
+                  "transform": Array [
+                    Object {
+                      "scaleX": 0.8,
+                    },
+                    Object {
+                      "scaleY": 0.8,
+                    },
+                  ],
+                },
+              ]
+            }
+            value={false}
+          />
+        </View>
+      </View>
+      <View
+        id="container"
+        style={
+          Array [
+            Object {
+              "alignItems": "center",
+              "borderColor": "rgba(0, 0, 0, 0.1)",
+              "borderRadius": 10,
+              "borderWidth": 1,
+              "flex": 1,
+              "flexDirection": "row",
+              "justifyContent": "space-between",
+              "marginTop": 20,
+              "padding": 20,
+            },
+            undefined,
+            undefined,
+          ]
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "rgba(0, 0, 0, 0.8)",
+              "width": "80%",
+            }
+          }
+        >
+          I agree to occasionally receive emails from Two.
+        </Text>
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "flex": 1,
+              "justifyContent": "center",
+              "width": "20%",
+            }
+          }
+        >
+          <RCTSwitch
+            accessibilityRole="button"
+            onChange={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Array [
+                Object {
+                  "height": 31,
+                  "width": 51,
+                },
+                Object {
+                  "transform": Array [
+                    Object {
+                      "scaleX": 0.8,
+                    },
+                    Object {
+                      "scaleY": 0.8,
+                    },
+                  ],
+                },
+              ]
+            }
+            value={false}
+          />
+        </View>
+      </View>
+      <View
+        accessible={true}
+        focusable={true}
+        isTVSelectable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "rgba(0, 0, 0, 0.2)",
+            "justifyContent": "center",
+            "marginBottom": 25,
+            "marginTop": 25,
+            "opacity": 1,
+            "padding": 20,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "white",
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Accept
+        </Text>
+      </View>
+    </View>
+  </RCTScrollView>
+</RCTSafeAreaView>
+`;
