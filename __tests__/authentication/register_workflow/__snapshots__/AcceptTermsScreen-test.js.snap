@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should maintain snapshot 1`] = `
+exports[`AcceptTermsScreen should maintain snapshot 1`] = `
 <RCTSafeAreaView
   emulateUnlessSupported={true}
 >

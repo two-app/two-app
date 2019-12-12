@@ -30,5 +30,5 @@ test('should display given text', () => expect(
 ).toEqual("Test Submit"));
 
 test('should not be disabled by default', () => expect(
-    wrapper.find
-))
+    wrapper.find("TouchableOpacity").prop("disabled")
+).toBe(false));
