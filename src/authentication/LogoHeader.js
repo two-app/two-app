@@ -12,7 +12,7 @@ const LogoHeader = ({heading}) => (
 );
 
 LogoHeader.propTypes = {
-    heading: PropTypes.string
+    heading: PropTypes.string.isRequired
 };
 
 const styles = StyleSheet.create({

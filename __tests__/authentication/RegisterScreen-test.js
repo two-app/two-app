@@ -14,9 +14,7 @@ describe('Navigation Tests', () => {
     test('it should navigate when Join Two is clicked', () => {
         const navigate = jest.fn();
 
-        shallow(<RegisterScreen navigation={{navigate}}/>)
-            .find("SubmitButton")
-            .prop("onSubmit")(); // trigger onSubmit
+        shallow(<RegisterScreen navigation={{navigate}}/>).find("SubmitButton").prop("onSubmit")();
 
         expect(navigate).toHaveBeenCalledWith('AcceptTermsScreen');
     });

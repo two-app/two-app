@@ -1,15 +1,14 @@
 // @flow
 
 import React from "react";
-import {ScrollView} from "react-native";
 import Input from "../forms/Input";
-import {Wrapper} from "../views/View";
+import {WrapperContainer} from "../views/View";
 import EmailValidator from "../forms/EmailValidator";
 import LogoHeader from "./LogoHeader";
 import SubmitButton from "../forms/SubmitButton";
 
-const RegisterScreen = ({navigation}) => <Wrapper>
-    <ScrollView style={{paddingLeft: '10%', paddingRight: '10%', paddingBottom: '10%'}}>
+const RegisterScreen = ({navigation}) => (
+    <WrapperContainer>
         <LogoHeader heading="Sign Up"/>
 
         <Input attributes={{placeholder: "First Name", autoCompleteType: "name"}}
@@ -26,8 +25,8 @@ const RegisterScreen = ({navigation}) => <Wrapper>
                label={"Password"}/>
 
         <SubmitButton text="Join Two" onSubmit={() => navigation.navigate("AcceptTermsScreen")} id="submit"/>
-    </ScrollView>
-</Wrapper>;
+    </WrapperContainer>
+);
 
 RegisterScreen.navigationOptions = {
     title: 'Sign In',

@@ -10,9 +10,7 @@ import Colors from "../../../src/Colors";
 
 let tb: AcceptSwitchTestBed;
 
-beforeEach(() => {
-    tb = new AcceptSwitchTestBed();
-});
+beforeEach(() => tb = new AcceptSwitchTestBed());
 
 test('should maintain snapshot', () => expect(
     renderer.create(<AcceptSwitch onEmit={tb.onEmitFn}>Some Condition</AcceptSwitch>)
