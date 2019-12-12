@@ -6,25 +6,29 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import SubmitButton from "../../src/forms/SubmitButton";
 import shallow from "enzyme/shallow";
+import {ShallowWrapper} from "enzyme";
 
 test('should maintain snapshot', () => expect(
     renderer.create(<SubmitButton text={"Submit"} onSubmit={null}/>)
 ).toMatchSnapshot());
 
+let onSubmitFn: JestMockFn;
+let wrapper: ShallowWrapper;
+
+beforeEach(() => {
+    onSubmitFn = jest.fn();
+    wrapper = shallow(<SubmitButton onSubmit={onSubmitFn} text="Test Submit"/>);
+});
+
 test('should callback onSubmit when pressed', () => {
-    const onSubmitFn = jest.fn();
-
-    shallow(<SubmitButton onSubmit={onSubmitFn} text={""}/>)
-        .find("TouchableOpacity")
-        .prop("onPress")(); // trigger press
-
+    wrapper.find("TouchableOpacity").prop("onPress")();
     expect(onSubmitFn).toHaveBeenCalled();
 });
 
-test('should display given text', () => {
-    const displayedText = shallow(<SubmitButton onSubmit={null} text={"Test Submit"}/>)
-        .find("Text")
-        .render().text();
+test('should display given text', () => expect(
+    wrapper.find("Text").render().text()
+).toEqual("Test Submit"));
 
-    expect(displayedText).toEqual("Test Submit");
-});
+test('should not be disabled by default', () => expect(
+    wrapper.find
+))
