@@ -10,7 +10,7 @@ exports[`Input should maintain snapshot 1`] = `
   style={
     Array [
       Object {
-        "borderBottomColor": "rgba(0, 0, 0, 0.20)",
+        "borderBottomColor": "rgba(0, 0, 0, 0.2)",
         "borderBottomWidth": 1,
         "fontSize": 15,
         "paddingBottom": 10,

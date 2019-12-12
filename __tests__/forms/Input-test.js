@@ -10,9 +10,8 @@ import Colors from "../../src/Colors";
 
 
 describe('Input', () => {
-
-    let tb;
-    beforeEach(() => tb = new TestBed());
+    let tb: InputTestBed;
+    beforeEach(() => tb = new InputTestBed());
 
     test('should maintain snapshot', () => expect(renderer.create(<Input/>)).toMatchSnapshot());
 
@@ -29,7 +28,7 @@ describe('Input', () => {
 
 describe('On Blur', () => {
     let tb;
-    beforeEach(() => tb = new TestBed());
+    beforeEach(() => tb = new InputTestBed());
 
     test('checks if input is valid', () => {
         tb.blurInput("Test Text");
@@ -62,18 +61,18 @@ describe('On Blur', () => {
 });
 
 describe('With label', () => {
-    test('creates the label', () => expect(new TestBed("lbl").wrapper.exists("Label")).toBe(true));
+    test('creates the label', () => expect(new InputTestBed("lbl").wrapper.exists("Label")).toBe(true));
 
     test('passes label text in', () => {
-        expect(new TestBed("lbl").wrapper.find("Label").prop("text")).toEqual("lbl");
+        expect(new InputTestBed("lbl").wrapper.find("Label").prop("text")).toEqual("lbl");
     });
 
     test('does not create a label if none provided', () => {
-        expect(new TestBed().wrapper.exists("Label")).toBe(false);
+        expect(new InputTestBed().wrapper.exists("Label")).toBe(false);
     })
 });
 
-class TestBed {
+class InputTestBed {
     constructor(label) {
         this.attributes = {placeholder: "Test Placeholder"};
         this.isValidFn = jest.fn();
