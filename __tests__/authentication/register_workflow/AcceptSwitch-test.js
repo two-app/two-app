@@ -9,16 +9,15 @@ import AcceptSwitch from "../../../src/authentication/register_workflow/AcceptSw
 import Colors from "../../../src/Colors";
 
 let onEmitFn = jest.fn();
-const acceptSwitchJSX = (<AcceptSwitch onEmit={onEmitFn}>Some Condition</AcceptSwitch>);
-let wrapper = shallow(acceptSwitchJSX);
+let wrapper = shallow(<AcceptSwitch onEmit={onEmitFn}>Some Condition</AcceptSwitch>);
 
 beforeEach(() => {
     onEmitFn = jest.fn();
-    wrapper = shallow(acceptSwitchJSX);
+    wrapper = shallow(<AcceptSwitch onEmit={onEmitFn}>Some Condition</AcceptSwitch>);
 });
 
 test('should maintain snapshot', () => expect(
-    renderer.create(acceptSwitchJSX)
+    renderer.create(<AcceptSwitch onEmit={onEmitFn}>Some Condition</AcceptSwitch>)
 ).toMatchSnapshot());
 
 describe('Switch', () => {
@@ -32,14 +31,53 @@ describe('Switch', () => {
         const switchValue = wrapper.find("Switch").prop("value");
         expect(switchValue).toBe(true);
     });
+
+    test('should turn the container border green', () => {
+        wrapper.find("Switch").prop("onValueChange")(true);
+
+        const hasAcceptedBorder = wrapper.find("View[id='container']")
+            .prop("style")
+            .filter(s => s != null)
+            .filter(s => s.borderColor === Colors.VALID_GREEN)
+            .length > 0;
+
+        expect(hasAcceptedBorder).toBe(true);
+    });
 });
 
 describe('Condition', () => {
-    test('should have accepted condition style when switched to true', () => {
+    test('should display the condition', () => {
+        expect(wrapper.find("Text").render().text()).toEqual("Some Condition");
+    });
+});
+
+describe('Required', () => {
+    test('should not be required by default, and have no border', () => {
+        const hasRequiredBorder = wrapper.find("View[id='container']")
+            .prop("style")
+            .filter(s => s != null)
+            .filter(s => s.borderColor === Colors.DARK)
+            .length > 0;
+
+        expect(hasRequiredBorder).toBe(false);
+    });
+
+    test('should have border if required', () => {
+        wrapper.setProps({...wrapper.props(), required: true});
+
+        const hasRequiredBorder = wrapper.find("View[id='container']")
+            .prop("style")
+            .filter(s => s != null)
+            .filter(s => s.borderColor === Colors.DARK)
+            .length > 0;
+
+        expect(hasRequiredBorder).toBe(true);
+    });
+});
+
+describe('On Emit', () => {
+    test('should emit when the value changes', () => {
         wrapper.find("Switch").prop("onValueChange")(true);
-
-        const textStyles = wrapper.find("Text").prop("style");
-
-        expect(textStyles[1]).toHaveProperty("color", Colors.FADED)
+        expect(onEmitFn).toHaveBeenCalledWith(true);
     });
 });

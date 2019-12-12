@@ -3,15 +3,22 @@ import PropTypes from "prop-types";
 import Colors from "../../Colors";
 import React, {useState} from "react";
 
-const AcceptBox = ({children, onEmit}) => {
+const AcceptBox = ({children, onEmit, required}) => {
     const [accepted, setAccepted] = useState(false);
     return (
-        <View style={styles.container}>
-            <Text style={[styles.condition, accepted ? styles.acceptedCondition : undefined]}>{children}</Text>
+        <View style={[
+            styles.container,
+            required ? styles.required : undefined,
+            accepted ? styles.accepted : undefined
+        ]} id="container">
+            <Text style={styles.condition}>{children}</Text>
             <View style={styles.switchContainer}>
                 <Switch style={styles.switch}
                         value={accepted}
-                        onValueChange={setAccepted}
+                        onValueChange={v => {
+                            setAccepted(v);
+                            onEmit(v);
+                        }}
                 />
             </View>
         </View>
@@ -19,8 +26,12 @@ const AcceptBox = ({children, onEmit}) => {
 };
 
 AcceptBox.propTypes = {
-    children: PropTypes.any,
-    onEmit: PropTypes.func.isRequired
+    onEmit: PropTypes.func.isRequired,
+    isRequired: PropTypes.bool
+};
+
+AcceptBox.defaultProps = {
+    isRequired: false
 };
 
 const styles = StyleSheet.create({
@@ -29,17 +40,21 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "space-between",
         alignItems: "center",
-        backgroundColor: Colors.LIGHT,
         borderRadius: 10,
+        borderColor: Colors.LIGHT,
+        borderWidth: 1,
         padding: 20,
-        marginTop: 20
+        marginTop: 20,
+    },
+    required: {
+        borderColor: Colors.DARK
+    },
+    accepted: {
+        borderColor: Colors.VALID_GREEN
     },
     condition: {
         color: Colors.DARK,
         width: "80%"
-    },
-    acceptedCondition: {
-        color: Colors.FADED
     },
     switchContainer: {
         width: "20%",
