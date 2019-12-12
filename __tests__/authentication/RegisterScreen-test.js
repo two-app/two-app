@@ -18,8 +18,7 @@ describe('Navigation Tests', () => {
             .find("SubmitButton")
             .prop("onSubmit")(); // trigger onSubmit
 
-        expect(navigate.mock.calls.length).toEqual(1);
-        expect(navigate.mock.calls[0]).toEqual(['AcceptTermsScreen']);
+        expect(navigate).toHaveBeenCalledWith('AcceptTermsScreen');
     });
 });
 

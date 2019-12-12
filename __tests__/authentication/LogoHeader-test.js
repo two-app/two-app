@@ -11,10 +11,6 @@ test('should maintain snapshot', () => expect(
     renderer.create(<LogoHeader heading="Test Heading"/>)
 ).toMatchSnapshot());
 
-test('should display given heading', () => {
-    const wrapper = shallow(<LogoHeader heading="Test Heading"/>);
-    const textElement = wrapper.find("Text[id='heading']");
-
-    const writtenHeading = textElement.render().text();
-    expect(writtenHeading).toEqual("Test Heading");
-});
+test('should display given heading', () => expect(
+    shallow(<LogoHeader heading="Test Heading"/>).find("Text[id='heading']").render().text()
+).toEqual("Test Heading"));
