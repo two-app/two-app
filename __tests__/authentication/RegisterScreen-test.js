@@ -7,6 +7,7 @@ import renderer from 'react-test-renderer';
 import {shallow} from "enzyme";
 import RegisterScreen from "../../src/authentication/RegisterScreen";
 import EmailValidator from "../../src/forms/EmailValidator";
+import {UserRegistration} from "../../src/authentication/UserRegistration";
 
 test('should maintain snapshot', () => expect(renderer.create(<RegisterScreen/>)).toMatchSnapshot());
 
@@ -16,7 +17,7 @@ describe('Navigation Tests', () => {
 
         shallow(<RegisterScreen navigation={{navigate}}/>).find("SubmitButton").prop("onSubmit")();
 
-        expect(navigate).toHaveBeenCalledWith('AcceptTermsScreen');
+        expect(navigate).toHaveBeenCalledWith('AcceptTermsScreen', {userRegistration: UserRegistration});
     });
 });
 
@@ -51,9 +52,28 @@ describe('Form Validation Tests', () => {
         test('valid with secure password', () => expectInput("Password", "P?4Ot2ONz:IJO&%U").toBe(true));
     });
 
+    describe('Fully Valid Form', () => {
+        test('Should enable the submit button', () => {
+            expect(wrapper.find("SubmitButton").prop("disabled")).toBe(true);
+
+            emitInput("First Name", "Gerry");
+            emitInput("Last Name", "Fletcher");
+            emitInput("Email", "admin@two.com");
+            emitInput("Password", "P?4Ot2ONz:IJO&%U");
+
+            expect(wrapper.find("SubmitButton").prop("disabled")).toBe(false);
+        });
+    });
+
     const expectInput = (label, value) => {
         const input = wrapper.find(`Input[label='${label}']`).first();
         const isValidFunction = input.prop("isValid");
         return expect(isValidFunction(value));
-    }
+    };
+
+    const emitInput = (label, value) => {
+        const input = wrapper.find(`Input[label='${label}']`).first();
+        const onEmitFunction = input.prop("onEmit");
+        onEmitFunction(value);
+    };
 });

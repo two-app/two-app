@@ -205,7 +205,7 @@ exports[`should maintain snapshot 1`] = `
         style={
           Object {
             "alignItems": "center",
-            "backgroundColor": "#EE7674",
+            "backgroundColor": "rgba(0, 0, 0, 0.2)",
             "justifyContent": "center",
             "marginBottom": 25,
             "marginTop": 25,

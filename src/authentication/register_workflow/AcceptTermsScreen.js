@@ -6,8 +6,10 @@ import AcceptBox from "./AcceptSwitch";
 import LogoHeader from "../LogoHeader";
 import SubmitButton from "../../forms/SubmitButton";
 import {WrapperContainer} from "../../views/View";
+import {UserRegistration} from "../UserRegistration";
 
-const AcceptTermsScreen = () => {
+const AcceptTermsScreen = ({navigation}) => {
+    const userRegistration: UserRegistration = navigation.getParam("userRegistration", null);
     const [agreed, setAgreed] = useState({termsAndConditions: false, age: false, email: false});
     const validAgreedState = agreed.termsAndConditions && agreed.age;
 
