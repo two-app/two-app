@@ -53,7 +53,7 @@ describe('Form Validation Tests', () => {
     });
 
     describe('Fully Valid Form', () => {
-        test('Should enable the submit button', () => {
+        test('should enable the submit button', () => {
             expect(wrapper.find("SubmitButton").prop("disabled")).toBe(true);
 
             emitInput("First Name", "Gerry");
