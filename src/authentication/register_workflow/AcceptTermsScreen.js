@@ -9,25 +9,24 @@ import {WrapperContainer} from "../../views/View";
 import {UserRegistration} from "../UserRegistration";
 
 const AcceptTermsScreen = ({navigation}) => {
-    const userRegistration: UserRegistration = navigation.getParam("userRegistration", null);
-    const [agreed, setAgreed] = useState({termsAndConditions: false, age: false, email: false});
-    const validAgreedState = agreed.termsAndConditions && agreed.age;
+    const [userRegistration: UserRegistration, setUserRegistration] = useState(navigation.getParam("userRegistration"));
+    const validAgreedState = userRegistration.acceptedTerms && userRegistration.isOfAge;
 
     return (
         <WrapperContainer>
             <LogoHeader heading="Terms & Conditions"/>
-            <AcceptBox onEmit={accepted => setAgreed({...agreed, termsAndConditions: accepted})}
+            <AcceptBox onEmit={accepted => setUserRegistration({...userRegistration, acceptedTerms: accepted})}
                        id="terms"
                        required>
                 I agree to the <Text style={{fontWeight: "bold"}}>Terms & Conditions</Text> and
                 <Text style={{fontWeight: "bold"}}> Privacy Policy.</Text>
             </AcceptBox>
-            <AcceptBox onEmit={accepted => setAgreed({...agreed, age: accepted})}
+            <AcceptBox onEmit={accepted => setUserRegistration({...userRegistration, isOfAge: accepted})}
                        id="age"
                        required>
                 I am over the age of 16.
             </AcceptBox>
-            <AcceptBox onEmit={accepted => setAgreed({...agreed, email: accepted})}>
+            <AcceptBox onEmit={accepted => setUserRegistration({...userRegistration, receivesEmails: accepted})}>
                 I agree to occasionally receive emails from Two.
             </AcceptBox>
             <SubmitButton onSubmit={() => {

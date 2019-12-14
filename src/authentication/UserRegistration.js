@@ -10,14 +10,16 @@ export const UserRegistration: {
     email: string,
     password: string,
     acceptedTerms: boolean,
-    isOfAge: boolean
+    isOfAge: boolean,
+    receivesEmails: boolean
 } = {
     firstName: null,
     lastName: null,
     email: null,
     password: null,
     acceptedTerms: false,
-    isOfAge: true
+    isOfAge: false,
+    receivesEmails: false
 };
 
 /**

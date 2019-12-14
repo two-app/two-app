@@ -10,7 +10,7 @@ import {UserRegistration} from "../../../src/authentication/UserRegistration";
 
 describe('AcceptTermsScreen', () => {
     test('should maintain snapshot', () => expect(renderer.create(<AcceptTermsScreen
-        navigation={{getParam: jest.fn()}}/>
+        navigation={{getParam: jest.fn().mockReturnValue(UserRegistration)}}/>
     )).toMatchSnapshot());
 
     let tb: AcceptTermsScreenTestBed;
