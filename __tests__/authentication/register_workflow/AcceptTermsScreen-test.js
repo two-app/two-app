@@ -6,9 +6,12 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import {shallow} from "enzyme";
 import AcceptTermsScreen from "../../../src/authentication/register_workflow/AcceptTermsScreen";
+import {UserRegistration} from "../../../src/authentication/UserRegistration";
 
 describe('AcceptTermsScreen', () => {
-    test('should maintain snapshot', () => expect(renderer.create(<AcceptTermsScreen/>)).toMatchSnapshot());
+    test('should maintain snapshot', () => expect(renderer.create(<AcceptTermsScreen
+        navigation={{getParam: jest.fn().mockReturnValue(UserRegistration)}}/>
+    )).toMatchSnapshot());
 
     let tb: AcceptTermsScreenTestBed;
 
@@ -35,7 +38,13 @@ describe('AcceptTermsScreen', () => {
 });
 
 class AcceptTermsScreenTestBed {
-    wrapper = shallow(<AcceptTermsScreen/>);
+    userRegistration: UserRegistration = {
+        firstName: "Gerry",
+        lastName: "Fletcher",
+        email: "admin@two.com",
+        password: "P?4Ot2ONz:IJO&%U"
+    };
+    wrapper = shallow(<AcceptTermsScreen navigation={{getParam: jest.fn().mockReturnValue(this.userRegistration)}}/>);
 
     tickTermsAndConditions = () => this.wrapper.find("AcceptBox[id='terms']").prop("onEmit")(true);
     tickAge = () => this.wrapper.find("AcceptBox[id='age']").prop("onEmit")(true);
