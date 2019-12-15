@@ -18,7 +18,8 @@ const AcceptTermsScreen = ({navigation}) => {
     const [registrationError, setRegistrationError] = useState(null);
 
     if (submitted) {
-        registerUser(userRegistration).then(console.log)
+        registerUser(userRegistration)
+            .then(() => navigation.navigate("ConnectCodeScreen"))
             .catch((e: Error) => {
                 setRegistrationError(e.message);
                 setSubmitted(false);
