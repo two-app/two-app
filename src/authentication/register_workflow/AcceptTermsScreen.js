@@ -6,9 +6,9 @@ import AcceptBox from "./AcceptSwitch";
 import LogoHeader from "../LogoHeader";
 import SubmitButton from "../../forms/SubmitButton";
 import {WrapperContainer} from "../../views/View";
-import {UserRegistration} from "../UserRegistration";
 import AuthenticationService from "../AuthenticationService";
 import Colors from "../../Colors";
+import {UserRegistration} from "./UserRegistrationModel";
 
 const AcceptTermsScreen = ({navigation}) => {
     const [userRegistration: UserRegistration, setUserRegistration] = useState(navigation.getParam("userRegistration"));

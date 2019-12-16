@@ -7,7 +7,7 @@ import renderer from 'react-test-renderer';
 import {shallow} from "enzyme";
 import RegisterScreen from "../../src/authentication/RegisterScreen";
 import EmailValidator from "../../src/forms/EmailValidator";
-import {UserRegistration} from "../../src/authentication/register_workflow/UserRegistrationModel";
+import {UserRegistration} from "../../src/authentication/register_workflow/UserRegistration";
 
 test('should maintain snapshot', () => expect(renderer.create(<RegisterScreen/>)).toMatchSnapshot());
 
@@ -39,7 +39,7 @@ describe('Form Validation Tests', () => {
 
     describe('Email', () => {
         test('delegates to validEmail fn', () => {
-            EmailValidator.validateEmail = jest.fn().mockReturnValue(true);
+            EmailValidator.validateEmail = jest.fn();
             expectInput("Email", "admin@two.com");
             expect(EmailValidator.validateEmail).toHaveBeenCalledTimes(1);
             expect(EmailValidator.validateEmail).toHaveBeenCalledWith("admin@two.com");
@@ -56,11 +56,10 @@ describe('Form Validation Tests', () => {
         test('should enable the submit button', () => {
             expect(wrapper.find("SubmitButton").prop("disabled")).toBe(true);
 
-            changeInput("First Name", "Gerry");
-            changeInput("Last Name", "Fletcher");
-            EmailValidator.validateEmail.mockReturnValue(true);
-            changeInput("Email", "admin@two.com");
-            changeInput("Password", "P?4Ot2ONz:IJO&%U");
+            emitInput("First Name", "Gerry");
+            emitInput("Last Name", "Fletcher");
+            emitInput("Email", "admin@two.com");
+            emitInput("Password", "P?4Ot2ONz:IJO&%U");
 
             expect(wrapper.find("SubmitButton").prop("disabled")).toBe(false);
         });
@@ -71,10 +70,10 @@ describe('Form Validation Tests', () => {
         const isValidFunction = input.prop("isValid");
         return expect(isValidFunction(value));
     };
-    
-    const changeInput = (label, value) => {
+
+    const emitInput = (label, value) => {
         const input = wrapper.find(`Input[label='${label}']`).first();
-        const onChangeFn = input.prop("onChange");
-        onChangeFn(value);
+        const onEmitFunction = input.prop("onEmit");
+        onEmitFunction(value);
     };
 });
