@@ -5,6 +5,7 @@ exports[`AcceptTermsScreen should maintain snapshot 1`] = `
   emulateUnlessSupported={true}
 >
   <RCTScrollView
+    showsVerticalScrollIndicator={false}
     style={
       Object {
         "marginLeft": "10%",

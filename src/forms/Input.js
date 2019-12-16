@@ -32,6 +32,7 @@ const Input = ({attributes, isValid, onEmit, label}) => {
     const input = (
         <TextInput
             {...attributes}
+            autoCapitalize="none"
             value={value}
             onChangeText={setValue}
             onBlur={() => {
