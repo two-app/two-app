@@ -12,19 +12,19 @@ import Label from "./Label";
  */
 
 /**
- * Emit is called when the user deselects the input.
- * @callback onEmitFn
+ * Emit is called when the user modifies the input.
+ * @callback onChangeFn
  * @param {string} the last valid value in the input.
  */
 
 /**
  * @param {Object} attributes to apply on the input, e.g {placeholder: "email"}
  * @param {isValidFn} isValid callback to check if the input text is valid.
- * @param {onEmitFn} onEmit callback when the user deselects the input.
+ * @param {onChangeFn} onChange callback when the user modifies the input.
  * @param {string} label to display with the input.
  * @returns {*} the Input component.
  */
-const Input = ({attributes, isValid, onEmit, label}) => {
+const Input = ({attributes, isValid, onChange, label}) => {
     const [value, setValue] = useState("");
     const [valid, setValid] = useState(true);
     const [focused, setFocused] = useState(false);
@@ -34,12 +34,13 @@ const Input = ({attributes, isValid, onEmit, label}) => {
             {...attributes}
             autoCapitalize="none"
             value={value}
-            onChangeText={setValue}
+            onChangeText={v => {
+                setValue(v);
+                onChange(v);
+            }}
             onBlur={() => {
                 setFocused(false);
-                const isValueValid = isValid(value);
-                setValid(isValueValid);
-                if (isValueValid) onEmit(value);
+                setValid(isValid(value));
             }}
             onFocus={() => setFocused(true)}
             style={[
@@ -65,15 +66,15 @@ const Input = ({attributes, isValid, onEmit, label}) => {
 Input.propTypes = {
     attributes: PropTypes.object,
     isValid: PropTypes.func,
-    onEmit: PropTypes.func,
+    onChange: PropTypes.func,
     label: PropTypes.string
 };
 
 Input.defaultProps = {
     attributes: {},
     isValid: () => true,
-    onEmit: () => {
-    }
+    onChange: () => null,
+    label: null
 };
 
 const styles = StyleSheet.create({

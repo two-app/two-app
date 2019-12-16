@@ -26,6 +26,16 @@ describe('Input', () => {
     });
 });
 
+describe('On Change', () => {
+    test('emits to onChangeFn', () => {
+        const tb = new InputTestBed();
+
+        tb.setInputValue("testVal");
+
+        expect(tb.onChangeFn).toHaveBeenCalledWith("testVal");
+    });
+});
+
 describe('On Blur', () => {
     let tb;
     beforeEach(() => tb = new InputTestBed());
@@ -33,18 +43,6 @@ describe('On Blur', () => {
     test('checks if input is valid', () => {
         tb.blurInput("Test Text");
         expect(tb.isValidFn).toHaveBeenCalledWith("Test Text");
-    });
-
-    test('emits if input is valid', () => {
-        tb.isValidFn.mockReturnValue(true);
-        tb.blurInput("Test Text");
-        expect(tb.onEmitFn).toHaveBeenCalledWith("Test Text");
-    });
-
-    test('does not emit if input is invalid', () => {
-        tb.isValidFn.mockReturnValue(false);
-        tb.blurInput("Invalid Input");
-        expect(tb.onEmitFn).not.toHaveBeenCalled();
     });
 
     test('gets a dark border when focused', () => {
@@ -76,14 +74,10 @@ class InputTestBed {
     constructor(label) {
         this.attributes = {placeholder: "Test Placeholder"};
         this.isValidFn = jest.fn();
-        this.onEmitFn = jest.fn();
-        if (label == null) {
-            this.wrapper = shallow(<Input attributes={this.attributes} isValid={this.isValidFn}
-                                          onEmit={this.onEmitFn}/>);
-        } else {
-            this.wrapper = shallow(<Input attributes={this.attributes} isValid={this.isValidFn}
-                                          onEmit={this.onEmitFn} label={label}/>);
-        }
+        this.onChangeFn = jest.fn();
+        this.wrapper = shallow(
+            <Input attributes={this.attributes} isValid={this.isValidFn} onChange={this.onChangeFn} label={label}/>
+        );
         this.input = this.wrapper.find("TextInput");
     }
 
