@@ -7,6 +7,7 @@ import renderer from 'react-test-renderer';
 import {shallow} from "enzyme";
 import AcceptTermsScreen from "../../../src/authentication/register_workflow/AcceptTermsScreen";
 import {UserRegistration} from "../../../src/authentication/UserRegistration";
+import AuthenticationService from "../../../src/authentication/AuthenticationService";
 
 describe('AcceptTermsScreen', () => {
     test('should maintain snapshot', () => expect(renderer.create(<AcceptTermsScreen
@@ -35,6 +36,36 @@ describe('AcceptTermsScreen', () => {
 
         expect(tb.isSubmitEnabled()).toBe(true);
     });
+
+    describe('On Submit', () => {
+        test('should register the user via auth service', () => {
+            AuthenticationService.registerUser = jest.fn().mockResolvedValue();
+            const validRegistration = {...tb.userRegistration, acceptedTerms: true, ofAge: true};
+
+            tb.checkFieldsAndSubmitForm();
+
+            expect(AuthenticationService.registerUser).toHaveBeenCalledWith(validRegistration);
+        });
+
+        test('should display overlay with loading indicator', () => {
+            AuthenticationService.registerUser = jest.fn().mockResolvedValue();
+
+            tb.checkFieldsAndSubmitForm();
+
+            expect(tb.wrapper.exists("ActivityIndicator")).toBe(true);
+        });
+
+        test('should display error if auth service throws in promise', done => {
+            AuthenticationService.registerUser = jest.fn().mockRejectedValue(new Error("Some API Error Message"));
+
+            tb.checkFieldsAndSubmitForm();
+
+            setImmediate(() => {
+                expect(tb.wrapper.find("Text[id='error-message']").render().text()).toEqual("Some API Error Message");
+                done();
+            });
+        });
+    });
 });
 
 class AcceptTermsScreenTestBed {
@@ -44,9 +75,18 @@ class AcceptTermsScreenTestBed {
         email: "admin@two.com",
         password: "P?4Ot2ONz:IJO&%U"
     };
-    wrapper = shallow(<AcceptTermsScreen navigation={{getParam: jest.fn().mockReturnValue(this.userRegistration)}}/>);
+    navigateFn = jest.fn();
+    wrapper = shallow(<AcceptTermsScreen navigation={{
+        getParam: jest.fn().mockReturnValue(this.userRegistration),
+        navigate: this.navigateFn
+    }}/>);
 
     tickTermsAndConditions = () => this.wrapper.find("AcceptBox[id='terms']").prop("onEmit")(true);
     tickAge = () => this.wrapper.find("AcceptBox[id='age']").prop("onEmit")(true);
     isSubmitEnabled = () => !this.wrapper.find("SubmitButton").prop("disabled");
+    checkFieldsAndSubmitForm = () => {
+        this.tickTermsAndConditions();
+        this.tickAge();
+        this.wrapper.find("SubmitButton").prop("onSubmit")();
+    };
 }

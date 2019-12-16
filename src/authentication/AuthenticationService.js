@@ -14,4 +14,4 @@ const registerUser = (userRegistration: UserRegistration) => {
             throw new Error(e.response.data['message'].toString());
         })
 };
-export {registerUser};
+export default {registerUser};

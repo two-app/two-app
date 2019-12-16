@@ -7,7 +7,7 @@ import LogoHeader from "../LogoHeader";
 import SubmitButton from "../../forms/SubmitButton";
 import {WrapperContainer} from "../../views/View";
 import {UserRegistration} from "../UserRegistration";
-import {registerUser} from "../AuthenticationService";
+import AuthenticationService from "../AuthenticationService";
 import Colors from "../../Colors";
 
 const AcceptTermsScreen = ({navigation}) => {
@@ -18,19 +18,18 @@ const AcceptTermsScreen = ({navigation}) => {
     const [registrationError, setRegistrationError] = useState(null);
 
     if (submitted) {
-        registerUser(userRegistration)
+        AuthenticationService.registerUser(userRegistration)
             .then(() => navigation.navigate("ConnectCodeScreen"))
             .catch((e: Error) => {
-                setRegistrationError(e.message);
                 setSubmitted(false);
+                setRegistrationError(e.message);
             });
     }
 
     return (<>
         {submitted && <View style={styles.overlay}>
             <ActivityIndicator size="small" color="black" style={styles.overlayIndicator}/>
-        </View>
-        }
+        </View>}
         <WrapperContainer>
             <LogoHeader heading="Terms & Conditions"/>
             <AcceptBox onEmit={acceptedTerms => setUserRegistration({...userRegistration, acceptedTerms})}
@@ -49,7 +48,7 @@ const AcceptTermsScreen = ({navigation}) => {
             </AcceptBox>
 
             <SubmitButton onSubmit={() => setSubmitted(true)} text="Accept" disabled={!validAgreedState}/>
-            {registrationError && <Text style={styles.error}>{registrationError}</Text>}
+            {registrationError && <Text style={styles.error} id="error-message">{registrationError}</Text>}
         </WrapperContainer>
     </>);
 };

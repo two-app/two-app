@@ -19,7 +19,7 @@ const navigator = createStackNavigator({
     CreateAccountScreen: {screen: CreateAccountScreen},
     ConnectCodeScreen: {screen: ConnectCodeScreen}
 }, {
-    initialRouteName: "Login"
+    initialRouteName: "Register"
 });
 
 const App = createAppContainer(navigator);
