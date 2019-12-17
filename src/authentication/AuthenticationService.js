@@ -1,7 +1,7 @@
 // @flow
-import {UserRegistration} from "./UserRegistration";
 import Gateway from "../http/Gateway";
 import {AxiosError, AxiosResponse} from "axios";
+import {UserRegistration} from "./register_workflow/UserRegistrationModel";
 
 /**
  * @param userRegistration {UserRegistration} valid user registration.

@@ -3,43 +3,41 @@
 import React, {useState} from "react";
 import Input from "../forms/Input";
 import {WrapperContainer} from "../views/View";
-import EmailValidator from "../forms/EmailValidator";
 import LogoHeader from "./LogoHeader";
 import SubmitButton from "../forms/SubmitButton";
-import {isUserRegistrationValid, UserRegistration} from "./UserRegistration";
+import UserRegistrationModel, {UserRegistration} from "./register_workflow/UserRegistrationModel";
 
 const RegisterScreen = ({navigation}) => {
     const [userRegistration: UserRegistration, setUserRegistration] = useState(UserRegistration);
-
     return (
         <WrapperContainer>
             <LogoHeader heading="Sign Up"/>
 
             <Input attributes={{placeholder: "First Name", autoCompleteType: "name"}}
-                   isValid={v => v.length > 2} label={"First Name"}
-                   onEmit={firstName => setUserRegistration({...userRegistration, firstName})}
+                   isValid={UserRegistrationModel.isFirstNameValid} label={"First Name"}
+                   onChange={firstName => setUserRegistration({...userRegistration, firstName})}
             />
 
             <Input attributes={{placeholder: "Last Name"}}
-                   isValid={v => v.length > 2} label={"Last Name"}
-                   onEmit={lastName => setUserRegistration({...userRegistration, lastName})}
+                   isValid={UserRegistrationModel.isLastNameValid} label={"Last Name"}
+                   onChange={lastName => setUserRegistration({...userRegistration, lastName})}
             />
 
             <Input attributes={{placeholder: "you@email.com", autoCompleteType: "email"}}
-                   isValid={v => EmailValidator.validateEmail(v)} label={"Email"}
-                   onEmit={email => setUserRegistration({...userRegistration, email})}
+                   isValid={UserRegistrationModel.isEmailValid} label={"Email"}
+                   onChange={email => setUserRegistration({...userRegistration, email})}
             />
 
             <Input attributes={{placeholder: "Secure Password", autoCompleteType: "password", secureTextEntry: true}}
-                   isValid={v => v.length > 3}
+                   isValid={UserRegistrationModel.isPasswordValid}
                    label={"Password"}
-                   onEmit={password => setUserRegistration({...userRegistration, password})}
+                   onChange={password => setUserRegistration({...userRegistration, password})}
             />
 
             <SubmitButton text="Join Two"
                           onSubmit={() => navigation.navigate("AcceptTermsScreen", {userRegistration})}
                           id="submit"
-                          disabled={!isUserRegistrationValid(userRegistration)}
+                          disabled={!UserRegistrationModel.isUserRegistrationValid(userRegistration)}
             />
         </WrapperContainer>
     );
