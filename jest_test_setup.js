@@ -10,6 +10,8 @@ console.error = message => {
     return message;
 };
 
+// React Navigation has a couple of exports which can't be read by Jest. We mock the entire module for all tests.
+// This may need expanding in future versions.
 jest.mock('react-navigation', () => {
     return {
         createAppContainer: jest.fn().mockReturnValue(function NavigationContainer(props) {return null;}),
