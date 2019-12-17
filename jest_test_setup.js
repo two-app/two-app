@@ -19,6 +19,7 @@ jest.mock('react-navigation', () => {
         StackActions: {
             push: jest.fn().mockImplementation(x => ({...x,  "type": "Navigation/PUSH"})),
             replace: jest.fn().mockImplementation(x => ({...x,  "type": "Navigation/REPLACE"})),
+            reset: jest.fn().mockImplementation(x => ({...x, "type": "Navigation/RESET"}))
         },
         NavigationActions: {
             navigate: jest.fn().mockImplementation(x => x),
