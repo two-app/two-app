@@ -9,6 +9,7 @@ import {WrapperContainer} from "../../views/View";
 import AuthenticationService from "../AuthenticationService";
 import Colors from "../../Colors";
 import {UserRegistration} from "./UserRegistrationModel";
+import {NavigationActions, StackActions} from "react-navigation";
 
 const AcceptTermsScreen = ({navigation}) => {
     const [userRegistration: UserRegistration, setUserRegistration] = useState(navigation.getParam("userRegistration"));
@@ -17,9 +18,15 @@ const AcceptTermsScreen = ({navigation}) => {
     const [submitted, setSubmitted] = useState(false);
     const [registrationError, setRegistrationError] = useState(null);
 
+    const navigateToConnectCodeScreen = () => navigation.dispatch(
+        StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({routeName: 'ConnectCodeScreen'})]
+        })
+    );
+
     if (submitted) {
-        AuthenticationService.registerUser(userRegistration)
-            .then(() => navigation.navigate("ConnectCodeScreen"))
+        AuthenticationService.registerUser(userRegistration).then(navigateToConnectCodeScreen)
             .catch((e: Error) => {
                 setSubmitted(false);
                 setRegistrationError(e.message);

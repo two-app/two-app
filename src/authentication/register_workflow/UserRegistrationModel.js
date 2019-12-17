@@ -33,15 +33,12 @@ const isPasswordValid = password => password != null && password.length > 3;
  * @param ur {UserRegistration} to validate
  * @returns {boolean} true if the user supplied information is valid. Does not check terms & age.
  */
-const isUserRegistrationValid = (ur: UserRegistration) => {
-    console.log(EmailValidator.validateEmail);
-    return (
-        isFirstNameValid(ur.firstName) &&
-        isLastNameValid(ur.lastName) &&
-        isEmailValid(ur.email) &&
-        isPasswordValid(ur.password)
-    );
-};
+const isUserRegistrationValid = (ur: UserRegistration) => (
+    isFirstNameValid(ur.firstName) &&
+    isLastNameValid(ur.lastName) &&
+    isEmailValid(ur.email) &&
+    isPasswordValid(ur.password)
+);
 
 export default {isFirstNameValid, isLastNameValid, isEmailValid, isPasswordValid, isUserRegistrationValid};
 export {UserRegistration};
