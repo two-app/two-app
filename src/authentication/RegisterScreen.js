@@ -23,7 +23,7 @@ const RegisterScreen = ({navigation}) => {
                    onChange={lastName => setUserRegistration({...userRegistration, lastName})}
             />
 
-            <Input attributes={{placeholder: "you@email.com", autoCompleteType: "email"}}
+            <Input attributes={{placeholder: "you@email.com", autoCompleteType: "email", autoCapitalize: "none"}}
                    isValid={UserRegistrationModel.isEmailValid} label={"Email"}
                    onChange={email => setUserRegistration({...userRegistration, email})}
             />

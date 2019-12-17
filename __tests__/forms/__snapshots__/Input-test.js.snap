@@ -3,7 +3,6 @@
 exports[`Input should maintain snapshot 1`] = `
 <TextInput
   allowFontScaling={true}
-  autoCapitalize="none"
   onBlur={[Function]}
   onChangeText={[Function]}
   onFocus={[Function]}

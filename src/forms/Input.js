@@ -32,7 +32,6 @@ const Input = ({attributes, isValid, onChange, label}) => {
     const input = (
         <TextInput
             {...attributes}
-            autoCapitalize="none"
             value={value}
             onChangeText={v => {
                 setValue(v);

@@ -47,6 +47,21 @@ describe('AcceptTermsScreen', () => {
             expect(AuthenticationService.registerUser).toHaveBeenCalledWith(validRegistration);
         });
 
+        test('should navigate to ConnectCodeScreen if successful registration', done => {
+            AuthenticationService.registerUser = jest.fn().mockResolvedValue();
+
+            tb.checkFieldsAndSubmitForm();
+
+            setImmediate(() => {
+                expect(tb.dispatchFn).toHaveBeenCalledWith({
+                    index: 0,
+                    type: "Navigation/RESET",
+                    actions: [{"routeName": "ConnectCodeScreen"}]
+                });
+                done();
+            });
+        });
+
         test('should display overlay with loading indicator', () => {
             AuthenticationService.registerUser = jest.fn().mockResolvedValue();
 
@@ -76,9 +91,11 @@ class AcceptTermsScreenTestBed {
         password: "P?4Ot2ONz:IJO&%U"
     };
     navigateFn = jest.fn();
+    dispatchFn = jest.fn();
     wrapper = shallow(<AcceptTermsScreen navigation={{
         getParam: jest.fn().mockReturnValue(this.userRegistration),
-        navigate: this.navigateFn
+        navigate: this.navigateFn,
+        dispatch: this.dispatchFn
     }}/>);
 
     tickTermsAndConditions = () => this.wrapper.find("AcceptBox[id='terms']").prop("onEmit")(true);
