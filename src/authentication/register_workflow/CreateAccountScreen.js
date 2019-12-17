@@ -4,10 +4,10 @@ import React, {useEffect, useState} from "react";
 import {ActivityIndicator, StyleSheet, Text} from "react-native";
 import {WrapperContainer} from "../../views/View";
 import LogoHeader from "../LogoHeader";
-import {UserRegistration} from "./UserRegistration";
 import Gateway from "../../http/Gateway";
-import { AxiosError, AxiosResponse } from 'axios';
+import {AxiosError, AxiosResponse} from 'axios';
 import Colors from "../../Colors";
+import {UserRegistration} from "./UserRegistrationModel";
 
 const CreateAccountScreen = ({navigation}) => {
     const userRegistration: UserRegistration = navigation.getParam("userRegistration");
