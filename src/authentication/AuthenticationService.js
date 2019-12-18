@@ -30,4 +30,4 @@ const registerUser = (userRegistration: UserRegistration): Promise<RegisterUserR
         }
     );
 
-export {registerUser};
+export default {registerUser};

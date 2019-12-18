@@ -11,7 +11,7 @@ import {UserRegistration} from "./UserRegistrationModel";
 import {NavigationActions, StackActions} from "react-navigation";
 import {connect} from "react-redux";
 import {storeUser} from "../UserReducer";
-import {registerUser} from "../AuthenticationService";
+import AuthenticationService from "../AuthenticationService";
 
 const AcceptTermsScreen = ({navigation, storeUser}) => {
     const [userRegistration: UserRegistration, setUserRegistration] = useState(navigation.getParam("userRegistration"));
@@ -28,7 +28,7 @@ const AcceptTermsScreen = ({navigation, storeUser}) => {
     );
 
     if (submitted) {
-        registerUser(userRegistration).then(response => {
+        AuthenticationService.registerUser(userRegistration).then(response => {
             storeUser(response.user);
             navigateToConnectCodeScreen();
         }).catch((e: Error) => {
