@@ -6,11 +6,9 @@ const setTokens = createAction("SET_TOKENS");
 
 const authenticationReducer = createReducer(null, {
     [setTokens.type]: (state, action) => ({
-        ...state, authentication: {
-            ...state.authentication,
-            accessToken: action.payload['access_token'],
-            refreshToken: action.payload['refresh_token']
-        }
+        ...state,
+        accessToken: action.payload['access_token'],
+        refreshToken: action.payload['refresh_token']
     })
 });
 

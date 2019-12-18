@@ -2,22 +2,19 @@
 
 import jwt_decode from "jwt-decode";
 
-const UnconnectedUser: {
-    uid: number,
-    connectCode: string
-} = {
-    uid: null,
-    connectCode: null
-};
+class UnconnectedUser {
+    uid: number;
+    connectCode: number;
 
-const createUnconnectedUser = (uid: number, connectCode: string): UnconnectedUser => ({uid, connectCode});
+    constructor(uid: number, connectCode: number) {
+        this.uid = uid;
+        this.connectCode = connectCode;
+    }
 
-const parseUnconnectedUserFromToken = (accessToken: string): (UnconnectedUser) => {
-    const decoded = jwt_decode(accessToken);
-    const uid = decoded['uid'];
-    const connectCode = decoded['connectCode'];
+    static fromAccessToken = accessToken => new UnconnectedUser(
+        jwt_decode(accessToken)['uid'],
+        jwt_decode(accessToken)['connectCode']
+    );
+}
 
-    return createUnconnectedUser(uid, connectCode);
-};
-
-export {UnconnectedUser, createUnconnectedUser, parseUnconnectedUserFromToken};
+export {UnconnectedUser};

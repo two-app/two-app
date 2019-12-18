@@ -6,12 +6,14 @@ import AcceptBox from "./AcceptSwitch";
 import LogoHeader from "../LogoHeader";
 import SubmitButton from "../../forms/SubmitButton";
 import {WrapperContainer} from "../../views/View";
-import AuthenticationService from "../AuthenticationService";
 import Colors from "../../Colors";
 import {UserRegistration} from "./UserRegistrationModel";
 import {NavigationActions, StackActions} from "react-navigation";
+import {connect} from "react-redux";
+import {storeUser} from "../UserReducer";
+import {registerUser} from "../AuthenticationService";
 
-const AcceptTermsScreen = ({navigation}) => {
+const AcceptTermsScreen = ({navigation, storeUser}) => {
     const [userRegistration: UserRegistration, setUserRegistration] = useState(navigation.getParam("userRegistration"));
     const validAgreedState = userRegistration.acceptedTerms && userRegistration.ofAge;
 
@@ -26,11 +28,13 @@ const AcceptTermsScreen = ({navigation}) => {
     );
 
     if (submitted) {
-        AuthenticationService.registerUser(userRegistration).then(navigateToConnectCodeScreen)
-            .catch((e: Error) => {
-                setSubmitted(false);
-                setRegistrationError(e.message);
-            });
+        registerUser(userRegistration).then(response => {
+            storeUser(response.user);
+            navigateToConnectCodeScreen();
+        }).catch((e: Error) => {
+            setSubmitted(false);
+            setRegistrationError(e.message);
+        });
     }
 
     return (<>
@@ -85,4 +89,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default AcceptTermsScreen;
+export default connect(null, {storeUser})(AcceptTermsScreen);
