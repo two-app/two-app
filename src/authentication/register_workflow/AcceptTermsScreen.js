@@ -90,3 +90,4 @@ const styles = StyleSheet.create({
 });
 
 export default connect(null, {storeUser})(AcceptTermsScreen);
+export {AcceptTermsScreen};

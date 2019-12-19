@@ -5,7 +5,7 @@ import React from 'react';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 import {shallow} from "enzyme";
-import AcceptTermsScreen from "../../../src/authentication/register_workflow/AcceptTermsScreen";
+import {AcceptTermsScreen} from "../../../src/authentication/register_workflow/AcceptTermsScreen";
 import {UserRegistration} from "../../../src/authentication/register_workflow/UserRegistrationModel";
 import AuthenticationService from "../../../src/authentication/AuthenticationService";
 
@@ -47,8 +47,19 @@ describe('AcceptTermsScreen', () => {
             expect(AuthenticationService.registerUser).toHaveBeenCalledWith(validRegistration);
         });
 
+        test('should store the user via redux action', done => {
+            AuthenticationService.registerUser = jest.fn().mockResolvedValue({user: {}});
+
+            tb.checkFieldsAndSubmitForm();
+
+            setImmediate(() => {
+                expect(tb.storeUserFn).toHaveBeenCalled();
+                done();
+            });
+        });
+
         test('should navigate to ConnectCodeScreen if successful registration', done => {
-            AuthenticationService.registerUser = jest.fn().mockResolvedValue();
+            AuthenticationService.registerUser = jest.fn().mockResolvedValue({user: {}});
 
             tb.checkFieldsAndSubmitForm();
 
@@ -90,13 +101,16 @@ class AcceptTermsScreenTestBed {
         email: "admin@two.com",
         password: "P?4Ot2ONz:IJO&%U"
     };
+
     navigateFn = jest.fn();
     dispatchFn = jest.fn();
+    storeUserFn = jest.fn();
+
     wrapper = shallow(<AcceptTermsScreen navigation={{
         getParam: jest.fn().mockReturnValue(this.userRegistration),
         navigate: this.navigateFn,
         dispatch: this.dispatchFn
-    }}/>);
+    }} storeUser={this.storeUserFn}/>);
 
     tickTermsAndConditions = () => this.wrapper.find("AcceptBox[id='terms']").prop("onEmit")(true);
     tickAge = () => this.wrapper.find("AcceptBox[id='age']").prop("onEmit")(true);
