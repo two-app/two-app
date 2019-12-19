@@ -31,3 +31,4 @@ const registerUser = (userRegistration: UserRegistration): Promise<RegisterUserR
     );
 
 export default {registerUser};
+export {RegisterUserResponse};
