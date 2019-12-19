@@ -1,6 +1,7 @@
 import authenticationReducer, {setTokens} from "../../src/authentication/AuthenticationReducer";
 
 const payload = {accessToken: "xyz", refreshToken: "abc"};
+
 test('should create a SET_TOKENS action', () => {
     expect(setTokens(payload)).toEqual({
         "type": "SET_TOKENS",

@@ -11,11 +11,6 @@ import AuthenticationService, {RegisterUserResponse} from "../../../src/authenti
 import {UnconnectedUser} from "../../../src/authentication/UserModel";
 import {Tokens} from "../../../src/authentication/AuthenticationModel";
 
-const mockRegisterResponse = new RegisterUserResponse(
-    new UnconnectedUser(24, "testConnectCode"),
-    new Tokens("testAccess", "testRefresh")
-);
-
 describe('AcceptTermsScreen', () => {
     test('should maintain snapshot', () => expect(renderer.create(<AcceptTermsScreen
         navigation={{getParam: jest.fn().mockReturnValue(UserRegistration)}}/>
@@ -23,7 +18,7 @@ describe('AcceptTermsScreen', () => {
 
     let tb: AcceptTermsScreenTestBed;
 
-    beforeEach(() => tb = new AcceptTermsScreenTestBed().whenRegisterUserResolve(mockRegisterResponse));
+    beforeEach(() => tb = new AcceptTermsScreenTestBed());
 
     test('submit button should be disabled with t&c checked', () => {
         tb.tickTermsAndConditions();
@@ -45,36 +40,32 @@ describe('AcceptTermsScreen', () => {
     });
 
     describe('On Submit', () => {
-        test('should register the user via auth service', () => {
-            AuthenticationService.registerUser = jest.fn().mockResolvedValue();
-            const validRegistration = {...tb.userRegistration, acceptedTerms: true, ofAge: true};
+        const mockRegisterResponse = new RegisterUserResponse(
+            new UnconnectedUser(24, "testConnectCode"),
+            new Tokens("testAccess", "testRefresh")
+        );
 
+        beforeEach(() => {
+            tb.whenRegisterUserResolve(mockRegisterResponse);
             tb.checkFieldsAndSubmitForm();
-
-            expect(AuthenticationService.registerUser).toHaveBeenCalledWith(validRegistration);
         });
 
-        test('should store the user via redux action', done => {
-            tb.checkFieldsAndSubmitForm();
+        test('should register the user via auth service', () => expect(AuthenticationService.registerUser)
+            .toHaveBeenCalledWith({
+                ...tb.userRegistration, acceptedTerms: true, ofAge: true
+            }));
 
-            setImmediate(() => {
-                expect(tb.storeUserFn).toHaveBeenCalledWith(mockRegisterResponse.user);
-                done();
-            });
-        });
+        test('should store the user via redux action', done => setImmediate(() => {
+            expect(tb.storeUserFn).toHaveBeenCalledWith(mockRegisterResponse.user);
+            done();
+        }));
 
-        test('should store the auth tokens via redux action', done => {
-            tb.checkFieldsAndSubmitForm();
+        test('should store the auth tokens via redux action', done => setImmediate(() => {
+            expect(tb.setTokensFn).toHaveBeenCalledWith(mockRegisterResponse.tokens);
+            done();
+        }));
 
-            setImmediate(() => {
-                expect(tb.setTokensFn).toHaveBeenCalledWith(mockRegisterResponse.tokens);
-                done();
-            })
-        });
-
-        test('should navigate to ConnectCodeScreen if successful registration', done => {
-            tb.checkFieldsAndSubmitForm();
-
+        test('should navigate to ConnectCodeScreen if successful registration', done =>
             setImmediate(() => {
                 expect(tb.dispatchFn).toHaveBeenCalledWith({
                     index: 0,
@@ -82,16 +73,11 @@ describe('AcceptTermsScreen', () => {
                     actions: [{"routeName": "ConnectCodeScreen"}]
                 });
                 done();
-            });
-        });
+            }));
 
-        test('should display overlay with loading indicator', () => {
-            AuthenticationService.registerUser = jest.fn().mockResolvedValue();
-
-            tb.checkFieldsAndSubmitForm();
-
-            expect(tb.wrapper.exists("ActivityIndicator")).toBe(true);
-        });
+        test('should display overlay with loading indicator', () => expect(
+            tb.wrapper.exists("ActivityIndicator")
+        ).toBe(true));
 
         test('should display error if auth service throws in promise', done => {
             AuthenticationService.registerUser = jest.fn().mockRejectedValue(new Error("Some API Error Message"));
