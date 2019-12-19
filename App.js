@@ -26,12 +26,4 @@ const navigator = createStackNavigator({
 
 const Navigation = createAppContainer(navigator);
 
-export default class App extends React.Component {
-    render() {
-        return (
-            <Provider store={createReduxStore()}>
-                <Navigation/>
-            </Provider>
-        );
-    }
-};
+export default () => (<Provider store={createReduxStore()}><Navigation/></Provider>);
