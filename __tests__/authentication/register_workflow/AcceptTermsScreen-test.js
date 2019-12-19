@@ -5,9 +5,11 @@ import React from 'react';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 import {shallow} from "enzyme";
-import AcceptTermsScreen from "../../../src/authentication/register_workflow/AcceptTermsScreen";
+import {AcceptTermsScreen} from "../../../src/authentication/register_workflow/AcceptTermsScreen";
 import {UserRegistration} from "../../../src/authentication/register_workflow/UserRegistrationModel";
-import AuthenticationService from "../../../src/authentication/AuthenticationService";
+import AuthenticationService, {RegisterUserResponse} from "../../../src/authentication/AuthenticationService";
+import {UnconnectedUser} from "../../../src/authentication/UserModel";
+import {Tokens} from "../../../src/authentication/AuthenticationModel";
 
 describe('AcceptTermsScreen', () => {
     test('should maintain snapshot', () => expect(renderer.create(<AcceptTermsScreen
@@ -38,20 +40,32 @@ describe('AcceptTermsScreen', () => {
     });
 
     describe('On Submit', () => {
-        test('should register the user via auth service', () => {
-            AuthenticationService.registerUser = jest.fn().mockResolvedValue();
-            const validRegistration = {...tb.userRegistration, acceptedTerms: true, ofAge: true};
+        const mockRegisterResponse = new RegisterUserResponse(
+            new UnconnectedUser(24, "testConnectCode"),
+            new Tokens("testAccess", "testRefresh")
+        );
 
+        beforeEach(() => {
+            tb.whenRegisterUserResolve(mockRegisterResponse);
             tb.checkFieldsAndSubmitForm();
-
-            expect(AuthenticationService.registerUser).toHaveBeenCalledWith(validRegistration);
         });
 
-        test('should navigate to ConnectCodeScreen if successful registration', done => {
-            AuthenticationService.registerUser = jest.fn().mockResolvedValue();
+        test('should register the user via auth service', () => expect(AuthenticationService.registerUser)
+            .toHaveBeenCalledWith({
+                ...tb.userRegistration, acceptedTerms: true, ofAge: true
+            }));
 
-            tb.checkFieldsAndSubmitForm();
+        test('should store the user via redux action', done => setImmediate(() => {
+            expect(tb.storeUserFn).toHaveBeenCalledWith(mockRegisterResponse.user);
+            done();
+        }));
 
+        test('should store the auth tokens via redux action', done => setImmediate(() => {
+            expect(tb.setTokensFn).toHaveBeenCalledWith(mockRegisterResponse.tokens);
+            done();
+        }));
+
+        test('should navigate to ConnectCodeScreen if successful registration', done =>
             setImmediate(() => {
                 expect(tb.dispatchFn).toHaveBeenCalledWith({
                     index: 0,
@@ -59,16 +73,11 @@ describe('AcceptTermsScreen', () => {
                     actions: [{"routeName": "ConnectCodeScreen"}]
                 });
                 done();
-            });
-        });
+            }));
 
-        test('should display overlay with loading indicator', () => {
-            AuthenticationService.registerUser = jest.fn().mockResolvedValue();
-
-            tb.checkFieldsAndSubmitForm();
-
-            expect(tb.wrapper.exists("ActivityIndicator")).toBe(true);
-        });
+        test('should display overlay with loading indicator', () => expect(
+            tb.wrapper.exists("ActivityIndicator")
+        ).toBe(true));
 
         test('should display error if auth service throws in promise', done => {
             AuthenticationService.registerUser = jest.fn().mockRejectedValue(new Error("Some API Error Message"));
@@ -90,13 +99,17 @@ class AcceptTermsScreenTestBed {
         email: "admin@two.com",
         password: "P?4Ot2ONz:IJO&%U"
     };
+
     navigateFn = jest.fn();
     dispatchFn = jest.fn();
+    storeUserFn = jest.fn();
+    setTokensFn = jest.fn();
+
     wrapper = shallow(<AcceptTermsScreen navigation={{
         getParam: jest.fn().mockReturnValue(this.userRegistration),
         navigate: this.navigateFn,
         dispatch: this.dispatchFn
-    }}/>);
+    }} storeUser={this.storeUserFn} setTokens={this.setTokensFn}/>);
 
     tickTermsAndConditions = () => this.wrapper.find("AcceptBox[id='terms']").prop("onEmit")(true);
     tickAge = () => this.wrapper.find("AcceptBox[id='age']").prop("onEmit")(true);
@@ -106,4 +119,9 @@ class AcceptTermsScreenTestBed {
         this.tickAge();
         this.wrapper.find("SubmitButton").prop("onSubmit")();
     };
+
+    whenRegisterUserResolve = (response: RegisterUserResponse) => {
+        AuthenticationService.registerUser = jest.fn().mockResolvedValue(response);
+        return this;
+    }
 }

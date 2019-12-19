@@ -11,6 +11,8 @@ import RegisterScreen from "./src/authentication/RegisterScreen";
 import AcceptTermsScreen from "./src/authentication/register_workflow/AcceptTermsScreen";
 import CreateAccountScreen from "./src/authentication/register_workflow/CreateAccountScreen";
 import ConnectCodeScreen from "./src/authentication/register_workflow/ConnectCodeScreen";
+import {Provider} from "react-redux";
+import createReduxStore from "./src/state";
 
 const navigator = createStackNavigator({
     Login: {screen: LoginScreen},
@@ -22,5 +24,6 @@ const navigator = createStackNavigator({
     initialRouteName: "Register"
 });
 
-const App = createAppContainer(navigator);
-export default App;
+const Navigation = createAppContainer(navigator);
+
+export default () => (<Provider store={createReduxStore()}><Navigation/></Provider>);

@@ -1,11 +1,18 @@
+// @flow
+
 import React from "react";
 import {Text} from "react-native";
+import {connect} from "react-redux";
 
-const ConnectCodeScreen = ({navigation}) => <Text>Hello</Text>;
+const ConnectCodeScreen = ({navigation, user}) => <Text>Hello, {user.uid}</Text>;
 
 ConnectCodeScreen.navigationOptions = {
     title: 'Partner Connect',
     header: null
 };
 
-export default ConnectCodeScreen;
+ConnectCodeScreen.propTypes = {};
+
+const mapStateToProps = state => ({user: state['user']});
+
+export default connect(mapStateToProps)(ConnectCodeScreen);
