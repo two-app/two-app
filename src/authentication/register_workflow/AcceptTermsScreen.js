@@ -12,8 +12,9 @@ import {NavigationActions, StackActions} from "react-navigation";
 import {connect} from "react-redux";
 import {storeUser} from "../UserReducer";
 import AuthenticationService from "../AuthenticationService";
+import {setTokens} from "../AuthenticationReducer";
 
-const AcceptTermsScreen = ({navigation, storeUser}) => {
+const AcceptTermsScreen = ({navigation, storeUser, setTokens}) => {
     const [userRegistration: UserRegistration, setUserRegistration] = useState(navigation.getParam("userRegistration"));
     const validAgreedState = userRegistration.acceptedTerms && userRegistration.ofAge;
 
@@ -30,6 +31,7 @@ const AcceptTermsScreen = ({navigation, storeUser}) => {
     if (submitted) {
         AuthenticationService.registerUser(userRegistration).then(response => {
             storeUser(response.user);
+            setTokens(response.tokens);
             navigateToConnectCodeScreen();
         }).catch((e: Error) => {
             setSubmitted(false);
@@ -89,5 +91,5 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(null, {storeUser})(AcceptTermsScreen);
+export default connect(null, {storeUser, setTokens})(AcceptTermsScreen);
 export {AcceptTermsScreen};
