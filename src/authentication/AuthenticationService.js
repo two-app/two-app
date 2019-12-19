@@ -8,7 +8,6 @@ import {Tokens} from "./AuthenticationModel";
 class RegisterUserResponse {
     user: UnconnectedUser;
     tokens: Tokens;
-
     constructor(user: UnconnectedUser, tokens: Tokens) {
         this.user = user;
         this.tokens = tokens;
