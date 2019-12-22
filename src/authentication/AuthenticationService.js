@@ -8,6 +8,7 @@ import {Tokens} from "./AuthenticationModel";
 class RegisterUserResponse {
     user: UnconnectedUser;
     tokens: Tokens;
+
     constructor(user: UnconnectedUser, tokens: Tokens) {
         this.user = user;
         this.tokens = tokens;
@@ -20,10 +21,10 @@ const registerUser = (userRegistration: UserRegistration): Promise<RegisterUserR
         .then((r: AxiosResponse) => {
             const accessToken = r.data['accessToken'];
             const refreshToken = r.data['refreshToken'];
-            return new RegisterUserResponse({
-                user: UnconnectedUser.fromAccessToken(accessToken),
-                tokens: new Tokens(accessToken, refreshToken)
-            });
+            return new RegisterUserResponse(
+                UnconnectedUser.fromAccessToken(accessToken),
+                new Tokens(accessToken, refreshToken)
+            );
         }).catch((e: AxiosError) => {
             throw new Error(e.response.data['message'].toString());
         }
