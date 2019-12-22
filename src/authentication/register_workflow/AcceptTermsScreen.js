@@ -30,8 +30,8 @@ const AcceptTermsScreen = ({navigation, storeUser, setTokens}) => {
 
     if (submitted) {
         AuthenticationService.registerUser(userRegistration).then((response: RegisterUserResponse) => {
-            storeUser(response.user);
-            setTokens(response.tokens);
+            storeUser({...response.user});
+            setTokens({...response.tokens});
             navigateToConnectCodeScreen();
         }).catch((e: Error) => {
             setSubmitted(false);
