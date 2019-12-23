@@ -103,7 +103,7 @@ exports[`ConnectCodeScreen should maintain snapshot 1`] = `
               }
             }
           >
-            testConnect
+            abcdef
           </Text>
           <Text
             style={
