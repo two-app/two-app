@@ -10,13 +10,9 @@ import Colors from "../../Colors";
 import Input from "../../forms/Input";
 import SubmitButton from "../../forms/SubmitButton";
 
-const isConnectCodeValid = connectCode => connectCode.length === 6;
-
 /**
  * @param navigation
  * @param user {UnconnectedUser}
- * @returns {*}
- * @constructor
  */
 const ConnectCodeScreen = ({navigation, user}) => {
     const [partnerConnectCode, setPartnerConnectCode] = useState("");

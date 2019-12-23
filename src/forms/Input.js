@@ -64,7 +64,7 @@ const Input = ({attributes, isValid, onChange, label}) => {
 
 Input.propTypes = {
     attributes: PropTypes.object,
-    bisValid: PropTypes.func,
+    isValid: PropTypes.func,
     onChange: PropTypes.func,
     label: PropTypes.string
 };
