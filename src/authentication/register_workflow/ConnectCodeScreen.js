@@ -91,3 +91,4 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({user: state['user']});
 
 export default connect(mapStateToProps)(ConnectCodeScreen);
+export {ConnectCodeScreen};
