@@ -18,10 +18,19 @@ describe('ConnectCodeScreen', () => {
     )).toMatchSnapshot());
 
     describe('Tapping the Connect Code', () => {
-        test('should put code on clipboard', () => {
-            tb.clickCopyToClipboard();
-            expect(tb.clipboardSetStringFn).toHaveBeenCalledWith(tb.user.connectCode);
-        });
+        beforeEach(() => tb.clickCopyToClipboard());
+
+        test('puts code in clipboard', () => expect(tb.clipboardSetStringFn).toHaveBeenCalledWith(tb.user.connectCode));
+    });
+
+    describe('When entered partner code is identical to users code', () => {
+        beforeEach(() => tb.setPartnerCodeInput(tb.user.connectCode));
+
+        test('displays error', () => expect(
+            tb.wrapper.find("Text[id='error']").render().text()
+        ).toEqual("You can't connect with yourself!"));
+
+        test('validates input', () => expect(tb.wrapper.find("Input").prop("isValid")()).toBe(false));
     });
 });
 
@@ -35,4 +44,5 @@ class ConnectCodeScreenTestBed {
     }
 
     clickCopyToClipboard = () => this.wrapper.find("TouchableOpacity").prop("onPress")();
+    setPartnerCodeInput = v => this.wrapper.find("Input").prop("onChange")(v);
 }

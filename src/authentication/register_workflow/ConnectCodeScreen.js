@@ -37,7 +37,7 @@ const ConnectCodeScreen = ({navigation, user}) => {
                    onChange={setPartnerConnectCode}
             />
             {partnerConnectCode === user.connectCode &&
-            <Text style={styles.error}>You can't connect with yourself!</Text>
+            <Text style={styles.error} id="error">You can't connect with yourself!</Text>
             }
             <SubmitButton onSubmit={() => null} text="Connect" disabled={!isPartnerCodeValid(partnerConnectCode)}/>
         </View>
