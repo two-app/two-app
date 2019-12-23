@@ -1,0 +1,202 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConnectCodeScreen should maintain snapshot 1`] = `
+<RCTSafeAreaView
+  emulateUnlessSupported={true}
+>
+  <RCTScrollView
+    showsVerticalScrollIndicator={false}
+  >
+    <View>
+      <View
+        style={
+          Object {
+            "flex": 1,
+            "marginLeft": "10%",
+            "marginRight": "10%",
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "#EE7674",
+              "fontSize": 50,
+              "fontWeight": "bold",
+              "paddingBottom": 20,
+              "paddingTop": 20,
+              "textAlign": "center",
+            }
+          }
+        >
+          two.
+        </Text>
+        <Text
+          id="heading"
+          style={
+            Object {
+              "color": "rgba(0, 0, 0, 0.8)",
+              "fontSize": 25,
+              "fontWeight": "bold",
+            }
+          }
+        >
+          Connect Your Partner
+        </Text>
+        <Text
+          style={
+            Object {
+              "fontWeight": "bold",
+              "marginTop": 20,
+            }
+          }
+        >
+          Thanks for joining us!
+        </Text>
+        <Text
+          style={
+            Object {
+              "marginTop": 10,
+            }
+          }
+        >
+          The sign-up process is almost complete. Once your partner has registered, send them your code!
+        </Text>
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "backgroundColor": "rgba(0, 0, 0, 0.1)",
+              "marginTop": 20,
+              "opacity": 1,
+              "padding": 20,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "rgba(0, 0, 0, 0.8)",
+                "fontWeight": "300",
+                "marginBottom": 10,
+                "textAlign": "center",
+              }
+            }
+          >
+            Your Code
+          </Text>
+          <Text
+            style={
+              Object {
+                "fontSize": 30,
+                "fontWeight": "bold",
+                "textAlign": "center",
+              }
+            }
+          >
+            abcdef
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "rgba(0, 0, 0, 0.8)",
+                "fontWeight": "300",
+                "marginTop": 10,
+                "textAlign": "center",
+              }
+            }
+          >
+            Tap to Copy
+          </Text>
+        </View>
+        <Text
+          style={
+            Object {
+              "fontWeight": "bold",
+              "marginTop": 20,
+            }
+          }
+        >
+          Or, enter your partners code...
+        </Text>
+        <View
+          style={
+            Object {
+              "marginTop": 5,
+            }
+          }
+        >
+          <TextInput
+            allowFontScaling={true}
+            onBlur={[Function]}
+            onChangeText={[Function]}
+            onFocus={[Function]}
+            placeholder="e.g bWzGl2"
+            rejectResponderTermination={true}
+            style={
+              Array [
+                Object {
+                  "borderBottomColor": "rgba(0, 0, 0, 0.2)",
+                  "borderBottomWidth": 1,
+                  "fontSize": 15,
+                  "paddingBottom": 10,
+                  "paddingHorizontal": 0,
+                  "paddingTop": 10,
+                  "width": "100%",
+                },
+                undefined,
+                undefined,
+              ]
+            }
+            underlineColorAndroid="transparent"
+            value=""
+          />
+          <View
+            accessible={true}
+            focusable={true}
+            isTVSelectable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "rgba(0, 0, 0, 0.2)",
+                "justifyContent": "center",
+                "marginBottom": 25,
+                "marginTop": 25,
+                "opacity": 1,
+                "padding": 20,
+              }
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "color": "white",
+                  "fontWeight": "bold",
+                }
+              }
+            >
+              Connect
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  </RCTScrollView>
+</RCTSafeAreaView>
+`;
