@@ -1,7 +1,7 @@
 // @flow
 
 import React, {useState} from "react";
-import {ActivityIndicator, Dimensions, StyleSheet, Text, View} from "react-native";
+import {Dimensions, StyleSheet, Text, View} from "react-native";
 import AcceptBox from "./AcceptSwitch";
 import LogoHeader from "../LogoHeader";
 import SubmitButton from "../../forms/SubmitButton";
@@ -13,6 +13,7 @@ import {connect} from "react-redux";
 import {storeUser} from "../UserReducer";
 import AuthenticationService, {RegisterUserResponse} from "../AuthenticationService";
 import {setTokens} from "../AuthenticationReducer";
+import LoadingView from "../../views/LoadingView";
 
 const AcceptTermsScreen = ({navigation, storeUser, setTokens}) => {
     const [userRegistration: UserRegistration, setUserRegistration] = useState(navigation.getParam("userRegistration"));
@@ -39,10 +40,8 @@ const AcceptTermsScreen = ({navigation, storeUser, setTokens}) => {
         });
     }
 
-    return (<>
-        {submitted && <View style={styles.overlay}>
-            <ActivityIndicator size="small" color="black" style={styles.overlayIndicator}/>
-        </View>}
+    return <>
+        {submitted && <LoadingView/>}
         <WrapperContainer>
             <LogoHeader heading="Terms & Conditions"/>
             <AcceptBox onEmit={acceptedTerms => setUserRegistration({...userRegistration, acceptedTerms})}
@@ -63,7 +62,7 @@ const AcceptTermsScreen = ({navigation, storeUser, setTokens}) => {
             <SubmitButton onSubmit={() => setSubmitted(true)} text="Accept" disabled={!validAgreedState}/>
             {registrationError && <Text style={styles.error} id="error-message">{registrationError}</Text>}
         </WrapperContainer>
-    </>);
+    </>;
 };
 
 AcceptTermsScreen.navigationOptions = {
