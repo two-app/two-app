@@ -94,18 +94,7 @@ const styles = StyleSheet.create({
     error: {
         color: Colors.DARK_SALMON,
         marginTop: 10
-    },
-    overlay: {
-        flex: 1,
-        position: "absolute",
-        opacity: 0.5,
-        backgroundColor: 'white',
-        width: Dimensions.get("window").width,
-        height: Dimensions.get("window").height,
-        zIndex: 2,
-        alignItems: "center",
-        justifyContent: "center"
-    },
+    }
 });
 
 const mapStateToProps = state => ({user: state['user']});
