@@ -9,7 +9,7 @@ class UserResponse {
     user: UnconnectedUser | User;
     tokens: Tokens;
 
-    constructor(user: UnconnectedUser, tokens: Tokens) {
+    constructor(user: UnconnectedUser | User, tokens: Tokens) {
         this.user = user;
         this.tokens = tokens;
     }

@@ -1,7 +1,7 @@
 // @flow
 
 import React, {useState} from "react";
-import {ActivityIndicator, Clipboard, Dimensions, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Clipboard, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {connect} from "react-redux";
 import {WrapperContainer} from "../../views/View";
 import LogoHeader from "../LogoHeader";
@@ -10,19 +10,39 @@ import Colors from "../../Colors";
 import Input from "../../forms/Input";
 import SubmitButton from "../../forms/SubmitButton";
 import LoadingView from "../../views/LoadingView";
-import Gateway from "../../http/Gateway";
+import AuthenticationService, {UserResponse} from "../AuthenticationService";
+import {setTokens} from "../AuthenticationReducer";
+import {storeUser} from "../UserReducer";
+import {NavigationActions, StackActions} from "react-navigation";
 
 /**
  * @param navigation
  * @param user {UnconnectedUser}
+ * @param storeUser {storeUser}
+ * @param setTokens {setTokens}
  */
-const ConnectCodeScreen = ({user}) => {
+const ConnectCodeScreen = ({navigation, user, storeUser, setTokens}) => {
     const [partnerConnectCode, setPartnerConnectCode] = useState("");
     const isPartnerCodeValid = partnerCode => partnerCode.length === 6 && partnerCode !== user.connectCode;
     const [submitted, setSubmitted] = useState(false);
+    const [error, setError] = useState(null);
+
+    const navigateToHomeScreen = () => navigation.dispatch(
+        StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({routeName: 'HomeScreen'})]
+        })
+    );
 
     if (submitted) {
-        Gateway.get("/partner").then(console.log).catch(console.error);
+        AuthenticationService.connectToPartner(partnerConnectCode).then((response: UserResponse) => {
+            storeUser({...response.user});
+            setTokens({...response.tokens});
+            navigateToHomeScreen();
+        }).catch((e: Error) => {
+            setSubmitted(false);
+            setError(e.message);
+        });
     }
 
     return <>
@@ -48,6 +68,7 @@ const ConnectCodeScreen = ({user}) => {
                 {partnerConnectCode === user.connectCode &&
                 <Text style={styles.error} id="error">You can't connect with yourself!</Text>
                 }
+                {error && <Text style={styles.error} id="error">{error}</Text>}
                 <SubmitButton onSubmit={() => setSubmitted(true)} text="Connect"
                               disabled={!isPartnerCodeValid(partnerConnectCode)}/>
             </View>
@@ -99,5 +120,5 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({user: state['user']});
 
-export default connect(mapStateToProps)(ConnectCodeScreen);
+export default connect(mapStateToProps, {storeUser, setTokens})(ConnectCodeScreen);
 export {ConnectCodeScreen};
