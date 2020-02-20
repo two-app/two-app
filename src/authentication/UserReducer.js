@@ -8,6 +8,8 @@ const userReducer = createReducer(null, {
     [storeUser.type]: (state = {}, {payload}) => ({
         ...state,
         uid: payload.uid,
+        pid: payload.pid,
+        cid: payload.cid,
         connectCode: payload.connectCode
     })
 });
