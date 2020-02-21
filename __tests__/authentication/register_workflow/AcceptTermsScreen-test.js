@@ -7,7 +7,7 @@ import renderer from 'react-test-renderer';
 import {shallow} from "enzyme";
 import {AcceptTermsScreen} from "../../../src/authentication/register_workflow/AcceptTermsScreen";
 import {UserRegistration} from "../../../src/authentication/register_workflow/UserRegistrationModel";
-import AuthenticationService, {RegisterUserResponse} from "../../../src/authentication/AuthenticationService";
+import AuthenticationService, {UserResponse} from "../../../src/authentication/AuthenticationService";
 import {UnconnectedUser} from "../../../src/authentication/UserModel";
 import {Tokens} from "../../../src/authentication/AuthenticationModel";
 
@@ -40,7 +40,7 @@ describe('AcceptTermsScreen', () => {
     });
 
     describe('On Submit', () => {
-        const mockRegisterResponse = new RegisterUserResponse(
+        const mockRegisterResponse = new UserResponse(
             new UnconnectedUser(24, "testConnectCode"),
             new Tokens("testAccess", "testRefresh")
         );
@@ -65,18 +65,17 @@ describe('AcceptTermsScreen', () => {
             done();
         }));
 
-        test('should navigate to ConnectCodeScreen if successful registration', done =>
-            setImmediate(() => {
-                expect(tb.dispatchFn).toHaveBeenCalledWith({
-                    index: 0,
-                    type: "Navigation/RESET",
-                    actions: [{"routeName": "ConnectCodeScreen"}]
-                });
-                done();
-            }));
+        test('should navigate to ConnectCodeScreen if successful registration', done => setImmediate(() => {
+            expect(tb.dispatchFn).toHaveBeenCalledWith({
+                index: 0,
+                type: "Navigation/RESET",
+                actions: [{"routeName": "ConnectCodeScreen"}]
+            });
+            done();
+        }));
 
         test('should display overlay with loading indicator', () => expect(
-            tb.wrapper.exists("ActivityIndicator")
+            tb.wrapper.exists("LoadingView")
         ).toBe(true));
 
         test('should display error if auth service throws in promise', done => {
@@ -120,8 +119,8 @@ class AcceptTermsScreenTestBed {
         this.wrapper.find("SubmitButton").prop("onSubmit")();
     };
 
-    whenRegisterUserResolve = (response: RegisterUserResponse) => {
+    whenRegisterUserResolve = (response: UserResponse) => {
         AuthenticationService.registerUser = jest.fn().mockResolvedValue(response);
         return this;
-    }
+    };
 }

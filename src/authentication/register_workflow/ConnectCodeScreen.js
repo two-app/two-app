@@ -9,47 +9,77 @@ import {UnconnectedUser} from "../UserModel";
 import Colors from "../../Colors";
 import Input from "../../forms/Input";
 import SubmitButton from "../../forms/SubmitButton";
+import LoadingView from "../../views/LoadingView";
+import AuthenticationService, {UserResponse} from "../AuthenticationService";
+import {setTokens} from "../AuthenticationReducer";
+import {storeUser} from "../UserReducer";
+import {NavigationActions, StackActions} from "react-navigation";
 
 /**
  * @param navigation
  * @param user {UnconnectedUser}
+ * @param storeUser {storeUser}
+ * @param setTokens {setTokens}
  */
-const ConnectCodeScreen = ({navigation, user}) => {
+const ConnectCodeScreen = ({navigation, user, storeUser, setTokens}) => {
     const [partnerConnectCode, setPartnerConnectCode] = useState("");
     const isPartnerCodeValid = partnerCode => partnerCode.length === 6 && partnerCode !== user.connectCode;
+    const [submitted, setSubmitted] = useState(false);
+    const [error, setError] = useState(null);
 
-    return <WrapperContainer>
-        <LogoHeader heading="Connect Your Partner"/>
-        <Text style={styles.subheading}>Thanks for joining us!</Text>
-        <Text style={styles.paragraph}>
-            The sign-up process is almost complete. Once your partner has registered, send them your code!
-        </Text>
-        <TouchableOpacity style={styles.copyButton} onPress={() => Clipboard.setString(user.connectCode)}>
-            <Text style={{...styles.copyTip, marginBottom: 10}}>Your Code</Text>
-            <Text style={styles.code}>{user.connectCode}</Text>
-            <Text style={{...styles.copyTip, marginTop: 10}}>Tap to Copy</Text>
-        </TouchableOpacity>
+    const navigateToHomeScreen = () => navigation.dispatch(
+        StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({routeName: 'HomeScreen'})]
+        })
+    );
 
-        <Text style={{...styles.subheading, marginTop: 20}}>Or, enter your partners code...</Text>
-        <View style={styles.codeInputContainer}>
-            <Input attributes={{placeholder: "e.g bWzGl2"}}
-                   isValid={() => isPartnerCodeValid(partnerConnectCode)}
-                   onChange={setPartnerConnectCode}
-            />
-            {partnerConnectCode === user.connectCode &&
-            <Text style={styles.error} id="error">You can't connect with yourself!</Text>
-            }
-            <SubmitButton onSubmit={() => null} text="Connect" disabled={!isPartnerCodeValid(partnerConnectCode)}/>
-        </View>
-    </WrapperContainer>;
+    if (submitted) {
+        AuthenticationService.connectToPartner(partnerConnectCode).then((response: UserResponse) => {
+            storeUser({...response.user});
+            setTokens({...response.tokens});
+            navigateToHomeScreen();
+        }).catch((e: Error) => {
+            setSubmitted(false);
+            setError(e.message);
+        });
+    }
+
+    return <>
+        {submitted && <LoadingView/>}
+        <WrapperContainer>
+            <LogoHeader heading="Connect Your Partner"/>
+            <Text style={styles.subheading}>Thanks for joining us!</Text>
+            <Text style={styles.paragraph}>
+                The sign-up process is almost complete. Once your partner has registered, send them your code!
+            </Text>
+            <TouchableOpacity style={styles.copyButton} onPress={() => Clipboard.setString(user.connectCode)}>
+                <Text style={{...styles.copyTip, marginBottom: 10}}>Your Code</Text>
+                <Text style={styles.code}>{user.connectCode}</Text>
+                <Text style={{...styles.copyTip, marginTop: 10}}>Tap to Copy</Text>
+            </TouchableOpacity>
+
+            <Text style={{...styles.subheading, marginTop: 20}}>Or, enter your partners code...</Text>
+            <View style={styles.codeInputContainer}>
+                <Input attributes={{placeholder: "e.g bWzGl2"}}
+                       isValid={() => isPartnerCodeValid(partnerConnectCode)}
+                       onChange={setPartnerConnectCode}
+                />
+                {partnerConnectCode === user.connectCode &&
+                <Text style={styles.error} id="error">You can't connect with yourself!</Text>
+                }
+                {error && <Text style={styles.error} id="error">{error}</Text>}
+                <SubmitButton onSubmit={() => setSubmitted(true)} text="Connect"
+                              disabled={!isPartnerCodeValid(partnerConnectCode)}/>
+            </View>
+        </WrapperContainer>
+    </>;
 };
 
 ConnectCodeScreen.navigationOptions = {
     title: 'Partner Connect',
     header: null
 };
-
-ConnectCodeScreen.propTypes = {};
 
 const styles = StyleSheet.create({
     subheading: {
@@ -90,5 +120,5 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => ({user: state['user']});
 
-export default connect(mapStateToProps)(ConnectCodeScreen);
+export default connect(mapStateToProps, {storeUser, setTokens})(ConnectCodeScreen);
 export {ConnectCodeScreen};
