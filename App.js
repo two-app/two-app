@@ -9,19 +9,29 @@ import LoginScreen from "./src/authentication/LoginScreen";
 import {createAppContainer} from "react-navigation";
 import RegisterScreen from "./src/authentication/RegisterScreen";
 import AcceptTermsScreen from "./src/authentication/register_workflow/AcceptTermsScreen";
-import ConnectCodeScreen from "./src/authentication/register_workflow/ConnectCodeScreen";
 import {Provider} from "react-redux";
-import createReduxStore from "./src/state";
+import {store, persistor} from "./src/state/reducers";
+import HomeScreen from "./src/home/HomeScreen";
+import LoadingScreen from "./src/LoadingScreen";
+import {PersistGate} from 'redux-persist/integration/react';
+import ConnectCodeScreen from "./src/authentication/register_workflow/ConnectCodeScreen";
 
 const navigator = createStackNavigator({
-    Login: {screen: LoginScreen},
-    Register: {screen: RegisterScreen},
+    LoadingScreen: {screen: LoadingScreen},
+    LoginScreen: {screen: LoginScreen},
+    RegisterScreen: {screen: RegisterScreen},
     AcceptTermsScreen: {screen: AcceptTermsScreen},
-    ConnectCodeScreen: {screen: ConnectCodeScreen}
+    ConnectCodeScreen: {screen: ConnectCodeScreen},
+    HomeScreen: {screen: HomeScreen},
 }, {
-    initialRouteName: "Register"
+    initialRouteName: "LoadingScreen"
 });
 
 const Navigation = createAppContainer(navigator);
 
-export default () => (<Provider store={createReduxStore()}><Navigation/></Provider>);
+export default () =>
+    <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+            <Navigation/>
+        </PersistGate>
+    </Provider>;
