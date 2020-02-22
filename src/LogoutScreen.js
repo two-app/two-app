@@ -12,6 +12,5 @@ const LogoutScreen = ({clearState, persistor, navigation}) => {
     return <><Text>Logging you out...</Text></>;
 };
 
-export default connect(() => {
-}, {clearState, persistor})(LogoutScreen);
+export default connect(() => ({}), {clearState, persistor})(LogoutScreen);
 export {LogoutScreen};

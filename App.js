@@ -15,9 +15,11 @@ import HomeScreen from "./src/home/HomeScreen";
 import LoadingScreen from "./src/LoadingScreen";
 import {PersistGate} from 'redux-persist/integration/react';
 import ConnectCodeScreen from "./src/authentication/register_workflow/ConnectCodeScreen";
+import LogoutScreen from "./src/LogoutScreen";
 
 const navigator = createStackNavigator({
     LoadingScreen: {screen: LoadingScreen},
+    LogoutScreen: {screen: LogoutScreen},
     LoginScreen: {screen: LoginScreen},
     RegisterScreen: {screen: RegisterScreen},
     AcceptTermsScreen: {screen: AcceptTermsScreen},
