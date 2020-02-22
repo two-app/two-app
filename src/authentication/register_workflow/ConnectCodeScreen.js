@@ -34,8 +34,9 @@ const ConnectCodeScreen = ({navigation, user, storeUser, setTokens}) => {
         })
     );
 
-    if (submitted) {
-        AuthenticationService.connectToPartner(partnerConnectCode).then((response: UserResponse) => {
+    const connectToPartner = (connectCode) => {
+        setSubmitted(true);
+        AuthenticationService.connectToPartner(connectCode).then((response: UserResponse) => {
             storeUser({...response.user});
             setTokens({...response.tokens});
             navigateToHomeScreen();
@@ -43,7 +44,7 @@ const ConnectCodeScreen = ({navigation, user, storeUser, setTokens}) => {
             setSubmitted(false);
             setError(e.message);
         });
-    }
+    };
 
     return <>
         {submitted && <LoadingView/>}
@@ -69,7 +70,7 @@ const ConnectCodeScreen = ({navigation, user, storeUser, setTokens}) => {
                 <Text style={styles.error} id="error">You can't connect with yourself!</Text>
                 }
                 {error && <Text style={styles.error} id="error">{error}</Text>}
-                <SubmitButton onSubmit={() => setSubmitted(true)} text="Connect"
+                <SubmitButton onSubmit={() => connectToPartner(partnerConnectCode)} text="Connect"
                               disabled={!isPartnerCodeValid(partnerConnectCode)}/>
             </View>
         </WrapperContainer>
