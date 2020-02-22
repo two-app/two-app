@@ -7,6 +7,7 @@ import renderer from 'react-test-renderer';
 import {HomeScreen} from "../../src/home/HomeScreen";
 import {User} from "../../src/authentication/UserModel";
 import {shallow} from "enzyme";
+import {NavigationActions, StackActions} from "react-navigation";
 
 describe('HomeScreen', () => {
     const user = new User(1, 2, 3);
@@ -19,13 +20,16 @@ describe('HomeScreen', () => {
 
     test('clicking logout should navigate to LogoutScreen', () => {
         tb.wrapper.find("TouchableOpacity").prop("onPress")();
-        expect(tb.navigateFn).toHaveBeenCalledTimes(1);
-        expect(tb.navigateFn).toHaveBeenCalledWith("LogoutScreen");
+        expect(tb.dispatchFn).toHaveBeenCalledTimes(1);
+        expect(tb.dispatchFn).toHaveBeenCalledWith(StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({routeName: 'LogoutScreen'})]
+        }));
     });
 });
 
 class HomeScreenTestBed {
-    navigateFn = jest.fn();
+    dispatchFn = jest.fn();
     user = new User(1, 2, 3);
-    wrapper = shallow(<HomeScreen navigation={{navigate: this.navigateFn}} user={this.user}/>);
+    wrapper = shallow(<HomeScreen navigation={{dispatch: this.dispatchFn}} user={this.user}/>);
 }

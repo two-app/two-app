@@ -4,6 +4,7 @@ import {Text} from "react-native";
 import {clearState, persistor} from "./state/reducers";
 
 const LogoutScreen = ({clearState, navigation}) => {
+    console.log("Inside logout screen.");
     useEffect(() => {
         clearState();
         persistor.persist();
