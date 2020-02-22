@@ -5,7 +5,7 @@ import userReducer from "../authentication/UserReducer";
 import AsyncStorage from '@react-native-community/async-storage';
 import {persistReducer, persistStore} from 'redux-persist';
 import {combineReducers, createStore} from "redux";
-import {createAction, createReducer} from "@reduxjs/toolkit";
+import {createAction} from "@reduxjs/toolkit";
 
 const persistConfig = {
     key: 'root',
@@ -24,7 +24,6 @@ const rootReducer = (state, action) => {
     }
     return reducer(state, action);
 };
-
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 const store = createStore(persistedReducer);
