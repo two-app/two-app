@@ -17,6 +17,17 @@ exports[`HomeScreen should maintain snapshot 1`] = `
           }
         }
       >
+        <Text
+          style={
+            Object {
+              "color": "rgba(0, 0, 0, 0.8)",
+              "fontFamily": "Montserrat-Bold",
+              "fontSize": 35,
+            }
+          }
+        >
+          Memories
+        </Text>
         <Text>
           You're logged in.
         </Text>
