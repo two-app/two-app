@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {Text} from "react-native";
 import {clearState, persistor} from "./state/reducers";
 
-const LogoutScreen = ({clearState, persistor, navigation}) => {
+const LogoutScreen = ({clearState, navigation}) => {
     useEffect(() => {
         clearState();
         persistor.persist();
@@ -12,5 +12,5 @@ const LogoutScreen = ({clearState, persistor, navigation}) => {
     return <><Text>Logging you out...</Text></>;
 };
 
-export default connect(() => ({}), {clearState, persistor})(LogoutScreen);
+export default connect(() => ({}), {clearState})(LogoutScreen);
 export {LogoutScreen};
