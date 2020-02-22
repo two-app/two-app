@@ -18,7 +18,7 @@ exports[`HomeScreen should maintain snapshot 1`] = `
         }
       >
         <Text>
-          You're logged in. Home screen, booyah!
+          You're logged in.
         </Text>
         <Text>
           Your UID: 
@@ -32,6 +32,27 @@ exports[`HomeScreen should maintain snapshot 1`] = `
           Your CID: 
           3
         </Text>
+        <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
+          style={
+            Object {
+              "opacity": 1,
+            }
+          }
+        >
+          <Text>
+            Logout
+          </Text>
+        </View>
       </View>
     </View>
   </RCTScrollView>

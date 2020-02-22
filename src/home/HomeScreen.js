@@ -1,21 +1,18 @@
 import React from "react";
 import {connect} from "react-redux";
 import {WrapperContainer} from "../views/View";
-import {Text} from "react-native";
+import {Text, TouchableOpacity} from "react-native";
 
 /**
  * @param user {User}
  */
-const HomeScreen = ({user}) => {
-    return <>
-        <WrapperContainer>
-            <Text>You're logged in. Home screen, booyah!</Text>
-            <Text>Your UID: {user.uid}</Text>
-            <Text>Your PID: {user.pid}</Text>
-            <Text>Your CID: {user.cid}</Text>
-        </WrapperContainer>
-    </>;
-};
+const HomeScreen = ({navigation, user}) => <WrapperContainer>
+    <Text>You're logged in.</Text>
+    <Text>Your UID: {user.uid}</Text>
+    <Text>Your PID: {user.pid}</Text>
+    <Text>Your CID: {user.cid}</Text>
+    <TouchableOpacity onPress={() => navigation.navigate("LogoutScreen")}><Text>Logout</Text></TouchableOpacity>
+</WrapperContainer>;
 
 HomeScreen.navigationOptions = {
     title: 'Home',
