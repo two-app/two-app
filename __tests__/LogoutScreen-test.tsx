@@ -1,24 +1,24 @@
-
-
 import 'react-native';
 import React from 'react';
 // Note: test renderer must be required after react-native.
 import {act, create} from 'react-test-renderer';
-import {LogoutScreen} from "../src/LogoutScreen";
-import {persistor} from "../src/state/reducers";
+import {LogoutScreen} from '../src/LogoutScreen';
+import {persistor} from '../src/state/reducers';
 
 describe('LogoutScreen', () => {
     const clearStateFn = jest.fn();
-    const persistFn = jest.spyOn(persistor, "persist");
+    const persistFn = jest.spyOn(persistor, 'persist');
     const navigateFn = jest.fn();
 
     beforeAll(() => {
-        act(() => create(
-            <LogoutScreen
-                clearState={clearStateFn}
-                navigation={{navigate: navigateFn}}
-            />
-        ));
+        act(() => {
+            create(
+                <LogoutScreen
+                    clearState={clearStateFn as any}
+                    navigation={{navigate: navigateFn} as any}
+                />
+            );
+        });
     });
 
     test('it should clear the state', () => {
@@ -31,6 +31,6 @@ describe('LogoutScreen', () => {
 
     test('it should navigate to the LoginScreen', () => {
         expect(navigateFn).toHaveBeenCalledTimes(1);
-        expect(navigateFn).toHaveBeenCalledWith("LoginScreen");
+        expect(navigateFn).toHaveBeenCalledWith('LoginScreen');
     });
 });

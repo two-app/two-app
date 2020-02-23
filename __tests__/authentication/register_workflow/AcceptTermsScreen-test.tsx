@@ -1,20 +1,20 @@
-
-
 import 'react-native';
 import React from 'react';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
-import {shallow} from "enzyme";
-import {AcceptTermsScreen} from "../../../src/authentication/register_workflow/AcceptTermsScreen";
-import {UserRegistration} from "../../../src/authentication/register_workflow/UserRegistrationModel";
-import AuthenticationService, {UserResponse} from "../../../src/authentication/AuthenticationService";
-import {UnconnectedUser} from "../../../src/authentication/UserModel";
-import {Tokens} from "../../../src/authentication/AuthenticationModel";
+import {shallow} from 'enzyme';
+import {AcceptTermsScreen} from '../../../src/authentication/register_workflow/AcceptTermsScreen';
+import {UserRegistration} from '../../../src/authentication/register_workflow/UserRegistrationModel';
+import AuthenticationService, {UserResponse} from '../../../src/authentication/AuthenticationService';
+import {UnconnectedUser} from '../../../src/authentication/UserModel';
+import {Tokens} from '../../../src/authentication/AuthenticationModel';
 
 describe('AcceptTermsScreen', () => {
     test('should maintain snapshot', () => expect(renderer.create(<AcceptTermsScreen
-        navigation={{getParam: jest.fn().mockReturnValue(UserRegistration)}}/>
-    )).toMatchSnapshot());
+        navigation={{getParam: jest.fn().mockReturnValue(UserRegistration)} as any}
+        storeUser={() => null}
+        setTokens={() => null}
+    />)).toMatchSnapshot());
 
     let tb: AcceptTermsScreenTestBed;
 
@@ -41,8 +41,8 @@ describe('AcceptTermsScreen', () => {
 
     describe('On Submit', () => {
         const mockRegisterResponse = new UserResponse(
-            new UnconnectedUser(24, "testConnectCode"),
-            new Tokens("testAccess", "testRefresh")
+            new UnconnectedUser(24, 'testConnectCode'),
+            new Tokens('testAccess', 'testRefresh')
         );
 
         beforeEach(() => {
@@ -68,23 +68,23 @@ describe('AcceptTermsScreen', () => {
         test('should navigate to ConnectCodeScreen if successful registration', done => setImmediate(() => {
             expect(tb.dispatchFn).toHaveBeenCalledWith({
                 index: 0,
-                type: "Navigation/RESET",
-                actions: [{"routeName": "ConnectCodeScreen"}]
+                type: 'Navigation/RESET',
+                actions: [{'routeName': 'ConnectCodeScreen'}]
             });
             done();
         }));
 
         test('should display overlay with loading indicator', () => expect(
-            tb.wrapper.exists("LoadingView")
+            tb.wrapper.exists('LoadingView')
         ).toBe(true));
 
         test('should display error if auth service throws in promise', done => {
-            AuthenticationService.registerUser = jest.fn().mockRejectedValue(new Error("Some API Error Message"));
+            AuthenticationService.registerUser = jest.fn().mockRejectedValue(new Error('Some API Error Message'));
 
             tb.checkFieldsAndSubmitForm();
 
             setImmediate(() => {
-                expect(tb.wrapper.find("Text[id='error-message']").render().text()).toEqual("Some API Error Message");
+                expect(tb.wrapper.find('Text[id=\'error-message\']').render().text()).toEqual('Some API Error Message');
                 done();
             });
         });
@@ -93,10 +93,13 @@ describe('AcceptTermsScreen', () => {
 
 class AcceptTermsScreenTestBed {
     userRegistration: UserRegistration = {
-        firstName: "Gerry",
-        lastName: "Fletcher",
-        email: "admin@two.com",
-        password: "P?4Ot2ONz:IJO&%U"
+        firstName: 'Gerry',
+        lastName: 'Fletcher',
+        email: 'admin@two.com',
+        password: 'P?4Ot2ONz:IJO&%U',
+        acceptedTerms: true,
+        ofAge: true,
+        receivesEmails: true
     };
 
     navigateFn = jest.fn();
@@ -108,15 +111,15 @@ class AcceptTermsScreenTestBed {
         getParam: jest.fn().mockReturnValue(this.userRegistration),
         navigate: this.navigateFn,
         dispatch: this.dispatchFn
-    }} storeUser={this.storeUserFn} setTokens={this.setTokensFn}/>);
+    } as any} storeUser={this.storeUserFn} setTokens={this.setTokensFn}/>);
 
-    tickTermsAndConditions = () => this.wrapper.find("AcceptBox[id='terms']").prop("onEmit")(true);
-    tickAge = () => this.wrapper.find("AcceptBox[id='age']").prop("onEmit")(true);
-    isSubmitEnabled = () => !this.wrapper.find("SubmitButton").prop("disabled");
+    tickTermsAndConditions = () => this.wrapper.find('AcceptBox[id=\'terms\']').prop<(v: boolean) => void>('onEmit')(true);
+    tickAge = () => this.wrapper.find('AcceptBox[id=\'age\']').prop<(v: boolean) => void>('onEmit')(true);
+    isSubmitEnabled = () => !this.wrapper.find('SubmitButton').prop<boolean>('disabled');
     checkFieldsAndSubmitForm = () => {
         this.tickTermsAndConditions();
         this.tickAge();
-        this.wrapper.find("SubmitButton").prop("onSubmit")();
+        this.wrapper.find('SubmitButton').prop<() => void>('onSubmit')();
     };
 
     whenRegisterUserResolve = (response: UserResponse) => {

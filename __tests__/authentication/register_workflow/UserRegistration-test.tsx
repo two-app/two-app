@@ -1,6 +1,5 @@
-
-import EmailValidator from "../../../src/forms/EmailValidator";
-import UserRegistrationModel from "../../../src/authentication/register_workflow/UserRegistrationModel";
+import EmailValidator from '../../../src/forms/EmailValidator';
+import UserRegistrationModel from '../../../src/authentication/register_workflow/UserRegistrationModel';
 
 
 describe('isFirstNameValid', () => {
@@ -16,8 +15,8 @@ describe('isLastNameValid', () => {
 describe('isEmailValid', () => {
     test('it should delegate to the email validator', () => {
         EmailValidator.validateEmail = jest.fn();
-        UserRegistrationModel.isEmailValid("admin@two.com");
-        expect(EmailValidator.validateEmail).toHaveBeenCalledWith("admin@two.com");
+        UserRegistrationModel.isEmailValid('admin@two.com');
+        expect(EmailValidator.validateEmail).toHaveBeenCalledWith('admin@two.com');
     });
 });
 

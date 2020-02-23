@@ -4,13 +4,13 @@ import Colors from '../Colors';
 import Label from './Label';
 
 type InputProps = {
-    attributes: {},
-    isValid: (value: string) => boolean,
-    onChange: (value: string) => void,
+    attributes?: {},
+    isValid?: (value: string) => boolean,
+    onChange?: (value: string) => void,
     label?: string
 }
 
-const Input = ({attributes, isValid, onChange, label}: InputProps) => {
+const Input = ({attributes = {}, isValid = () => true, onChange = () => null, label}: InputProps) => {
     const [value, setValue] = useState('');
     const [valid, setValid] = useState(true);
     const [focused, setFocused] = useState(false);

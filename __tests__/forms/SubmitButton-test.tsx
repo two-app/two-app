@@ -1,18 +1,17 @@
-
-
 import 'react-native';
 import React from 'react';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 import SubmitButton from "../../src/forms/SubmitButton";
-import shallow from "enzyme/shallow";
+import {shallow} from "enzyme";
 import {ShallowWrapper} from "enzyme";
+import Mock = jest.Mock;
 
 test('should maintain snapshot', () => expect(
-    renderer.create(<SubmitButton text={"Submit"} onSubmit={null}/>)
+    renderer.create(<SubmitButton text={"Submit"} onSubmit={() => null}/>)
 ).toMatchSnapshot());
 
-let onSubmitFn: JestMockFn;
+let onSubmitFn: Mock;
 let wrapper: ShallowWrapper;
 
 beforeEach(() => {
@@ -21,7 +20,7 @@ beforeEach(() => {
 });
 
 test('should callback onSubmit when pressed', () => {
-    wrapper.find("TouchableOpacity").prop("onPress")();
+    wrapper.find("TouchableOpacity").prop<() => void>("onPress")();
     expect(onSubmitFn).toHaveBeenCalled();
 });
 
