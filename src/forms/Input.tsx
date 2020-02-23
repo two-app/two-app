@@ -40,7 +40,7 @@ const Input = ({attributes = {}, isValid = () => true, onChange = () => null, la
         return input;
     } else {
         return <>
-            <Label text={label} style={styles.label}/>
+            <Label text={label}/>
             {input}
         </>;
     }
@@ -62,10 +62,6 @@ const styles = StyleSheet.create({
     invalidInput: {
         borderBottomColor: Colors.SALMON,
         color: Colors.SALMON
-    },
-    label: {
-        marginTop: 10,
-        marginBottom: 10
     }
 });
 
