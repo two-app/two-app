@@ -22,7 +22,7 @@ const registerUser = (userRegistration: UserRegistration): Promise<UserResponse>
             const refreshToken = r.data.refreshToken;
             return new UserResponse(
                 unconnectedUserFromAccessToken(accessToken),
-                new Tokens(accessToken, refreshToken)
+                {accessToken, refreshToken}
             );
         }).catch((e: AxiosError) => {
             // @ts-ignore
@@ -36,7 +36,7 @@ const connectToPartner = (connectCode: String): Promise<UserResponse> => Gateway
         const refreshToken = r.data['refreshToken'];
         return new UserResponse(
             userFromAccessToken(accessToken),
-            new Tokens(accessToken, refreshToken)
+            {accessToken, refreshToken}
         );
     }).catch((e: AxiosError) => {
         // @ts-ignore

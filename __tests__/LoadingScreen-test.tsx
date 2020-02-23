@@ -31,7 +31,7 @@ describe('LoadingScreen', () => {
 
     describe('With Unconnected Auth', () => {
         const stubUser: UnconnectedUser = {uid: 1, connectCode: 'testConnectCode'};
-        const stubTokens = new Tokens('unconnectedAccess', 'unconnectedRefresh');
+        const stubTokens: Tokens = {accessToken: 'unconnectedAccess', refreshToken: 'unconnectedRefresh'};
         beforeEach(() => tb.setUserProp(stubUser).setAuthProp(stubTokens).build());
 
         test('navigates to Connect Code Screen', () => expect(tb.dispatchFn).toHaveBeenCalledWith(
@@ -44,7 +44,7 @@ describe('LoadingScreen', () => {
 
     describe('With Connected Auth', () => {
         const stubUser: User = {uid: 1, pid: 2, cid: 3};
-        const stubTokens = new Tokens('connectedAccess', 'connectedRefresh');
+        const stubTokens: Tokens = {accessToken: 'connectedAccess', refreshToken: 'connectedRefresh'};
         beforeEach(() => tb.setUserProp(stubUser).setAuthProp(stubTokens).build());
 
         test('navigates to Home Screen', () => expect(tb.dispatchFn).toHaveBeenCalledWith(

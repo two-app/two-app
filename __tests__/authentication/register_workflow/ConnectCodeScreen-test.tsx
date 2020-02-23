@@ -7,7 +7,6 @@ import {shallow} from 'enzyme';
 import {UnconnectedUser} from '../../../src/authentication/UserModel';
 import {ConnectCodeScreen} from '../../../src/authentication/register_workflow/ConnectCodeScreen';
 import AuthenticationService, {UserResponse} from '../../../src/authentication/AuthenticationService';
-import {Tokens} from '../../../src/authentication/AuthenticationModel';
 import {NavigationActions, StackActions} from 'react-navigation';
 
 describe('ConnectCodeScreen', () => {
@@ -60,7 +59,10 @@ describe('ConnectCodeScreen', () => {
         });
 
         describe('On successful connect', () => {
-            const response = new UserResponse({uid: 1, pid: 2, cid: 3}, new Tokens('testAccess', 'testRefresh'));
+            const response = new UserResponse({uid: 1, pid: 2, cid: 3}, {
+                accessToken: 'testAccess',
+                refreshToken: 'testRefresh'
+            });
             beforeEach(() => {
                 tb.whenConnectResolve(response);
                 tb.clickSubmit();
