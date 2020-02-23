@@ -84,7 +84,7 @@ describe('AcceptTermsScreen', () => {
             tb.checkFieldsAndSubmitForm();
 
             setImmediate(() => {
-                expect(tb.wrapper.find('Text[id=\'error-message\']').render().text()).toEqual('Some API Error Message');
+                expect(tb.wrapper.find('Text[data-testid=\'error-message\']').render().text()).toEqual('Some API Error Message');
                 done();
             });
         });
@@ -113,8 +113,8 @@ class AcceptTermsScreenTestBed {
         dispatch: this.dispatchFn
     } as any} storeUser={this.storeUserFn} setTokens={this.setTokensFn}/>);
 
-    tickTermsAndConditions = () => this.wrapper.find('AcceptBox[id=\'terms\']').prop<(v: boolean) => void>('onEmit')(true);
-    tickAge = () => this.wrapper.find('AcceptBox[id=\'age\']').prop<(v: boolean) => void>('onEmit')(true);
+    tickTermsAndConditions = () => this.wrapper.find('AcceptBox[data-testid=\'terms\']').prop<(v: boolean) => void>('onEmit')(true);
+    tickAge = () => this.wrapper.find('AcceptBox[data-testid=\'age\']').prop<(v: boolean) => void>('onEmit')(true);
     isSubmitEnabled = () => !this.wrapper.find('SubmitButton').prop<boolean>('disabled');
     checkFieldsAndSubmitForm = () => {
         this.tickTermsAndConditions();

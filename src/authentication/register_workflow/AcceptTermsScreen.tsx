@@ -50,13 +50,13 @@ const AcceptTermsScreen = ({navigation, storeUser, setTokens}: AcceptTermsScreen
         <WrapperContainer>
             <LogoHeader heading="Terms & Conditions"/>
             <AcceptBox onEmit={acceptedTerms => setUserRegistration({...userRegistration, acceptedTerms})}
-                       id="terms"
+                       data-testid="terms"
                        required>
                 I agree to the <Text style={{fontWeight: 'bold'}}>Terms & Conditions</Text> and
                 <Text style={{fontWeight: 'bold'}}> Privacy Policy.</Text>
             </AcceptBox>
             <AcceptBox onEmit={ofAge => setUserRegistration({...userRegistration, ofAge})}
-                       id="age"
+                       data-testid="age"
                        required>
                 I am over the age of 16.
             </AcceptBox>
@@ -65,7 +65,7 @@ const AcceptTermsScreen = ({navigation, storeUser, setTokens}: AcceptTermsScreen
             </AcceptBox>
 
             <SubmitButton onSubmit={() => setSubmitted(true)} text="Accept" disabled={!validAgreedState}/>
-            {registrationError && <Text style={styles.error} id="error-message">{registrationError}</Text>}
+            {registrationError && <Text style={styles.error} data-testid="error-message">{registrationError}</Text>}
         </WrapperContainer>
     </>;
 };
