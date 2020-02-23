@@ -11,7 +11,7 @@ import {Tokens} from '../../../src/authentication/AuthenticationModel';
 
 describe('AcceptTermsScreen', () => {
     test('should maintain snapshot', () => expect(renderer.create(<AcceptTermsScreen
-        navigation={{getParam: jest.fn().mockReturnValue(UserRegistration)} as any}
+        navigation={{getParam: jest.fn().mockReturnValue(new UserRegistration())} as any}
         storeUser={() => null}
         setTokens={() => null}
     />)).toMatchSnapshot());
@@ -97,9 +97,9 @@ class AcceptTermsScreenTestBed {
         lastName: 'Fletcher',
         email: 'admin@two.com',
         password: 'P?4Ot2ONz:IJO&%U',
-        acceptedTerms: true,
-        ofAge: true,
-        receivesEmails: true
+        acceptedTerms: false,
+        ofAge: false,
+        receivesEmails: false
     };
 
     navigateFn = jest.fn();

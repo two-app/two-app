@@ -5,13 +5,12 @@ import renderer from 'react-test-renderer';
 import SubmitButton from "../../src/forms/SubmitButton";
 import {shallow} from "enzyme";
 import {ShallowWrapper} from "enzyme";
-import Mock = jest.Mock;
 
 test('should maintain snapshot', () => expect(
     renderer.create(<SubmitButton text={"Submit"} onSubmit={() => null}/>)
 ).toMatchSnapshot());
 
-let onSubmitFn: Mock;
+let onSubmitFn: jest.Mock;
 let wrapper: ShallowWrapper;
 
 beforeEach(() => {

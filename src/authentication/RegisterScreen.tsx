@@ -11,7 +11,7 @@ type RegisterScreenProps = {
 };
 
 const RegisterScreen = ({navigation}: RegisterScreenProps) => {
-    const [userRegistration, setUserRegistration] = useState(UserRegistration);
+    const [userRegistration, setUserRegistration] = useState(new UserRegistration());
     return (
         <WrapperContainer>
             <LogoHeader heading="Sign Up"/>

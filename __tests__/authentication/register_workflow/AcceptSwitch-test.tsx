@@ -31,19 +31,20 @@ describe('Switch', () => {
 
     test('should turn the container border green', () => {
         tb.setValueChanged();
-        expect(tb.getContainerStyle()).toHaveProperty('borderColor', Colors.VALID_GREEN);
+
+        expect(tb.doesContainerStyleContain('borderColor', Colors.VALID_GREEN)).toBe(true);
     });
 });
 
 describe('Required', () => {
     test('should not be required by default, and have no border', () => {
-        expect(tb.getContainerStyle()).not.toHaveProperty('borderColor', Colors.DARK);
+        expect(tb.doesContainerStyleContain('borderColor', Colors.DARK)).toBe(false);
     });
 
     test('should have border if required', () => {
         tb.wrapper.setProps({...tb.wrapper.props(), required: true});
 
-        expect(tb.getContainerStyle()).toHaveProperty('borderColor', Colors.DARK);
+        expect(tb.doesContainerStyleContain('borderColor', Colors.DARK)).toBe(true);
     });
 });
 
@@ -55,7 +56,8 @@ class AcceptSwitchTestBed {
 
     setValueChanged = () => this.wrapper.find('Switch').prop<(v: boolean) => void>('onValueChange')(true);
 
-    getContainerStyle = () => {
-        return this.wrapper.find('View[id=\'container\']').prop('style');
-    };
+    doesContainerStyleContain = (key: string, value: any): boolean => this.wrapper.find('View[id=\'container\']')
+        .prop<[any]>('style')
+        .filter(f => f != undefined)
+        .some(f => f[key] == value);
 }

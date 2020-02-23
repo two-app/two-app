@@ -18,7 +18,7 @@ describe('Navigation Tests', () => {
         shallow(<RegisterScreen navigation={{navigate} as any}/>).find('SubmitButton')
             .prop<() => void>('onSubmit')();
 
-        expect(navigate).toHaveBeenCalledWith('AcceptTermsScreen', {userRegistration: UserRegistration});
+        expect(navigate).toHaveBeenCalledWith('AcceptTermsScreen', {userRegistration: new UserRegistration()});
     });
 });
 

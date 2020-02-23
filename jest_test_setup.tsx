@@ -6,7 +6,7 @@ import Enzyme from 'enzyme';
 Enzyme.configure({ adapter: new Adapter() });
 
 // Ignore React Web errors when using React Native
-console.error = message => {
+console.error = (message: string) => {
     return message;
 };
 
@@ -14,7 +14,7 @@ console.error = message => {
 // This may need expanding in future versions.
 jest.mock('react-navigation', () => {
     return {
-        createAppContainer: jest.fn().mockReturnValue(function NavigationContainer(props) {return null;}),
+        createAppContainer: jest.fn().mockReturnValue(function NavigationContainer() {return null;}),
         createDrawerNavigator: jest.fn(),
         createMaterialTopTabNavigator: jest.fn(),
         createStackNavigator: jest.fn(),
