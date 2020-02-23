@@ -56,7 +56,7 @@ class AcceptSwitchTestBed {
 
     setValueChanged = () => this.wrapper.find('Switch').prop<(v: boolean) => void>('onValueChange')(true);
 
-    doesContainerStyleContain = (key: string, value: any): boolean => this.wrapper.find('View[id=\'container\']')
+    doesContainerStyleContain = (key: string, value: any): boolean => this.wrapper.find('View[data-testid=\'container\']')
         .prop<[any]>('style')
         .filter(f => f != undefined)
         .some(f => f[key] == value);

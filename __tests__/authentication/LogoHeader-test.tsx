@@ -10,5 +10,5 @@ test('should maintain snapshot', () => expect(
 ).toMatchSnapshot());
 
 test('should display given heading', () => expect(
-    shallow(<LogoHeader heading="Test Heading"/>).find('Text[id=\'heading\']').render().text()
+    shallow(<LogoHeader heading="Test Heading"/>).find('Text[data-testid=\'heading\']').render().text()
 ).toEqual('Test Heading'));

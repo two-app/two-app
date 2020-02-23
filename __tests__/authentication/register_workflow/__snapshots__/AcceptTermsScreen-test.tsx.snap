@@ -32,7 +32,7 @@ exports[`AcceptTermsScreen should maintain snapshot 1`] = `
           two.
         </Text>
         <Text
-          id="heading"
+          data-testid="heading"
           style={
             Object {
               "color": "rgba(0, 0, 0, 0.8)",
@@ -44,7 +44,7 @@ exports[`AcceptTermsScreen should maintain snapshot 1`] = `
           Terms & Conditions
         </Text>
         <View
-          id="container"
+          data-testid="container"
           style={
             Array [
               Object {
@@ -132,7 +132,7 @@ exports[`AcceptTermsScreen should maintain snapshot 1`] = `
           </View>
         </View>
         <View
-          id="container"
+          data-testid="container"
           style={
             Array [
               Object {
@@ -201,7 +201,7 @@ exports[`AcceptTermsScreen should maintain snapshot 1`] = `
           </View>
         </View>
         <View
-          id="container"
+          data-testid="container"
           style={
             Array [
               Object {

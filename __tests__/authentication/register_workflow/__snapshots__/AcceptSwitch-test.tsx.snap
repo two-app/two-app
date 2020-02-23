@@ -2,7 +2,7 @@
 
 exports[`should maintain snapshot 1`] = `
 <View
-  id="container"
+  data-testid="container"
   style={
     Array [
       Object {

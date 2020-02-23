@@ -124,7 +124,7 @@ class ConnectCodeScreenTestBed {
     isPartnerCodeValid = () => this.wrapper.find('Input').prop<() => boolean>('isValid')();
     isSubmitButtonDisabled = () => this.wrapper.find('SubmitButton').prop<boolean>('disabled');
     clickSubmit = () => this.wrapper.find('SubmitButton').prop<() => void>('onSubmit')();
-    getErrorText = () => this.wrapper.find('Text[id=\'error\']').render().text();
+    getErrorText = () => this.wrapper.find('Text[data-testid=\'error\']').render().text();
 
     whenConnectResolve = (userResponse: UserResponse) => {
         AuthenticationService.connectToPartner = jest.fn().mockResolvedValue(userResponse);

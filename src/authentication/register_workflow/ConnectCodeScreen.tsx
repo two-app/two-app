@@ -68,9 +68,9 @@ const ConnectCodeScreen = ({navigation, user, storeUser, setTokens}: ConnectCode
                        onChange={setPartnerConnectCode}
                 />
                 {partnerConnectCode === user.connectCode &&
-                <Text style={styles.error} id="error">You can't connect with yourself!</Text>
+                <Text style={styles.error} data-testid="error">You can't connect with yourself!</Text>
                 }
-                {error && <Text style={styles.error} id="error">{error}</Text>}
+                {error && <Text style={styles.error} data-testid="error">{error}</Text>}
                 <SubmitButton onSubmit={() => connectToPartner(partnerConnectCode)} text="Connect"
                               disabled={!isPartnerCodeValid(partnerConnectCode)}/>
             </View>

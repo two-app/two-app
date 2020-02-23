@@ -16,7 +16,7 @@ const AcceptBox = ({children, onEmit, required}: AcceptBoxProps) => {
             styles.container,
             required ? styles.required : undefined,
             accepted ? styles.accepted : undefined
-        ]} id="container">
+        ]} data-testid="container">
             <Text style={styles.condition}>{children}</Text>
             <View style={styles.switchContainer}>
                 <Switch style={styles.switch}

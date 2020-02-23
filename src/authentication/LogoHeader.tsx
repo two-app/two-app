@@ -5,7 +5,7 @@ import Colors from '../Colors';
 const LogoHeader = ({heading}: { heading: string }) => (
     <>
         <Text style={styles.logo}>two.</Text>
-        <Text style={styles.heading} id="heading">{heading}</Text>
+        <Text style={styles.heading} data-testid="heading">{heading}</Text>
     </>
 );
 

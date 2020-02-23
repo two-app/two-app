@@ -17,7 +17,7 @@ Array [
     two.
   </Text>,
   <Text
-    id="heading"
+    data-testid="heading"
     style={
       Object {
         "color": "rgba(0, 0, 0, 0.8)",
