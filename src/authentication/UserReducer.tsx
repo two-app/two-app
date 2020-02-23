@@ -1,11 +1,9 @@
-// @flow
+import {createAction, createReducer} from '@reduxjs/toolkit';
 
-import {createAction, createReducer} from "@reduxjs/toolkit";
-
-const storeUser = createAction("STORE_USER");
+const storeUser = createAction('STORE_USER');
 
 const userReducer = createReducer(null, {
-    [storeUser.type]: (state = {}, {payload}) => ({
+    [storeUser.type]: (state: any = {}, {payload}) => ({
         ...state,
         uid: payload.uid,
         pid: payload.pid,

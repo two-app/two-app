@@ -1,14 +1,23 @@
-// @flow
-
 import React, {useEffect} from 'react';
 import {Text} from "react-native";
 import {connect} from "react-redux";
 import {WrapperContainer} from "./views/View";
 import {clearState, persistor} from "./state/reducers";
 import {NavigationActions, StackActions} from "react-navigation";
+import {NavigationStackProp} from 'react-navigation-stack';
+import {UnconnectedUser, User} from './authentication/UserModel';
+import {Tokens} from './authentication/AuthenticationModel';
+import {Action} from 'redux';
 
-const LoadingScreen = ({navigation, user, auth, clearState}) => {
-    const nav = url => navigation.dispatch(
+type LoadingScreenProps = {
+    navigation: NavigationStackProp,
+    user: User & UnconnectedUser,
+    auth: Tokens,
+    clearState: Action
+}
+
+const LoadingScreen = ({navigation, user, auth, clearState}: LoadingScreenProps) => {
+    const nav = (url: string) => navigation.dispatch(
         StackActions.reset({
             index: 0,
             actions: [NavigationActions.navigate({routeName: url})]
@@ -37,7 +46,7 @@ LoadingScreen.navigationOptions = {
     header: null
 };
 
-const mapStateToProps = state => ({user: state['user'], auth: state['authentication']});
+const mapStateToProps = (state: any) => ({user: state['user'], auth: state['authentication']});
 
 export default connect(mapStateToProps, {clearState})(LoadingScreen);
 export {LoadingScreen};

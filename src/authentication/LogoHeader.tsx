@@ -1,19 +1,13 @@
-// @flow
-import React from "react";
-import {StyleSheet, Text} from "react-native";
-import PropTypes from "prop-types";
-import Colors from "../Colors";
+import React from 'react';
+import {StyleSheet, Text} from 'react-native';
+import Colors from '../Colors';
 
-const LogoHeader = ({heading}) => (
+const LogoHeader = ({heading}: { heading: string }) => (
     <>
         <Text style={styles.logo}>two.</Text>
         <Text style={styles.heading} id="heading">{heading}</Text>
     </>
 );
-
-LogoHeader.propTypes = {
-    heading: PropTypes.string.isRequired
-};
 
 const styles = StyleSheet.create({
     logo: {
@@ -26,7 +20,7 @@ const styles = StyleSheet.create({
     },
     heading: {
         fontSize: 25,
-        fontWeight: "bold",
+        fontWeight: 'bold',
         color: Colors.DARK
     }
 });

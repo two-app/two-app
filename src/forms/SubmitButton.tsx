@@ -3,7 +3,13 @@ import PropTypes from "prop-types";
 import {StyleSheet, Text, TouchableOpacity} from "react-native";
 import Colors from "../Colors";
 
-const SubmitButton = ({text, onSubmit, disabled}) => (
+type SubmitButtonProps = {
+    text: string,
+    onSubmit: () => any,
+    disabled: boolean
+}
+
+const SubmitButton = ({text, onSubmit, disabled}: SubmitButtonProps) => (
     <TouchableOpacity style={[styles.submitButton, disabled ? styles.disabledSubmitButton : undefined]}
                       onPress={onSubmit}
                       disabled={disabled}>

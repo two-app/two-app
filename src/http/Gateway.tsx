@@ -1,8 +1,7 @@
-// @flow
-import Axios, {AxiosRequestConfig} from 'axios';
+import Axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 import {store} from "../state/reducers";
 
-const Gateway = Axios.create({
+const Gateway: AxiosInstance = Axios.create({
     baseURL: 'http://localhost:8080/',
     timeout: 5000,
 });

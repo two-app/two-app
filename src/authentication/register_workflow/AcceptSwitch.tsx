@@ -1,9 +1,15 @@
-import {StyleSheet, Switch, Text, View} from "react-native";
-import PropTypes from "prop-types";
-import Colors from "../../Colors";
-import React, {useState} from "react";
+import {StyleSheet, Switch, Text, View} from 'react-native';
+import PropTypes from 'prop-types';
+import Colors from '../../Colors';
+import React, {useState} from 'react';
 
-const AcceptBox = ({children, onEmit, required}) => {
+type AcceptBoxProps = {
+    children?: any,
+    onEmit: any,
+    required?: boolean
+};
+
+const AcceptBox = ({children, onEmit, required}: AcceptBoxProps) => {
     const [accepted, setAccepted] = useState(false);
     return (
         <View style={[
@@ -36,10 +42,10 @@ AcceptBox.defaultProps = {
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: "row",
+        flexDirection: 'row',
         flex: 1,
-        justifyContent: "space-between",
-        alignItems: "center",
+        justifyContent: 'space-between',
+        alignItems: 'center',
         borderRadius: 10,
         borderColor: Colors.LIGHT,
         borderWidth: 1,
@@ -54,13 +60,13 @@ const styles = StyleSheet.create({
     },
     condition: {
         color: Colors.DARK,
-        width: "80%"
+        width: '80%'
     },
     switchContainer: {
-        width: "20%",
+        width: '20%',
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center"
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     switch: {
         transform: [{scaleX: .8}, {scaleY: .8}]

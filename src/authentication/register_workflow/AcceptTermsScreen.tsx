@@ -1,26 +1,31 @@
-// @flow
+import React, {useState} from 'react';
+import {StyleSheet, Text} from 'react-native';
+import AcceptBox from './AcceptSwitch';
+import LogoHeader from '../LogoHeader';
+import SubmitButton from '../../forms/SubmitButton';
+import {WrapperContainer} from '../../views/View';
+import Colors from '../../Colors';
+import {NavigationActions, StackActions} from 'react-navigation';
+import {connect} from 'react-redux';
+import {storeUser} from '../UserReducer';
+import AuthenticationService, {UserResponse} from '../AuthenticationService';
+import {setTokens} from '../AuthenticationReducer';
+import LoadingView from '../../views/LoadingView';
+import {NavigationStackProp} from 'react-navigation-stack';
+import {UserRegistration} from './UserRegistrationModel';
 
-import React, {useState} from "react";
-import {StyleSheet, Text} from "react-native";
-import AcceptBox from "./AcceptSwitch";
-import LogoHeader from "../LogoHeader";
-import SubmitButton from "../../forms/SubmitButton";
-import {WrapperContainer} from "../../views/View";
-import Colors from "../../Colors";
-import {UserRegistration} from "./UserRegistrationModel";
-import {NavigationActions, StackActions} from "react-navigation";
-import {connect} from "react-redux";
-import {storeUser} from "../UserReducer";
-import AuthenticationService, {UserResponse} from "../AuthenticationService";
-import {setTokens} from "../AuthenticationReducer";
-import LoadingView from "../../views/LoadingView";
+type AcceptTermsScreenProps = {
+    navigation: NavigationStackProp,
+    storeUser: any,
+    setTokens: any
+}
 
-const AcceptTermsScreen = ({navigation, storeUser, setTokens}) => {
-    const [userRegistration: UserRegistration, setUserRegistration] = useState(navigation.getParam("userRegistration"));
+const AcceptTermsScreen = ({navigation, storeUser, setTokens}: AcceptTermsScreenProps) => {
+    const [userRegistration, setUserRegistration] = useState<UserRegistration>(navigation.getParam('userRegistration'));
     const validAgreedState = userRegistration.acceptedTerms && userRegistration.ofAge;
 
     const [submitted, setSubmitted] = useState(false);
-    const [registrationError, setRegistrationError] = useState(null);
+    const [registrationError, setRegistrationError] = useState<string | null>(null);
 
     const navigateToConnectCodeScreen = () => navigation.dispatch(
         StackActions.reset({
@@ -47,8 +52,8 @@ const AcceptTermsScreen = ({navigation, storeUser, setTokens}) => {
             <AcceptBox onEmit={acceptedTerms => setUserRegistration({...userRegistration, acceptedTerms})}
                        id="terms"
                        required>
-                I agree to the <Text style={{fontWeight: "bold"}}>Terms & Conditions</Text> and
-                <Text style={{fontWeight: "bold"}}> Privacy Policy.</Text>
+                I agree to the <Text style={{fontWeight: 'bold'}}>Terms & Conditions</Text> and
+                <Text style={{fontWeight: 'bold'}}> Privacy Policy.</Text>
             </AcceptBox>
             <AcceptBox onEmit={ofAge => setUserRegistration({...userRegistration, ofAge})}
                        id="age"

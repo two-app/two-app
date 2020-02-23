@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 import {
     Keyboard,
     KeyboardAvoidingView,
@@ -9,7 +9,9 @@ import {
     View
 } from 'react-native';
 
+// @ts-ignore
 const DismissKeyboardHOC = (Comp) => {
+    // @ts-ignore
     return ({children, ...props}) => (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <Comp {...props}>
@@ -21,7 +23,7 @@ const DismissKeyboardHOC = (Comp) => {
 
 const DismissKeyboardView = DismissKeyboardHOC(View);
 
-const Wrapper = ({children}) => (
+const Wrapper = ({children}: {children: any}) => (
     <>
         <StatusBar/>
         <SafeAreaView>
@@ -30,7 +32,7 @@ const Wrapper = ({children}) => (
     </>
 );
 
-const Container = ({children}) => (
+const Container = ({children}: {children: any}) => (
     <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{flex: 1, marginLeft: '10%', marginRight: '10%'}}>
             {children}
@@ -38,7 +40,7 @@ const Container = ({children}) => (
     </ScrollView>
 );
 
-const WrapperContainer = ({children}) => (
+const WrapperContainer = ({children}: any) => (
     <Wrapper>
         <Container>
             {children}

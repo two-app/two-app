@@ -1,5 +1,3 @@
-// @flow
-
 const Colors = {
     SALMON: "#EE7674",
     DARK_SALMON: "#ed615f",

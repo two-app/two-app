@@ -1,4 +1,4 @@
-// @flow
+
 
 import {UnconnectedUser} from "../../src/authentication/UserModel";
 import userReducer, {storeUser} from "../../src/authentication/UserReducer";

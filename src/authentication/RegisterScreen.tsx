@@ -1,14 +1,17 @@
-// @flow
-
 import React, {useState} from "react";
 import Input from "../forms/Input";
 import {WrapperContainer} from "../views/View";
 import LogoHeader from "./LogoHeader";
 import SubmitButton from "../forms/SubmitButton";
-import UserRegistrationModel, {UserRegistration} from "./register_workflow/UserRegistrationModel";
+import UserRegistrationModel, {UserRegistration} from './register_workflow/UserRegistrationModel';
+import {NavigationStackProp} from 'react-navigation-stack';
 
-const RegisterScreen = ({navigation}) => {
-    const [userRegistration: UserRegistration, setUserRegistration] = useState(UserRegistration);
+type RegisterScreenProps = {
+    navigation: NavigationStackProp
+};
+
+const RegisterScreen = ({navigation}: RegisterScreenProps) => {
+    const [userRegistration, setUserRegistration] = useState(UserRegistration);
     return (
         <WrapperContainer>
             <LogoHeader heading="Sign Up"/>

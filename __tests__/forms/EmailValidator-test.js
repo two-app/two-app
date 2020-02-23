@@ -1,4 +1,4 @@
-// @flow
+
 
 import EmailValidator from "../../src/forms/EmailValidator";
 

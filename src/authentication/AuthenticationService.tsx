@@ -1,9 +1,8 @@
-// @flow
-import Gateway from "../http/Gateway";
-import {AxiosError, AxiosResponse} from "axios";
-import {UserRegistration} from "./register_workflow/UserRegistrationModel";
-import {UnconnectedUser, User} from "./UserModel";
-import {Tokens} from "./AuthenticationModel";
+import Gateway from '../http/Gateway';
+import {AxiosError, AxiosResponse} from 'axios';
+import {UserRegistration} from './register_workflow/UserRegistrationModel';
+import {UnconnectedUser, User} from './UserModel';
+import {Tokens} from './AuthenticationModel';
 
 class UserResponse {
     user: UnconnectedUser | User;
@@ -17,15 +16,16 @@ class UserResponse {
 
 
 const registerUser = (userRegistration: UserRegistration): Promise<UserResponse> =>
-    Gateway.post("/self", userRegistration)
-        .then((r: AxiosResponse) => {
-            const accessToken = r.data['accessToken'];
-            const refreshToken = r.data['refreshToken'];
+    Gateway.post('/self', userRegistration)
+        .then((r: AxiosResponse<Tokens>) => {
+            const accessToken = r.data.accessToken;
+            const refreshToken = r.data.refreshToken;
             return new UserResponse(
                 UnconnectedUser.fromAccessToken(accessToken),
                 new Tokens(accessToken, refreshToken)
             );
         }).catch((e: AxiosError) => {
+            // @ts-ignore
             throw new Error(e.response.data['message'].toString());
         }
     );
@@ -39,6 +39,7 @@ const connectToPartner = (connectCode: String): Promise<UserResponse> => Gateway
             new Tokens(accessToken, refreshToken)
         );
     }).catch((e: AxiosError) => {
+        // @ts-ignore
         throw new Error(e.response.data['reason'].toString());
     });
 

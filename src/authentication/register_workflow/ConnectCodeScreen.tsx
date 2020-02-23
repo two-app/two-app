@@ -1,31 +1,32 @@
-// @flow
+import React, {useState} from 'react';
+import {Clipboard, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {connect} from 'react-redux';
+import {WrapperContainer} from '../../views/View';
+import LogoHeader from '../LogoHeader';
+import {UnconnectedUser} from '../UserModel';
+import Colors from '../../Colors';
+import Input from '../../forms/Input';
+import SubmitButton from '../../forms/SubmitButton';
+import LoadingView from '../../views/LoadingView';
+import AuthenticationService, {UserResponse} from '../AuthenticationService';
+import {setTokens} from '../AuthenticationReducer';
+import {storeUser} from '../UserReducer';
+import {NavigationActions, StackActions} from 'react-navigation';
+import {NavigationStackProp} from 'react-navigation-stack';
 
-import React, {useState} from "react";
-import {Clipboard, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {connect} from "react-redux";
-import {WrapperContainer} from "../../views/View";
-import LogoHeader from "../LogoHeader";
-import {UnconnectedUser} from "../UserModel";
-import Colors from "../../Colors";
-import Input from "../../forms/Input";
-import SubmitButton from "../../forms/SubmitButton";
-import LoadingView from "../../views/LoadingView";
-import AuthenticationService, {UserResponse} from "../AuthenticationService";
-import {setTokens} from "../AuthenticationReducer";
-import {storeUser} from "../UserReducer";
-import {NavigationActions, StackActions} from "react-navigation";
 
-/**
- * @param navigation
- * @param user {UnconnectedUser}
- * @param storeUser {storeUser}
- * @param setTokens {setTokens}
- */
-const ConnectCodeScreen = ({navigation, user, storeUser, setTokens}) => {
-    const [partnerConnectCode, setPartnerConnectCode] = useState("");
-    const isPartnerCodeValid = partnerCode => partnerCode.length === 6 && partnerCode !== user.connectCode;
+type ConnectCodeScreenProps = {
+    navigation: NavigationStackProp,
+    user: UnconnectedUser,
+    storeUser: any,
+    setTokens: any
+};
+
+const ConnectCodeScreen = ({navigation, user, storeUser, setTokens}: ConnectCodeScreenProps) => {
+    const [partnerConnectCode, setPartnerConnectCode] = useState('');
+    const isPartnerCodeValid = (partnerCode: string) => partnerCode.length === 6 && partnerCode !== user.connectCode;
     const [submitted, setSubmitted] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
 
     const navigateToHomeScreen = () => navigation.dispatch(
         StackActions.reset({
@@ -34,7 +35,7 @@ const ConnectCodeScreen = ({navigation, user, storeUser, setTokens}) => {
         })
     );
 
-    const connectToPartner = (connectCode) => {
+    const connectToPartner = (connectCode: string) => {
         setSubmitted(true);
         AuthenticationService.connectToPartner(connectCode).then((response: UserResponse) => {
             storeUser({...response.user});
@@ -62,7 +63,7 @@ const ConnectCodeScreen = ({navigation, user, storeUser, setTokens}) => {
 
             <Text style={{...styles.subheading, marginTop: 20}}>Or, enter your partners code...</Text>
             <View style={styles.codeInputContainer}>
-                <Input attributes={{placeholder: "e.g bWzGl2"}}
+                <Input attributes={{placeholder: 'e.g bWzGl2'}}
                        isValid={() => isPartnerCodeValid(partnerConnectCode)}
                        onChange={setPartnerConnectCode}
                 />
@@ -85,7 +86,7 @@ ConnectCodeScreen.navigationOptions = {
 const styles = StyleSheet.create({
     subheading: {
         marginTop: 20,
-        fontWeight: "bold"
+        fontWeight: 'bold'
     },
     paragraph: {
         marginTop: 10
@@ -96,14 +97,14 @@ const styles = StyleSheet.create({
         padding: 20
     },
     copyTip: {
-        fontWeight: "300",
+        fontWeight: '300',
         color: Colors.DARK,
-        textAlign: "center"
+        textAlign: 'center'
     },
     code: {
-        fontWeight: "bold",
+        fontWeight: 'bold',
         fontSize: 30,
-        textAlign: "center"
+        textAlign: 'center'
     },
     codeInputContainer: {
         marginTop: 5
@@ -119,7 +120,7 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = state => ({user: state['user']});
+const mapStateToProps = (state: any) => ({user: state['user']});
 
 export default connect(mapStateToProps, {storeUser, setTokens})(ConnectCodeScreen);
 export {ConnectCodeScreen};
