@@ -39,7 +39,6 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
 
             <SubmitButton text="Join Two"
                           onSubmit={() => navigation.navigate("AcceptTermsScreen", {userRegistration})}
-                          id="submit"
                           disabled={!UserRegistrationModel.isUserRegistrationValid(userRegistration)}
             />
         </WrapperContainer>
