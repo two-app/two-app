@@ -8,7 +8,7 @@ import {shallow} from 'enzyme';
 import {NavigationActions, StackActions} from 'react-navigation';
 
 describe('HomeScreen', () => {
-    const user = new User(1, 2, 3);
+    const user: User = {uid: 1, pid: 2, cid: 3};
 
     test('should maintain snapshot', () => expect(renderer.create(
         <HomeScreen user={user} navigation={{} as any}/>)
@@ -30,6 +30,6 @@ describe('HomeScreen', () => {
 
 class HomeScreenTestBed {
     dispatchFn = jest.fn();
-    user = new User(1, 2, 3);
+    user: User = {uid: 1, pid: 2, cid: 3};
     wrapper = shallow(<HomeScreen navigation={{dispatch: this.dispatchFn} as any} user={this.user}/>);
 }

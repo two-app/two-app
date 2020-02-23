@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {NavigationStackProp} from 'react-navigation-stack';
 
 type LogoutScreenProps = {
-    clearState: typeof clearState,
+    clearState: any,
     navigation: NavigationStackProp
 }
 

@@ -3,8 +3,37 @@ import userReducer from '../authentication/UserReducer';
 import AsyncStorage from '@react-native-community/async-storage';
 import {persistReducer, persistStore} from 'redux-persist';
 import {Action, combineReducers, createStore} from 'redux';
-import {createAction} from '@reduxjs/toolkit';
+// import {createAction} from '@reduxjs/toolkit';
+import {action, createReducer} from 'typesafe-actions';
 import {Persistor} from 'redux-persist/es/types';
+import { DeepReadonly } from 'utility-types';
+
+
+
+
+// export type TwoState = DeepReadonly<{
+//     user?: {
+//         uid: number,
+//         pid?: number,
+//         cid?: number,
+//         connectCode?: string
+//     },
+//     auth?: {
+//         accessToken: string,
+//         refreshToken: string
+//     }
+// }>;
+//
+// const initialState: TwoState = {};
+//
+// export default combineReducers<TwoState,
+
+
+
+
+
+
+
 
 const persistConfig = {
     key: 'root',
@@ -16,7 +45,8 @@ const reducer = combineReducers({
     authentication: authenticationReducer
 });
 
-const clearState: Action = createAction('CLEAR_STATE');
+const clearState = action('CLEAR_STATE');
+
 const rootReducer = (state: any, action: Action) => {
     if (action.type === clearState.type) {
         state = undefined;

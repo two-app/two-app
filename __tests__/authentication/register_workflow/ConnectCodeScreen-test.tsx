@@ -4,7 +4,7 @@ import React from 'react';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 import {shallow} from 'enzyme';
-import {UnconnectedUser, User} from '../../../src/authentication/UserModel';
+import {UnconnectedUser} from '../../../src/authentication/UserModel';
 import {ConnectCodeScreen} from '../../../src/authentication/register_workflow/ConnectCodeScreen';
 import AuthenticationService, {UserResponse} from '../../../src/authentication/AuthenticationService';
 import {Tokens} from '../../../src/authentication/AuthenticationModel';
@@ -60,7 +60,7 @@ describe('ConnectCodeScreen', () => {
         });
 
         describe('On successful connect', () => {
-            const response = new UserResponse(new User(1, 2, 3), new Tokens('testAccess', 'testRefresh'));
+            const response = new UserResponse({uid: 1, pid: 2, cid: 3}, new Tokens('testAccess', 'testRefresh'));
             beforeEach(() => {
                 tb.whenConnectResolve(response);
                 tb.clickSubmit();
@@ -102,7 +102,7 @@ describe('ConnectCodeScreen', () => {
 });
 
 class ConnectCodeScreenTestBed {
-    user = new UnconnectedUser(12, 'abcdef');
+    user: UnconnectedUser = {uid: 12, connectCode: 'abcdef'};
     clipboardSetStringFn = jest.fn();
     setTokensFn = jest.fn();
     storeUserFn = jest.fn();

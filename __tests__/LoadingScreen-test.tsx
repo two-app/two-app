@@ -30,7 +30,7 @@ describe('LoadingScreen', () => {
     });
 
     describe('With Unconnected Auth', () => {
-        const stubUser = new UnconnectedUser(1, 'testConnectCode');
+        const stubUser: UnconnectedUser = {uid: 1, connectCode: 'testConnectCode'};
         const stubTokens = new Tokens('unconnectedAccess', 'unconnectedRefresh');
         beforeEach(() => tb.setUserProp(stubUser).setAuthProp(stubTokens).build());
 
@@ -43,7 +43,7 @@ describe('LoadingScreen', () => {
     });
 
     describe('With Connected Auth', () => {
-        const stubUser = new User(1, 2, 3);
+        const stubUser: User = {uid: 1, pid: 2, cid: 3};
         const stubTokens = new Tokens('connectedAccess', 'connectedRefresh');
         beforeEach(() => tb.setUserProp(stubUser).setAuthProp(stubTokens).build());
 

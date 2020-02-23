@@ -6,7 +6,6 @@ import {shallow} from 'enzyme';
 import {AcceptTermsScreen} from '../../../src/authentication/register_workflow/AcceptTermsScreen';
 import {UserRegistration} from '../../../src/authentication/register_workflow/UserRegistrationModel';
 import AuthenticationService, {UserResponse} from '../../../src/authentication/AuthenticationService';
-import {UnconnectedUser} from '../../../src/authentication/UserModel';
 import {Tokens} from '../../../src/authentication/AuthenticationModel';
 
 describe('AcceptTermsScreen', () => {
@@ -41,7 +40,7 @@ describe('AcceptTermsScreen', () => {
 
     describe('On Submit', () => {
         const mockRegisterResponse = new UserResponse(
-            new UnconnectedUser(24, 'testConnectCode'),
+            {uid: 24, connectCode: 'testConnectCode'},
             new Tokens('testAccess', 'testRefresh')
         );
 

@@ -1,7 +1,7 @@
 import {UnconnectedUser} from '../../src/authentication/UserModel';
 import userReducer, {storeUser} from '../../src/authentication/UserReducer';
 
-const payload: UnconnectedUser = new UnconnectedUser(23, 'testConnectCode');
+const payload: UnconnectedUser = {uid: 23, connectCode: 'testConnectCode'};
 
 test('should create a storeUser action', () => {
     // @ts-ignore

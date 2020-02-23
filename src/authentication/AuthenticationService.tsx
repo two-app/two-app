@@ -1,7 +1,7 @@
 import Gateway from '../http/Gateway';
 import {AxiosError, AxiosResponse} from 'axios';
 import {UserRegistration} from './register_workflow/UserRegistrationModel';
-import {UnconnectedUser, User} from './UserModel';
+import {UnconnectedUser, unconnectedUserFromAccessToken, User, userFromAccessToken} from './UserModel';
 import {Tokens} from './AuthenticationModel';
 
 class UserResponse {
@@ -21,7 +21,7 @@ const registerUser = (userRegistration: UserRegistration): Promise<UserResponse>
             const accessToken = r.data.accessToken;
             const refreshToken = r.data.refreshToken;
             return new UserResponse(
-                UnconnectedUser.fromAccessToken(accessToken),
+                unconnectedUserFromAccessToken(accessToken),
                 new Tokens(accessToken, refreshToken)
             );
         }).catch((e: AxiosError) => {
@@ -35,7 +35,7 @@ const connectToPartner = (connectCode: String): Promise<UserResponse> => Gateway
         const accessToken = r.data['accessToken'];
         const refreshToken = r.data['refreshToken'];
         return new UserResponse(
-            User.fromAccessToken(accessToken),
+            userFromAccessToken(accessToken),
             new Tokens(accessToken, refreshToken)
         );
     }).catch((e: AxiosError) => {
