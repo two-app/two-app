@@ -59,10 +59,11 @@ describe('ConnectCodeScreen', () => {
         });
 
         describe('On successful connect', () => {
-            const response = new UserResponse({uid: 1, pid: 2, cid: 3}, {
-                accessToken: 'testAccess',
-                refreshToken: 'testRefresh'
-            });
+            const response: UserResponse = {
+                user: {uid: 1, pid: 2, cid: 3},
+                tokens: {accessToken: 'testAccess', refreshToken: 'testRefresh'}
+            };
+
             beforeEach(() => {
                 tb.whenConnectResolve(response);
                 tb.clickSubmit();

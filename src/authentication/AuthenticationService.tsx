@@ -4,45 +4,27 @@ import {UserRegistration} from './register_workflow/UserRegistrationModel';
 import {UnconnectedUser, unconnectedUserFromAccessToken, User, userFromAccessToken} from './UserModel';
 import {Tokens} from './AuthenticationModel';
 
-class UserResponse {
-    user: UnconnectedUser | User;
-    tokens: Tokens;
-
-    constructor(user: UnconnectedUser | User, tokens: Tokens) {
-        this.user = user;
-        this.tokens = tokens;
-    }
+export type UserResponse = {
+    user: UnconnectedUser | User,
+    tokens: Tokens
 }
 
-
-const registerUser = (userRegistration: UserRegistration): Promise<UserResponse> =>
-    Gateway.post('/self', userRegistration)
-        .then((r: AxiosResponse<Tokens>) => {
-            const accessToken = r.data.accessToken;
-            const refreshToken = r.data.refreshToken;
-            return new UserResponse(
-                unconnectedUserFromAccessToken(accessToken),
-                {accessToken, refreshToken}
-            );
-        }).catch((e: AxiosError) => {
-            // @ts-ignore
-            throw new Error(e.response.data['message'].toString());
-        }
-    );
+const registerUser = (userRegistration: UserRegistration): Promise<UserResponse> => Gateway.post('/self', userRegistration)
+    .then((r: AxiosResponse<Tokens>): UserResponse => ({
+        user: unconnectedUserFromAccessToken(r.data.accessToken),
+        tokens: {accessToken: r.data.accessToken, refreshToken: r.data.refreshToken}
+    })).catch((e: AxiosError) => {
+        // @ts-ignore
+        throw new Error(e.response.data['message'].toString());
+    });
 
 const connectToPartner = (connectCode: String): Promise<UserResponse> => Gateway.post(`/partner/${connectCode}`)
-    .then((r: AxiosResponse) => {
-        const accessToken = r.data['accessToken'];
-        const refreshToken = r.data['refreshToken'];
-        return new UserResponse(
-            userFromAccessToken(accessToken),
-            {accessToken, refreshToken}
-        );
-    }).catch((e: AxiosError) => {
+    .then((r: AxiosResponse<Tokens>): UserResponse => ({
+        user: userFromAccessToken(r.data.accessToken),
+        tokens: {accessToken: r.data.accessToken, refreshToken: r.data.refreshToken}
+    })).catch((e: AxiosError) => {
         // @ts-ignore
         throw new Error(e.response.data['reason'].toString());
     });
 
-
 export default {registerUser, connectToPartner};
-export {UserResponse};

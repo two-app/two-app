@@ -38,10 +38,10 @@ describe('AcceptTermsScreen', () => {
     });
 
     describe('On Submit', () => {
-        const mockRegisterResponse = new UserResponse(
-            {uid: 24, connectCode: 'testConnectCode'},
-            {accessToken: 'testAccess', refreshToken: 'testRefresh'}
-        );
+        const mockRegisterResponse: UserResponse = {
+            user: {uid: 24, connectCode: 'testConnectCode'},
+            tokens: {accessToken: 'testAccess', refreshToken: 'testRefresh'}
+        };
 
         beforeEach(() => {
             tb.whenRegisterUserResolve(mockRegisterResponse);
