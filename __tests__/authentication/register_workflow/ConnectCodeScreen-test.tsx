@@ -15,8 +15,8 @@ describe('ConnectCodeScreen', () => {
 
     test('should maintain snapshot', () => expect(renderer.create(
         <ConnectCodeScreen navigation={{} as any}
-                           setTokens={() => null}
-                           storeUser={() => null}
+                           storeTokens={jest.fn()}
+                           storeUser={jest.fn()}
                            user={tb.user}/>
     )).toMatchSnapshot());
 
@@ -113,7 +113,7 @@ class ConnectCodeScreenTestBed {
 
     wrapper = shallow(
         <ConnectCodeScreen user={this.user}
-                           setTokens={this.setTokensFn}
+                           storeTokens={this.setTokensFn}
                            storeUser={this.storeUserFn}
                            navigation={{dispatch: this.dispatchFn} as any}
         />);

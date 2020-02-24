@@ -12,7 +12,7 @@ Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
     }
 
     // apply JWT to outgoing request
-    const token = store.getState().authentication['accessToken'];
+    const token = store.getState().auth?.accessToken;
     config.headers.Authorization = `Bearer ${token}`;
     return config;
 }, error => {

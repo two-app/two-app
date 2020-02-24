@@ -6,27 +6,27 @@ import SubmitButton from '../../forms/SubmitButton';
 import {WrapperContainer} from '../../views/View';
 import Colors from '../../Colors';
 import {NavigationActions, StackActions} from 'react-navigation';
-import {connect} from 'react-redux';
-import {storeUser} from '../UserReducer';
+import {connect, ConnectedProps} from 'react-redux';
 import AuthenticationService, {UserResponse} from '../AuthenticationService';
-import {setTokens} from '../AuthenticationReducer';
 import LoadingView from '../../views/LoadingView';
 import {NavigationStackProp} from 'react-navigation-stack';
 import {UserRegistration} from './UserRegistrationModel';
+import {storeUnconnectedUser} from '../../user';
+import {UnconnectedUser} from '../UserModel';
+import {storeTokens} from '../store';
 
-type AcceptTermsScreenProps = {
-    navigation: NavigationStackProp,
-    storeUser: any,
-    setTokens: any
-}
+const mapState = null;
+const mapDispatch = {storeUnconnectedUser, storeTokens};
+const connector = connect(mapState, mapDispatch);
+type ConnectorProps = ConnectedProps<typeof connector>;
+type AcceptTermsScreenProps = ConnectorProps & { navigation: NavigationStackProp };
 
-const AcceptTermsScreen = ({navigation, storeUser, setTokens}: AcceptTermsScreenProps) => {
+const AcceptTermsScreen = ({navigation, storeUnconnectedUser, storeTokens}: AcceptTermsScreenProps) => {
     const [userRegistration, setUserRegistration] = useState<UserRegistration>(navigation.getParam('userRegistration'));
     const validAgreedState = userRegistration.acceptedTerms && userRegistration.ofAge;
 
     const [submitted, setSubmitted] = useState(false);
     const [registrationError, setRegistrationError] = useState<string | null>(null);
-
     const navigateToConnectCodeScreen = () => navigation.dispatch(
         StackActions.reset({
             index: 0,
@@ -36,8 +36,8 @@ const AcceptTermsScreen = ({navigation, storeUser, setTokens}: AcceptTermsScreen
 
     if (submitted) {
         AuthenticationService.registerUser(userRegistration).then((response: UserResponse) => {
-            storeUser({...response.user});
-            setTokens({...response.tokens});
+            storeUnconnectedUser(response.user as UnconnectedUser);
+            storeTokens(response.tokens);
             navigateToConnectCodeScreen();
         }).catch((e: Error) => {
             setSubmitted(false);
@@ -81,5 +81,5 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(null, {storeUser, setTokens})(AcceptTermsScreen);
+export default connector(AcceptTermsScreen);
 export {AcceptTermsScreen};

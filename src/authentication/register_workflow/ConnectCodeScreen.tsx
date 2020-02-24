@@ -1,28 +1,30 @@
 import React, {useState} from 'react';
 import {Clipboard, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {connect} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {WrapperContainer} from '../../views/View';
 import LogoHeader from '../LogoHeader';
-import {UnconnectedUser} from '../UserModel';
+import {User} from '../UserModel';
 import Colors from '../../Colors';
 import Input from '../../forms/Input';
 import SubmitButton from '../../forms/SubmitButton';
 import LoadingView from '../../views/LoadingView';
 import AuthenticationService, {UserResponse} from '../AuthenticationService';
-import {setTokens} from '../AuthenticationReducer';
-import {storeUser} from '../UserReducer';
 import {NavigationActions, StackActions} from 'react-navigation';
 import {NavigationStackProp} from 'react-navigation-stack';
+import {TwoState} from '../../state/reducers';
+import {selectUnconnectedUser, storeUser} from '../../user';
+import {storeTokens} from '../store';
 
 
-type ConnectCodeScreenProps = {
-    navigation: NavigationStackProp,
-    user: UnconnectedUser,
-    storeUser: any,
-    setTokens: any
+const mapState = (state: TwoState) => ({user: selectUnconnectedUser(state.user)});
+const mapDispatch = {storeUser, storeTokens};
+const connector = connect(mapState, mapDispatch);
+type ConnectorProps = ConnectedProps<typeof connector>;
+type ConnectCodeScreenProps = ConnectorProps & {
+    navigation: NavigationStackProp
 };
 
-const ConnectCodeScreen = ({navigation, user, storeUser, setTokens}: ConnectCodeScreenProps) => {
+const ConnectCodeScreen = ({navigation, user, storeUser, storeTokens}: ConnectCodeScreenProps) => {
     const [partnerConnectCode, setPartnerConnectCode] = useState('');
     const isPartnerCodeValid = (partnerCode: string) => partnerCode.length === 6 && partnerCode !== user.connectCode;
     const [submitted, setSubmitted] = useState(false);
@@ -38,8 +40,8 @@ const ConnectCodeScreen = ({navigation, user, storeUser, setTokens}: ConnectCode
     const connectToPartner = (connectCode: string) => {
         setSubmitted(true);
         AuthenticationService.connectToPartner(connectCode).then((response: UserResponse) => {
-            storeUser({...response.user});
-            setTokens({...response.tokens});
+            storeUser(response.user as User);
+            storeTokens(response.tokens);
             navigateToHomeScreen();
         }).catch((e: Error) => {
             setSubmitted(false);
@@ -120,7 +122,5 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = (state: any) => ({user: state['user']});
-
-export default connect(mapStateToProps, {storeUser, setTokens})(ConnectCodeScreen);
+export default connector(ConnectCodeScreen);
 export {ConnectCodeScreen};
