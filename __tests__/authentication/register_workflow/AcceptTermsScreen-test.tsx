@@ -10,8 +10,8 @@ import AuthenticationService, {UserResponse} from '../../../src/authentication/A
 describe('AcceptTermsScreen', () => {
     test('should maintain snapshot', () => expect(renderer.create(<AcceptTermsScreen
         navigation={{getParam: jest.fn().mockReturnValue(new UserRegistration())} as any}
-        storeUser={() => null}
-        setTokens={() => null}
+        storeUnconnectedUser={jest.fn()}
+        storeTokens={jest.fn()}
     />)).toMatchSnapshot());
 
     let tb: AcceptTermsScreenTestBed;
@@ -109,7 +109,7 @@ class AcceptTermsScreenTestBed {
         getParam: jest.fn().mockReturnValue(this.userRegistration),
         navigate: this.navigateFn,
         dispatch: this.dispatchFn
-    } as any} storeUser={this.storeUserFn} setTokens={this.setTokensFn}/>);
+    } as any} storeUnconnectedUser={this.storeUserFn} storeTokens={this.setTokensFn}/>);
 
     tickTermsAndConditions = () => this.wrapper.find('AcceptBox[data-testid=\'terms\']').prop<(v: boolean) => void>('onEmit')(true);
     tickAge = () => this.wrapper.find('AcceptBox[data-testid=\'age\']').prop<(v: boolean) => void>('onEmit')(true);

@@ -1,19 +1,16 @@
 import React, {useEffect} from 'react';
 import {Text} from 'react-native';
-import {connect} from 'react-redux';
+import {connect, ConnectedProps} from 'react-redux';
 import {WrapperContainer} from './views/View';
-import {clearState, persistor} from './state/reducers';
+import {clearState, persistor, TwoState} from './state/reducers';
 import {NavigationActions, StackActions} from 'react-navigation';
 import {NavigationStackProp} from 'react-navigation-stack';
-import {UnconnectedUser, User} from './authentication/UserModel';
-import {Tokens} from './authentication/AuthenticationModel';
 
-type LoadingScreenProps = {
-    navigation: NavigationStackProp,
-    user: User & UnconnectedUser,
-    auth: Tokens,
-    clearState: any
-}
+const mapState = (state: TwoState) => ({user: state.user, auth: state.auth});
+const mapDispatch = {clearState};
+const connector = connect(mapState, mapDispatch);
+type ConnectorProps = ConnectedProps<typeof connector>;
+type LoadingScreenProps = ConnectorProps & { navigation: NavigationStackProp }
 
 const LoadingScreen = ({navigation, user, auth, clearState}: LoadingScreenProps) => {
     const nav = (url: string) => navigation.dispatch(
@@ -45,7 +42,5 @@ LoadingScreen.navigationOptions = {
     header: null
 };
 
-const mapStateToProps = (state: any) => ({user: state['user'], auth: state['authentication']});
-
-export default connect(mapStateToProps, {clearState})(LoadingScreen);
+export default connector(LoadingScreen);
 export {LoadingScreen};
