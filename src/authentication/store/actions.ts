@@ -1,8 +1,6 @@
-import {deprecated} from 'typesafe-actions';
 import {Tokens} from '../AuthenticationModel';
+import {createAction} from 'typesafe-actions';
 
-const {createAction} = deprecated;
-
-export const storeTokens = createAction('STORE_TOKENS', action => (tokens: Tokens) => action(tokens));
+export const storeTokens = createAction('STORE_TOKENS')<Tokens>();
 
 export default {storeTokens};

@@ -3,11 +3,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {persistReducer, persistStore} from 'redux-persist';
 import {combineReducers, createStore} from 'redux';
 import {DeepReadonly} from 'utility-types';
-import {deprecated, getType} from 'typesafe-actions';
+import {createAction, getType} from 'typesafe-actions';
 import {Persistor} from 'redux-persist/es/types';
 import {authReducer, AuthState} from '../authentication/store';
-
-const {createAction} = deprecated;
 
 export type TwoState = DeepReadonly<{
     user?: UserState
@@ -24,7 +22,7 @@ const reducer = combineReducers({
     auth: authReducer
 });
 
-const clearState = createAction('CLEAR_STATE');
+const clearState = createAction('CLEAR_STATE')();
 
 const rootReducer = (state: any, action: any) => {
     if (action.type === getType(clearState)) {
