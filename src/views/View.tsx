@@ -23,14 +23,16 @@ const DismissKeyboardHOC = (Comp) => {
 
 const DismissKeyboardView = DismissKeyboardHOC(View);
 
-const Wrapper = ({children}: {children: any}) => (
-    <>
-        <StatusBar/>
-        <SafeAreaView>
-            {children}
-        </SafeAreaView>
-    </>
-);
+const Wrapper = ({children}: {children: any}) => {
+    return (
+        <>
+            <StatusBar/>
+            <SafeAreaView>
+                {children}
+            </SafeAreaView>
+        </>
+    );
+};
 
 const Container = ({children}: {children: any}) => (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -48,4 +50,13 @@ const WrapperContainer = ({children}: any) => (
     </Wrapper>
 );
 
-export {KeyboardAvoidingView, Wrapper, Container, WrapperContainer};
+const NoScrollWrapperContainer = ({children}: any) => (
+    <>
+        <StatusBar/>
+        <SafeAreaView style={{flex: 1, marginLeft: '5%', marginRight: '5%'}}>
+            {children}
+        </SafeAreaView>
+    </>
+);
+
+export {KeyboardAvoidingView, Wrapper, Container, WrapperContainer, NoScrollWrapperContainer};
