@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react';
+import React from 'react';
 import {
     Keyboard,
     KeyboardAvoidingView,
@@ -23,18 +23,16 @@ const DismissKeyboardHOC = (Comp) => {
 
 const DismissKeyboardView = DismissKeyboardHOC(View);
 
-const Wrapper = ({children}: {children: any}) => {
-    return (
-        <>
-            <StatusBar/>
-            <SafeAreaView>
-                {children}
-            </SafeAreaView>
-        </>
-    );
-};
+const Wrapper = ({children}: { children: any }) => (
+    <>
+        <StatusBar/>
+        <SafeAreaView>
+            {children}
+        </SafeAreaView>
+    </>
+);
 
-const Container = ({children}: {children: any}) => (
+const Container = ({children}: { children: any }) => (
     <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{flex: 1, marginLeft: '10%', marginRight: '10%'}}>
             {children}
