@@ -24,7 +24,7 @@ exports[`should maintain snapshot 1`] = `
   <Text
     style={
       Object {
-        "color": "rgba(0, 0, 0, 0.8)",
+        "color": "rgb(37, 37, 37)",
         "width": "80%",
       }
     }

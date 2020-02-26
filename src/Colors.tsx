@@ -3,7 +3,9 @@ const Colors = {
     DARK_SALMON: "#ed615f",
     LIGHT: "rgba(0, 0, 0, 0.1)",
     FADED: "rgba(0, 0, 0, 0.2)",
-    DARK: "rgba(0, 0, 0, 0.8)",
+    REGULAR: "rgb(100, 100, 100)",
+    DARK: "rgb(37, 37, 37)",
+    VERY_DARK: "rgb(21, 21, 21)",
     VALID_GREEN: "rgba(52, 199, 89, 1)"
 };
 

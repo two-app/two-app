@@ -1,6 +1,5 @@
 /**
  * @format
- * @flow
  */
 
 import React from 'react';
