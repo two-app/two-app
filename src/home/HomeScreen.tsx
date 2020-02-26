@@ -23,7 +23,7 @@ const HomeScreen = ({navigation, user}: HomeScreenProps) => {
 
     return <NoScrollWrapperContainer>
         <Memories/>
-        {/*<TouchableOpacity onPress={logout}><Text>Logout</Text></TouchableOpacity>*/}
+        <TouchableOpacity onPress={logout}><Text>Logout</Text></TouchableOpacity>
     </NoScrollWrapperContainer>;
 };
 

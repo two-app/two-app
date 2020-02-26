@@ -35,7 +35,7 @@ exports[`ConnectCodeScreen should maintain snapshot 1`] = `
           data-testid="heading"
           style={
             Object {
-              "color": "rgba(0, 0, 0, 0.8)",
+              "color": "rgb(37, 37, 37)",
               "fontSize": 25,
               "fontWeight": "bold",
             }
@@ -85,7 +85,7 @@ exports[`ConnectCodeScreen should maintain snapshot 1`] = `
           <Text
             style={
               Object {
-                "color": "rgba(0, 0, 0, 0.8)",
+                "color": "rgb(37, 37, 37)",
                 "fontWeight": "300",
                 "marginBottom": 10,
                 "textAlign": "center",
@@ -108,7 +108,7 @@ exports[`ConnectCodeScreen should maintain snapshot 1`] = `
           <Text
             style={
               Object {
-                "color": "rgba(0, 0, 0, 0.8)",
+                "color": "rgb(37, 37, 37)",
                 "fontWeight": "300",
                 "marginTop": 10,
                 "textAlign": "center",

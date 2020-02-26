@@ -35,7 +35,7 @@ exports[`should maintain snapshot 1`] = `
           data-testid="heading"
           style={
             Object {
-              "color": "rgba(0, 0, 0, 0.8)",
+              "color": "rgb(37, 37, 37)",
               "fontSize": 25,
               "fontWeight": "bold",
             }
@@ -46,7 +46,7 @@ exports[`should maintain snapshot 1`] = `
         <Text
           style={
             Object {
-              "color": "rgba(0, 0, 0, 0.8)",
+              "color": "rgb(37, 37, 37)",
               "fontSize": 12,
               "fontWeight": "bold",
               "marginTop": 20,
@@ -84,7 +84,7 @@ exports[`should maintain snapshot 1`] = `
         <Text
           style={
             Object {
-              "color": "rgba(0, 0, 0, 0.8)",
+              "color": "rgb(37, 37, 37)",
               "fontSize": 12,
               "fontWeight": "bold",
               "marginTop": 20,
@@ -121,7 +121,7 @@ exports[`should maintain snapshot 1`] = `
         <Text
           style={
             Object {
-              "color": "rgba(0, 0, 0, 0.8)",
+              "color": "rgb(37, 37, 37)",
               "fontSize": 12,
               "fontWeight": "bold",
               "marginTop": 20,
@@ -160,7 +160,7 @@ exports[`should maintain snapshot 1`] = `
         <Text
           style={
             Object {
-              "color": "rgba(0, 0, 0, 0.8)",
+              "color": "rgb(37, 37, 37)",
               "fontSize": 12,
               "fontWeight": "bold",
               "marginTop": 20,

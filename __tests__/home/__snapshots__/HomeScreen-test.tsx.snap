@@ -3,69 +3,94 @@
 exports[`HomeScreen should maintain snapshot 1`] = `
 <RCTSafeAreaView
   emulateUnlessSupported={true}
+  style={
+    Object {
+      "flex": 1,
+      "marginLeft": "5%",
+      "marginRight": "5%",
+    }
+  }
 >
   <RCTScrollView
+    ListHeaderComponent={[Function]}
+    data={Array []}
+    disableVirtualization={false}
+    getItem={[Function]}
+    getItemCount={[Function]}
+    horizontal={false}
+    initialNumToRender={10}
+    keyExtractor={[Function]}
+    maxToRenderPerBatch={10}
+    numColumns={1}
+    onContentSizeChange={[Function]}
+    onEndReachedThreshold={2}
+    onLayout={[Function]}
+    onMomentumScrollEnd={[Function]}
+    onScroll={[Function]}
+    onScrollBeginDrag={[Function]}
+    onScrollEndDrag={[Function]}
+    refreshControl={
+      <RefreshControlMock
+        colors={
+          Array [
+            "#9Bd35A",
+            "#689F38",
+          ]
+        }
+        onRefresh={[Function]}
+        refreshing={false}
+      />
+    }
+    removeClippedSubviews={false}
+    renderItem={[Function]}
+    scrollEventThrottle={50}
     showsVerticalScrollIndicator={false}
+    stickyHeaderIndices={Array []}
+    updateCellsBatchingPeriod={50}
+    viewabilityConfigCallbackPairs={Array []}
+    windowSize={21}
   >
+    <RCTRefreshControl />
     <View>
       <View
-        style={
-          Object {
-            "flex": 1,
-            "marginLeft": "10%",
-            "marginRight": "10%",
-          }
-        }
+        onLayout={[Function]}
       >
         <Text
           style={
             Object {
-              "color": "rgba(0, 0, 0, 0.8)",
+              "color": "rgb(21, 21, 21)",
               "fontFamily": "Montserrat-Bold",
               "fontSize": 35,
+              "marginBottom": -10,
+              "marginTop": 20,
             }
           }
         >
           Memories
         </Text>
-        <Text>
-          You're logged in.
-        </Text>
-        <Text>
-          Your UID: 
-          1
-        </Text>
-        <Text>
-          Your PID: 
-          2
-        </Text>
-        <Text>
-          Your CID: 
-          3
-        </Text>
-        <View
-          accessible={true}
-          focusable={true}
-          isTVSelectable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
-          style={
-            Object {
-              "opacity": 1,
-            }
-          }
-        >
-          <Text>
-            Logout
-          </Text>
-        </View>
       </View>
     </View>
   </RCTScrollView>
+  <View
+    accessible={true}
+    focusable={true}
+    isTVSelectable={true}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+  >
+    <Text>
+      Logout
+    </Text>
+  </View>
 </RCTSafeAreaView>
 `;
