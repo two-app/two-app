@@ -22,7 +22,7 @@ export const Memories = () => {
     };
 
     const scrollToTop = () => memoryFlatListRef != null && memoryFlatListRef.scrollToOffset({
-        offset: 50,
+        offset: 75,
         animated: true
     });
 
