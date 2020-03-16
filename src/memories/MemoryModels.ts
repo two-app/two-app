@@ -13,7 +13,7 @@ export type Memory = {
     title: string,
     tag?: Tag,
     location: string,
-    date: string,
+    date: Date,
     pictureCount: number,
     videoCount: number,
     content: Content[]
