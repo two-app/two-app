@@ -5,10 +5,14 @@ import {Memory} from './MemoryModels';
 import Colors from '../Colors';
 import {MemoryDate, MemoryImageCount, MemoryLocation, MemoryVideoCount} from './MemoryIcons';
 import {GridIcon, GroupedIcon, TimelineIcon} from './MemoryHeaderIcons';
+import EvilIcon from 'react-native-vector-icons/EvilIcons';
+import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
+import {InputCard} from '../forms/InputCard';
 
 export const Memories = () => {
     const [refreshing, setRefreshing] = useState<boolean>(false);
     const [memories, setMemories] = useState<Memory[]>([]);
+    let memoryFlatListRef: FlatList<Memory> | null;
 
     const refreshMemories = () => {
         getMemories().then(memories => {
@@ -17,16 +21,24 @@ export const Memories = () => {
         });
     };
 
+    const scrollToTop = () => memoryFlatListRef != null && memoryFlatListRef.scrollToOffset({
+        offset: 50,
+        animated: true
+    });
+
     useEffect(() => {
         refreshMemories();
     }, []);
 
     return <FlatList
         data={memories}
+        ref={ref => memoryFlatListRef = ref}
+        onContentSizeChange={scrollToTop}
         renderItem={MemoryItem}
         keyExtractor={i => i.id.toString()}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={MemoryHeader}
+
         refreshControl={
             <RefreshControl
                 colors={['#9Bd35A', '#689F38']}
@@ -41,6 +53,11 @@ export const Memories = () => {
 };
 
 const MemoryHeader = () => <>
+    <InputCard style={{marginTop: 20}}>
+        <EvilIcon name="search" style={{fontSize: 20, paddingRight: 10, color: Colors.REGULAR}}/>
+        <Text style={{color: Colors.REGULAR}}>Find memories...</Text>
+    </InputCard>
+
     <Text style={{
         color: Colors.VERY_DARK,
         fontSize: 35,
@@ -48,6 +65,11 @@ const MemoryHeader = () => <>
         marginTop: 20,
         marginBottom: -10
     }}>Memories</Text>
+
+    <InputCard style={{marginTop: 20}}>
+        <SimpleLineIcon name="pencil" style={{fontSize: 13, paddingRight: 10, color: Colors.REGULAR}}/>
+        <Text style={{color: Colors.REGULAR}}>Title of your new memory...</Text>
+    </InputCard>
 
     <View style={{marginTop: 20, flexDirection: 'row'}}>
         <TimelineIcon focused/>
