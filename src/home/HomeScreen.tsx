@@ -1,9 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {NoScrollWrapperContainer, Wrapper} from '../views/View';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {NoScrollWrapperContainer} from '../views/View';
+import {Text, TouchableOpacity} from 'react-native';
 import {NavigationActions, StackActions} from 'react-navigation';
-import Colors from '../Colors';
 import {NavigationStackProp} from 'react-navigation-stack';
 import {User} from '../authentication/UserModel';
 import {Memories} from '../memories/Memories';
