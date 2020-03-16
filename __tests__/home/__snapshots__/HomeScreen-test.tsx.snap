@@ -59,7 +59,7 @@ exports[`HomeScreen should maintain snapshot 1`] = `
           style={
             Object {
               "color": "rgb(21, 21, 21)",
-              "fontFamily": "Montserrat-Bold",
+              "fontFamily": "Montserrat-ExtraBold",
               "fontSize": 35,
               "marginBottom": -10,
               "marginTop": 20,
@@ -68,6 +68,156 @@ exports[`HomeScreen should maintain snapshot 1`] = `
         >
           Memories
         </Text>
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+              "marginTop": 20,
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 12,
+                  },
+                  Object {
+                    "color": "rgb(37, 37, 37)",
+                    "fontSize": 20,
+                    "transform": Array [
+                      Object {
+                        "rotate": "-90deg",
+                      },
+                    ],
+                  },
+                  Object {
+                    "fontFamily": "Material Design Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              ﮰ
+            </Text>
+            <Text
+              style={
+                Object {
+                  "color": "rgb(37, 37, 37)",
+                  "fontFamily": "Montserrat-SemiBold",
+                  "fontSize": 12,
+                  "marginLeft": 5,
+                  "marginRight": 10,
+                }
+              }
+            >
+              TIMELINE
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 12,
+                  },
+                  Object {
+                    "color": "rgb(100, 100, 100)",
+                    "fontSize": 20,
+                    "marginTop": 2,
+                  },
+                  Object {
+                    "fontFamily": "anticon",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              style={
+                Object {
+                  "color": "rgb(100, 100, 100)",
+                  "fontFamily": "Montserrat-SemiBold",
+                  "fontSize": 12,
+                  "marginLeft": 5,
+                  "marginRight": 10,
+                }
+              }
+            >
+              GROUPED
+            </Text>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "center",
+                "flexDirection": "row",
+              }
+            }
+          >
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 12,
+                  },
+                  Object {
+                    "color": "rgb(100, 100, 100)",
+                    "fontSize": 18,
+                  },
+                  Object {
+                    "fontFamily": "Material Icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              style={
+                Object {
+                  "color": "rgb(100, 100, 100)",
+                  "fontFamily": "Montserrat-SemiBold",
+                  "fontSize": 12,
+                  "marginLeft": 5,
+                  "marginRight": 10,
+                }
+              }
+            >
+              GRID
+            </Text>
+          </View>
+        </View>
       </View>
     </View>
   </RCTScrollView>
