@@ -5,6 +5,7 @@ import Colors from '../Colors';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import moment from 'moment';
 
 export const MemoryLocation = ({location}: { location: string }) => (
     <View style={c.icon}>
@@ -13,9 +14,10 @@ export const MemoryLocation = ({location}: { location: string }) => (
     </View>
 );
 
-export const MemoryDate = ({date}: { date: string }) => (
+// @ts-ignore
+export const MemoryDate = ({date}: { date: Date }) => (
     <View style={c.icon}>
-        <Text style={s.text}>{date}</Text>
+        <Text style={s.text}>{moment(date).fromNow()}</Text>
         <AntIcon name="calendar" {...iconArguments} style={s.iconRight}/>
     </View>
 );
