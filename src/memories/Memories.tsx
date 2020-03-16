@@ -4,6 +4,7 @@ import {getMemories} from './MemoryService';
 import {Memory} from './MemoryModels';
 import Colors from '../Colors';
 import {MemoryDate, MemoryImageCount, MemoryLocation, MemoryVideoCount} from './MemoryIcons';
+import {GridIcon, GroupedIcon, TimelineIcon} from './MemoryHeaderIcons';
 
 export const Memories = () => {
     const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -43,10 +44,16 @@ const MemoryHeader = () => <>
     <Text style={{
         color: Colors.VERY_DARK,
         fontSize: 35,
-        fontFamily: 'Montserrat-Bold',
+        fontFamily: 'Montserrat-ExtraBold',
         marginTop: 20,
         marginBottom: -10
     }}>Memories</Text>
+
+    <View style={{marginTop: 20, flexDirection: 'row'}}>
+        <TimelineIcon focused/>
+        <GroupedIcon/>
+        <GridIcon/>
+    </View>
 </>;
 
 const MemoryItem = ({item}: { item: Memory }) => <View style={containers.item}>
@@ -62,13 +69,14 @@ const MemoryItem = ({item}: { item: Memory }) => <View style={containers.item}>
     <View style={containers.image}>
         <ImageBackground
             style={{width: '100%', height: '100%'}}
-            source={{uri: item.content[0].url}}/>
+            source={{uri: item?.content[0]?.url}}/>
     </View>
 </View>;
 
 const containers = StyleSheet.create({
     item: {
-        marginTop: 40
+        marginTop: 10,
+        marginBottom: 20
     },
     image: {
         flexDirection: 'row',

@@ -1,8 +1,8 @@
 import Axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
-import {store} from "../state/reducers";
+import {store} from '../state/reducers';
 
 const Gateway: AxiosInstance = Axios.create({
-    baseURL: 'http://localhost:8080/',
+    baseURL: 'http://localhost:8000/',
     timeout: 5000,
 });
 
