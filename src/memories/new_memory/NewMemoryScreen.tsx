@@ -9,9 +9,11 @@ import {DateInput} from './DateInput';
 import {TagInput} from './TagInput';
 import {ContentInput} from './ContentInput';
 import {ContentPreview} from './ContentPreview';
-import {isMemoryUploadValid, MemoryUpload} from '../MemoryService';
+import {createMemory, isMemoryUploadValid, MemoryUpload} from '../MemoryService';
+import {NavigationStackProp} from 'react-navigation-stack';
+import {NavigationActions, StackActions} from 'react-navigation';
 
-const NewMemoryScreen = () => {
+const NewMemoryScreen = ({navigation}: { navigation: NavigationStackProp }) => {
     const [formState, setFormState] = useState<MemoryUpload>({
         title: '',
         location: '',
@@ -25,9 +27,17 @@ const NewMemoryScreen = () => {
     const setTag = (tag: string) => setFormState({...formState, tag});
     const setContent = (content: ImageType[]) => setFormState({...formState, content});
 
+    const uploadMemory = () => createMemory(formState).then(() => navigation.dispatch(
+        StackActions.reset({
+            index: 0,
+            actions: [NavigationActions.navigate({routeName: 'HomeScreen'})]
+        })
+    ));
+
     return (
         <WrapperContainer>
             <Heading>New Memory</Heading>
+
             <TitleInput setTitle={setTitle}/>
             <LocationInput setLocation={setLocation}/>
             <DateInput setDate={setDate}/>
@@ -35,7 +45,7 @@ const NewMemoryScreen = () => {
             <ContentInput setContent={setContent}/>
             {formState.content.length > 0 && <ContentPreview content={formState.content}/>}
 
-            <SubmitButton onSubmit={() => null} text="Create Memory" disabled={!isMemoryUploadValid(formState)}/>
+            <SubmitButton onSubmit={uploadMemory} text="Create Memory" disabled={!isMemoryUploadValid(formState)}/>
         </WrapperContainer>
     );
 };
