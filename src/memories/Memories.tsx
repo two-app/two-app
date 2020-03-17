@@ -11,7 +11,7 @@ import {InputCardButton} from '../forms/InputCardButton';
 import {NavigationStackProp} from 'react-navigation-stack';
 import {Heading} from '../home/Heading';
 
-export const Memories = ({navigation}: {navigation: NavigationStackProp}) => {
+export const Memories = ({navigation}: { navigation: NavigationStackProp }) => {
     const [refreshing, setRefreshing] = useState<boolean>(false);
     const [memories, setMemories] = useState<Memory[]>([]);
     let memoryFlatListRef: FlatList<Memory> | null;
@@ -40,6 +40,7 @@ export const Memories = ({navigation}: {navigation: NavigationStackProp}) => {
         keyExtractor={i => i.id.toString()}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={() => <MemoryHeader navigation={navigation}/>}
+        ListEmptyComponent={EmptyMemoriesComponent}
 
         refreshControl={
             <RefreshControl
@@ -54,7 +55,7 @@ export const Memories = ({navigation}: {navigation: NavigationStackProp}) => {
     />;
 };
 
-const MemoryHeader = ({navigation}: {navigation: NavigationStackProp}) => {
+const MemoryHeader = ({navigation}: { navigation: NavigationStackProp }) => {
     return (<>
         <InputCardButton style={{marginTop: 20}}>
             <EvilIcon name="search" style={{fontSize: 20, paddingRight: 10, color: Colors.REGULAR}}/>
@@ -76,7 +77,7 @@ const MemoryHeader = ({navigation}: {navigation: NavigationStackProp}) => {
     </>);
 };
 
-const MemoryItem = ({item}: { item: Memory }) => <View style={containers.item}>
+const MemoryItem = ({item}: { item: Memory }) => (<View style={containers.item}>
     <Text style={s.heading}>{item.title}</Text>
     <View style={s.spacedRow}>
         <MemoryLocation location={item.location}/>
@@ -91,7 +92,11 @@ const MemoryItem = ({item}: { item: Memory }) => <View style={containers.item}>
             style={{width: '100%', height: '100%'}}
             source={{uri: item?.content[0]?.url}}/>
     </View>
-</View>;
+</View>);
+
+const EmptyMemoriesComponent = () => (<><Text style={{textAlign: "center", color: Colors.REGULAR, marginTop: 40}}>
+    You don't have any memories. Create some!
+</Text></>);
 
 const containers = StyleSheet.create({
     item: {

@@ -1,14 +1,10 @@
-import {Memory} from './MemoryModels';
+import {Memory, MemoryDescription} from './MemoryModels';
 import Gateway from '../http/Gateway';
 import {AxiosResponse} from 'axios';
 import moment from 'moment';
 import {Image} from 'react-native-image-crop-picker';
 
-export type MemoryUpload = {
-    title: string,
-    location: string,
-    date: Date,
-    tag?: string,
+export type MemoryUpload = MemoryDescription & {
     content: Image[]
 };
 
@@ -27,3 +23,10 @@ export const getMemories = (): Promise<Memory[]> => Gateway.get('/memory')
 
         return v.data;
     });
+
+type PostMemoryResponse = {
+    memoryId: number
+};
+
+export const createMemory = (description: MemoryDescription): Promise<number> => Gateway.post('/memory', description)
+    .then((v: AxiosResponse<PostMemoryResponse>) => v.data.memoryId);

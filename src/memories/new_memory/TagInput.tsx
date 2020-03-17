@@ -21,12 +21,14 @@ const TagInput = ({setTag}: { setTag: Function }) => {
             </View>
             <TextInput placeholder="Optional tag, e.g Anniversary or Birthday..."
                        placeholderTextColor={Colors.REGULAR} style={{color: Colors.DARK, flex: 1}}
+                       onChangeText={setTagValue}
                        onBlur={e => setValue(e.nativeEvent.text)}
                        value={tagValue}
             />
         </Card>
-        <Text style={{marginTop: 10, marginBottom: 10, marginLeft: 3, color: Colors.REGULAR}}>Or, pick an existing
-            tag...</Text>
+        <Text style={{marginTop: 10, marginBottom: 10, marginLeft: 3, color: Colors.REGULAR}}>
+            Or, pick an existing tag...
+        </Text>
         <View style={{flexDirection: 'row', marginLeft: 3}}>
             {/*TODO turn this into a horizontal scroll list populated from API*/}
             {selectableTags.map(t =>

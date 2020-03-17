@@ -5,6 +5,7 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import Colors from '../../Colors';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {FormStyle} from './FormStyles';
+import moment from 'moment';
 
 const DateInput = ({setDate}: { setDate: Function }) => {
     const [isVisible, setVisibility] = useState(false);
@@ -27,12 +28,13 @@ const DateInput = ({setDate}: { setDate: Function }) => {
                 <AntIcon name="calendar" style={{fontSize: 13, color: Colors.REGULAR}}/>
             </View>
             {pickerValue == null && <Text style={{color: Colors.REGULAR}}>When it took place...</Text>}
-            {pickerValue != null && <Text style={{color: Colors.DARK}}>{pickerValue?.toDateString()}</Text>}
+            {pickerValue != null && <Text
+                style={{color: Colors.DARK}}>{moment(pickerValue).format("LLLL")}</Text>}
         </InputCardButton>
         <DateTimePickerModal
             isVisible={isVisible}
             maximumDate={new Date()}
-            mode="date"
+            mode="datetime"
             onConfirm={selectDate}
             onCancel={() => setVisibility(false)}
         />

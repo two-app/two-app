@@ -3,17 +3,15 @@ export type Content = {
     type: 'image' | 'video'
 }
 
-export type Tag = {
-    name: string,
-    color: string
+export type MemoryDescription = {
+    tag?: string,
+    title: string,
+    location: string,
+    date: Date
 }
 
-export type Memory = {
+export type Memory = MemoryDescription & {
     id: number,
-    title: string,
-    tag?: Tag,
-    location: string,
-    date: Date,
     pictureCount: number,
     videoCount: number,
     content: Content[]
