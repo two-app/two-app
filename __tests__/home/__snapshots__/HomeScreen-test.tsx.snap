@@ -12,6 +12,7 @@ exports[`HomeScreen should maintain snapshot 1`] = `
   }
 >
   <RCTScrollView
+    ListEmptyComponent={[Function]}
     ListHeaderComponent={[Function]}
     data={Array []}
     disableVirtualization={false}
@@ -370,6 +371,17 @@ exports[`HomeScreen should maintain snapshot 1`] = `
           </View>
         </View>
       </View>
+      <Text
+        style={
+          Object {
+            "color": "rgb(100, 100, 100)",
+            "marginTop": 40,
+            "textAlign": "center",
+          }
+        }
+      >
+        You don't have any memories. Create some!
+      </Text>
     </View>
   </RCTScrollView>
   <View
