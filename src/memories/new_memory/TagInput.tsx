@@ -3,7 +3,6 @@ import {Card} from '../../forms/Card';
 import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import Colors from '../../Colors';
-import {Tag} from '../MemoryModels';
 import {FormStyle} from './FormStyles';
 
 const TagInput = ({setTag}: { setTag: Function }) => {

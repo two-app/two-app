@@ -9,6 +9,7 @@ import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
 import {InputCardButton} from '../forms/InputCardButton';
 import {NavigationStackProp} from 'react-navigation-stack';
+import {Heading} from '../home/Heading';
 
 export const Memories = ({navigation}: {navigation: NavigationStackProp}) => {
     const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -60,12 +61,7 @@ const MemoryHeader = ({navigation}: {navigation: NavigationStackProp}) => {
             <Text style={{color: Colors.REGULAR}}>Find memories...</Text>
         </InputCardButton>
 
-        <Text style={{
-            color: Colors.VERY_DARK,
-            fontSize: 35,
-            fontFamily: 'Montserrat-ExtraBold',
-            marginTop: 20
-        }}>Memories</Text>
+        <Heading>Memories</Heading>
 
         <InputCardButton style={{marginTop: 10}} onClick={() => navigation.navigate('NewMemoryScreen')}>
             <SimpleLineIcon name="pencil" style={{fontSize: 13, paddingRight: 10, color: Colors.REGULAR}}/>
