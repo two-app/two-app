@@ -10,10 +10,15 @@ import {TagInput} from './TagInput';
 import {ContentInput} from './ContentInput';
 import {ContentPreview} from './ContentPreview';
 import {createMemory, isMemoryUploadValid, MemoryUpload} from '../MemoryService';
-import {NavigationStackProp} from 'react-navigation-stack';
-import {NavigationActions, StackActions} from 'react-navigation';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../../Router';
+import { CommonActions } from '@react-navigation/native';
 
-const NewMemoryScreen = ({navigation}: { navigation: NavigationStackProp }) => {
+type NewMemoryScreenProps = {
+    navigation: StackNavigationProp<RootStackParamList, 'NewMemoryScreen'>
+}
+
+const NewMemoryScreen = ({navigation}: NewMemoryScreenProps) => {
     const [formState, setFormState] = useState<MemoryUpload>({
         title: '',
         location: '',
@@ -28,9 +33,9 @@ const NewMemoryScreen = ({navigation}: { navigation: NavigationStackProp }) => {
     const setContent = (content: ImageType[]) => setFormState({...formState, content});
 
     const uploadMemory = () => createMemory(formState).then(() => navigation.dispatch(
-        StackActions.reset({
+        CommonActions.reset({
             index: 0,
-            actions: [NavigationActions.navigate({routeName: 'HomeScreen'})]
+            routes: [{name: 'HomeScreen'}]
         })
     ));
 

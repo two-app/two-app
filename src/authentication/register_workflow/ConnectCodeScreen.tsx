@@ -9,11 +9,12 @@ import Input from '../../forms/Input';
 import SubmitButton from '../../forms/SubmitButton';
 import LoadingView from '../../views/LoadingView';
 import AuthenticationService, {UserResponse} from '../AuthenticationService';
-import {NavigationActions, StackActions} from 'react-navigation';
-import {NavigationStackProp} from 'react-navigation-stack';
 import {TwoState} from '../../state/reducers';
 import {selectUnconnectedUser, storeUser} from '../../user';
 import {storeTokens} from '../store';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../../Router';
+import {CommonActions} from '@react-navigation/native';
 
 
 const mapState = (state: TwoState) => ({user: selectUnconnectedUser(state.user)});
@@ -21,7 +22,7 @@ const mapDispatch = {storeUser, storeTokens};
 const connector = connect(mapState, mapDispatch);
 type ConnectorProps = ConnectedProps<typeof connector>;
 type ConnectCodeScreenProps = ConnectorProps & {
-    navigation: NavigationStackProp
+    navigation: StackNavigationProp<RootStackParamList, 'ConnectCodeScreen'>
 };
 
 const ConnectCodeScreen = ({navigation, user, storeUser, storeTokens}: ConnectCodeScreenProps) => {
@@ -31,9 +32,9 @@ const ConnectCodeScreen = ({navigation, user, storeUser, storeTokens}: ConnectCo
     const [error, setError] = useState<string | null>(null);
 
     const navigateToHomeScreen = () => navigation.dispatch(
-        StackActions.reset({
+        CommonActions.reset({
             index: 0,
-            actions: [NavigationActions.navigate({routeName: 'HomeScreen'})]
+            routes: [{name: 'HomeScreen'}]
         })
     );
 

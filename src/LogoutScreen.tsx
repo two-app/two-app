@@ -2,11 +2,12 @@ import React, {useEffect} from 'react';
 import {Text} from 'react-native';
 import {clearState, persistor} from './state/reducers';
 import {connect} from 'react-redux';
-import {NavigationStackProp} from 'react-navigation-stack';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../Router';
 
 type LogoutScreenProps = {
     clearState: any,
-    navigation: NavigationStackProp
+    navigation: StackNavigationProp<RootStackParamList, 'LogoutScreen'>
 }
 
 const LogoutScreen = ({clearState, navigation}: LogoutScreenProps) => {

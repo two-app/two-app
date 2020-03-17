@@ -3,40 +3,18 @@
  */
 
 import React from 'react';
-import {createStackNavigator} from "react-navigation-stack";
-import LoginScreen from "./src/authentication/LoginScreen";
-import {createAppContainer} from "react-navigation";
-import RegisterScreen from "./src/authentication/RegisterScreen";
-import AcceptTermsScreen from "./src/authentication/register_workflow/AcceptTermsScreen";
 import {Provider} from "react-redux";
-import {store, persistor} from "./src/state/reducers";
-import HomeScreen from "./src/home/HomeScreen";
-import LoadingScreen from "./src/LoadingScreen";
+import {persistor, store} from "./src/state/reducers";
 import {PersistGate} from 'redux-persist/integration/react';
-import ConnectCodeScreen from "./src/authentication/register_workflow/ConnectCodeScreen";
-import LogoutScreen from "./src/LogoutScreen";
-import {NewMemoryScreen} from "./src/memories/new_memory/NewMemoryScreen";
-import {fromBottom} from "react-navigation-transitions";
-
-const navigator = createStackNavigator({
-    LoadingScreen: {screen: LoadingScreen},
-    LogoutScreen: {screen: LogoutScreen},
-    LoginScreen: {screen: LoginScreen},
-    RegisterScreen: {screen: RegisterScreen},
-    AcceptTermsScreen: {screen: AcceptTermsScreen},
-    ConnectCodeScreen: {screen: ConnectCodeScreen},
-    HomeScreen: {screen: HomeScreen},
-    NewMemoryScreen: {screen: NewMemoryScreen}
-}, {
-    initialRouteName: "LoadingScreen",
-    transitionConfig: () => fromBottom(500)
-});
-
-const Navigation = createAppContainer(navigator);
+import 'react-native-gesture-handler';
+import {NavigationContainer} from '@react-navigation/native';
+import {AppStack} from "./Router";
 
 export default () =>
     <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-            <Navigation/>
+            <NavigationContainer>
+                <AppStack/>
+            </NavigationContainer>
         </PersistGate>
     </Provider>;

@@ -25,5 +25,5 @@ test('it should navigate when Sign Up is clicked', () => {
 
     signUpButton.simulate('press');
     expect(navigate.mock.calls.length).toEqual(1);
-    expect(navigate.mock.calls[0]).toEqual(['Register']);
+    expect(navigate.mock.calls[0]).toEqual(['RegisterScreen']);
 });

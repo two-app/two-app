@@ -5,8 +5,8 @@ import {act, create} from 'react-test-renderer';
 import {LoadingScreen} from '../src/LoadingScreen';
 import {UnconnectedUser, User} from '../src/authentication/UserModel';
 import {Tokens} from '../src/authentication/AuthenticationModel';
-import {NavigationActions, StackActions} from 'react-navigation';
 import {persistor} from '../src/state/reducers';
+import {CommonActions} from '@react-navigation/native';
 
 describe('LoadingScreen', () => {
 
@@ -20,9 +20,9 @@ describe('LoadingScreen', () => {
         test('state should be cleared non async', () => expect(tb.clearStateFn).toHaveBeenCalled());
 
         test('navigates to Register Screen', () => expect(tb.dispatchFn).toHaveBeenCalledWith(
-            StackActions.reset({
+            CommonActions.reset({
                 index: 0,
-                actions: [NavigationActions.navigate({routeName: 'RegisterScreen'})]
+                routes: [{name: 'RegisterScreen'}]
             })
         ));
 
@@ -35,9 +35,9 @@ describe('LoadingScreen', () => {
         beforeEach(() => tb.setUserProp(stubUser).setAuthProp(stubTokens).build());
 
         test('navigates to Connect Code Screen', () => expect(tb.dispatchFn).toHaveBeenCalledWith(
-            StackActions.reset({
+            CommonActions.reset({
                 index: 0,
-                actions: [NavigationActions.navigate({routeName: 'ConnectCodeScreen'})]
+                routes: [{name: 'ConnectCodeScreen'}]
             })
         ));
     });
@@ -48,9 +48,9 @@ describe('LoadingScreen', () => {
         beforeEach(() => tb.setUserProp(stubUser).setAuthProp(stubTokens).build());
 
         test('navigates to Home Screen', () => expect(tb.dispatchFn).toHaveBeenCalledWith(
-            StackActions.reset({
+            CommonActions.reset({
                 index: 0,
-                actions: [NavigationActions.navigate({routeName: 'HomeScreen'})]
+                routes: [{name: 'HomeScreen'}]
             })
         ));
     });

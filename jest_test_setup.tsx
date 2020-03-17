@@ -10,25 +10,6 @@ console.error = (message: string) => {
     return message;
 };
 
-// React Navigation has a couple of exports which can't be read by Jest. We mock the entire module for all tests.
-// This may need expanding in future versions.
-jest.mock('react-navigation', () => {
-    return {
-        createAppContainer: jest.fn().mockReturnValue(function NavigationContainer() {return null;}),
-        createDrawerNavigator: jest.fn(),
-        createMaterialTopTabNavigator: jest.fn(),
-        createStackNavigator: jest.fn(),
-        StackActions: {
-            push: jest.fn().mockImplementation(x => ({...x,  "type": "Navigation/PUSH"})),
-            replace: jest.fn().mockImplementation(x => ({...x,  "type": "Navigation/REPLACE"})),
-            reset: jest.fn().mockImplementation(x => ({...x, "type": "Navigation/RESET"}))
-        },
-        NavigationActions: {
-            navigate: jest.fn().mockImplementation(x => x),
-        }
-    }
-});
-
 // @ts-ignore
 import mockAsyncStorage from '@react-native-community/async-storage/jest/async-storage-mock';
 

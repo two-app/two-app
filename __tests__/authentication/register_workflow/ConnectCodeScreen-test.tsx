@@ -7,7 +7,7 @@ import {shallow} from 'enzyme';
 import {UnconnectedUser} from '../../../src/authentication/UserModel';
 import {ConnectCodeScreen} from '../../../src/authentication/register_workflow/ConnectCodeScreen';
 import AuthenticationService, {UserResponse} from '../../../src/authentication/AuthenticationService';
-import {NavigationActions, StackActions} from 'react-navigation';
+import { CommonActions } from '@react-navigation/native';
 
 describe('ConnectCodeScreen', () => {
     let tb: ConnectCodeScreenTestBed;
@@ -81,9 +81,9 @@ describe('ConnectCodeScreen', () => {
 
             test('navigates to Home Screen', done => setImmediate(() => {
                 expect(tb.dispatchFn).toHaveBeenCalledWith(
-                    StackActions.reset({
+                    CommonActions.reset({
                         index: 0,
-                        actions: [NavigationActions.navigate({routeName: 'HomeScreen'})]
+                        routes: [{name: 'HomeScreen'}]
                     })
                 );
                 done();
