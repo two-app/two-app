@@ -56,62 +56,80 @@ exports[`HomeScreen should maintain snapshot 1`] = `
         onLayout={[Function]}
       >
         <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "alignItems": "center",
-              "backgroundColor": "white",
-              "borderColor": "rgba(0, 0, 0, 0.2)",
-              "borderRadius": 5,
-              "borderWidth": 0.5,
-              "elevation": 3,
-              "flexDirection": "row",
-              "marginLeft": 3,
-              "marginRight": 3,
               "marginTop": 20,
-              "padding": 12,
-              "shadowColor": "rgb(37, 37, 37)",
-              "shadowOffset": Object {
-                "height": 1,
-                "width": 0,
-              },
-              "shadowOpacity": 0.22,
-              "shadowRadius": 3,
+              "opacity": 1,
             }
           }
         >
-          <Text
-            allowFontScaling={false}
-            style={
-              Array [
-                Object {
-                  "color": undefined,
-                  "fontSize": 12,
-                },
-                Object {
-                  "color": "rgb(100, 100, 100)",
-                  "fontSize": 20,
-                  "paddingRight": 10,
-                },
-                Object {
-                  "fontFamily": "EvilIcons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
-            }
-          >
-            
-          </Text>
-          <Text
+          <View
             style={
               Object {
-                "color": "rgb(100, 100, 100)",
+                "alignItems": "center",
+                "backgroundColor": "white",
+                "borderColor": "rgba(0, 0, 0, 0.2)",
+                "borderRadius": 5,
+                "borderWidth": 0.5,
+                "elevation": 3,
+                "flexDirection": "row",
+                "marginLeft": 3,
+                "marginRight": 3,
+                "padding": 12,
+                "shadowColor": "rgb(37, 37, 37)",
+                "shadowOffset": Object {
+                  "height": 1,
+                  "width": 0,
+                },
+                "shadowOpacity": 0.22,
+                "shadowRadius": 3,
               }
             }
           >
-            Find memories...
-          </Text>
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 12,
+                  },
+                  Object {
+                    "color": "rgb(100, 100, 100)",
+                    "fontSize": 20,
+                    "paddingRight": 10,
+                  },
+                  Object {
+                    "fontFamily": "EvilIcons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              style={
+                Object {
+                  "color": "rgb(100, 100, 100)",
+                }
+              }
+            >
+              Find memories...
+            </Text>
+          </View>
         </View>
         <Text
           style={
@@ -119,7 +137,6 @@ exports[`HomeScreen should maintain snapshot 1`] = `
               "color": "rgb(21, 21, 21)",
               "fontFamily": "Montserrat-ExtraBold",
               "fontSize": 35,
-              "marginBottom": -10,
               "marginTop": 20,
             }
           }
@@ -127,62 +144,80 @@ exports[`HomeScreen should maintain snapshot 1`] = `
           Memories
         </Text>
         <View
+          accessible={true}
+          focusable={true}
+          isTVSelectable={true}
+          onClick={[Function]}
+          onResponderGrant={[Function]}
+          onResponderMove={[Function]}
+          onResponderRelease={[Function]}
+          onResponderTerminate={[Function]}
+          onResponderTerminationRequest={[Function]}
+          onStartShouldSetResponder={[Function]}
           style={
             Object {
-              "alignItems": "center",
-              "backgroundColor": "white",
-              "borderColor": "rgba(0, 0, 0, 0.2)",
-              "borderRadius": 5,
-              "borderWidth": 0.5,
-              "elevation": 3,
-              "flexDirection": "row",
-              "marginLeft": 3,
-              "marginRight": 3,
-              "marginTop": 20,
-              "padding": 12,
-              "shadowColor": "rgb(37, 37, 37)",
-              "shadowOffset": Object {
-                "height": 1,
-                "width": 0,
-              },
-              "shadowOpacity": 0.22,
-              "shadowRadius": 3,
+              "marginTop": 10,
+              "opacity": 1,
             }
           }
         >
-          <Text
-            allowFontScaling={false}
-            style={
-              Array [
-                Object {
-                  "color": undefined,
-                  "fontSize": 12,
-                },
-                Object {
-                  "color": "rgb(100, 100, 100)",
-                  "fontSize": 13,
-                  "paddingRight": 10,
-                },
-                Object {
-                  "fontFamily": "simple-line-icons",
-                  "fontStyle": "normal",
-                  "fontWeight": "normal",
-                },
-                Object {},
-              ]
-            }
-          >
-            
-          </Text>
-          <Text
+          <View
             style={
               Object {
-                "color": "rgb(100, 100, 100)",
+                "alignItems": "center",
+                "backgroundColor": "white",
+                "borderColor": "rgba(0, 0, 0, 0.2)",
+                "borderRadius": 5,
+                "borderWidth": 0.5,
+                "elevation": 3,
+                "flexDirection": "row",
+                "marginLeft": 3,
+                "marginRight": 3,
+                "padding": 12,
+                "shadowColor": "rgb(37, 37, 37)",
+                "shadowOffset": Object {
+                  "height": 1,
+                  "width": 0,
+                },
+                "shadowOpacity": 0.22,
+                "shadowRadius": 3,
               }
             }
           >
-            Title of your new memory...
-          </Text>
+            <Text
+              allowFontScaling={false}
+              style={
+                Array [
+                  Object {
+                    "color": undefined,
+                    "fontSize": 12,
+                  },
+                  Object {
+                    "color": "rgb(100, 100, 100)",
+                    "fontSize": 13,
+                    "paddingRight": 10,
+                  },
+                  Object {
+                    "fontFamily": "simple-line-icons",
+                    "fontStyle": "normal",
+                    "fontWeight": "normal",
+                  },
+                  Object {},
+                ]
+              }
+            >
+              
+            </Text>
+            <Text
+              style={
+                Object {
+                  "color": "rgb(100, 100, 100)",
+                }
+              }
+            >
+              Title of your new memory...
+            </Text>
+          </View>
         </View>
         <View
           style={

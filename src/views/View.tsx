@@ -34,7 +34,7 @@ const Wrapper = ({children}: { children: any }) => (
 
 const Container = ({children}: { children: any }) => (
     <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{flex: 1, marginLeft: '10%', marginRight: '10%'}}>
+        <View style={{flex: 1, marginLeft: '5%', marginRight: '5%'}}>
             {children}
         </View>
     </ScrollView>

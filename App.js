@@ -15,6 +15,8 @@ import LoadingScreen from "./src/LoadingScreen";
 import {PersistGate} from 'redux-persist/integration/react';
 import ConnectCodeScreen from "./src/authentication/register_workflow/ConnectCodeScreen";
 import LogoutScreen from "./src/LogoutScreen";
+import {NewMemoryScreen} from "./src/memories/new_memory/NewMemoryScreen";
+import {fromBottom} from "react-navigation-transitions";
 
 const navigator = createStackNavigator({
     LoadingScreen: {screen: LoadingScreen},
@@ -24,8 +26,10 @@ const navigator = createStackNavigator({
     AcceptTermsScreen: {screen: AcceptTermsScreen},
     ConnectCodeScreen: {screen: ConnectCodeScreen},
     HomeScreen: {screen: HomeScreen},
+    NewMemoryScreen: {screen: NewMemoryScreen}
 }, {
-    initialRouteName: "LoadingScreen"
+    initialRouteName: "LoadingScreen",
+    transitionConfig: () => fromBottom(500)
 });
 
 const Navigation = createAppContainer(navigator);
