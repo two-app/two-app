@@ -5,32 +5,36 @@ import LogoHeader from '../LogoHeader';
 import SubmitButton from '../../forms/SubmitButton';
 import {WrapperContainer} from '../../views/View';
 import Colors from '../../Colors';
-import {NavigationActions, StackActions} from 'react-navigation';
 import {connect, ConnectedProps} from 'react-redux';
 import AuthenticationService, {UserResponse} from '../AuthenticationService';
 import LoadingView from '../../views/LoadingView';
-import {NavigationStackProp} from 'react-navigation-stack';
 import {UserRegistration} from './UserRegistrationModel';
 import {storeUnconnectedUser} from '../../user';
 import {UnconnectedUser} from '../UserModel';
 import {storeTokens} from '../store';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../../Router';
+import {CommonActions, RouteProp} from '@react-navigation/native';
 
 const mapState = null;
 const mapDispatch = {storeUnconnectedUser, storeTokens};
 const connector = connect(mapState, mapDispatch);
 type ConnectorProps = ConnectedProps<typeof connector>;
-type AcceptTermsScreenProps = ConnectorProps & { navigation: NavigationStackProp };
+type AcceptTermsScreenProps = ConnectorProps & {
+    navigation: StackNavigationProp<RootStackParamList, 'AcceptTermsScreen'>;
+    route: RouteProp<RootStackParamList, 'AcceptTermsScreen'>;
+};
 
-const AcceptTermsScreen = ({navigation, storeUnconnectedUser, storeTokens}: AcceptTermsScreenProps) => {
-    const [userRegistration, setUserRegistration] = useState<UserRegistration>(navigation.getParam('userRegistration'));
+const AcceptTermsScreen = ({navigation, route, storeUnconnectedUser, storeTokens}: AcceptTermsScreenProps) => {
+    const [userRegistration, setUserRegistration] = useState<UserRegistration>(route.params.userRegistration);
     const validAgreedState = userRegistration.acceptedTerms && userRegistration.ofAge;
 
     const [submitted, setSubmitted] = useState(false);
     const [registrationError, setRegistrationError] = useState<string | null>(null);
     const navigateToConnectCodeScreen = () => navigation.dispatch(
-        StackActions.reset({
+        CommonActions.reset({
             index: 0,
-            actions: [NavigationActions.navigate({routeName: 'ConnectCodeScreen'})]
+            routes: [{name: 'ConnectCodeScreen'}]
         })
     );
 

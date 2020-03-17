@@ -8,10 +8,12 @@ import {GridIcon, GroupedIcon, TimelineIcon} from './MemoryHeaderIcons';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
 import {InputCardButton} from '../forms/InputCardButton';
-import {NavigationStackProp} from 'react-navigation-stack';
 import {Heading} from '../home/Heading';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../Router';
+import {useNavigation} from '@react-navigation/native';
 
-export const Memories = ({navigation}: { navigation: NavigationStackProp }) => {
+export const Memories = () => {
     const [refreshing, setRefreshing] = useState<boolean>(false);
     const [memories, setMemories] = useState<Memory[]>([]);
     let memoryFlatListRef: FlatList<Memory> | null;
@@ -39,7 +41,7 @@ export const Memories = ({navigation}: { navigation: NavigationStackProp }) => {
         renderItem={MemoryItem}
         keyExtractor={i => i.id.toString()}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={() => <MemoryHeader navigation={navigation}/>}
+        ListHeaderComponent={MemoryHeader}
         ListEmptyComponent={EmptyMemoriesComponent}
 
         refreshControl={
@@ -55,7 +57,11 @@ export const Memories = ({navigation}: { navigation: NavigationStackProp }) => {
     />;
 };
 
-const MemoryHeader = ({navigation}: { navigation: NavigationStackProp }) => {
+const MemoryHeader = () => {
+    const {navigate} = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+    console.log(useNavigation);
+    console.log(navigate);
     return (<>
         <InputCardButton style={{marginTop: 20}}>
             <EvilIcon name="search" style={{fontSize: 20, paddingRight: 10, color: Colors.REGULAR}}/>
@@ -64,7 +70,7 @@ const MemoryHeader = ({navigation}: { navigation: NavigationStackProp }) => {
 
         <Heading>Memories</Heading>
 
-        <InputCardButton style={{marginTop: 10}} onClick={() => navigation.navigate('NewMemoryScreen')}>
+        <InputCardButton style={{marginTop: 10}} onClick={() => navigate('NewMemoryScreen')}>
             <SimpleLineIcon name="pencil" style={{fontSize: 13, paddingRight: 10, color: Colors.REGULAR}}/>
             <Text style={{color: Colors.REGULAR}}>Title of your new memory...</Text>
         </InputCardButton>
@@ -94,7 +100,7 @@ const MemoryItem = ({item}: { item: Memory }) => (<View style={containers.item}>
     </View>
 </View>);
 
-const EmptyMemoriesComponent = () => (<><Text style={{textAlign: "center", color: Colors.REGULAR, marginTop: 40}}>
+const EmptyMemoriesComponent = () => (<><Text style={{textAlign: 'center', color: Colors.REGULAR, marginTop: 40}}>
     You don't have any memories. Create some!
 </Text></>);
 

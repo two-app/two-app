@@ -1,19 +1,16 @@
-/**
- * @flow
- */
-
 import React from "react";
 import {Button, Text} from "react-native";
 import {Wrapper} from "../views/View";
-import {NavigationStackProp} from 'react-navigation-stack';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../Router';
 
 type LoginScreenProps = {
-    navigation: NavigationStackProp
+    navigation: StackNavigationProp<RootStackParamList, 'LoginScreen'>
 }
 
 const LoginScreen = ({navigation}: LoginScreenProps) => <Wrapper>
     <Text>Sign In</Text>
-    <Button title={"Sign Up"} onPress={() => navigation.navigate('Register')}/>
+    <Button title={"Sign Up"} onPress={() => navigation.navigate('RegisterScreen')}/>
 </Wrapper>;
 
 LoginScreen.navigationOptions = {

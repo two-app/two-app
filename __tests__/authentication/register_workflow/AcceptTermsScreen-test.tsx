@@ -6,10 +6,12 @@ import {shallow} from 'enzyme';
 import {AcceptTermsScreen} from '../../../src/authentication/register_workflow/AcceptTermsScreen';
 import {UserRegistration} from '../../../src/authentication/register_workflow/UserRegistrationModel';
 import AuthenticationService, {UserResponse} from '../../../src/authentication/AuthenticationService';
+import {CommonActions} from '@react-navigation/native';
 
 describe('AcceptTermsScreen', () => {
     test('should maintain snapshot', () => expect(renderer.create(<AcceptTermsScreen
-        navigation={{getParam: jest.fn().mockReturnValue(new UserRegistration())} as any}
+        navigation={{dispatch: jest.fn()} as any}
+        route={{params: {userRegistration: new UserRegistration()}} as any}
         storeUnconnectedUser={jest.fn()}
         storeTokens={jest.fn()}
     />)).toMatchSnapshot());
@@ -64,11 +66,12 @@ describe('AcceptTermsScreen', () => {
         }));
 
         test('should navigate to ConnectCodeScreen if successful registration', done => setImmediate(() => {
-            expect(tb.dispatchFn).toHaveBeenCalledWith({
-                index: 0,
-                type: 'Navigation/RESET',
-                actions: [{'routeName': 'ConnectCodeScreen'}]
-            });
+            expect(tb.dispatchFn).toHaveBeenCalledWith(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [{name: 'ConnectCodeScreen'}]
+                })
+            );
             done();
         }));
 
@@ -105,11 +108,13 @@ class AcceptTermsScreenTestBed {
     storeUserFn = jest.fn();
     setTokensFn = jest.fn();
 
-    wrapper = shallow(<AcceptTermsScreen navigation={{
-        getParam: jest.fn().mockReturnValue(this.userRegistration),
-        navigate: this.navigateFn,
-        dispatch: this.dispatchFn
-    } as any} storeUnconnectedUser={this.storeUserFn} storeTokens={this.setTokensFn}/>);
+    wrapper = shallow(<AcceptTermsScreen
+        navigation={{
+            navigate: this.navigateFn,
+            dispatch: this.dispatchFn
+        } as any}
+        route={{params: {userRegistration: this.userRegistration}} as any}
+        storeUnconnectedUser={this.storeUserFn} storeTokens={this.setTokensFn}/>);
 
     tickTermsAndConditions = () => this.wrapper.find('AcceptBox[data-testid=\'terms\']').prop<(v: boolean) => void>('onEmit')(true);
     tickAge = () => this.wrapper.find('AcceptBox[data-testid=\'age\']').prop<(v: boolean) => void>('onEmit')(true);
