@@ -9,11 +9,7 @@ import {FormStyle} from './FormStyles';
 const ContentInput = ({setContent}: { setContent: Function }) => {
     const selectMedia = () => {
         ImagePicker.openPicker({multiple: true, maxFiles: 10}).then((value: Image | Image[]) => {
-            if (!Array.isArray(value)) {
-                setContent([value]);
-            } else {
-                setContent(value);
-            }
+            Array.isArray(value) ? setContent(value) : setContent([value]);
         });
     };
 
