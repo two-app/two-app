@@ -6,8 +6,9 @@ import Colors from '../../Colors';
 import {FormStyle} from './FormStyles';
 
 const TagInput = ({setTag}: { setTag: Function }) => {
-    const [tagValue, setTagValue] = useState('');
-    const setValue = (value: string) => {
+    const [tagValue, setTagValue] = useState<string | null>(null);
+    const setValue = (value: string | null) => {
+        if (value == '') value = null;
         setTagValue(value);
         setTag(value);
     };
@@ -23,7 +24,7 @@ const TagInput = ({setTag}: { setTag: Function }) => {
                        placeholderTextColor={Colors.REGULAR} style={{color: Colors.DARK, flex: 1}}
                        onChangeText={setTagValue}
                        onBlur={e => setValue(e.nativeEvent.text)}
-                       value={tagValue}
+                       value={tagValue ? tagValue : ''}
             />
         </Card>
         <Text style={{marginTop: 10, marginBottom: 10, marginLeft: 3, color: Colors.REGULAR}}>

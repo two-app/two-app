@@ -9,7 +9,7 @@ import moment from 'moment';
 
 const DateInput = ({setDate}: { setDate: Function }) => {
     const [isVisible, setVisibility] = useState(false);
-    const [pickerValue, setPickerValue] = useState<Date | null>(null);
+    const [pickerValue, setPickerValue] = useState<number | null>(null);
 
     const openPicker = () => {
         Keyboard.dismiss();
@@ -18,8 +18,8 @@ const DateInput = ({setDate}: { setDate: Function }) => {
 
     const selectDate = (date: Date) => {
         setVisibility(false);
-        setPickerValue(date);
-        setDate(date);
+        setPickerValue(date.getTime());
+        setDate(date.getTime());
     };
 
     return (<>

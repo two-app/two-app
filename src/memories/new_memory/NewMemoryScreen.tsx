@@ -9,10 +9,10 @@ import {DateInput} from './DateInput';
 import {TagInput} from './TagInput';
 import {ContentInput} from './ContentInput';
 import {ContentPreview} from './ContentPreview';
-import {createMemory, isMemoryUploadValid, MemoryUpload} from '../MemoryService';
+import {createMemory, isMemoryUploadValid, MemoryUpload, uploadToMemory} from '../MemoryService';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../Router';
-import { CommonActions } from '@react-navigation/native';
+import {CommonActions} from '@react-navigation/native';
 
 type NewMemoryScreenProps = {
     navigation: StackNavigationProp<RootStackParamList, 'NewMemoryScreen'>
@@ -22,22 +22,27 @@ const NewMemoryScreen = ({navigation}: NewMemoryScreenProps) => {
     const [formState, setFormState] = useState<MemoryUpload>({
         title: '',
         location: '',
-        date: new Date(),
+        date: Date.now(),
         content: []
     });
 
     const setTitle = (title: string) => setFormState({...formState, title});
     const setLocation = (location: string) => setFormState({...formState, location});
-    const setDate = (date: Date) => setFormState({...formState, date});
+    const setDate = (date: number) => setFormState({...formState, date});
     const setTag = (tag: string) => setFormState({...formState, tag});
-    const setContent = (content: ImageType[]) => setFormState({...formState, content});
+    const setContent = (content: ImageType[]) => setFormState({...formState, content: content});
 
-    const uploadMemory = () => createMemory(formState).then(() => navigation.dispatch(
-        CommonActions.reset({
-            index: 0,
-            routes: [{name: 'HomeScreen'}]
-        })
-    ));
+    const uploadMemory = () => createMemory(formState).then(mid => {
+        uploadToMemory(mid, formState).then(() => navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{name: 'HomeScreen'}]
+            })
+        ));
+    });
+
+    console.log(formState);
+    console.log(isMemoryUploadValid(formState));
 
     return (
         <WrapperContainer>

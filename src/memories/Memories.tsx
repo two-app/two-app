@@ -60,8 +60,6 @@ export const Memories = () => {
 const MemoryHeader = () => {
     const {navigate} = useNavigation<StackNavigationProp<RootStackParamList>>();
 
-    console.log(useNavigation);
-    console.log(navigate);
     return (<>
         <InputCardButton style={{marginTop: 20}}>
             <EvilIcon name="search" style={{fontSize: 20, paddingRight: 10, color: Colors.REGULAR}}/>
@@ -96,7 +94,7 @@ const MemoryItem = ({item}: { item: Memory }) => (<View style={containers.item}>
     <View style={containers.image}>
         <ImageBackground
             style={{width: '100%', height: '100%'}}
-            source={{uri: item?.content[0]?.url}}/>
+            source={{uri: item?.displayContent?.fileKey}}/>
     </View>
 </View>);
 
