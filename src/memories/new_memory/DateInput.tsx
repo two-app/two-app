@@ -17,9 +17,10 @@ const DateInput = ({setDate}: { setDate: Function }) => {
     };
 
     const selectDate = (date: Date) => {
+        const unix = moment(date).unix();
         setVisibility(false);
-        setPickerValue(date.getTime());
-        setDate(date.getTime());
+        setPickerValue(unix);
+        setDate(unix);
     };
 
     return (<>

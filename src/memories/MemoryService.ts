@@ -13,15 +13,10 @@ export const isMemoryUploadValid = (upload: MemoryUpload) => upload.title.length
 export const getMemories = (): Promise<Memory[]> => Gateway.get('/memory')
     .then((v: AxiosResponse<Memory[]>) => {
         v.data.forEach(m => {
-            if (m.displayContent == null) {
-                m.displayContent = {
-                    contentId: -1,
-                    contentType: 'image',
-                    fileKey: 'http://placehold.it/280x170'
-                };
-            } else {
+            if (m.displayContent != null) {
                 m.displayContent.fileKey = 'http://localhost:4572/memory-content/' + m.displayContent.fileKey;
             }
+
             m.date = Number.parseInt(m.date as any);
         });
 

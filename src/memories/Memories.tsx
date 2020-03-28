@@ -12,6 +12,10 @@ import {Heading} from '../home/Heading';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../Router';
 import {useNavigation} from '@react-navigation/native';
+// @ts-ignore
+import Image from 'react-native-image-progress';
+// @ts-ignore
+import Progress from 'react-native-progress/Circle';
 
 export const Memories = () => {
     const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -38,6 +42,8 @@ export const Memories = () => {
         data={memories}
         ref={ref => memoryFlatListRef = ref}
         onContentSizeChange={scrollToTop}
+        // Required otherwise we get a warning from scrolling
+        onScrollAnimationEnd={() => {}}
         renderItem={MemoryItem}
         keyExtractor={i => i.id.toString()}
         showsVerticalScrollIndicator={false}
@@ -91,11 +97,26 @@ const MemoryItem = ({item}: { item: Memory }) => (<View style={containers.item}>
         {item.imageCount > 0 && <MemoryImageCount pictureCount={item.imageCount}/>}
         {item.videoCount > 0 && <MemoryVideoCount videoCount={item.videoCount} pad={item.imageCount > 0}/>}
     </View>
-    <View style={containers.image}>
-        <ImageBackground
-            style={{width: '100%', height: '100%'}}
-            source={{uri: item?.displayContent?.fileKey}}/>
-    </View>
+    {item.displayContent != null ?
+        <View style={containers.image}>
+            <Image
+                style={{width: '100%', height: '100%'}}
+                source={{uri: item.displayContent.fileKey}}
+                indicator={Progress}
+                indicatorProps={{
+                    borderWidth: 1,
+                    borderColor: Colors.REGULAR,
+                    color: Colors.REGULAR
+                }}
+            />
+        </View>
+        :
+        <View>
+            <Text style={{color: Colors.REGULAR}}>
+                There's no content in this memory.
+            </Text>
+        </View>
+    }
 </View>);
 
 const EmptyMemoriesComponent = () => (<><Text style={{textAlign: 'center', color: Colors.REGULAR, marginTop: 40}}>
