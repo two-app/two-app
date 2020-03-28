@@ -13,7 +13,7 @@ export type MemoryDescription = {
 
 export type Memory = MemoryDescription & {
     id: number,
-    pictureCount: number,
+    imageCount: number,
     videoCount: number,
     displayContent: Content,
     content: Content[]

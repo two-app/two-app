@@ -88,8 +88,8 @@ const MemoryItem = ({item}: { item: Memory }) => (<View style={containers.item}>
         <MemoryDate date={item.date}/>
     </View>
     <View style={s.row}>
-        {item.pictureCount > 0 && <MemoryImageCount pictureCount={item.pictureCount}/>}
-        {item.videoCount > 0 && <MemoryVideoCount videoCount={item.videoCount} pad={item.pictureCount > 0}/>}
+        {item.imageCount > 0 && <MemoryImageCount pictureCount={item.imageCount}/>}
+        {item.videoCount > 0 && <MemoryVideoCount videoCount={item.videoCount} pad={item.imageCount > 0}/>}
     </View>
     <View style={containers.image}>
         <ImageBackground

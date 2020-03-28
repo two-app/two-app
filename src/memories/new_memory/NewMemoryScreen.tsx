@@ -41,9 +41,6 @@ const NewMemoryScreen = ({navigation}: NewMemoryScreenProps) => {
         ));
     });
 
-    console.log(formState);
-    console.log(isMemoryUploadValid(formState));
-
     return (
         <WrapperContainer>
             <Heading>New Memory</Heading>
