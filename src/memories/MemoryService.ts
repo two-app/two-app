@@ -1,8 +1,8 @@
 import {Memory, MemoryDescription} from './MemoryModels';
 import Gateway from '../http/Gateway';
 import {AxiosResponse} from 'axios';
-import moment from 'moment';
 import {Image} from 'react-native-image-crop-picker';
+import FormData from 'form-data';
 
 export type MemoryUpload = MemoryDescription & {
     content: Image[]
@@ -13,20 +13,45 @@ export const isMemoryUploadValid = (upload: MemoryUpload) => upload.title.length
 export const getMemories = (): Promise<Memory[]> => Gateway.get('/memory')
     .then((v: AxiosResponse<Memory[]>) => {
         v.data.forEach(m => {
-            m.pictureCount = 12;
-            m.videoCount = 12;
-            m.content = [{url: 'http://placehold.it/280x170', type: 'image'}];
+            if (m.displayContent != null) {
+                m.displayContent.fileKey = 'http://localhost:4572/memory-content/' + m.displayContent.fileKey;
+            }
 
-            const stringDate: string = m.date as any;
-            m.date = moment(stringDate, 'YYYY-MM-DDTHH:mm:ss').toDate();
+            m.date = Number.parseInt(m.date as any);
         });
 
         return v.data;
     });
 
+
 type PostMemoryResponse = {
     memoryId: number
 };
 
-export const createMemory = (description: MemoryDescription): Promise<number> => Gateway.post('/memory', description)
-    .then((v: AxiosResponse<PostMemoryResponse>) => v.data.memoryId);
+export const createMemory = (description: MemoryDescription): Promise<number> => {
+    description.date = description.date.toString() as any;
+    return Gateway.post('/memory', description).then(
+        (v: AxiosResponse<PostMemoryResponse>) => v.data.memoryId
+    );
+};
+
+export const uploadToMemory = (mid: number, upload: MemoryUpload): Promise<number[]> => {
+    const uploadPromises: Promise<AxiosResponse<number[]>>[] = upload.content.map((content: Image) => {
+        const form = new FormData();
+        form.append('content', {
+            name: content.filename,
+            type: content.mime,
+            uri: content.path
+        });
+
+        return Gateway.post<number[]>('/memory/' + mid.toString(), form, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+    });
+
+    return Promise.all(uploadPromises).then(responses => {
+        return responses.map(axiosResponse => axiosResponse.data[0]);
+    });
+};
