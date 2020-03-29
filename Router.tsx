@@ -9,6 +9,8 @@ import ConnectCodeScreen from './src/authentication/register_workflow/ConnectCod
 import HomeScreen from './src/home/HomeScreen';
 import {NewMemoryScreen} from './src/memories/new_memory/NewMemoryScreen';
 import {UserRegistration} from './src/authentication/register_workflow/UserRegistrationModel';
+import {MemoryScreen} from './src/memories/memory/MemoryScreen';
+import {Memory} from './src/memories/MemoryModels';
 
 export type RootStackParamList = {
     LoadingScreen: undefined;
@@ -19,6 +21,7 @@ export type RootStackParamList = {
     ConnectCodeScreen: undefined;
     HomeScreen: undefined;
     NewMemoryScreen: undefined;
+    MemoryScreen: { memory: Memory };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -33,6 +36,7 @@ const AppStack = () => (
         <Stack.Screen name="ConnectCodeScreen" component={ConnectCodeScreen}/>
         <Stack.Screen name="HomeScreen" component={HomeScreen}/>
         <Stack.Screen name="NewMemoryScreen" component={NewMemoryScreen}/>
+        <Stack.Screen name="MemoryScreen" component={MemoryScreen}/>
     </Stack.Navigator>
 );
 
