@@ -3,7 +3,7 @@ import {
     Keyboard,
     KeyboardAvoidingView,
     SafeAreaView,
-    ScrollView,
+    ScrollView, ScrollViewProps,
     StatusBar,
     TouchableWithoutFeedback,
     View
@@ -30,6 +30,22 @@ const Wrapper = ({children}: { children: any }) => (
             {children}
         </SafeAreaView>
     </>
+);
+
+type ScrollViewContainerProps = ScrollViewProps & {
+    children?: React.ReactNode
+}
+
+/**
+ * Extends React.ScrollView to include the default wrapper and container margins.
+ * Any additional props are appended to the Scroll View, not the wrapping container.
+ */
+export const ScrollViewContainer = (props: ScrollViewContainerProps) => (
+    <Wrapper>
+        <ScrollView {...props} style={{marginLeft: '5%', marginRight: '5%'}}>
+            {props.children}
+        </ScrollView>
+    </Wrapper>
 );
 
 const Container = ({children}: { children: any }) => (

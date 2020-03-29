@@ -10,19 +10,31 @@ export type MemoryUpload = MemoryDescription & {
 
 export const isMemoryUploadValid = (upload: MemoryUpload) => upload.title.length > 0 && upload.location.length > 0;
 
+/**
+ * Retrieves the memories for the user.
+ * Display images are updated to localised AWS.
+ */
 export const getMemories = (): Promise<Memory[]> => Gateway.get('/memory')
-    .then((v: AxiosResponse<Memory[]>) => {
-        v.data.forEach(m => {
-            if (m.displayContent != null) {
-                m.displayContent.fileKey = 'http://localhost:4572/memory-content/' + m.displayContent.fileKey;
-            }
+    .then((v: AxiosResponse<Memory[]>) => v.data.map(formatMemory));
 
-            m.date = Number.parseInt(m.date as any);
-        });
+/**
+ * Retrieves a specific memory.
+ * Display image is updated to localised AWS.
+ * @param mid the memory ID to retrieve.
+ */
+export const getMemory = (mid: number): Promise<Memory> => Gateway.get('/memory/' + mid.toString())
+    .then((response: AxiosResponse<Memory>) => formatMemory(response.data));
 
-        return v.data;
-    });
+const formatMemory = (memory: Memory) => {
+    if (memory.displayContent != null) {
+        // TODO Make this config-driven for AWS
+        memory.displayContent.fileKey = 'http://localhost:4572/memory-content/' + memory.displayContent.fileKey;
+    }
 
+    // Memory actually comes back as a string, so it needs to be converted to a number
+    memory.date = Number.parseInt(memory.date as any);
+    return memory;
+};
 
 type PostMemoryResponse = {
     memoryId: number
