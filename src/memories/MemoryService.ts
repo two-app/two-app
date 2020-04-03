@@ -1,7 +1,7 @@
-import {Memory, MemoryDescription} from './MemoryModels';
+import { Memory, MemoryDescription, Content } from './MemoryModels';
 import Gateway from '../http/Gateway';
-import {AxiosResponse} from 'axios';
-import {Image} from 'react-native-image-crop-picker';
+import { AxiosResponse } from 'axios';
+import { Image } from 'react-native-image-crop-picker';
 import FormData from 'form-data';
 
 export type MemoryUpload = MemoryDescription & {
@@ -25,16 +25,18 @@ export const getMemories = (): Promise<Memory[]> => Gateway.get('/memory')
 export const getMemory = (mid: number): Promise<Memory> => Gateway.get('/memory/' + mid.toString())
     .then((response: AxiosResponse<Memory>) => formatMemory(response.data));
 
-const formatMemory = (memory: Memory) => {
+const formatMemory = (memory: Memory): Memory => {
     if (memory.displayContent != null) {
         // TODO Make this config-driven for AWS
-        memory.displayContent.fileKey = 'http://localhost:4572/memory-content/' + memory.displayContent.fileKey;
+        memory.displayContent.fileKey = formatFileKey(memory.displayContent.fileKey)
     }
 
     // Memory actually comes back as a string, so it needs to be converted to a number
     memory.date = Number.parseInt(memory.date as any);
     return memory;
 };
+
+const formatFileKey = (fileKey: string): string => `http://localhost:4572/memory-content/${fileKey}`;
 
 type PostMemoryResponse = {
     memoryId: number
@@ -56,7 +58,7 @@ export const uploadToMemory = (mid: number, upload: MemoryUpload): Promise<numbe
             uri: content.path
         });
 
-        return Gateway.post<number[]>('/memory/' + mid.toString(), form, {
+        return Gateway.post<number[]>(`/memory/${mid}/content`, form, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -67,3 +69,11 @@ export const uploadToMemory = (mid: number, upload: MemoryUpload): Promise<numbe
         return responses.map(axiosResponse => axiosResponse.data[0]);
     });
 };
+
+export const getMemoryContent = (mid: number): Promise<Content[]> =>
+    Gateway.get<Content[]>(`/memory/${mid}/content`).then((v: AxiosResponse<Content[]>) => {
+        return v.data.map(content => {
+            content.fileKey = formatFileKey(content.fileKey)
+            return content;
+        })
+    });
