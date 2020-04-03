@@ -6,7 +6,8 @@ import {
     ScrollView, ScrollViewProps,
     StatusBar,
     TouchableWithoutFeedback,
-    View
+    View,
+    ViewProps
 } from 'react-native';
 
 // @ts-ignore
@@ -45,6 +46,17 @@ export const ScrollViewContainer = (props: ScrollViewContainerProps) => (
         <ScrollView {...props} style={{marginLeft: '5%', marginRight: '5%'}}>
             {props.children}
         </ScrollView>
+    </Wrapper>
+);
+
+type ViewContainerProps = ViewProps & {
+    children?: React.ReactNode
+}
+export const ContainerView = (props: ViewContainerProps) => (
+    <Wrapper>
+        <View {...props} style={{marginLeft: '5%', marginRight: '5%'}}>
+            {props.children}
+        </View>
     </Wrapper>
 );
 
