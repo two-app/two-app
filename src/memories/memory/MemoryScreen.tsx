@@ -52,7 +52,7 @@ const MemoryScreen = ({ navigation, route }: MemoryScreenProps) => {
                     }
                 }}
                 columnWrapperStyle={{ margin: -5 }}
-                ListHeaderComponentStyle={{ marginBottom: 20 }}
+                ListHeaderComponentStyle={{ marginBottom: 10 }}
                 keyExtractor={item => item.fileKey}
                 ListHeaderComponent={() => <MemoryHeader memory={memory} />}
                 refreshControl={
