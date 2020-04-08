@@ -4,24 +4,32 @@ import { Memory, Content } from '../MemoryModels';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../Router';
 import { RouteProp } from '@react-navigation/native';
-import { ScrollViewContainer, Wrapper, ContainerView } from '../../views/View';
+import { ContainerView } from '../../views/View';
 import Colors from '../../Colors';
 import { MemoryDate, MemoryImageCount, MemoryLocation, MemoryVideoCount } from '../MemoryIcons';
 // @ts-ignore
-import Image from 'react-native-image-progress';
+import { createImageProgress } from 'react-native-image-progress';
+// @ts-ignore
+// import Image from 'react-native-image-progress';
 // @ts-ignore
 import Progress from 'react-native-progress/Circle';
+// @ts-ignore
+import FastImage from 'react-native-fast-image';
+const Image = createImageProgress(FastImage);
 import { getMemory, getMemoryContent } from '../MemoryService';
+import ImageView from "react-native-image-viewing";
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type MemoryScreenProps = {
     navigation: StackNavigationProp<RootStackParamList, 'MemoryScreen'>,
     route: RouteProp<RootStackParamList, 'MemoryScreen'>;
 }
 
-const MemoryScreen = ({ navigation, route }: MemoryScreenProps) => {
+const MemoryScreen = ({ route }: MemoryScreenProps) => {
     const [memory, updateMemory] = useState<Memory>(route.params.memory);
     const [refreshing, setRefreshing] = useState<boolean>(false);
     const [content, setContent] = useState<Content[]>([]);
+    const [galleryIndex, setGalleryIndex] = useState<number | null>(null);
 
     const refreshMemory = () => {
         getMemory(memory.id).then((updatedMemory: Memory) => {
@@ -41,6 +49,13 @@ const MemoryScreen = ({ navigation, route }: MemoryScreenProps) => {
 
     return (
         <ContainerView>
+            <ImageView
+                images={content.map(c => ({ uri: c.fileKey }))}
+                // @ts-ignore
+                imageIndex={galleryIndex}
+                visible={galleryIndex != null}
+                onRequestClose={() => setGalleryIndex(null)}
+            />
             <FlatList
                 numColumns={numColumns}
                 data={paddedArray}
@@ -48,7 +63,7 @@ const MemoryScreen = ({ navigation, route }: MemoryScreenProps) => {
                     if (index >= content.length) {
                         return <EmptyItem />;
                     } else {
-                        return <ContentItem item={item} />;
+                        return <ContentItem item={item} index={index} onClick={setGalleryIndex} />;
                     }
                 }}
                 columnWrapperStyle={{ margin: -5 }}
@@ -102,13 +117,21 @@ const MemoryHeader = ({ memory }: MemoryHeaderProps) => (
     </View>
 );
 
-const ContentItem = ({ item }: { item: Content }) => {
+type ContentItemProps = {
+    item: Content,
+    index: number,
+    onClick: (index: number) => void
+}
+
+const ContentItem = ({ item, index, onClick }: ContentItemProps) => {
     return (
         <View style={{ flex: 1, aspectRatio: 1, padding: 5, marginTop: 10 }}>
-            <Image
-                source={{ uri: item.fileKey }}
-                style={{ flex: 1 }}
-            />
+            <TouchableOpacity style={{ width: '100%', height: '100%' }} onPress={() => onClick(index)}>
+                <Image
+                    source={{ uri: item.fileKey }}
+                    style={{ flex: 1 }}
+                />
+            </TouchableOpacity>
         </View>
     )
 }
