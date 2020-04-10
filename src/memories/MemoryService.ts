@@ -36,7 +36,7 @@ const formatMemory = (memory: Memory): Memory => {
     return memory;
 };
 
-const formatFileKey = (fileKey: string): string => `http://localhost:4572/memory-content/${fileKey}`;
+const formatFileKey = (fileKey: string): string => `http://127.0.0.1:4572/memory-content/${fileKey}`;
 
 type PostMemoryResponse = {
     memoryId: number
@@ -44,15 +44,28 @@ type PostMemoryResponse = {
 
 export const createMemory = (description: MemoryDescription): Promise<number> => {
     description.date = description.date.toString() as any;
+
+    // @ts-ignore
     return Gateway.post('/memory', description).then(
         (v: AxiosResponse<PostMemoryResponse>) => v.data.memoryId
-    );
+    ).catch(e => {
+        console.log("Caught error in creating memory.");
+        console.log(e);
+        console.log(e.message);
+    });
 };
 
 export const uploadToMemory = (mid: number, upload: MemoryUpload): Promise<number[]> => {
-    const uploadPromises: Promise<AxiosResponse<number[]>>[] = upload.content.map((content: Image) => {
+    console.log("Uploading to memory.");
+    const uploadPromises: Promise<AxiosResponse<number[]>>[] = upload.content.map((content: Image, index: number) => {
         const form = new FormData();
         form.append('content', {
+            name: `file-${index}-memory`,
+            type: content.mime,
+            uri: content.path
+        });
+
+        console.log({
             name: content.filename,
             type: content.mime,
             uri: content.path
@@ -65,8 +78,13 @@ export const uploadToMemory = (mid: number, upload: MemoryUpload): Promise<numbe
         });
     });
 
+    // @ts-ignore
     return Promise.all(uploadPromises).then(responses => {
         return responses.map(axiosResponse => axiosResponse.data[0]);
+    }).catch(e => {
+        console.log("Caught error in uploading to memory.");
+        console.log(e);
+        console.log(e.message);
     });
 };
 

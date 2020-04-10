@@ -1,3 +1,5 @@
+import { Tag } from "../tags/Tag"
+
 export type Content = {
     fileKey: string,
     contentType: 'image' | 'video',
@@ -5,13 +7,14 @@ export type Content = {
 }
 
 export type MemoryDescription = {
-    tag?: string,
+    tag?: number,
     title: string,
     location: string,
     date: number
 }
 
 export type Memory = MemoryDescription & {
+    tag?: Tag,
     id: number,
     imageCount: number,
     videoCount: number,
