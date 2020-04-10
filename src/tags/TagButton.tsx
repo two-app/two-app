@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, StyleProp, TextStyle } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Tag } from "./Tag";
 
@@ -20,10 +20,10 @@ export const TagButton = ({ tag, onClick, focused }: { tag: Tag, onClick?: Funct
 
 export const DisplayTag = ({ tag, filled }: { tag: Tag, filled?: boolean }) => {
   let viewStyle: any = {...s.displayTag, borderColor: tag.color};
-  let textStyle: any = {fontSize: 10, color: tag.color};
+  let textStyle: StyleProp<TextStyle> = {fontSize: 10, fontWeight: "normal",color: tag.color};
   if (filled) {
     viewStyle = {...viewStyle, backgroundColor: tag.color};
-    textStyle = {color: 'white'};
+    textStyle = {...textStyle, color: 'white'};
   }
   return (
     <View style={viewStyle}>
@@ -40,11 +40,9 @@ const s = StyleSheet.create({
     marginRight: 5
   },
   displayTag: {
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingLeft: 5,
-    paddingRight: 5,
+    paddingVertical: 3,
+    paddingHorizontal: 5,
     borderWidth: 1,
-    borderRadius: 30
+    borderRadius: 30,
   }
 });

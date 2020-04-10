@@ -3,7 +3,7 @@ import { FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } fr
 import { getMemories } from './MemoryService';
 import { Memory } from './MemoryModels';
 import Colors from '../Colors';
-import { MemoryDate, MemoryImageCount, MemoryLocation, MemoryVideoCount } from './MemoryIcons';
+import { MemoryDate, MemoryImageCount, MemoryLocation, MemoryVideoCount, MemoryTag } from './MemoryIcons';
 import { GridIcon, GroupedIcon, TimelineIcon } from './MemoryHeaderIcons';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
@@ -17,6 +17,7 @@ import Image from 'react-native-image-progress';
 // @ts-ignore
 import Progress from 'react-native-progress/Circle';
 import { DisplayTag } from '../tags/TagButton';
+import { MemoryDisplayView } from './MemoryDisplayView';
 
 export const Memories = () => {
     const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -97,52 +98,8 @@ type MemoryItemNavigationProps = {
 
 const MemoryItemNavigation = ({ item, navigation }: MemoryItemNavigationProps) => (
     <TouchableOpacity style={containers.item} onPress={() => navigation.navigate('MemoryScreen', { memory: item })}>
-        <MemoryItem item={item} />
+        <MemoryDisplayView memory={item} />
     </TouchableOpacity>
-);
-
-const MemoryItem = ({ item }: { item: Memory }) => (
-    <View>
-        <Text style={s.heading}>{item.title}</Text>
-        <View style={s.spacedRow}>
-            <MemoryLocation location={item.location} />
-            <MemoryDate date={item.date} />
-        </View>
-        {item.tag != null ?
-            <View style={s.spacedRow}>
-                <View>
-                    {item.imageCount > 0 && <MemoryImageCount pictureCount={item.imageCount} />}
-                    {item.videoCount > 0 && <MemoryVideoCount videoCount={item.videoCount} pad={item.imageCount > 0} />}
-                </View>
-                <DisplayTag tag={item.tag} filled/>
-            </View>
-            :
-            <View style={s.row}>
-                {item.imageCount > 0 && <MemoryImageCount pictureCount={item.imageCount} />}
-                {item.videoCount > 0 && <MemoryVideoCount videoCount={item.videoCount} pad={item.imageCount > 0} />}
-            </View>
-        }
-        {item.displayContent != null ?
-            <View style={containers.image}>
-                <Image
-                    style={{ width: '100%', height: '100%' }}
-                    source={{ uri: item.displayContent.fileKey }}
-                    indicator={Progress}
-                    indicatorProps={{
-                        borderWidth: 1,
-                        borderColor: Colors.REGULAR,
-                        color: Colors.REGULAR
-                    }}
-                />
-            </View>
-            :
-            <View>
-                <Text style={{ color: Colors.REGULAR }}>
-                    There's no content in this memory.
-                </Text>
-            </View>
-        }
-    </View>
 );
 
 const EmptyMemoriesComponent = () => (<><Text style={{ textAlign: 'center', color: Colors.REGULAR, marginTop: 40 }}>
