@@ -6,6 +6,8 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
+import { DisplayTag } from '../tags/TagButton';
+import { Tag } from '../tags/Tag';
 
 export const MemoryLocation = ({location}: { location: string }) => (
     <View style={c.icon}>
@@ -36,6 +38,13 @@ export const MemoryVideoCount = ({videoCount, pad}: { videoCount: number, pad?: 
         <Text style={s.text}>{videoCount}</Text>
     </View>
 );
+
+export const MemoryTag = ({tag}: {tag: Tag}) => (
+    <View style={c.icon}>
+        <DisplayTag tag={tag}/>
+        <AntIcon name="tagso" {...iconArguments} style={s.iconRight}/>
+    </View>
+)
 
 const iconArguments = {
     size: 18,

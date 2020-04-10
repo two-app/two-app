@@ -15,7 +15,6 @@ const ContentInput = ({ setContent }: { setContent: Function }) => {
             compressImageMaxHeight: 1800
         };
         ImagePicker.openPicker(options).then((value: Image | Image[]) => {
-            console.log(value);
             Array.isArray(value) ? setContent(value) : setContent([value]);
         });
     };

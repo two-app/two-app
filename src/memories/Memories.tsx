@@ -1,21 +1,23 @@
-import React, {useEffect, useState} from 'react';
-import {FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {getMemories} from './MemoryService';
-import {Memory} from './MemoryModels';
+import React, { useEffect, useState } from 'react';
+import { FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { getMemories } from './MemoryService';
+import { Memory } from './MemoryModels';
 import Colors from '../Colors';
-import {MemoryDate, MemoryImageCount, MemoryLocation, MemoryVideoCount} from './MemoryIcons';
-import {GridIcon, GroupedIcon, TimelineIcon} from './MemoryHeaderIcons';
+import { MemoryDate, MemoryImageCount, MemoryLocation, MemoryVideoCount, MemoryTag } from './MemoryIcons';
+import { GridIcon, GroupedIcon, TimelineIcon } from './MemoryHeaderIcons';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
-import {InputCardButton} from '../forms/InputCardButton';
-import {Heading} from '../home/Heading';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../Router';
-import {useNavigation} from '@react-navigation/native';
+import { InputCardButton } from '../forms/InputCardButton';
+import { Heading } from '../home/Heading';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../Router';
+import { useNavigation } from '@react-navigation/native';
 // @ts-ignore
 import Image from 'react-native-image-progress';
 // @ts-ignore
 import Progress from 'react-native-progress/Circle';
+import { DisplayTag } from '../tags/TagButton';
+import { MemoryDisplayView } from './MemoryDisplayView';
 
 export const Memories = () => {
     const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -46,7 +48,7 @@ export const Memories = () => {
         // Required otherwise we get a warning from scrolling
         onScrollAnimationEnd={() => {
         }}
-        renderItem={item => (<MemoryItemNavigation navigation={navigation} item={item.item}/>)}
+        renderItem={item => (<MemoryItemNavigation navigation={navigation} item={item.item} />)}
         keyExtractor={i => i.id.toString()}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={MemoryHeader}
@@ -66,25 +68,25 @@ export const Memories = () => {
 };
 
 const MemoryHeader = () => {
-    const {navigate} = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const { navigate } = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     return (<>
-        <InputCardButton style={{marginTop: 20}}>
-            <EvilIcon name="search" style={{fontSize: 20, paddingRight: 10, color: Colors.REGULAR}}/>
-            <Text style={{color: Colors.REGULAR}}>Find memories...</Text>
+        <InputCardButton style={{ marginTop: 20 }}>
+            <EvilIcon name="search" style={{ fontSize: 20, paddingRight: 10, color: Colors.REGULAR }} />
+            <Text style={{ color: Colors.REGULAR }}>Find memories...</Text>
         </InputCardButton>
 
         <Heading>Memories</Heading>
 
-        <InputCardButton style={{marginTop: 10}} onClick={() => navigate('NewMemoryScreen')}>
-            <SimpleLineIcon name="pencil" style={{fontSize: 13, paddingRight: 10, color: Colors.REGULAR}}/>
-            <Text style={{color: Colors.REGULAR}}>Title of your new memory...</Text>
+        <InputCardButton style={{ marginTop: 10 }} onClick={() => navigate('NewMemoryScreen')}>
+            <SimpleLineIcon name="pencil" style={{ fontSize: 13, paddingRight: 10, color: Colors.REGULAR }} />
+            <Text style={{ color: Colors.REGULAR }}>Title of your new memory...</Text>
         </InputCardButton>
 
-        <View style={{marginTop: 20, flexDirection: 'row'}}>
-            <TimelineIcon focused/>
-            <GroupedIcon/>
-            <GridIcon/>
+        <View style={{ marginTop: 20, flexDirection: 'row' }}>
+            <TimelineIcon focused />
+            <GroupedIcon />
+            <GridIcon />
         </View>
     </>);
 };
@@ -94,47 +96,13 @@ type MemoryItemNavigationProps = {
     navigation: StackNavigationProp<RootStackParamList>
 }
 
-const MemoryItemNavigation = ({item, navigation}: MemoryItemNavigationProps) => (
-    <TouchableOpacity style={containers.item} onPress={() => navigation.navigate('MemoryScreen', {memory: item})}>
-        <MemoryItem item={item}/>
+const MemoryItemNavigation = ({ item, navigation }: MemoryItemNavigationProps) => (
+    <TouchableOpacity style={containers.item} onPress={() => navigation.navigate('MemoryScreen', { memory: item })}>
+        <MemoryDisplayView memory={item} />
     </TouchableOpacity>
 );
 
-const MemoryItem = ({item}: { item: Memory }) => (
-    <View>
-        <Text style={s.heading}>{item.title}</Text>
-        <View style={s.spacedRow}>
-            <MemoryLocation location={item.location}/>
-            <MemoryDate date={item.date}/>
-        </View>
-        <View style={s.row}>
-            {item.imageCount > 0 && <MemoryImageCount pictureCount={item.imageCount}/>}
-            {item.videoCount > 0 && <MemoryVideoCount videoCount={item.videoCount} pad={item.imageCount > 0}/>}
-        </View>
-        {item.displayContent != null ?
-            <View style={containers.image}>
-                <Image
-                    style={{width: '100%', height: '100%'}}
-                    source={{uri: item.displayContent.fileKey}}
-                    indicator={Progress}
-                    indicatorProps={{
-                        borderWidth: 1,
-                        borderColor: Colors.REGULAR,
-                        color: Colors.REGULAR
-                    }}
-                />
-            </View>
-            :
-            <View>
-                <Text style={{color: Colors.REGULAR}}>
-                    There's no content in this memory.
-                </Text>
-            </View>
-        }
-    </View>
-);
-
-const EmptyMemoriesComponent = () => (<><Text style={{textAlign: 'center', color: Colors.REGULAR, marginTop: 40}}>
+const EmptyMemoriesComponent = () => (<><Text style={{ textAlign: 'center', color: Colors.REGULAR, marginTop: 40 }}>
     You don't have any memories. Create some!
 </Text></>);
 

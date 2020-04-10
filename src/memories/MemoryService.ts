@@ -36,7 +36,7 @@ const formatMemory = (memory: Memory): Memory => {
     return memory;
 };
 
-const formatFileKey = (fileKey: string): string => `http://localhost:4572/memory-content/${fileKey}`;
+const formatFileKey = (fileKey: string): string => `http://127.0.0.1:4572/memory-content/${fileKey}`;
 
 type PostMemoryResponse = {
     memoryId: number
@@ -44,16 +44,17 @@ type PostMemoryResponse = {
 
 export const createMemory = (description: MemoryDescription): Promise<number> => {
     description.date = description.date.toString() as any;
+
     return Gateway.post('/memory', description).then(
         (v: AxiosResponse<PostMemoryResponse>) => v.data.memoryId
     );
 };
 
 export const uploadToMemory = (mid: number, upload: MemoryUpload): Promise<number[]> => {
-    const uploadPromises: Promise<AxiosResponse<number[]>>[] = upload.content.map((content: Image) => {
+    const uploadPromises: Promise<AxiosResponse<number[]>>[] = upload.content.map((content: Image, index: number) => {
         const form = new FormData();
         form.append('content', {
-            name: content.filename,
+            name: `file-${index}-memory`,
             type: content.mime,
             uri: content.path
         });
