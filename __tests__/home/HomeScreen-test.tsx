@@ -2,7 +2,7 @@ import 'react-native';
 import React from 'react';
 import {HomeScreen} from '../../src/home/HomeScreen';
 import {User} from '../../src/authentication/UserModel';
-import {shallow, mount} from 'enzyme';
+import {shallow} from 'enzyme';
 import {CommonActions} from '@react-navigation/native';
 
 describe('HomeScreen', () => {

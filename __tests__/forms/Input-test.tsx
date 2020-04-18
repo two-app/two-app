@@ -83,8 +83,6 @@ class InputTestBed {
             <Input attributes={this.attributes} isValid={this.isValidFn} onChange={this.onChangeFn} label={label}/>
         );
 
-        console.log(this.wrapper.debug())
-
         this.input = this.wrapper.find('TextInput');
     }
 
