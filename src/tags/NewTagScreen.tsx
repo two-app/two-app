@@ -12,6 +12,7 @@ import { createTag } from './TagService';
 import { TagInput } from '../memories/new_memory/TagInput';
 import { Tag } from './Tag';
 import { TagButton } from './TagButton';
+import { TagColors } from './TagColors';
 
 type NewTagScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'NewTagScreen'>,
@@ -36,53 +37,37 @@ export const NewTagScreen = ({ navigation, route }: NewTagScreenProps) => {
   return (
     <WrapperContainer>
       <Heading>Create a new Tag</Heading>
-      <Text style={s.paragraph}>
-        Tags are used to group memories.
-      </Text>
-      <Text style={s.subtitle}>
-        Tag Name
-      </Text>
-      <Text style={s.paragraph}>
-        Pick a short and concise name, like 'First Anniversary'.
-      </Text>
+      <Text style={s.paragraph}>Tags are used to group memories.</Text>
+
+      {/* Name Input */}
+      <Text style={s.subtitle}>Tag Name</Text>
+      <Text style={s.paragraph}>Pick a short and concise name, like 'First Anniversary'.</Text>
       <TagInput setTag={setName} />
-      <Text style={s.subtitle}>
-        Tag Colour
-      </Text>
+
+      {/* Colour Input */}
+      <Text style={s.subtitle}>Tag Color</Text>
       <Text style={s.paragraph}>
-        Pick a nice colour for your tag. This colour will highlight the memories the tag belongs to.
+        Pick a nice color for your tag. This color will highlight the memories the tag belongs to.
       </Text>
       <ColorList onSelected={setColor} />
+
+      {/* Display a 'Preview' widget if the name & color is present */}
       {name != null && color != null &&
-        <View style={{ flexDirection: 'row', alignItems: "baseline"}}>
-          <Text style={{...s.subtitle, marginRight: 10}}>Preview</Text>
+        <View style={{ flexDirection: 'row', alignItems: "baseline" }}>
+          <Text style={{ ...s.subtitle, marginRight: 10 }}>Preview</Text>
           <TagButton tag={{ tid: -1, name, color }} />
         </View>
       }
+
       <SubmitButton onSubmit={createNewTag} text="Create Tag" disabled={name == null} />
     </WrapperContainer >
   )
 };
 
-const colours = [
-  '#3AB795',
-  '#29335C',
-  '#FFCF56',
-  '#F4989C',
-  '#F3D3BD',
-  '#C4D7F2',
-  '#0496FF',
-  '#8F2D56',
-  '#E07A5F',
-  '#376996',
-  '#000000',
-  '#F2CC8F',
-  '#E56399'
-]
-
 const ColorList = ({ onSelected }: { onSelected: (color: string) => void }) => {
-  const randomIndex = Math.floor(Math.random() * colours.length)
-  const [selected, setSelected] = useState<string>(colours[randomIndex]);
+  const colors = TagColors;
+  const randomIndex = Math.floor(Math.random() * colors.length)
+  const [selected, setSelected] = useState<string>(colors[randomIndex]);
   useEffect(() => onSelected(selected), []);
 
   const selectColor = (color: string) => {
@@ -97,7 +82,7 @@ const ColorList = ({ onSelected }: { onSelected: (color: string) => void }) => {
       marginTop: 5,
       margin: -10
     }}>
-      {colours.map(color =>
+      {colors.map(color =>
         <ColorButton color={color}
           isSelected={color == selected}
           onClick={selectColor}
