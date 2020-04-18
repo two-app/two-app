@@ -62,22 +62,12 @@ exports[`ConnectCodeScreen should maintain snapshot 1`] = `
         >
           The sign-up process is almost complete. Once your partner has registered, send them your code!
         </Text>
-        <View
-          accessible={true}
-          focusable={true}
-          isTVSelectable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+        <TouchableOpacity
+          onPress={[Function]}
           style={
             Object {
               "backgroundColor": "rgba(0, 0, 0, 0.1)",
               "marginTop": 20,
-              "opacity": 1,
               "padding": 20,
             }
           }
@@ -117,7 +107,7 @@ exports[`ConnectCodeScreen should maintain snapshot 1`] = `
           >
             Tap to Copy
           </Text>
-        </View>
+        </TouchableOpacity>
         <Text
           style={
             Object {
@@ -136,12 +126,10 @@ exports[`ConnectCodeScreen should maintain snapshot 1`] = `
           }
         >
           <TextInput
-            allowFontScaling={true}
             onBlur={[Function]}
             onChangeText={[Function]}
             onFocus={[Function]}
             placeholder="e.g bWzGl2"
-            rejectResponderTermination={true}
             style={
               Array [
                 Object {
@@ -157,30 +145,25 @@ exports[`ConnectCodeScreen should maintain snapshot 1`] = `
                 undefined,
               ]
             }
-            underlineColorAndroid="transparent"
             value=""
           />
-          <View
-            accessible={true}
-            focusable={true}
-            isTVSelectable={true}
-            onClick={[Function]}
-            onResponderGrant={[Function]}
-            onResponderMove={[Function]}
-            onResponderRelease={[Function]}
-            onResponderTerminate={[Function]}
-            onResponderTerminationRequest={[Function]}
-            onStartShouldSetResponder={[Function]}
+          <TouchableOpacity
+            disabled={true}
+            onPress={[Function]}
             style={
-              Object {
-                "alignItems": "center",
-                "backgroundColor": "rgba(0, 0, 0, 0.2)",
-                "justifyContent": "center",
-                "marginBottom": 25,
-                "marginTop": 25,
-                "opacity": 1,
-                "padding": 20,
-              }
+              Array [
+                Object {
+                  "alignItems": "center",
+                  "backgroundColor": "#EE7674",
+                  "justifyContent": "center",
+                  "marginBottom": 25,
+                  "marginTop": 25,
+                  "padding": 20,
+                },
+                Object {
+                  "backgroundColor": "rgba(0, 0, 0, 0.2)",
+                },
+              ]
             }
           >
             <Text
@@ -193,7 +176,7 @@ exports[`ConnectCodeScreen should maintain snapshot 1`] = `
             >
               Connect
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
