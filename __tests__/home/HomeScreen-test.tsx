@@ -2,7 +2,7 @@ import 'react-native';
 import React from 'react';
 import {HomeScreen} from '../../src/home/HomeScreen';
 import {User} from '../../src/authentication/UserModel';
-import {shallow} from 'enzyme';
+import {shallow, mount} from 'enzyme';
 import {CommonActions} from '@react-navigation/native';
 
 describe('HomeScreen', () => {
@@ -13,7 +13,7 @@ describe('HomeScreen', () => {
     let tb: HomeScreenTestBed;
 
     beforeEach(() => tb = new HomeScreenTestBed());
-
+    
     test('clicking logout should navigate to LogoutScreen', () => {
         tb.wrapper.find('TouchableOpacity').prop<() => void>('onPress')();
         expect(tb.dispatchFn).toHaveBeenCalledTimes(1);

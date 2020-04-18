@@ -105,7 +105,7 @@ exports[`AcceptTermsScreen should maintain snapshot 1`] = `
             }
           >
             <RCTSwitch
-              accessibilityRole="button"
+              accessibilityRole="switch"
               onChange={[Function]}
               onResponderTerminationRequest={[Function]}
               onStartShouldSetResponder={[Function]}
@@ -174,7 +174,7 @@ exports[`AcceptTermsScreen should maintain snapshot 1`] = `
             }
           >
             <RCTSwitch
-              accessibilityRole="button"
+              accessibilityRole="switch"
               onChange={[Function]}
               onResponderTerminationRequest={[Function]}
               onStartShouldSetResponder={[Function]}
@@ -241,7 +241,7 @@ exports[`AcceptTermsScreen should maintain snapshot 1`] = `
             }
           >
             <RCTSwitch
-              accessibilityRole="button"
+              accessibilityRole="switch"
               onChange={[Function]}
               onResponderTerminationRequest={[Function]}
               onStartShouldSetResponder={[Function]}
@@ -267,27 +267,23 @@ exports[`AcceptTermsScreen should maintain snapshot 1`] = `
             />
           </View>
         </View>
-        <View
-          accessible={true}
-          focusable={true}
-          isTVSelectable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+        <TouchableOpacity
+          disabled={true}
+          onPress={[Function]}
           style={
-            Object {
-              "alignItems": "center",
-              "backgroundColor": "rgba(0, 0, 0, 0.2)",
-              "justifyContent": "center",
-              "marginBottom": 25,
-              "marginTop": 25,
-              "opacity": 1,
-              "padding": 20,
-            }
+            Array [
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#EE7674",
+                "justifyContent": "center",
+                "marginBottom": 25,
+                "marginTop": 25,
+                "padding": 20,
+              },
+              Object {
+                "backgroundColor": "rgba(0, 0, 0, 0.2)",
+              },
+            ]
           }
         >
           <Text
@@ -300,7 +296,7 @@ exports[`AcceptTermsScreen should maintain snapshot 1`] = `
           >
             Accept
           </Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   </RCTScrollView>

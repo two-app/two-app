@@ -2,11 +2,9 @@
 
 exports[`Input should maintain snapshot 1`] = `
 <TextInput
-  allowFontScaling={true}
   onBlur={[Function]}
   onChangeText={[Function]}
   onFocus={[Function]}
-  rejectResponderTermination={true}
   style={
     Array [
       Object {
@@ -22,7 +20,6 @@ exports[`Input should maintain snapshot 1`] = `
       undefined,
     ]
   }
-  underlineColorAndroid="transparent"
   value=""
 />
 `;

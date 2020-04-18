@@ -56,13 +56,11 @@ exports[`should maintain snapshot 1`] = `
           First Name
         </Text>
         <TextInput
-          allowFontScaling={true}
           autoCompleteType="name"
           onBlur={[Function]}
           onChangeText={[Function]}
           onFocus={[Function]}
           placeholder="First Name"
-          rejectResponderTermination={true}
           style={
             Array [
               Object {
@@ -78,7 +76,6 @@ exports[`should maintain snapshot 1`] = `
               undefined,
             ]
           }
-          underlineColorAndroid="transparent"
           value=""
         />
         <Text
@@ -94,12 +91,10 @@ exports[`should maintain snapshot 1`] = `
           Last Name
         </Text>
         <TextInput
-          allowFontScaling={true}
           onBlur={[Function]}
           onChangeText={[Function]}
           onFocus={[Function]}
           placeholder="Last Name"
-          rejectResponderTermination={true}
           style={
             Array [
               Object {
@@ -115,7 +110,6 @@ exports[`should maintain snapshot 1`] = `
               undefined,
             ]
           }
-          underlineColorAndroid="transparent"
           value=""
         />
         <Text
@@ -131,14 +125,12 @@ exports[`should maintain snapshot 1`] = `
           Email
         </Text>
         <TextInput
-          allowFontScaling={true}
           autoCapitalize="none"
           autoCompleteType="email"
           onBlur={[Function]}
           onChangeText={[Function]}
           onFocus={[Function]}
           placeholder="you@email.com"
-          rejectResponderTermination={true}
           style={
             Array [
               Object {
@@ -154,7 +146,6 @@ exports[`should maintain snapshot 1`] = `
               undefined,
             ]
           }
-          underlineColorAndroid="transparent"
           value=""
         />
         <Text
@@ -170,13 +161,11 @@ exports[`should maintain snapshot 1`] = `
           Password
         </Text>
         <TextInput
-          allowFontScaling={true}
           autoCompleteType="password"
           onBlur={[Function]}
           onChangeText={[Function]}
           onFocus={[Function]}
           placeholder="Secure Password"
-          rejectResponderTermination={true}
           secureTextEntry={true}
           style={
             Array [
@@ -193,30 +182,25 @@ exports[`should maintain snapshot 1`] = `
               undefined,
             ]
           }
-          underlineColorAndroid="transparent"
           value=""
         />
-        <View
-          accessible={true}
-          focusable={true}
-          isTVSelectable={true}
-          onClick={[Function]}
-          onResponderGrant={[Function]}
-          onResponderMove={[Function]}
-          onResponderRelease={[Function]}
-          onResponderTerminate={[Function]}
-          onResponderTerminationRequest={[Function]}
-          onStartShouldSetResponder={[Function]}
+        <TouchableOpacity
+          disabled={true}
+          onPress={[Function]}
           style={
-            Object {
-              "alignItems": "center",
-              "backgroundColor": "rgba(0, 0, 0, 0.2)",
-              "justifyContent": "center",
-              "marginBottom": 25,
-              "marginTop": 25,
-              "opacity": 1,
-              "padding": 20,
-            }
+            Array [
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "#EE7674",
+                "justifyContent": "center",
+                "marginBottom": 25,
+                "marginTop": 25,
+                "padding": 20,
+              },
+              Object {
+                "backgroundColor": "rgba(0, 0, 0, 0.2)",
+              },
+            ]
           }
         >
           <Text
@@ -229,7 +213,7 @@ exports[`should maintain snapshot 1`] = `
           >
             Join Two
           </Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   </RCTScrollView>

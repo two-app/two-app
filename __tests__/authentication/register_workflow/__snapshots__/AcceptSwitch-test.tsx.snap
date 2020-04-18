@@ -42,7 +42,7 @@ exports[`should maintain snapshot 1`] = `
     }
   >
     <RCTSwitch
-      accessibilityRole="button"
+      accessibilityRole="switch"
       onChange={[Function]}
       onResponderTerminationRequest={[Function]}
       onStartShouldSetResponder={[Function]}
