@@ -3,7 +3,6 @@ import { FlatList, RefreshControl, StyleSheet, Text, TouchableOpacity, View } fr
 import { getMemories } from './MemoryService';
 import { Memory } from './MemoryModels';
 import Colors from '../Colors';
-import { MemoryDate, MemoryImageCount, MemoryLocation, MemoryVideoCount, MemoryTag } from './MemoryIcons';
 import { GridIcon, GroupedIcon, TimelineIcon } from './MemoryHeaderIcons';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
@@ -12,11 +11,6 @@ import { Heading } from '../home/Heading';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../Router';
 import { useNavigation } from '@react-navigation/native';
-// @ts-ignore
-import Image from 'react-native-image-progress';
-// @ts-ignore
-import Progress from 'react-native-progress/Circle';
-import { DisplayTag } from '../tags/TagButton';
 import { MemoryDisplayView } from './MemoryDisplayView';
 
 export const Memories = () => {
@@ -119,21 +113,3 @@ const containers = StyleSheet.create({
     }
 });
 
-const s = StyleSheet.create({
-    heading: {
-        color: Colors.DARK,
-        fontSize: 25,
-        fontFamily: 'Montserrat-Bold'
-    },
-    row: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 10
-    },
-    spacedRow: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginTop: 10
-    }
-});

@@ -105,10 +105,8 @@ const ColorButton = ({ color, isSelected, onClick }: ColorButtonProps) => (
     width: 40,
     height: 40,
     margin: 10,
-    borderWidth: (isSelected ? 5 : 3),
     borderRadius: (isSelected ? 30 : 3),
-    elevation: 5,
-    borderColor: Colors.LIGHT
+    borderColor: 'white'
   }} onPress={() => onClick(color)} activeOpacity={1} />
 );
 
