@@ -11,7 +11,6 @@ export {Card};
 const s = StyleSheet.create({
     card: {
         flexDirection: 'row',
-        flex: 1,
         alignItems: 'center',
         padding: 12,
         backgroundColor: 'white',
