@@ -178,6 +178,13 @@ exports[`ConnectCodeScreen should maintain snapshot 1`] = `
             </Text>
           </TouchableOpacity>
         </View>
+        <TouchableOpacity
+          onPress={[Function]}
+        >
+          <Text>
+            LOGOUT
+          </Text>
+        </TouchableOpacity>
       </View>
     </View>
   </RCTScrollView>

@@ -6,6 +6,10 @@ import SubmitButton from '../forms/SubmitButton';
 import UserRegistrationModel, {UserRegistration} from './register_workflow/UserRegistrationModel';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../Router';
+import { Text, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Colors from '../Colors';
+import { CommonActions } from '@react-navigation/native';
 
 type RegisterScreenProps = {
     navigation: StackNavigationProp<RootStackParamList, 'RegisterScreen'>
@@ -13,9 +17,19 @@ type RegisterScreenProps = {
 
 const RegisterScreen = ({navigation}: RegisterScreenProps) => {
     const [userRegistration, setUserRegistration] = useState(new UserRegistration());
+
+    const navigateToLogin = () => {
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'LoginScreen' }]
+            })
+        );
+    }
+
     return (
         <WrapperContainer>
-            <LogoHeader heading="Sign Up"/>
+            <LogoHeader heading="Create Account"/>
 
             <Input attributes={{placeholder: 'First Name', autoCompleteType: 'name'}}
                    isValid={UserRegistrationModel.isFirstNameValid} label={'First Name'}
@@ -42,6 +56,13 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
                           onSubmit={() => navigation.navigate('AcceptTermsScreen', {userRegistration})}
                           disabled={!UserRegistrationModel.isUserRegistrationValid(userRegistration)}
             />
+
+            <View style={{flexDirection: 'row', marginTop: 10}}>
+                <Text style={{color: Colors.REGULAR}}>Already a member?</Text>
+                <TouchableOpacity style={{marginLeft: 5}} onPress={navigateToLogin}>
+                    <Text style={{fontWeight: "bold", color: Colors.DARK}}>Sign In</Text>
+                </TouchableOpacity>
+            </View>
         </WrapperContainer>
     );
 };

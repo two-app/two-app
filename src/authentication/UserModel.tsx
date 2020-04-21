@@ -24,3 +24,19 @@ export const userFromAccessToken = (accessToken: string): User => ({
     pid: decode(accessToken)['pid'],
     cid: decode(accessToken)['cid']
 });
+
+export const detectUserFromAccessToken = (accessToken: string): (User | UnconnectedUser) => {
+    const role: string = decode(accessToken)['role'];
+    if (role.toLowerCase() == 'connect') {
+        return unconnectedUserFromAccessToken(accessToken);
+    } else {
+        return userFromAccessToken(accessToken);
+    }
+}
+
+/**
+ * @param user {User | UnconnectedUser}  narrows the type based if the connect code is present.
+ */
+export const isUnconnectedUser = (user: User | UnconnectedUser): user is UnconnectedUser => {
+    return (user as UnconnectedUser).connectCode !== undefined;
+}
