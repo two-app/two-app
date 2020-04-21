@@ -12,9 +12,14 @@ import { Tokens } from '../../src/authentication/AuthenticationModel';
 
 describe('LoginScreen', () => {
 
-    // test('should maintain snapshot', () => expect(renderer.create(
-    //     <LoginScreen navigation={{} as any} />
-    // ).toJSON()).toMatchSnapshot());
+    test('should maintain snapshot', () => expect(renderer.create(
+        <LoginScreen
+            navigation={{} as any}
+            storeUser={jest.fn()}
+            storeUnconnectedUser={jest.fn()}
+            storeTokens={jest.fn()}
+        />
+    ).toJSON()).toMatchSnapshot());
 
     let tb: LoginScreenTestBed;
 

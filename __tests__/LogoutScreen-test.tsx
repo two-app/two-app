@@ -4,18 +4,19 @@ import React from 'react';
 import {act, create} from 'react-test-renderer';
 import {LogoutScreen} from '../src/LogoutScreen';
 import {persistor} from '../src/state/reducers';
+import { CommonActions } from '@react-navigation/native';
 
 describe('LogoutScreen', () => {
     const clearStateFn = jest.fn();
     const persistFn = jest.spyOn(persistor, 'persist');
-    const navigateFn = jest.fn();
+    const dispatchFn = jest.fn();
 
     beforeAll(() => {
         act(() => {
             create(
                 <LogoutScreen
                     clearState={clearStateFn as any}
-                    navigation={{navigate: navigateFn} as any}
+                    navigation={{dispatch: dispatchFn} as any}
                 />
             );
         });
@@ -30,7 +31,12 @@ describe('LogoutScreen', () => {
     });
 
     test('it should navigate to the LoginScreen', () => {
-        expect(navigateFn).toHaveBeenCalledTimes(1);
-        expect(navigateFn).toHaveBeenCalledWith('LoginScreen');
+        expect(dispatchFn).toHaveBeenCalledTimes(1);
+        expect(dispatchFn).toHaveBeenCalledWith(
+            CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'LoginScreen' }]
+            })
+        );
     });
 });
