@@ -68,7 +68,7 @@ describe('LoginScreen', () => {
         });
     });
 
-    describe('logging in', () => {
+    describe('Logging In', () => {
         const tokens: Tokens = { accessToken: 'testAccess', refreshToken: 'testRefresh' };
 
         test('it should call the Authentication Service', () => {
@@ -88,7 +88,7 @@ describe('LoginScreen', () => {
             expect(tb.wrapper.exists("LoadingView")).toBe(true);
         });
 
-        describe('with valid response', () => {
+        describe('With Valid Response', () => {
             test('it should store the user', done => {
                 const user: User = { uid: 1, pid: 2, cid: 3 };
                 tb.onLoginReturn({ user, tokens });
@@ -143,7 +143,7 @@ describe('LoginScreen', () => {
             });
         });
 
-        describe('with error response', () => {
+        describe('With Error Response', () => {
             test('it should display the error', done => {
                 const message = 'test failure message';
                 tb.onLoginFail(message);
