@@ -73,7 +73,6 @@ const handleTokenChange = (newAccessToken: string) => {
         // navigate to the loading screen.
         store.dispatch(storeUser(newUser));
         if (isUnconnectedUser(oldUser)) {
-            console.log("User was not connected, so navigating to loading screen.");
             resetNavigate('LoadingScreen', getNavigation() as any);
         }
     }
