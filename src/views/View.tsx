@@ -11,27 +11,16 @@ import {
 
 // @ts-ignore
 import SafeAreaView from 'react-native-safe-area-view';
-
-// @ts-ignore
-const DismissKeyboardHOC = (Comp) => {
-    // @ts-ignore
-    return ({ children, ...props }) => (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <Comp {...props}>
-                {children}
-            </Comp>
-        </TouchableWithoutFeedback>
-    );
-};
-
-const DismissKeyboardView = DismissKeyboardHOC(View);
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 const Wrapper = ({ children }: { children: any }) => (
     <>
         <StatusBar backgroundColor="white" barStyle="dark-content"/>
-        <SafeAreaView style={{ flexGrow: 1 }}>
-            {children}
-        </SafeAreaView>
+        <SafeAreaProvider>
+            <SafeAreaView style={{ flexGrow: 1 }}>
+                {children}
+            </SafeAreaView>
+        </SafeAreaProvider>
     </>
 );
 
@@ -80,9 +69,11 @@ const WrapperContainer = ({ children }: any) => (
 
 const NoScrollWrapperContainer = ({ children }: any) => (
     <>
-        <SafeAreaView style={{ flex: 1, marginLeft: '5%', marginRight: '5%' }}>
-            {children}
-        </SafeAreaView>
+        <SafeAreaProvider>
+            <SafeAreaView style={{ flex: 1, marginLeft: '5%', marginRight: '5%' }}>
+                {children}
+            </SafeAreaView>
+        </SafeAreaProvider>
     </>
 );
 
