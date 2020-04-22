@@ -5,8 +5,8 @@ import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
 import { UnconnectedUser } from '../../../src/authentication/UserModel';
 import { ConnectCodeScreen } from '../../../src/authentication/register_workflow/ConnectCodeScreen';
-import AuthenticationService, { UserResponse } from '../../../src/authentication/AuthenticationService';
 import { CommonActions } from '@react-navigation/native';
+import ConnectService from '../../../src/user/ConnectService';
 
 describe('ConnectCodeScreen', () => {
     let tb: ConnectCodeScreenTestBed;
@@ -59,36 +59,22 @@ describe('ConnectCodeScreen', () => {
             expect(tb.wrapper.find("ScrollContainer").prop<boolean>("isLoading")).toBe(true);
         });
 
+        test('it delegates to the ConnectService', () => {
+            tb.whenConnectResolve();
+            
+            tb.clickSubmit();
+
+            expect(ConnectService.performConnection).toHaveBeenCalledTimes(1);
+        });
+
         describe('On successful connect', () => {
-            const response: UserResponse = {
-                user: { uid: 1, pid: 2, cid: 3 },
-                tokens: { accessToken: 'testAccess', refreshToken: 'testRefresh' }
-            };
+            test('hides loading view', () => {
+                tb.whenConnectResolve();
 
-            beforeEach(() => {
-                tb.whenConnectResolve(response);
                 tb.clickSubmit();
+
+                expect(tb.wrapper.exists('LoadingView')).toBe(false);
             });
-
-            test('stores user in redux', done => setImmediate(() => {
-                expect(tb.storeUserFn).toHaveBeenCalledWith({ ...response.user });
-                done();
-            }));
-
-            test('stores tokens in redux', done => setImmediate(() => {
-                expect(tb.setTokensFn).toHaveBeenCalledWith({ ...response.tokens });
-                done();
-            }));
-
-            test('navigates to Home Screen', done => setImmediate(() => {
-                expect(tb.dispatchFn).toHaveBeenCalledWith(
-                    CommonActions.reset({
-                        index: 0,
-                        routes: [{ name: 'HomeScreen' }]
-                    })
-                );
-                done();
-            }));
         });
 
         describe('On failed connect', () => {
@@ -127,11 +113,11 @@ class ConnectCodeScreenTestBed {
     getErrorText = () => this.wrapper.find('Text[data-testid=\'error\']').render().text();
     clickLogout = () => this.wrapper.find('Button[data-testid=\'logout-button\']').prop<() => void>("onPress")();
 
-    whenConnectResolve = (userResponse: UserResponse) => {
-        AuthenticationService.connectToPartner = jest.fn().mockResolvedValue(userResponse);
+    whenConnectResolve = () => {
+        ConnectService.performConnection = jest.fn().mockResolvedValue({});
     };
 
     whenConnectReject = (error: Error) => {
-        AuthenticationService.connectToPartner = jest.fn().mockRejectedValue(error);
+        ConnectService.performConnection = jest.fn().mockRejectedValue(error);
     };
 }

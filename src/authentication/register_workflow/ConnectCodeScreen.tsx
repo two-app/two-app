@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Vibration, Share } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Vibration, Share, RefreshControl } from 'react-native';
 import Clipboard from "@react-native-community/clipboard";
 import { connect, ConnectedProps } from 'react-redux';
 import { ScrollContainer } from '../../views/View';
@@ -8,7 +8,6 @@ import { User } from '../UserModel';
 import Colors from '../../Colors';
 import Input from '../../forms/Input';
 import SubmitButton from '../../forms/SubmitButton';
-import AuthenticationService, { UserResponse } from '../AuthenticationService';
 import { TwoState } from '../../state/reducers';
 import { selectUnconnectedUser, storeUser } from '../../user';
 import { storeTokens } from '../store';
@@ -16,6 +15,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../Router';
 import { Button } from '../../forms/Button';
 import { resetNavigate } from '../../navigation/NavigationUtilities';
+import ConnectService from '../../user/ConnectService';
 
 const mapState = (state: TwoState) => ({ user: selectUnconnectedUser(state.user) });
 const mapDispatch = { storeUser, storeTokens };
@@ -30,21 +30,41 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
     const isPartnerCodeValid = (partnerCode: string) => partnerCode.length === 6 && partnerCode !== user.connectCode;
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [refreshing, setRefreshing] = useState(false);
 
     const connectToPartner = (connectCode: string) => {
+        setError(null);
         setSubmitted(true);
-        AuthenticationService.connectToPartner(connectCode).then((response: UserResponse) => {
-            storeUser(response.user as User);
-            storeTokens(response.tokens);
-            resetNavigate('HomeScreen', navigation);
-        }).catch((e: Error) => {
+        ConnectService.performConnection(connectCode).then(() => {
             setSubmitted(false);
-            setError(e.message);
+        }).catch((error: Error) => {
+            setSubmitted(false);
+            setError(error.message);
+        });
+    };
+
+    const refresh = () => {
+        setError(null);
+        setRefreshing(true);
+        ConnectService.checkConnection().then(() => {
+            setRefreshing(false);
+        }).catch(() => {
+            setRefreshing(false);
+            setError("Something went wrong on our end.");
         });
     };
 
     return (
-        <ScrollContainer isLoading={submitted}>
+        <ScrollContainer
+            isLoading={submitted}
+            refreshControl={
+                <RefreshControl
+                    colors={['#9Bd35A', '#689F38']}
+                    refreshing={refreshing}
+                    onRefresh={refresh}
+                />
+            }
+        >
             <LogoHeader heading="Connect Your Partner" />
             <Text style={styles.subheading}>Thanks for joining us!</Text>
             <Text style={styles.paragraph}>

@@ -10,12 +10,13 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { AppStack } from "./Router";
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { navigationRef } from './src/navigation/RootNavigation';
 
 export default () =>
     <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
             <SafeAreaProvider>
-                <NavigationContainer>
+                <NavigationContainer ref={navigationRef}>
                     <AppStack />
                 </NavigationContainer>
             </SafeAreaProvider>
