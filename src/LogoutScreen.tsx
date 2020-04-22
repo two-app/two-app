@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Router';
 import { CommonActions } from '@react-navigation/native';
+import { resetNavigate } from './navigation/NavigationUtilities';
 
 type LogoutScreenProps = {
     clearState: any,
@@ -15,12 +16,7 @@ const LogoutScreen = ({ clearState, navigation }: LogoutScreenProps) => {
     useEffect(() => {
         clearState();
         persistor.persist();
-        navigation.dispatch(
-            CommonActions.reset({
-                index: 0,
-                routes: [{ name: 'LoginScreen' }]
-            })
-        )
+        resetNavigate('LoginScreen', navigation);
     }, []);
     return <><Text>Logging you out...</Text></>;
 };
