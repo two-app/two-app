@@ -3,7 +3,8 @@ import {
     ScrollView,
     View,
     ViewProps,
-    StatusBar
+    StatusBar,
+    ScrollViewProps
 } from 'react-native';
 
 // @ts-ignore
@@ -26,11 +27,7 @@ const Wrapper = ({ children }: { children?: React.ReactNode }) => (
     </>
 );
 
-/**
- * Containers
- */
-
-type ViewContainerProps = ViewProps & {
+type Container = {
     children?: React.ReactNode,
 
     /**
@@ -39,6 +36,12 @@ type ViewContainerProps = ViewProps & {
      */
     isLoading?: boolean
 }
+
+/**
+ * Containers
+ */
+
+type ViewContainerProps = ViewProps & Container;
 
 /**
  * Creates a full-screen view with the container margins.
@@ -52,10 +55,12 @@ export const Container = (props: ViewContainerProps) => (
     </Wrapper>
 );
 
+type ScrollViewContainerProps = ScrollViewProps & Container;
+
 /**
  * Creates a full-screen scroll view with the container margins.
  */
-export const ScrollContainer = (props: ViewContainerProps) => (
+export const ScrollContainer = (props: ScrollViewContainerProps) => (
     <Wrapper>
         {props.isLoading === true && <LoadingView/>}
         <ScrollView showsVerticalScrollIndicator={false}
