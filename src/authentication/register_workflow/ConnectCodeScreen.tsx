@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Vibration } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Vibration, Share } from 'react-native';
 import Clipboard from "@react-native-community/clipboard";
 import { connect, ConnectedProps } from 'react-redux';
 import { ScrollContainer } from '../../views/View';
@@ -18,7 +18,6 @@ import { Button } from '../../forms/Button';
 import { resetNavigate } from '../../navigation/NavigationUtilities';
 
 // @ts-ignore
-import Share from "react-native-share";
 
 
 const mapState = (state: TwoState) => ({ user: selectUnconnectedUser(state.user) });
@@ -128,8 +127,7 @@ const ShareConnectCodeButton = ({ code }: { code: string }) => {
     const [shared, setShared] = useState(false);
 
     const share = () => {
-        Share.open({
-            title: 'Share via',
+        Share.share({
             message: code
         }).then(() => {
             setShared(true);
