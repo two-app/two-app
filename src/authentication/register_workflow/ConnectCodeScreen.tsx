@@ -126,8 +126,10 @@ const ShareConnectCodeButton = ({ code }: { code: string }) => {
     const share = () => {
         Share.share({
             message: code
-        }).then(() => {
-            setShared(true);
+        }).then(result => {
+            if (result.action === Share.sharedAction) {
+                setShared(true);
+            }
         }).catch(() => { });
     };
 
