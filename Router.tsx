@@ -30,7 +30,9 @@ export type RootStackParamList = {
 const Stack = createStackNavigator<RootStackParamList>();
 
 const AppStack = () => (
-    <Stack.Navigator initialRouteName="LoadingScreen" headerMode={'none'} screenOptions={{ cardStyle: { backgroundColor: "white" } }}>
+    <Stack.Navigator initialRouteName="LoadingScreen" headerMode={'none'}
+        screenOptions={{ cardStyle: { backgroundColor: "white" }, headerShown: false }}
+    >
         <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
         <Stack.Screen name="LogoutScreen" component={LogoutScreen} />
         <Stack.Screen name="LoginScreen" component={LoginScreen} />

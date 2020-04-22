@@ -36,7 +36,7 @@ const formatMemory = (memory: Memory): Memory => {
     return memory;
 };
 
-const formatFileKey = (fileKey: string): string => `http://localhost:4572/memory-content/${fileKey}`;
+const formatFileKey = (fileKey: string): string => `http://192.168.0.22:4572/memory-content/${fileKey}`;
 
 type PostMemoryResponse = {
     memoryId: number

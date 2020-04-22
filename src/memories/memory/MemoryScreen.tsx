@@ -103,9 +103,4 @@ const EmptyItem = () => (
     <View style={{ flex: 1, aspectRatio: 1, margin: 5 }}></View>
 )
 
-MemoryScreen.navigationOptions = {
-    title: 'Memory',
-    header: null
-};
-
 export { MemoryScreen };

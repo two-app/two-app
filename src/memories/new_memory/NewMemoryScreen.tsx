@@ -61,9 +61,4 @@ const NewMemoryScreen = ({navigation}: NewMemoryScreenProps) => {
     );
 };
 
-NewMemoryScreen.navigationOptions = {
-    title: 'New Memory',
-    header: null
-};
-
 export {NewMemoryScreen};

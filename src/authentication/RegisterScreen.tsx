@@ -63,9 +63,4 @@ const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
     );
 };
 
-RegisterScreen.navigationOptions = {
-    title: 'Sign In',
-    header: null
-};
-
 export default RegisterScreen;
