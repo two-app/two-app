@@ -35,11 +35,11 @@ type ButtonProps = {
  */
 export const Button = ({ text, onClick, buttonStyle, pressedButtonStyle }: ButtonProps) => {
   const [isPressed, setPressed] = useState(false);
-  const combinedButtonStyle = {...styles.button, backgroundColor: buttonStyle.backgroundColor};
-  const combinedPressedButtonStyle = {...pressedStyles.button, backgroundColor: pressedButtonStyle.backgroundColor};
+  const combinedButtonStyle = { ...styles.button, backgroundColor: buttonStyle.backgroundColor };
+  const combinedPressedButtonStyle = { ...pressedStyles.button, backgroundColor: pressedButtonStyle.backgroundColor };
 
-  const combinedTextStyle = {...styles.text, color: buttonStyle.textColor};
-  const combinedPressedTextStyle = {...styles.text, color: pressedButtonStyle.textColor};
+  const combinedTextStyle = { ...styles.text, color: buttonStyle.textColor };
+  const combinedPressedTextStyle = { ...styles.text, color: pressedButtonStyle.textColor };
 
   const viewStyle = isPressed ? combinedPressedButtonStyle : combinedButtonStyle;
   const textStyle = isPressed ? combinedPressedTextStyle : combinedTextStyle;

@@ -57,6 +57,8 @@ const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
                     <Text style={{ fontWeight: "bold", color: Colors.DARK }}>Sign In</Text>
                 </TouchableOpacity>
             </View>
+
+            <View style={{marginBottom: 40}}/>
         </WrapperContainer>
     );
 };
