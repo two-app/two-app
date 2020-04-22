@@ -16,7 +16,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../Router';
 import { Button } from '../../forms/Button';
 import { resetNavigate } from '../../navigation/NavigationUtilities';
-import { Touchable } from '../../forms/touchable/Touchable';
 
 
 const mapState = (state: TwoState) => ({ user: selectUnconnectedUser(state.user) });
@@ -53,7 +52,7 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
                 The sign-up process is almost complete. Once your partner has registered, send them your code!
             </Text>
 
-            <CopyButton code={user.connectCode}/>
+            <CopyConnectCodeButton code={user.connectCode}/>
 
             <Text style={{ ...styles.subheading, marginTop: 20 }}>Or, enter your partners code...</Text>
             <View style={styles.codeInputContainer}>
@@ -81,7 +80,7 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
     );
 };
 
-const CopyButton = ({ code }: { code: string }) => {
+const CopyConnectCodeButton = ({ code }: { code: string }) => {
     const [copied, setCopied] = useState(false);
 
     const onCopy = () => {

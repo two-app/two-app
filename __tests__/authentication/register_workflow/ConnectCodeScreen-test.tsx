@@ -1,5 +1,4 @@
 import 'react-native';
-import { Clipboard } from 'react-native';
 import React from 'react';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
@@ -19,12 +18,6 @@ describe('ConnectCodeScreen', () => {
             storeUser={jest.fn()}
             user={tb.user} />
     )).toMatchSnapshot());
-
-    describe('Tapping the Connect Code', () => {
-        beforeEach(() => tb.clickCopyToClipboard());
-
-        test('puts code in clipboard', () => expect(tb.clipboardSetStringFn).toHaveBeenCalledWith(tb.user.connectCode));
-    });
 
     describe('Clicking the logout button', () => {
         test('it should navigate to the LogoutScreen', () => {
@@ -114,7 +107,6 @@ describe('ConnectCodeScreen', () => {
 
 class ConnectCodeScreenTestBed {
     user: UnconnectedUser = { uid: 12, connectCode: 'abcdef' };
-    clipboardSetStringFn = jest.fn();
     setTokensFn = jest.fn();
     storeUserFn = jest.fn();
     dispatchFn = jest.fn();
@@ -126,10 +118,6 @@ class ConnectCodeScreenTestBed {
             navigation={{ dispatch: this.dispatchFn } as any}
         />
     );
-
-    constructor() {
-        Clipboard.setString = this.clipboardSetStringFn;
-    }
 
     clickCopyToClipboard = () => this.wrapper.find('TouchableOpacity').prop<() => void>('onPress')();
     setPartnerCodeInput = (v: string) => this.wrapper.find('Input').prop<(v: string) => void>('onChange')(v);
