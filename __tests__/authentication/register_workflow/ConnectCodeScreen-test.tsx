@@ -1,12 +1,12 @@
 import 'react-native';
-import {Clipboard} from 'react-native';
+import { Clipboard } from 'react-native';
 import React from 'react';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
-import {shallow} from 'enzyme';
-import {UnconnectedUser} from '../../../src/authentication/UserModel';
-import {ConnectCodeScreen} from '../../../src/authentication/register_workflow/ConnectCodeScreen';
-import AuthenticationService, {UserResponse} from '../../../src/authentication/AuthenticationService';
+import { shallow } from 'enzyme';
+import { UnconnectedUser } from '../../../src/authentication/UserModel';
+import { ConnectCodeScreen } from '../../../src/authentication/register_workflow/ConnectCodeScreen';
+import AuthenticationService, { UserResponse } from '../../../src/authentication/AuthenticationService';
 import { CommonActions } from '@react-navigation/native';
 
 describe('ConnectCodeScreen', () => {
@@ -15,15 +15,23 @@ describe('ConnectCodeScreen', () => {
 
     test('should maintain snapshot', () => expect(renderer.create(
         <ConnectCodeScreen navigation={{} as any}
-                           storeTokens={jest.fn()}
-                           storeUser={jest.fn()}
-                           user={tb.user}/>
+            storeTokens={jest.fn()}
+            storeUser={jest.fn()}
+            user={tb.user} />
     )).toMatchSnapshot());
 
     describe('Tapping the Connect Code', () => {
         beforeEach(() => tb.clickCopyToClipboard());
 
         test('puts code in clipboard', () => expect(tb.clipboardSetStringFn).toHaveBeenCalledWith(tb.user.connectCode));
+    });
+
+    describe('Clicking the logout button', () => {
+        test('it should navigate to the LogoutScreen', () => {
+            tb.clickLogout();
+
+            expect(tb.dispatchFn).toHaveBeenCalledTimes(1);
+        });
     });
 
     describe('By Default', () => {
@@ -60,8 +68,8 @@ describe('ConnectCodeScreen', () => {
 
         describe('On successful connect', () => {
             const response: UserResponse = {
-                user: {uid: 1, pid: 2, cid: 3},
-                tokens: {accessToken: 'testAccess', refreshToken: 'testRefresh'}
+                user: { uid: 1, pid: 2, cid: 3 },
+                tokens: { accessToken: 'testAccess', refreshToken: 'testRefresh' }
             };
 
             beforeEach(() => {
@@ -70,12 +78,12 @@ describe('ConnectCodeScreen', () => {
             });
 
             test('stores user in redux', done => setImmediate(() => {
-                expect(tb.storeUserFn).toHaveBeenCalledWith({...response.user});
+                expect(tb.storeUserFn).toHaveBeenCalledWith({ ...response.user });
                 done();
             }));
 
             test('stores tokens in redux', done => setImmediate(() => {
-                expect(tb.setTokensFn).toHaveBeenCalledWith({...response.tokens});
+                expect(tb.setTokensFn).toHaveBeenCalledWith({ ...response.tokens });
                 done();
             }));
 
@@ -83,7 +91,7 @@ describe('ConnectCodeScreen', () => {
                 expect(tb.dispatchFn).toHaveBeenCalledWith(
                     CommonActions.reset({
                         index: 0,
-                        routes: [{name: 'HomeScreen'}]
+                        routes: [{ name: 'HomeScreen' }]
                     })
                 );
                 done();
@@ -105,7 +113,7 @@ describe('ConnectCodeScreen', () => {
 });
 
 class ConnectCodeScreenTestBed {
-    user: UnconnectedUser = {uid: 12, connectCode: 'abcdef'};
+    user: UnconnectedUser = { uid: 12, connectCode: 'abcdef' };
     clipboardSetStringFn = jest.fn();
     setTokensFn = jest.fn();
     storeUserFn = jest.fn();
@@ -113,10 +121,11 @@ class ConnectCodeScreenTestBed {
 
     wrapper = shallow(
         <ConnectCodeScreen user={this.user}
-                           storeTokens={this.setTokensFn}
-                           storeUser={this.storeUserFn}
-                           navigation={{dispatch: this.dispatchFn} as any}
-        />);
+            storeTokens={this.setTokensFn}
+            storeUser={this.storeUserFn}
+            navigation={{ dispatch: this.dispatchFn } as any}
+        />
+    );
 
     constructor() {
         Clipboard.setString = this.clipboardSetStringFn;
@@ -128,6 +137,7 @@ class ConnectCodeScreenTestBed {
     isSubmitButtonDisabled = () => this.wrapper.find('SubmitButton').prop<boolean>('disabled');
     clickSubmit = () => this.wrapper.find('SubmitButton').prop<() => void>('onSubmit')();
     getErrorText = () => this.wrapper.find('Text[data-testid=\'error\']').render().text();
+    clickLogout = () => this.wrapper.find('Button[data-testid=\'logout-button\']').prop<() => void>("onClick")();
 
     whenConnectResolve = (userResponse: UserResponse) => {
         AuthenticationService.connectToPartner = jest.fn().mockResolvedValue(userResponse);

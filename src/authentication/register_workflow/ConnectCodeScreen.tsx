@@ -15,6 +15,8 @@ import { storeTokens } from '../store';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../Router';
 import { CommonActions } from '@react-navigation/native';
+import { Button } from '../../forms/Button';
+import { resetNavigate } from '../../navigation/NavigationUtilities';
 
 
 const mapState = (state: TwoState) => ({ user: selectUnconnectedUser(state.user) });
@@ -31,19 +33,12 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const navigateToHomeScreen = () => navigation.dispatch(
-        CommonActions.reset({
-            index: 0,
-            routes: [{ name: 'HomeScreen' }]
-        })
-    );
-
     const connectToPartner = (connectCode: string) => {
         setSubmitted(true);
         AuthenticationService.connectToPartner(connectCode).then((response: UserResponse) => {
             storeUser(response.user as User);
             storeTokens(response.tokens);
-            navigateToHomeScreen();
+            resetNavigate('HomeScreen', navigation);
         }).catch((e: Error) => {
             setSubmitted(false);
             setError(e.message);
@@ -78,15 +73,14 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
                     disabled={!isPartnerCodeValid(partnerConnectCode)} />
             </View>
 
-            {/* REMOVE THIS BEFORE MERGE */}
-            <TouchableOpacity onPress={() => navigation.dispatch(
-                CommonActions.reset({
-                    index: 0,
-                    routes: [{ name: 'LogoutScreen' }]
-                })
-            )}>
-                <Text>LOGOUT</Text>
-            </TouchableOpacity>
+            <View style={styles.logoutButtonContainer}>
+                <Button text="logout"
+                    onClick={() => resetNavigate('LogoutScreen', navigation)}
+                    data-testid="logout-button"
+                />
+            </View>
+
+            <View style={styles.footer} />
         </WrapperContainer>
     </>;
 };
@@ -130,6 +124,13 @@ const styles = StyleSheet.create({
     error: {
         color: Colors.DARK_SALMON,
         marginTop: 10
+    },
+    logoutButtonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+    footer: {
+        marginBottom: 40
     }
 });
 
