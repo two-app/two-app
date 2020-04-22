@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Clipboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect, ConnectedProps } from 'react-redux';
-import { WrapperContainer } from '../../views/View';
+import { ScrollContainer } from '../../views/View';
 import LogoHeader from '../LogoHeader';
 import { User } from '../UserModel';
 import Colors from '../../Colors';
@@ -47,7 +47,7 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
 
     return <>
         {submitted && <LoadingView />}
-        <WrapperContainer>
+        <ScrollContainer>
             <LogoHeader heading="Connect Your Partner" />
             <Text style={styles.subheading}>Thanks for joining us!</Text>
             <Text style={styles.paragraph}>
@@ -81,7 +81,7 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
             </View>
 
             <View style={styles.footer} />
-        </WrapperContainer>
+        </ScrollContainer>
     </>;
 };
 

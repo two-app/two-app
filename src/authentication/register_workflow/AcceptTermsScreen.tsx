@@ -3,7 +3,7 @@ import {StyleSheet, Text} from 'react-native';
 import AcceptBox from './AcceptSwitch';
 import LogoHeader from '../LogoHeader';
 import SubmitButton from '../../forms/SubmitButton';
-import {WrapperContainer} from '../../views/View';
+import {ScrollContainer} from '../../views/View';
 import Colors from '../../Colors';
 import {connect, ConnectedProps} from 'react-redux';
 import AuthenticationService, {UserResponse} from '../AuthenticationService';
@@ -51,7 +51,7 @@ const AcceptTermsScreen = ({navigation, route, storeUnconnectedUser, storeTokens
 
     return <>
         {submitted && <LoadingView/>}
-        <WrapperContainer>
+        <ScrollContainer>
             <LogoHeader heading="Terms & Conditions"/>
             <AcceptBox onEmit={acceptedTerms => setUserRegistration({...userRegistration, acceptedTerms})}
                        data-testid="terms"
@@ -70,7 +70,7 @@ const AcceptTermsScreen = ({navigation, route, storeUnconnectedUser, storeTokens
 
             <SubmitButton onSubmit={() => setSubmitted(true)} text="Accept" disabled={!validAgreedState}/>
             {registrationError && <Text style={styles.error} data-testid="error-message">{registrationError}</Text>}
-        </WrapperContainer>
+        </ScrollContainer>
     </>;
 };
 

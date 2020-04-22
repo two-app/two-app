@@ -9,9 +9,11 @@ import {
 // @ts-ignore
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import LoadingView from './LoadingView';
 
 /**
  * Wrapper providing the status bar and safe area view.
+ * Consumes the full screen.
  */
 const Wrapper = ({ children }: { children?: React.ReactNode }) => (
     <>
@@ -24,32 +26,41 @@ const Wrapper = ({ children }: { children?: React.ReactNode }) => (
     </>
 );
 
+/**
+ * Containers
+ */
+
 type ViewContainerProps = ViewProps & {
-    children?: React.ReactNode
+    children?: React.ReactNode,
+
+    /**
+     * Creates a full-screen opaque overlay with a loading spinner in the
+     * centre. The view underneath the screen is not interactive.
+     */
+    isLoading?: boolean
 }
 
+/**
+ * Creates a full-screen view with the container margins.
+ */
 export const Container = (props: ViewContainerProps) => (
     <Wrapper>
+        {props.isLoading === true && <LoadingView/>}
         <View {...props} style={{ flex: 1, marginLeft: '5%', marginRight: '5%' }}>
             {props.children}
         </View>
     </Wrapper>
 );
 
-const ScrollContainer = (props: ViewContainerProps) => (
-    <ScrollView showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ flexGrow: 1, marginLeft: '5%', marginRight: '5%' }}
-        {...props}>
-        {props.children}
-    </ScrollView>
-);
-
-const WrapperContainer = ({ children }: any) => (
+/**
+ * Creates a full-screen scroll view with the container margins.
+ */
+export const ScrollContainer = (props: ViewContainerProps) => (
     <Wrapper>
-        <ScrollContainer>
-            {children}
-        </ScrollContainer>
+        <ScrollView showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 1, marginLeft: '5%', marginRight: '5%' }}
+            {...props}>
+            {props.children}
+        </ScrollView>
     </Wrapper>
 );
-
-export { Wrapper, WrapperContainer };

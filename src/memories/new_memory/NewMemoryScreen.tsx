@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {WrapperContainer} from '../../views/View';
+import {ScrollContainer} from '../../views/View';
 import {Image as ImageType} from 'react-native-image-crop-picker';
 import {Heading} from '../../home/Heading';
 import SubmitButton from '../../forms/SubmitButton';
@@ -44,7 +44,7 @@ const NewMemoryScreen = ({navigation}: NewMemoryScreenProps) => {
     });
 
     return (
-        <WrapperContainer>
+        <ScrollContainer>
             <Heading>New Memory</Heading>
 
             <TitleInput setTitle={setTitle}/>
@@ -57,7 +57,7 @@ const NewMemoryScreen = ({navigation}: NewMemoryScreenProps) => {
             {formState.content.length > 0 && <ContentPreview content={formState.content}/>}
 
             <SubmitButton onSubmit={uploadMemory} text="Create Memory" disabled={!isMemoryUploadValid(formState)}/>
-        </WrapperContainer>
+        </ScrollContainer>
     );
 };
 
