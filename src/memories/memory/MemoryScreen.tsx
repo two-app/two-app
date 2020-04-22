@@ -4,7 +4,7 @@ import { Memory, Content } from '../MemoryModels';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../Router';
 import { RouteProp } from '@react-navigation/native';
-import { ContainerView } from '../../views/View';
+import { Container } from '../../views/View';
 // @ts-ignore
 import { createImageProgress } from 'react-native-image-progress';
 // @ts-ignore
@@ -44,7 +44,7 @@ const MemoryScreen = ({ route }: MemoryScreenProps) => {
     const paddedArray = content.concat(new Array(fill).fill({}))
 
     return (
-        <ContainerView>
+        <Container>
             <ImageView
                 images={content.map(c => ({ uri: c.fileKey }))}
                 // @ts-ignore
@@ -78,7 +78,7 @@ const MemoryScreen = ({ route }: MemoryScreenProps) => {
                 }
                 showsVerticalScrollIndicator={false}
             />
-        </ContainerView>
+        </Container>
     )
 };
 

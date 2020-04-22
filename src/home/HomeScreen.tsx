@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {NoScrollWrapperContainer} from '../views/View';
+import {Container} from '../views/View';
 import {Text, TouchableOpacity} from 'react-native';
 import {User} from '../authentication/UserModel';
 import {Memories} from '../memories/Memories';
@@ -21,10 +21,10 @@ const HomeScreen = ({navigation, user}: HomeScreenProps) => {
         })
     );
 
-    return <NoScrollWrapperContainer>
+    return <Container>
         <Memories/>
         <TouchableOpacity onPress={logout}><Text>Logout</Text></TouchableOpacity>
-    </NoScrollWrapperContainer>;
+    </Container>;
 };
 
 const mapStateToProps = (state: any) => ({user: state['user']});
