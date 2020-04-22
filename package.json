@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "android-shake": "adb shell input keyevent 82"
   },
   "dependencies": {
     "@react-native-community/art": "^1.2.0",
@@ -44,6 +45,7 @@
     "react-native-safe-area-context": "^0.7.3",
     "react-native-safe-area-view": "^1.1.0",
     "react-native-screens": "^2.5.0",
+    "react-native-share": "^3.2.0",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation-transitions": "^1.0.12",
     "react-redux": "^7.1.3",

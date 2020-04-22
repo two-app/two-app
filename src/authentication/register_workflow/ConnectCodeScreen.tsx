@@ -17,6 +17,9 @@ import { RootStackParamList } from '../../../Router';
 import { Button } from '../../forms/Button';
 import { resetNavigate } from '../../navigation/NavigationUtilities';
 
+// @ts-ignore
+import Share from "react-native-share";
+
 
 const mapState = (state: TwoState) => ({ user: selectUnconnectedUser(state.user) });
 const mapDispatch = { storeUser, storeTokens };
@@ -52,7 +55,9 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
                 The sign-up process is almost complete. Once your partner has registered, send them your code!
             </Text>
 
-            <CopyConnectCodeButton code={user.connectCode}/>
+            <CopyConnectCodeButton code={user.connectCode} />
+
+            <ShareConnectCodeButton code={user.connectCode} />
 
             <Text style={{ ...styles.subheading, marginTop: 20 }}>Or, enter your partners code...</Text>
             <View style={styles.codeInputContainer}>
@@ -70,7 +75,7 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
 
             <View style={styles.logoutButtonContainer}>
                 <Button text="logout"
-                    onClick={() => resetNavigate('LogoutScreen', navigation)}
+                    onPress={() => resetNavigate('LogoutScreen', navigation)}
                     data-testid="logout-button"
                 />
             </View>
@@ -91,7 +96,7 @@ const CopyConnectCodeButton = ({ code }: { code: string }) => {
 
     const buttonStyle = {
         ...styles.copyButton,
-        backgroundColor: (copied ? '#3AB795' : Colors.LIGHT)
+        backgroundColor: (copied ? Colors.VALID_GREEN : Colors.LIGHT)
     };
 
     const textStyle = {
@@ -111,13 +116,46 @@ const CopyConnectCodeButton = ({ code }: { code: string }) => {
             <Text style={codeStyle}>{code}</Text>
 
             {copied ?
-            <Text style={{ ...textStyle, marginTop: 10 }}>Copied!</Text>
-            :
-            <Text style={{ ...textStyle, marginTop: 10 }}>Tap to Copy</Text>
+                <Text style={{ ...textStyle, marginTop: 10 }}>Copied!</Text>
+                :
+                <Text style={{ ...textStyle, marginTop: 10 }}>Tap to Copy</Text>
             }
         </TouchableOpacity>
     );
 };
+
+const ShareConnectCodeButton = ({ code }: { code: string }) => {
+    const [shared, setShared] = useState(false);
+
+    const share = () => {
+        Share.open({
+            title: 'Share via',
+            message: code
+        }).then(() => {
+            setShared(true);
+        }).catch(() => { });
+    };
+
+    const shareButton = (
+        <Button onPress={share} text='Share!'
+            buttonStyle={{ backgroundColor: 'white', textColor: Colors.DARK }}
+            pressedButtonStyle={{ backgroundColor: '#fafafa', textColor: Colors.VERY_DARK }}
+        />
+    )
+
+    const sharedButton = (
+        <Button onPress={share} text='Shared!'
+            buttonStyle={{ backgroundColor: Colors.VALID_GREEN, textColor: 'white' }}
+            pressedButtonStyle={{ backgroundColor: Colors.VALID_GREEN_DARK, textColor: 'white' }}
+        />
+    );
+
+    return (
+        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 15 }}>
+            {shared ? sharedButton : shareButton}
+        </View>
+    );
+}
 
 const styles = StyleSheet.create({
     subheading: {

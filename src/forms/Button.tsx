@@ -24,7 +24,7 @@ const defaultPressedButtonStyle: PressedButtonStyle = {
 
 type ButtonProps = {
   text: string,
-  onClick: () => void,
+  onPress: () => void,
   buttonStyle: ButtonStyle,
   pressedButtonStyle: PressedButtonStyle
 }
@@ -33,10 +33,11 @@ type ButtonProps = {
  * Creates a button with shadow depth and colour feedback, customisable by the
  * buttonStyle and pressedButtonStyle properties.
  */
-export const Button = ({ text, onClick, buttonStyle, pressedButtonStyle }: ButtonProps) => {
+export const Button = ({ text, onPress, buttonStyle, pressedButtonStyle }: ButtonProps) => {
   const [isPressed, setPressed] = useState(false);
+  
   const combinedButtonStyle = { ...styles.button, backgroundColor: buttonStyle.backgroundColor };
-  const combinedPressedButtonStyle = { ...pressedStyles.button, backgroundColor: pressedButtonStyle.backgroundColor };
+  const combinedPressedButtonStyle = { ...styles.button, backgroundColor: pressedButtonStyle.backgroundColor };
 
   const combinedTextStyle = { ...styles.text, color: buttonStyle.textColor };
   const combinedPressedTextStyle = { ...styles.text, color: pressedButtonStyle.textColor };
@@ -51,7 +52,7 @@ export const Button = ({ text, onClick, buttonStyle, pressedButtonStyle }: Butto
         Vibration.vibrate(5)
       }}
       onPressOut={() => setPressed(false)}
-      onPress={onClick}>
+      onPress={onPress}>
       <View style={viewStyle}>
         <Text style={textStyle}>{text}</Text>
       </View>
@@ -89,21 +90,4 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: 'Montserrat-SemiBold'
   }
-});
-
-const pressedStyles = StyleSheet.create({
-  button: {
-    ...styles.button,
-    ...Platform.select({
-      ios: {
-        shadowColor: Colors.DARK,
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.4,
-        shadowRadius: 3
-      },
-      android: {
-        elevation: 5
-      }
-    })
-  },
 });
