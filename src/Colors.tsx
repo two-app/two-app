@@ -6,7 +6,8 @@ const Colors = {
     REGULAR: "rgb(100, 100, 100)",
     DARK: "rgb(37, 37, 37)",
     VERY_DARK: "rgb(21, 21, 21)",
-    VALID_GREEN: "rgba(52, 199, 89, 1)"
+    VALID_GREEN: "#3AB795",
+    VALID_GREEN_DARK: "#36a88a"
 };
 
 export default Colors;

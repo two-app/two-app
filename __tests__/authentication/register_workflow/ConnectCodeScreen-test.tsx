@@ -125,7 +125,7 @@ class ConnectCodeScreenTestBed {
     isSubmitButtonDisabled = () => this.wrapper.find('SubmitButton').prop<boolean>('disabled');
     clickSubmit = () => this.wrapper.find('SubmitButton').prop<() => void>('onSubmit')();
     getErrorText = () => this.wrapper.find('Text[data-testid=\'error\']').render().text();
-    clickLogout = () => this.wrapper.find('Button[data-testid=\'logout-button\']').prop<() => void>("onClick")();
+    clickLogout = () => this.wrapper.find('Button[data-testid=\'logout-button\']').prop<() => void>("onPress")();
 
     whenConnectResolve = (userResponse: UserResponse) => {
         AuthenticationService.connectToPartner = jest.fn().mockResolvedValue(userResponse);
