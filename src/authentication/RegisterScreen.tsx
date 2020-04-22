@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Input from '../forms/Input';
-import { WrapperContainer } from '../views/View';
+import { ScrollContainer } from '../views/View';
 import LogoHeader from './LogoHeader';
 import SubmitButton from '../forms/SubmitButton';
 import UserRegistrationModel, { UserRegistration } from './register_workflow/UserRegistrationModel';
@@ -19,7 +19,7 @@ const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
     const [userRegistration, setUserRegistration] = useState(new UserRegistration());
 
     return (
-        <WrapperContainer>
+        <ScrollContainer>
             <LogoHeader heading="Create Account" />
 
             <Input attributes={{ placeholder: 'First Name', autoCompleteType: 'name' }}
@@ -59,7 +59,7 @@ const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
             </View>
 
             <View style={{marginBottom: 40}}/>
-        </WrapperContainer>
+        </ScrollContainer>
     );
 };
 

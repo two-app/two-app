@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Text} from 'react-native';
 import {connect, ConnectedProps} from 'react-redux';
-import {WrapperContainer} from './views/View';
+import {ScrollContainer} from './views/View';
 import {clearState, persistor, TwoState} from './state/reducers';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../Router';
@@ -33,9 +33,9 @@ const LoadingScreen = ({navigation, user, auth, clearState}: LoadingScreenProps)
         }
     }, []);
 
-    return <WrapperContainer>
+    return <ScrollContainer>
         <Text>Loading...</Text>
-    </WrapperContainer>;
+    </ScrollContainer>;
 };
 
 export default connector(LoadingScreen);

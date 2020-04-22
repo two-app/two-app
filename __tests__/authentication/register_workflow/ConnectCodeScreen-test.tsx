@@ -63,7 +63,7 @@ describe('ConnectCodeScreen', () => {
 
         test('displays loading view on submit', () => {
             tb.clickSubmit();
-            expect(tb.wrapper.exists('LoadingView')).toBe(true);
+            expect(tb.wrapper.find("ScrollContainer").prop<boolean>("isLoading")).toBe(true);
         });
 
         describe('On successful connect', () => {

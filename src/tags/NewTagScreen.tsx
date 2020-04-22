@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, StyleSheet, View } from 'react-native';
-import { WrapperContainer } from '../views/View';
+import { ScrollContainer } from '../views/View';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../Router';
 import { RouteProp } from '@react-navigation/native';
@@ -35,7 +35,7 @@ export const NewTagScreen = ({ navigation, route }: NewTagScreenProps) => {
   }
 
   return (
-    <WrapperContainer>
+    <ScrollContainer>
       <Heading>Create a new Tag</Heading>
       <Text style={s.paragraph}>Tags are used to group memories.</Text>
 
@@ -60,7 +60,7 @@ export const NewTagScreen = ({ navigation, route }: NewTagScreenProps) => {
       }
 
       <SubmitButton onSubmit={createNewTag} text="Create Tag" disabled={name == null} />
-    </WrapperContainer >
+    </ScrollContainer >
   )
 };
 

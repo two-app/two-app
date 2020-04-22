@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, Platform, TouchableWithoutFeedback, View } from "react-native";
+import { Text, StyleSheet, Platform, TouchableWithoutFeedback, View, Vibration } from "react-native";
 import Colors from "../Colors";
 
 type ButtonStyle = {
@@ -46,7 +46,10 @@ export const Button = ({ text, onClick, buttonStyle, pressedButtonStyle }: Butto
 
   return (
     <TouchableWithoutFeedback
-      onPressIn={() => setPressed(true)}
+      onPressIn={() => {
+        setPressed(true)
+        Vibration.vibrate(5)
+      }}
       onPressOut={() => setPressed(false)}
       onPress={onClick}>
       <View style={viewStyle}>

@@ -76,7 +76,7 @@ describe('AcceptTermsScreen', () => {
         }));
 
         test('should display overlay with loading indicator', () => expect(
-            tb.wrapper.exists('LoadingView')
+            tb.wrapper.find("ScrollContainer").prop<boolean>("isLoading")
         ).toBe(true));
 
         test('should display error if auth service throws in promise', done => {

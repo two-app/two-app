@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
-import { WrapperContainer } from "../views/View";
+import { ScrollContainer } from "../views/View";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../Router';
 import Colors from "../Colors";
@@ -49,9 +49,8 @@ const LoginScreen = ({ navigation, storeUser, storeUnconnectedUser, storeTokens 
         });
     }
 
-    return (<>
-        {submitted && <LoadingView />}
-        <WrapperContainer>
+    return (
+        <ScrollContainer isLoading={submitted}>
             <LogoHeader heading="Sign In" />
 
             <Input attributes={{ placeholder: 'you@email.com', autoCompleteType: 'email', autoCapitalize: 'none' }}
@@ -83,8 +82,8 @@ const LoginScreen = ({ navigation, storeUser, storeUnconnectedUser, storeTokens 
                     <Text style={{ fontWeight: "bold", color: Colors.DARK }}>Create Account</Text>
                 </TouchableOpacity>
             </View>
-        </WrapperContainer>
-    </>);
+        </ScrollContainer>
+    );
 };
 
 export default connector(LoginScreen);
