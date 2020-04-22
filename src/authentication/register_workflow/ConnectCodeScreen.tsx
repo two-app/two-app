@@ -17,9 +17,6 @@ import { RootStackParamList } from '../../../Router';
 import { Button } from '../../forms/Button';
 import { resetNavigate } from '../../navigation/NavigationUtilities';
 
-// @ts-ignore
-
-
 const mapState = (state: TwoState) => ({ user: selectUnconnectedUser(state.user) });
 const mapDispatch = { storeUser, storeTokens };
 const connector = connect(mapState, mapDispatch);
