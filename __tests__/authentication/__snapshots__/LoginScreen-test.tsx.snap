@@ -3,15 +3,24 @@
 exports[`LoginScreen should maintain snapshot 1`] = `
 <RCTSafeAreaView
   emulateUnlessSupported={true}
+  style={
+    Object {
+      "flexGrow": 1,
+    }
+  }
 >
   <RCTScrollView
+    contentContainerStyle={
+      Object {
+        "flexGrow": 1,
+      }
+    }
     showsVerticalScrollIndicator={false}
   >
     <View>
       <View
         style={
           Object {
-            "flex": 1,
             "marginLeft": "5%",
             "marginRight": "5%",
           }

@@ -54,8 +54,8 @@ describe('RegisterScreen', () => {
         });
 
         describe('Password', () => {
-            test('invalid with < 3 characters', () => tb.expectInput('Password', 'abc').toBe(false));
-            test('valid with > 3 characters', () => tb.expectInput('Password', 'abcd').toBe(true));
+            test('invalid with < 6 characters', () => tb.expectInput('Password', 'pass').toBe(false));
+            test('valid with > 6 characters', () => tb.expectInput('Password', 'password').toBe(true));
             test('valid with secure password', () => tb.expectInput('Password', 'P?4Ot2ONz:IJO&%U').toBe(true));
         });
 
