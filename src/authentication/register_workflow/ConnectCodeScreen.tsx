@@ -43,17 +43,15 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
         });
     };
 
-    const failedRequest = () => {
-        setRefreshing(false);
-        setError("Something went wrong on our end.");
-    };
-
     const refresh = () => {
         setError(null);
         setRefreshing(true);
         ConnectService.checkConnection().then(() => {
             setRefreshing(false);
-        }).catch(failedRequest);
+        }).catch(() => {
+            setRefreshing(false);
+            setError("Something went wrong on our end.");
+        });
     };
 
     return (
