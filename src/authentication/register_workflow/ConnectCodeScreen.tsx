@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Clipboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Vibration } from 'react-native';
+import Clipboard from "@react-native-community/clipboard";
 import { connect, ConnectedProps } from 'react-redux';
 import { ScrollContainer } from '../../views/View';
 import LogoHeader from '../LogoHeader';
@@ -7,16 +8,15 @@ import { User } from '../UserModel';
 import Colors from '../../Colors';
 import Input from '../../forms/Input';
 import SubmitButton from '../../forms/SubmitButton';
-import LoadingView from '../../views/LoadingView';
 import AuthenticationService, { UserResponse } from '../AuthenticationService';
 import { TwoState } from '../../state/reducers';
 import { selectUnconnectedUser, storeUser } from '../../user';
 import { storeTokens } from '../store';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../Router';
-import { CommonActions } from '@react-navigation/native';
 import { Button } from '../../forms/Button';
 import { resetNavigate } from '../../navigation/NavigationUtilities';
+import { Touchable } from '../../forms/touchable/Touchable';
 
 
 const mapState = (state: TwoState) => ({ user: selectUnconnectedUser(state.user) });
@@ -52,11 +52,8 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
             <Text style={styles.paragraph}>
                 The sign-up process is almost complete. Once your partner has registered, send them your code!
             </Text>
-            <TouchableOpacity style={styles.copyButton} onPress={() => Clipboard.setString(user.connectCode)}>
-                <Text style={{ ...styles.copyTip, marginBottom: 10 }}>Your Code</Text>
-                <Text style={styles.code}>{user.connectCode}</Text>
-                <Text style={{ ...styles.copyTip, marginTop: 10 }}>Tap to Copy</Text>
-            </TouchableOpacity>
+
+            <CopyButton code={user.connectCode}/>
 
             <Text style={{ ...styles.subheading, marginTop: 20 }}>Or, enter your partners code...</Text>
             <View style={styles.codeInputContainer}>
@@ -84,6 +81,45 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
     );
 };
 
+const CopyButton = ({ code }: { code: string }) => {
+    const [copied, setCopied] = useState(false);
+
+    const onCopy = () => {
+        Clipboard.setString(code);
+        Vibration.vibrate(5);
+        setCopied(true);
+    };
+
+    const buttonStyle = {
+        ...styles.copyButton,
+        backgroundColor: (copied ? '#3AB795' : Colors.LIGHT)
+    };
+
+    const textStyle = {
+        ...styles.copyTip,
+        color: (copied ? 'white' : Colors.DARK)
+    };
+
+    const codeStyle = {
+        ...styles.code,
+        color: (copied ? 'white' : Colors.VERY_DARK)
+    };
+
+    return (
+        <TouchableOpacity onPress={onCopy} style={buttonStyle}>
+            <Text style={{ ...textStyle, marginBottom: 10 }}>Your Code</Text>
+
+            <Text style={codeStyle}>{code}</Text>
+
+            {copied ?
+            <Text style={{ ...textStyle, marginTop: 10 }}>Copied!</Text>
+            :
+            <Text style={{ ...textStyle, marginTop: 10 }}>Tap to Copy</Text>
+            }
+        </TouchableOpacity>
+    );
+};
+
 const styles = StyleSheet.create({
     subheading: {
         marginTop: 20,
@@ -94,12 +130,10 @@ const styles = StyleSheet.create({
     },
     copyButton: {
         marginTop: 20,
-        backgroundColor: Colors.LIGHT,
         padding: 20
     },
     copyTip: {
-        fontWeight: '300',
-        color: Colors.DARK,
+        fontWeight: '500',
         textAlign: 'center'
     },
     code: {
