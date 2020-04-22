@@ -49,9 +49,8 @@ const LoginScreen = ({ navigation, storeUser, storeUnconnectedUser, storeTokens 
         });
     }
 
-    return (<>
-        {submitted && <LoadingView />}
-        <ScrollContainer>
+    return (
+        <ScrollContainer isLoading={submitted}>
             <LogoHeader heading="Sign In" />
 
             <Input attributes={{ placeholder: 'you@email.com', autoCompleteType: 'email', autoCapitalize: 'none' }}
@@ -84,7 +83,7 @@ const LoginScreen = ({ navigation, storeUser, storeUnconnectedUser, storeTokens 
                 </TouchableOpacity>
             </View>
         </ScrollContainer>
-    </>);
+    );
 };
 
 export default connector(LoginScreen);

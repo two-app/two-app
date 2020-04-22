@@ -45,9 +45,8 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
         });
     };
 
-    return <>
-        {submitted && <LoadingView />}
-        <ScrollContainer>
+    return (
+        <ScrollContainer isLoading={submitted}>
             <LogoHeader heading="Connect Your Partner" />
             <Text style={styles.subheading}>Thanks for joining us!</Text>
             <Text style={styles.paragraph}>
@@ -82,7 +81,7 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
 
             <View style={styles.footer} />
         </ScrollContainer>
-    </>;
+    );
 };
 
 const styles = StyleSheet.create({

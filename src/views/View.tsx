@@ -57,6 +57,7 @@ export const Container = (props: ViewContainerProps) => (
  */
 export const ScrollContainer = (props: ViewContainerProps) => (
     <Wrapper>
+        {props.isLoading === true && <LoadingView/>}
         <ScrollView showsVerticalScrollIndicator={false}
             contentContainerStyle={{ flexGrow: 1, marginLeft: '5%', marginRight: '5%' }}
             {...props}>

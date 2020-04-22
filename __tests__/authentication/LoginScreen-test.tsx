@@ -85,7 +85,7 @@ describe('LoginScreen', () => {
 
             tb.performLogin('user@two.com', 'testPassword');
 
-            expect(tb.wrapper.exists("LoadingView")).toBe(true);
+            expect(tb.wrapper.find("ScrollContainer").prop<boolean>("isLoading")).toBe(true);
         });
 
         describe('With Valid Response', () => {
