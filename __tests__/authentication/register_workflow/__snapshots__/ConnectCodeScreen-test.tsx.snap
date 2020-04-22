@@ -3,15 +3,24 @@
 exports[`ConnectCodeScreen should maintain snapshot 1`] = `
 <RCTSafeAreaView
   emulateUnlessSupported={true}
+  style={
+    Object {
+      "flexGrow": 1,
+    }
+  }
 >
   <RCTScrollView
+    contentContainerStyle={
+      Object {
+        "flexGrow": 1,
+      }
+    }
     showsVerticalScrollIndicator={false}
   >
     <View>
       <View
         style={
           Object {
-            "flex": 1,
             "marginLeft": "5%",
             "marginRight": "5%",
           }
@@ -178,6 +187,64 @@ exports[`ConnectCodeScreen should maintain snapshot 1`] = `
             </Text>
           </TouchableOpacity>
         </View>
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+              "justifyContent": "center",
+            }
+          }
+        >
+          <View
+            accessible={true}
+            focusable={true}
+            onClick={[Function]}
+            onResponderGrant={[Function]}
+            onResponderMove={[Function]}
+            onResponderRelease={[Function]}
+            onResponderTerminate={[Function]}
+            onResponderTerminationRequest={[Function]}
+            onStartShouldSetResponder={[Function]}
+            style={
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "rgb(37, 37, 37)",
+                "borderColor": "rgba(0, 0, 0, 0.2)",
+                "borderRadius": 90,
+                "borderWidth": 0.5,
+                "flexDirection": "row",
+                "justifyContent": "center",
+                "marginHorizontal": 3,
+                "padding": 12,
+                "shadowColor": "rgb(37, 37, 37)",
+                "shadowOffset": Object {
+                  "height": 2,
+                  "width": 0,
+                },
+                "shadowOpacity": 0.3,
+                "shadowRadius": 3,
+              }
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "color": "white",
+                  "fontFamily": "Montserrat-SemiBold",
+                }
+              }
+            >
+              logout
+            </Text>
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "marginBottom": 40,
+            }
+          }
+        />
       </View>
     </View>
   </RCTScrollView>

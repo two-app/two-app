@@ -47,8 +47,8 @@ describe('Form Validation Tests', () => {
     });
 
     describe('Password', () => {
-        test('invalid with < 3 characters', () => expectInput("Password", "abc").toBe(false));
-        test('valid with > 3 characters', () => expectInput("Password", "abcd").toBe(true));
+        test('invalid with < 6 characters', () => expectInput("Password", "pass").toBe(false));
+        test('valid with > 6 characters', () => expectInput("Password", "password").toBe(true));
         test('valid with secure password', () => expectInput("Password", "P?4Ot2ONz:IJO&%U").toBe(true));
     });
 

@@ -13,7 +13,7 @@ class UserRegistration {
 const isFirstNameValid = (firstName: string) => firstName != '' && firstName.length > 1;
 const isLastNameValid = (lastName: string) => lastName != '' && lastName.length > 1;
 const isEmailValid = (email: string) => email != '' && EmailValidator.validateEmail(email);
-const isPasswordValid = (password: string) => password != '' && password.length > 3;
+const isPasswordValid = (password: string) => password != '' && password.length >= 6;
 
 const isUserRegistrationValid = (ur: UserRegistration): boolean => (
     isFirstNameValid(ur.firstName) &&

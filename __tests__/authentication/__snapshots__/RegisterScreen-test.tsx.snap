@@ -1,17 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should maintain snapshot 1`] = `
+exports[`RegisterScreen should maintain snapshot 1`] = `
 <RCTSafeAreaView
   emulateUnlessSupported={true}
+  style={
+    Object {
+      "flexGrow": 1,
+    }
+  }
 >
   <RCTScrollView
+    contentContainerStyle={
+      Object {
+        "flexGrow": 1,
+      }
+    }
     showsVerticalScrollIndicator={false}
   >
     <View>
       <View
         style={
           Object {
-            "flex": 1,
             "marginLeft": "5%",
             "marginRight": "5%",
           }
@@ -41,7 +50,7 @@ exports[`should maintain snapshot 1`] = `
             }
           }
         >
-          Sign Up
+          Create Account
         </Text>
         <Text
           style={
@@ -214,6 +223,68 @@ exports[`should maintain snapshot 1`] = `
             Join Two
           </Text>
         </TouchableOpacity>
+        <View
+          style={
+            Object {
+              "flexDirection": "row",
+              "marginTop": 10,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "rgb(100, 100, 100)",
+              }
+            }
+          >
+            Already a member?
+          </Text>
+          <RNGestureHandlerButton
+            collapsable={false}
+            onGestureEvent={[Function]}
+            onGestureHandlerEvent={[Function]}
+            onGestureHandlerStateChange={[Function]}
+            onHandlerStateChange={[Function]}
+            rippleColor={0}
+            style={
+              Array [
+                Object {
+                  "overflow": "hidden",
+                },
+                undefined,
+              ]
+            }
+          >
+            <View
+              accessible={true}
+              style={
+                Object {
+                  "marginLeft": 5,
+                  "opacity": 1,
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "color": "rgb(37, 37, 37)",
+                    "fontWeight": "bold",
+                  }
+                }
+              >
+                Sign In
+              </Text>
+            </View>
+          </RNGestureHandlerButton>
+        </View>
+        <View
+          style={
+            Object {
+              "marginBottom": 40,
+            }
+          }
+        />
       </View>
     </View>
   </RCTScrollView>

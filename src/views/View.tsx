@@ -27,7 +27,7 @@ const DismissKeyboardView = DismissKeyboardHOC(View);
 const Wrapper = ({children}: { children: any }) => (
     <>
         <StatusBar/>
-        <SafeAreaView>
+        <SafeAreaView style={{flexGrow: 1}}>
             {children}
         </SafeAreaView>
     </>
@@ -61,8 +61,8 @@ export const ContainerView = (props: ViewContainerProps) => (
 );
 
 const Container = ({children}: { children: any }) => (
-    <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{flex: 1, marginLeft: '5%', marginRight: '5%'}}>
+    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
+        <View style={{marginLeft: '5%', marginRight: '5%'}}>
             {children}
         </View>
     </ScrollView>

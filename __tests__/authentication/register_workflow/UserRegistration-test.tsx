@@ -21,6 +21,6 @@ describe('isEmailValid', () => {
 });
 
 describe('isPasswordValid', () => {
-    test('it should fail for < 3 characters', () => expect(UserRegistrationModel.isPasswordValid('pa')).toBe(false));
-    test('it should pass for > 3 characters', () => expect(UserRegistrationModel.isPasswordValid('pass')).toBe(true));
+    test('it should fail for < 6 characters', () => expect(UserRegistrationModel.isPasswordValid('pass')).toBe(false));
+    test('it should pass for > 6 characters', () => expect(UserRegistrationModel.isPasswordValid('password')).toBe(true));
 });
