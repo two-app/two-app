@@ -1,88 +1,55 @@
 import React from 'react';
 import {
-    Keyboard,
-    KeyboardAvoidingView,
-    SafeAreaView,
-    ScrollView, ScrollViewProps,
-    StatusBar,
-    TouchableWithoutFeedback,
+    ScrollView,
     View,
-    ViewProps
+    ViewProps,
+    StatusBar
 } from 'react-native';
 
 // @ts-ignore
-const DismissKeyboardHOC = (Comp) => {
-    // @ts-ignore
-    return ({children, ...props}) => (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <Comp {...props}>
-                {children}
-            </Comp>
-        </TouchableWithoutFeedback>
-    );
-};
-
-const DismissKeyboardView = DismissKeyboardHOC(View);
-
-const Wrapper = ({children}: { children: any }) => (
-    <>
-        <StatusBar/>
-        <SafeAreaView style={{flexGrow: 1}}>
-            {children}
-        </SafeAreaView>
-    </>
-);
-
-type ScrollViewContainerProps = ScrollViewProps & {
-    children?: React.ReactNode
-}
+import SafeAreaView from 'react-native-safe-area-view';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 /**
- * Extends React.ScrollView to include the default wrapper and container margins.
- * Any additional props are appended to the Scroll View, not the wrapping container.
+ * Wrapper providing the status bar and safe area view.
  */
-export const ScrollViewContainer = (props: ScrollViewContainerProps) => (
-    <Wrapper>
-        <ScrollView {...props} style={{marginLeft: '5%', marginRight: '5%'}}>
-            {props.children}
-        </ScrollView>
-    </Wrapper>
+const Wrapper = ({ children }: { children?: React.ReactNode }) => (
+    <>
+        <StatusBar backgroundColor="white" barStyle="dark-content" />
+        <SafeAreaProvider>
+            <SafeAreaView style={{ flexGrow: 1 }}>
+                {children}
+            </SafeAreaView>
+        </SafeAreaProvider>
+    </>
 );
 
 type ViewContainerProps = ViewProps & {
     children?: React.ReactNode
 }
-export const ContainerView = (props: ViewContainerProps) => (
+
+export const Container = (props: ViewContainerProps) => (
     <Wrapper>
-        <View {...props} style={{marginLeft: '5%', marginRight: '5%'}}>
+        <View {...props} style={{ flex: 1, marginLeft: '5%', marginRight: '5%' }}>
             {props.children}
         </View>
     </Wrapper>
 );
 
-const Container = ({children}: { children: any }) => (
-    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow: 1}}>
-        <View style={{marginLeft: '5%', marginRight: '5%'}}>
-            {children}
-        </View>
+const ScrollContainer = (props: ViewContainerProps) => (
+    <ScrollView showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1, marginLeft: '5%', marginRight: '5%' }}
+        {...props}>
+        {props.children}
     </ScrollView>
 );
 
-const WrapperContainer = ({children}: any) => (
+const WrapperContainer = ({ children }: any) => (
     <Wrapper>
-        <Container>
+        <ScrollContainer>
             {children}
-        </Container>
+        </ScrollContainer>
     </Wrapper>
 );
 
-const NoScrollWrapperContainer = ({children}: any) => (
-    <>
-        <StatusBar/>
-        <SafeAreaView style={{flex: 1, marginLeft: '5%', marginRight: '5%'}}>
-            {children}
-        </SafeAreaView>
-    </>
-);
-
-export {KeyboardAvoidingView, Wrapper, Container, WrapperContainer, NoScrollWrapperContainer};
+export { Wrapper, WrapperContainer };

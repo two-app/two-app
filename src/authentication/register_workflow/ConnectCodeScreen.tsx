@@ -85,11 +85,6 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
     </>;
 };
 
-ConnectCodeScreen.navigationOptions = {
-    title: 'Partner Connect',
-    header: null
-};
-
 const styles = StyleSheet.create({
     subheading: {
         marginTop: 20,

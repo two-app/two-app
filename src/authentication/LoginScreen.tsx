@@ -87,10 +87,5 @@ const LoginScreen = ({ navigation, storeUser, storeUnconnectedUser, storeTokens 
     </>);
 };
 
-LoginScreen.navigationOptions = {
-    title: 'Sign In',
-    header: null
-};
-
 export default connector(LoginScreen);
 export { LoginScreen }

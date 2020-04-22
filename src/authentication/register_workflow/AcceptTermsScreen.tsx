@@ -74,11 +74,6 @@ const AcceptTermsScreen = ({navigation, route, storeUnconnectedUser, storeTokens
     </>;
 };
 
-AcceptTermsScreen.navigationOptions = {
-    title: 'Terms & Conditions',
-    header: null
-};
-
 const styles = StyleSheet.create({
     error: {
         color: Colors.DARK_SALMON
