@@ -6,12 +6,12 @@ import Colors from '../Colors';
 import { GridIcon, GroupedIcon, TimelineIcon } from './MemoryHeaderIcons';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
-import { InputCardButton } from '../forms/InputCardButton';
 import { Heading } from '../home/Heading';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../Router';
 import { useNavigation } from '@react-navigation/native';
 import { MemoryDisplayView } from './MemoryDisplayView';
+import { TouchableCard } from '../forms/Card';
 
 export const Memories = () => {
     const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -65,17 +65,17 @@ const MemoryHeader = () => {
     const { navigate } = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     return (<>
-        <InputCardButton style={{ marginTop: 20 }}>
+        <TouchableCard style={{ marginTop: 20 }}>
             <EvilIcon name="search" style={{ fontSize: 20, paddingRight: 10, color: Colors.REGULAR }} />
             <Text style={{ color: Colors.REGULAR }}>Find memories...</Text>
-        </InputCardButton>
+        </TouchableCard>
 
         <Heading>Memories</Heading>
 
-        <InputCardButton style={{ marginTop: 10 }} onClick={() => navigate('NewMemoryScreen')}>
+        <TouchableCard style={{ marginTop: 10 }} onPress={() => navigate('NewMemoryScreen')}>
             <SimpleLineIcon name="pencil" style={{ fontSize: 13, paddingRight: 10, color: Colors.REGULAR }} />
             <Text style={{ color: Colors.REGULAR }}>Title of your new memory...</Text>
-        </InputCardButton>
+        </TouchableCard>
 
         <View style={{ marginTop: 20, flexDirection: 'row' }}>
             <TimelineIcon focused />

@@ -14,6 +14,7 @@ import {RootStackParamList} from '../../../Router';
 import {CommonActions} from '@react-navigation/native';
 import { SelectTag } from '../../tags/SelectTag';
 import { Tag } from '../../tags/Tag';
+import { View } from 'react-native';
 
 type NewMemoryScreenProps = {
     navigation: StackNavigationProp<RootStackParamList, 'NewMemoryScreen'>
@@ -45,18 +46,20 @@ const NewMemoryScreen = ({navigation}: NewMemoryScreenProps) => {
 
     return (
         <ScrollContainer>
-            <Heading>New Memory</Heading>
+            <View>
+                <Heading>New Memory</Heading>
 
-            <TitleInput setTitle={setTitle}/>
-            <LocationInput setLocation={setLocation}/>
-            <DateInput setDate={setDate}/>
-            <SelectTag onTagChange={
-                (tag: undefined | Tag) => setTagId(tag != null ? tag.tid : undefined)
-            }/>
-            <ContentInput setContent={setContent}/>
-            {formState.content.length > 0 && <ContentPreview content={formState.content}/>}
+                <TitleInput setTitle={setTitle}/>
+                <LocationInput setLocation={setLocation}/>
+                <DateInput setDate={setDate}/>
+                <SelectTag onTagChange={
+                    (tag: undefined | Tag) => setTagId(tag != null ? tag.tid : undefined)
+                }/>
+                <ContentInput setContent={setContent}/>
+                {formState.content.length > 0 && <ContentPreview content={formState.content}/>}
 
-            <SubmitButton onSubmit={uploadMemory} text="Create Memory" disabled={!isMemoryUploadValid(formState)}/>
+                <SubmitButton onSubmit={uploadMemory} text="Create Memory" disabled={!isMemoryUploadValid(formState)}/>
+            </View>
         </ScrollContainer>
     );
 };

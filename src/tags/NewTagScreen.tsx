@@ -60,7 +60,7 @@ export const NewTagScreen = ({ navigation, route }: NewTagScreenProps) => {
       }
 
       <SubmitButton onSubmit={createNewTag} text="Create Tag" disabled={name == null} />
-    </ScrollContainer >
+    </ScrollContainer>
   )
 };
 
