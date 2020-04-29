@@ -1,8 +1,9 @@
 import Axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 import {store} from '../state/reducers';
+import Config from 'react-native-config';
 
 const Gateway: AxiosInstance = Axios.create({
-    baseURL: 'http://192.168.0.27:8000/',
+    baseURL: Config.API_URL,
     timeout: 5000,
 });
 

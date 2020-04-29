@@ -3,6 +3,7 @@ import Gateway from '../http/Gateway';
 import { AxiosResponse } from 'axios';
 import { Image } from 'react-native-image-crop-picker';
 import FormData from 'form-data';
+import Config from 'react-native-config';
 
 export type MemoryUpload = MemoryDescription & {
     content: Image[]
@@ -36,7 +37,7 @@ const formatMemory = (memory: Memory): Memory => {
     return memory;
 };
 
-const formatFileKey = (fileKey: string): string => `http://192.168.0.27:4572/memory-content/${fileKey}`;
+const formatFileKey = (fileKey: string): string => `${Config.S3_URL}/memory-content/${fileKey}`;
 
 type PostMemoryResponse = {
     memoryId: number
