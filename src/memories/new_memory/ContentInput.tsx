@@ -1,10 +1,10 @@
 import ImagePicker, { Image, Options } from 'react-native-image-crop-picker';
-import { InputCardButton } from '../../forms/InputCardButton';
 import { Text, View } from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Colors from '../../Colors';
 import React from 'react';
 import { FormStyle } from './FormStyles';
+import { TouchableCard } from '../../forms/Card';
 
 const ContentInput = ({ setContent }: { setContent: Function }) => {
     const selectMedia = () => {
@@ -20,12 +20,12 @@ const ContentInput = ({ setContent }: { setContent: Function }) => {
     };
 
     return (
-        <InputCardButton style={FormStyle.card} onClick={() => selectMedia()}>
+        <TouchableCard style={FormStyle.card} onPress={() => selectMedia()}>
             <View style={FormStyle.iconContainer}>
                 <IonIcon name="md-images" style={{ fontSize: 13, color: Colors.REGULAR }} />
             </View>
             <Text>Select images and videos</Text>
-        </InputCardButton>
+        </TouchableCard>
     );
 };
 

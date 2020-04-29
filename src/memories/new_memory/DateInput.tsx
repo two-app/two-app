@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
 import {Keyboard, Text, View} from 'react-native';
-import {InputCardButton} from '../../forms/InputCardButton';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import Colors from '../../Colors';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {FormStyle} from './FormStyles';
 import moment from 'moment';
+import { TouchableCard } from '../../forms/Card';
 
 const DateInput = ({setDate}: { setDate: Function }) => {
     const [isVisible, setVisibility] = useState(false);
@@ -23,14 +23,14 @@ const DateInput = ({setDate}: { setDate: Function }) => {
     };
 
     return (<>
-        <InputCardButton style={FormStyle.card} onClick={openPicker}>
+        <TouchableCard style={FormStyle.card} onPress={openPicker}>
             <View style={FormStyle.iconContainer}>
                 <AntIcon name="calendar" style={{fontSize: 13, color: Colors.REGULAR}}/>
             </View>
             {pickerValue == null && <Text style={{color: Colors.REGULAR}}>When it took place...</Text>}
             {pickerValue != null && <Text
                 style={{color: Colors.DARK}}>{moment(pickerValue).format("LLLL")}</Text>}
-        </InputCardButton>
+        </TouchableCard>
         <DateTimePickerModal
             isVisible={isVisible}
             maximumDate={new Date()}

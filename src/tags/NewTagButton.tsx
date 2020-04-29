@@ -2,25 +2,25 @@ import React, { useState } from 'react';
 import { FormStyle } from '../memories/new_memory/FormStyles';
 import Modal from 'react-native-modal';
 import { View, Text, StyleSheet } from 'react-native';
-import { InputCardButton } from '../forms/InputCardButton';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import Colors from '../Colors';
 import { useNavigation } from '@react-navigation/native';
 import { Tag } from './Tag';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableCard } from '../forms/Card';
 
 export const NewTagButton = ({ onCreated }: { onCreated: (tag: Tag) => void }) => {
   const { navigate } = useNavigation();
 
   return (
-    <InputCardButton style={FormStyle.card} onClick={() => navigate('NewTagScreen', { onSubmit: onCreated })}>
+    <TouchableCard style={FormStyle.card} onPress={() => navigate('NewTagScreen', { onSubmit: onCreated })}>
       <View style={FormStyle.iconContainer}>
         <AntIcon name="tago" style={{ fontSize: 13, color: Colors.REGULAR }} />
       </View>
       <Text style={{ color: Colors.REGULAR }}>
         Optional tag, e.g Anniversary or Birthday...
       </Text>
-    </InputCardButton>
+    </TouchableCard>
   );
 };
 
@@ -34,14 +34,14 @@ export const TagCard = ({ tag, onDeselect }: { tag: Tag, onDeselect: () => void 
         onExit={() => setShowModal(false)}
         onDeselect={onDeselect}
       />
-      <InputCardButton style={FormStyle.card} onClick={() => setShowModal(true)}>
+      <TouchableCard style={FormStyle.card} onPress={() => setShowModal(true)}>
         <View style={FormStyle.iconContainer}>
           <AntIcon name="tago" style={{ fontSize: 13, color: Colors.REGULAR }} />
         </View>
         <Text style={{ color: Colors.DARK }}>
           {tag.name}
         </Text>
-      </InputCardButton>
+      </TouchableCard>
     </>
   );
 };

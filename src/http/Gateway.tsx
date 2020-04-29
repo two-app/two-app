@@ -1,4 +1,4 @@
-import Axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
+import Axios, {AxiosInstance, AxiosRequestConfig, AxiosError} from 'axios';
 import {store} from '../state/reducers';
 import Config from 'react-native-config';
 
@@ -26,5 +26,17 @@ Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
 }, error => {
     return Promise.reject(error);
 });
+
+Gateway.interceptors.response.use(
+    response => {
+        return Promise.resolve(response)
+    },
+    (error: AxiosError<any>) => {
+        console.log(error);
+        console.log(error.code);
+        console.log(error.toJSON());
+        return Promise.reject(error);
+    }
+);
 
 export default Gateway;
