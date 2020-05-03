@@ -5,7 +5,6 @@ import renderer from 'react-test-renderer';
 import { shallow } from 'enzyme';
 import { UnconnectedUser } from '../../../src/authentication/UserModel';
 import { ConnectCodeScreen } from '../../../src/authentication/register_workflow/ConnectCodeScreen';
-import { CommonActions } from '@react-navigation/native';
 import ConnectService from '../../../src/user/ConnectService';
 
 describe('ConnectCodeScreen', () => {
@@ -14,8 +13,7 @@ describe('ConnectCodeScreen', () => {
 
     test('should maintain snapshot', () => expect(renderer.create(
         <ConnectCodeScreen navigation={{} as any}
-            storeTokens={jest.fn()}
-            storeUser={jest.fn()}
+            dispatch={{} as any}
             user={tb.user} />
     )).toMatchSnapshot());
 
@@ -55,13 +53,16 @@ describe('ConnectCodeScreen', () => {
         test('enables submit', () => expect(tb.isSubmitButtonDisabled()).toBe(false));
 
         test('displays loading view on submit', () => {
+            tb.whenConnectResolve();
+
             tb.clickSubmit();
+            
             expect(tb.wrapper.find("ScrollContainer").prop<boolean>("isLoading")).toBe(true);
         });
 
         test('it delegates to the ConnectService', () => {
             tb.whenConnectResolve();
-            
+
             tb.clickSubmit();
 
             expect(ConnectService.performConnection).toHaveBeenCalledTimes(1);
@@ -93,17 +94,20 @@ describe('ConnectCodeScreen', () => {
 
 class ConnectCodeScreenTestBed {
     user: UnconnectedUser = { uid: 12, connectCode: 'abcdef' };
-    setTokensFn = jest.fn();
-    storeUserFn = jest.fn();
     dispatchFn = jest.fn();
 
     wrapper = shallow(
-        <ConnectCodeScreen user={this.user}
-            storeTokens={this.setTokensFn}
-            storeUser={this.storeUserFn}
+        <ConnectCodeScreen
+            dispatch={{} as any}
+            user={this.user}
             navigation={{ dispatch: this.dispatchFn } as any}
         />
     );
+
+    constructor() {
+        ConnectService.checkConnection = jest.fn();
+        ConnectService.performConnection = jest.fn();
+    }
 
     clickCopyToClipboard = () => this.wrapper.find('TouchableOpacity').prop<() => void>('onPress')();
     setPartnerCodeInput = (v: string) => this.wrapper.find('Input').prop<(v: string) => void>('onChange')(v);

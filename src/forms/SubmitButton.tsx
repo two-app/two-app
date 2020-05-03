@@ -19,10 +19,9 @@ type SubmitButtonProps = EnabledButtonProps & {
 const SubmitButton = ({ text, onSubmit, disabled }: SubmitButtonProps) => (
     <View style={{ marginVertical: 25 }}>
         {disabled ?
-            <DisabledSubmitButton text={text}/>
+            <DisabledSubmitButton text={text} />
             :
             <EnabledSubmitButton onSubmit={() => {
-                console.log("dismissing")
                 Keyboard.dismiss();
                 onSubmit();
             }} text={text} />
@@ -30,12 +29,14 @@ const SubmitButton = ({ text, onSubmit, disabled }: SubmitButtonProps) => (
     </View>
 );
 
-const DisabledSubmitButton = ({ text }: DisabledButtonProps) => (
-    <Button onPress={() => Keyboard.dismiss()} text={text}
-        buttonStyle={{ backgroundColor: 'white', textColor: Colors.REGULAR }}
-        pressedButtonStyle={{ backgroundColor: '#fafafa', textColor: Colors.REGULAR }}
-    />
-);
+const DisabledSubmitButton = ({ text }: DisabledButtonProps) => {
+    const style = { backgroundColor: 'white', textColor: Colors.FADED };
+    return (
+        <Button onPress={() => Keyboard.dismiss()} text={text}
+            buttonStyle={style} pressedButtonStyle={style}
+        />
+    )
+};
 
 const EnabledSubmitButton = ({ text, onSubmit }: EnabledButtonProps) => (
     <Button onPress={onSubmit} text={text}

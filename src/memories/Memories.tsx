@@ -12,17 +12,21 @@ import { RootStackParamList } from '../../Router';
 import { useNavigation } from '@react-navigation/native';
 import { MemoryDisplayView } from './MemoryDisplayView';
 import { TouchableCard } from '../forms/Card';
+import { Footer } from '../home/Footer';
 
 export const Memories = () => {
+    const [loading, setLoading] = useState<boolean>(true);
     const [refreshing, setRefreshing] = useState<boolean>(false);
     const [memories, setMemories] = useState<Memory[]>([]);
     let memoryFlatListRef: FlatList<Memory> | null;
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     const refreshMemories = () => {
+        setLoading(true);
         getMemories().then(memories => {
             setMemories(memories);
             setRefreshing(false);
+            setLoading(false);
         });
     };
 
@@ -35,37 +39,36 @@ export const Memories = () => {
         refreshMemories();
     }, []);
 
-    return <FlatList
-        data={memories}
-        ref={ref => memoryFlatListRef = ref}
-        onContentSizeChange={scrollToTop}
-        // Required otherwise we get a warning from scrolling
-        onScrollAnimationEnd={() => {
-        }}
-        renderItem={item => (<MemoryItemNavigation navigation={navigation} item={item.item} />)}
-        keyExtractor={i => i.id.toString()}
-        showsVerticalScrollIndicator={false}
-        ListHeaderComponent={MemoryHeader}
-        ListEmptyComponent={EmptyMemoriesComponent}
+    return (
+                <FlatList
+                    data={memories}
+                    ref={ref => memoryFlatListRef = ref}
+                    onContentSizeChange={scrollToTop}
+                    renderItem={item => (<MemoryItemNavigation navigation={navigation} item={item.item} />)}
+                    keyExtractor={i => i.id.toString()}
+                    showsVerticalScrollIndicator={false}
+                    ListHeaderComponent={MemoryHeader}
+                    ListEmptyComponent={() => <EmptyMemoriesComponent loading={loading} />}
 
-        refreshControl={
-            <RefreshControl
-                colors={['#9Bd35A', '#689F38']}
-                refreshing={refreshing}
-                onRefresh={() => {
-                    setRefreshing(true);
-                    refreshMemories();
-                }}
-            />
-        }
-    />;
+                    refreshControl={
+                        <RefreshControl
+                            colors={['#9Bd35A', '#689F38']}
+                            refreshing={refreshing}
+                            onRefresh={() => {
+                                setRefreshing(true);
+                                refreshMemories();
+                            }}
+                        />
+                    }
+                />
+    );
 };
 
 const MemoryHeader = () => {
     const { navigate } = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     return (<>
-        <TouchableCard style={{ marginTop: 20 }}>
+        <TouchableCard style={{ marginTop: 20 }} onPress={() => navigate('SearchScreen')}>
             <EvilIcon name="search" style={{ fontSize: 20, paddingRight: 10, color: Colors.REGULAR }} />
             <Text style={{ color: Colors.REGULAR }}>Find memories...</Text>
         </TouchableCard>
@@ -96,9 +99,13 @@ const MemoryItemNavigation = ({ item, navigation }: MemoryItemNavigationProps) =
     </TouchableOpacity>
 );
 
-const EmptyMemoriesComponent = () => (<><Text style={{ textAlign: 'center', color: Colors.REGULAR, marginTop: 40 }}>
-    You don't have any memories. Create some!
-</Text></>);
+const EmptyMemoriesComponent = ({ loading }: { loading: boolean }) => (
+    <>
+        <Text style={{ textAlign: 'center', color: Colors.REGULAR, marginTop: 40 }}>
+            {loading ? 'Loading your memories...' : `You don't have any memories. Create some!`}
+        </Text>
+    </>
+);
 
 const containers = StyleSheet.create({
     item: {

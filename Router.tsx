@@ -13,6 +13,8 @@ import { MemoryScreen } from './src/memories/memory/MemoryScreen';
 import { Memory } from './src/memories/MemoryModels';
 import { NewTagScreen } from './src/tags/NewTagScreen';
 import { Tag } from './src/tags/Tag';
+import { SearchScreen } from './src/search/SearchScreen';
+import { ProfileScreen } from './src/user/ProfileScreen';
 
 export type RootStackParamList = {
     LoadingScreen: undefined;
@@ -24,7 +26,9 @@ export type RootStackParamList = {
     HomeScreen: undefined;
     NewMemoryScreen: undefined;
     MemoryScreen: { memory: Memory };
-    NewTagScreen: { onSubmit: (tag: Tag) => void }
+    NewTagScreen: { onSubmit: (tag: Tag) => void },
+    SearchScreen: undefined;
+    ProfileScreen: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -39,10 +43,12 @@ const AppStack = () => (
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
         <Stack.Screen name="AcceptTermsScreen" component={AcceptTermsScreen} />
         <Stack.Screen name="ConnectCodeScreen" component={ConnectCodeScreen} />
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen name="HomeScreen" component={HomeScreen} options={{animationEnabled: false}} />
         <Stack.Screen name="NewMemoryScreen" component={NewMemoryScreen} />
         <Stack.Screen name="MemoryScreen" component={MemoryScreen} />
         <Stack.Screen name="NewTagScreen" component={NewTagScreen} />
+        <Stack.Screen name="SearchScreen" component={SearchScreen} />
+        <Stack.Screen name="ProfileScreen" component={ProfileScreen} options={{animationEnabled: false}}/>
     </Stack.Navigator>
 );
 
