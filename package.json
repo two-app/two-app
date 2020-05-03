@@ -11,6 +11,7 @@
     "android-shake": "adb shell input keyevent 82"
   },
   "dependencies": {
+    "@bam.tech/react-native-make": "^3.0.0",
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/async-storage": "^1.9.0",
     "@react-native-community/clipboard": "^1.2.2",

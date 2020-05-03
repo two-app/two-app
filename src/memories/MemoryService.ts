@@ -28,8 +28,9 @@ export const getMemory = (mid: number): Promise<Memory> => Gateway.get('/memory/
 
 const formatMemory = (memory: Memory): Memory => {
     if (memory.displayContent != null) {
-        // TODO Make this config-driven for AWS
+        console.log(memory.displayContent.fileKey);
         memory.displayContent.fileKey = formatFileKey(memory.displayContent.fileKey)
+        console.log(memory.displayContent.fileKey);
     }
 
     // Memory actually comes back as a string, so it needs to be converted to a number
@@ -37,7 +38,7 @@ const formatMemory = (memory: Memory): Memory => {
     return memory;
 };
 
-const formatFileKey = (fileKey: string): string => `${Config.S3_URL}/memory-content/${fileKey}`;
+const formatFileKey = (fileKey: string): string => `${Config.S3_URL}/${fileKey}`;
 
 type PostMemoryResponse = {
     memoryId: number
