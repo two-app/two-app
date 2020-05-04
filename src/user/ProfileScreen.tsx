@@ -3,7 +3,6 @@ import { Wrapper, NoWrapContainer } from '../views/View';
 import { View, Text, StyleSheet } from 'react-native';
 import { Footer } from '../home/Footer';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -113,11 +112,11 @@ type MenuItemProps = {
   iconName: string,
   iconSize?: number,
   iconStyle?: any,
-  onPress?: () => void
+  onPress?: () => void,
 };
 
 const MenuItem = (props: MenuItemProps) => (
-  <TouchableOpacity style={styles.listItem} onPress={props.onPress}>
+  <TouchableOpacity style={styles.listItem} onPress={props.onPress} accessibilityLabel={props.text}>
     <Text style={{ color: Colors.REGULAR }}>{props.text}</Text>
     <props.icon size={props.iconSize} name={props.iconName} color={Colors.REGULAR} style={props.iconStyle}/>
   </TouchableOpacity>
