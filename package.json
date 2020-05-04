@@ -73,6 +73,7 @@
     "jest": "^25.3.0",
     "jest-enzyme": "^7.1.2",
     "metro-react-native-babel-preset": "^0.59.0",
+    "react-native-testing-library": "^1.13.2",
     "react-test-renderer": "16.13.1"
   }
 }

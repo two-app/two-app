@@ -57,6 +57,7 @@ const ConnectCodeScreen = ({ navigation, user }: ConnectCodeScreenProps) => {
                     onRefresh={refresh}
                 />
             }
+            keyboardShouldPersistTaps='always'
         >
             <LogoHeader heading="Connect Your Partner" />
             <Text style={styles.subheading}>Thanks for joining us!</Text>

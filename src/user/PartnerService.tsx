@@ -1,6 +1,7 @@
 import Gateway from "../http/Gateway";
 import { AxiosResponse, AxiosError } from "axios";
 import { User } from "../authentication/UserModel";
+import { UserProfile } from "./UserService";
 
 /**
  * Retrieves the users partner. Specific function for pre-connection,
@@ -16,4 +17,7 @@ const getPartnerPreConnect = () => Gateway.get("/partner")
     }
   });
 
-export default { getPartnerPreConnect };
+const getPartner = () => Gateway.get("/partner")
+  .then((response: AxiosResponse<UserProfile>) => response.data);
+
+export default { getPartnerPreConnect, getPartner };

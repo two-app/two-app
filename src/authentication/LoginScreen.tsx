@@ -50,7 +50,7 @@ const LoginScreen = ({ navigation, storeUser, storeUnconnectedUser, storeTokens 
     }
 
     return (
-        <ScrollContainer isLoading={submitted} keyboardShouldPersistTaps='always' keyboardDismissMode='on-drag'>
+        <ScrollContainer isLoading={submitted} keyboardShouldPersistTaps='always'>
             <LogoHeader heading="Sign In" />
 
             <Input attributes={{ placeholder: 'you@email.com', autoCompleteType: 'email', autoCapitalize: 'none' }}

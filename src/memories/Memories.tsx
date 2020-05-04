@@ -40,27 +40,27 @@ export const Memories = () => {
     }, []);
 
     return (
-                <FlatList
-                    data={memories}
-                    ref={ref => memoryFlatListRef = ref}
-                    onContentSizeChange={scrollToTop}
-                    renderItem={item => (<MemoryItemNavigation navigation={navigation} item={item.item} />)}
-                    keyExtractor={i => i.id.toString()}
-                    showsVerticalScrollIndicator={false}
-                    ListHeaderComponent={MemoryHeader}
-                    ListEmptyComponent={() => <EmptyMemoriesComponent loading={loading} />}
+        <FlatList
+            data={memories}
+            ref={ref => memoryFlatListRef = ref}
+            onContentSizeChange={scrollToTop}
+            renderItem={item => (<MemoryItemNavigation navigation={navigation} item={item.item} />)}
+            keyExtractor={i => i.id.toString()}
+            showsVerticalScrollIndicator={false}
+            ListHeaderComponent={MemoryHeader}
+            ListEmptyComponent={() => <EmptyMemoriesComponent loading={loading} />}
 
-                    refreshControl={
-                        <RefreshControl
-                            colors={['#9Bd35A', '#689F38']}
-                            refreshing={refreshing}
-                            onRefresh={() => {
-                                setRefreshing(true);
-                                refreshMemories();
-                            }}
-                        />
-                    }
+            refreshControl={
+                <RefreshControl
+                    colors={['#9Bd35A', '#689F38']}
+                    refreshing={refreshing}
+                    onRefresh={() => {
+                        setRefreshing(true);
+                        refreshMemories();
+                    }}
                 />
+            }
+        />
     );
 };
 

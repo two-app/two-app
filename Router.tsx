@@ -14,7 +14,7 @@ import { Memory } from './src/memories/MemoryModels';
 import { NewTagScreen } from './src/tags/NewTagScreen';
 import { Tag } from './src/tags/Tag';
 import { SearchScreen } from './src/search/SearchScreen';
-import { ProfileScreen } from './src/user/ProfileScreen';
+import ProfileScreen from './src/user/ProfileScreen';
 
 export type RootStackParamList = {
     LoadingScreen: undefined;
