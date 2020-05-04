@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-    ScrollView,
     View,
     ViewProps,
     StatusBar,
@@ -11,12 +10,13 @@ import {
 import SafeAreaView from 'react-native-safe-area-view';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import LoadingView from './LoadingView';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 /**
  * Wrapper providing the status bar and safe area view.
  * Consumes the full screen.
  */
-const Wrapper = ({ children }: { children?: React.ReactNode }) => (
+export const Wrapper = ({ children }: { children?: React.ReactNode }) => (
     <>
         <StatusBar backgroundColor="white" barStyle="dark-content" />
         <SafeAreaProvider>
@@ -43,6 +43,15 @@ type Container = {
 
 type ViewContainerProps = ViewProps & Container;
 
+export const NoWrapContainer = (props: ViewContainerProps) => (
+    <>
+        {props.isLoading === true && <LoadingView/>}
+        <View {...props} style={{ flex: 1, marginLeft: '5%', marginRight: '5%' }}>
+            {props.children}
+        </View>
+    </>
+)
+
 /**
  * Creates a full-screen view with the container margins.
  */
@@ -63,10 +72,10 @@ type ScrollViewContainerProps = ScrollViewProps & Container;
 export const ScrollContainer = (props: ScrollViewContainerProps) => (
     <Wrapper>
         {props.isLoading === true && <LoadingView/>}
-        <ScrollView showsVerticalScrollIndicator={false}
+        <KeyboardAwareScrollView showsVerticalScrollIndicator={false}
             contentContainerStyle={{ flexGrow: 1, marginLeft: '5%', marginRight: '5%' }}
             {...props}>
             {props.children}
-        </ScrollView>
+        </KeyboardAwareScrollView>
     </Wrapper>
 );

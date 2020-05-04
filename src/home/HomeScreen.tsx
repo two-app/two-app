@@ -1,12 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Container } from '../views/View';
-import { Text, TouchableOpacity } from 'react-native';
+import { Container, Wrapper, NoWrapContainer } from '../views/View';
 import { User } from '../authentication/UserModel';
 import { Memories } from '../memories/Memories';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../Router';
-import { CommonActions } from '@react-navigation/native';
+import { Footer } from './Footer';
 
 type HomeScreenProps = {
     navigation: StackNavigationProp<RootStackParamList, 'HomeScreen'>,
@@ -14,18 +13,13 @@ type HomeScreenProps = {
 }
 
 const HomeScreen = ({ navigation, user }: HomeScreenProps) => {
-    const logout = () => navigation.dispatch(
-        CommonActions.reset({
-            index: 0,
-            routes: [{ name: 'LogoutScreen' }]
-        })
-    );
-
     return (
-        <Container>
-            <Memories />
-            <TouchableOpacity onPress={logout}><Text>Logout</Text></TouchableOpacity>
-        </Container>
+        <Wrapper>
+            <NoWrapContainer>
+                <Memories />
+            </NoWrapContainer>
+            <Footer active='HomeScreen' />
+        </Wrapper>
     );
 };
 

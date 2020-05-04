@@ -6348,10 +6348,18 @@ react-native-image-viewing@^0.1.8:
   resolved "https://registry.yarnpkg.com/react-native-image-viewing/-/react-native-image-viewing-0.1.8.tgz#b4cc3a382cfe289045e792879c71ea52ecf50286"
   integrity sha512-cyFD92g4RFfQ5V7U5GYMQx4IQ8XJqEl/8BKJaaUeKC4l0X1O8XOQMa2SC+7OEEAfPHszp6QiKHpCNDR6b75PGQ==
 
-react-native-iphone-x-helper@^1.2.1:
+react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
   integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
+
+react-native-keyboard-aware-scroll-view@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.9.1.tgz#9e54b565a5f19b30bed12221d48921781f7630af"
+  integrity sha512-tBZ8rmjELN0F6t5UBp5CW3NYmZXgVnJSzVCssv/OqG2t6kiB+OUTqxNvUP24K+HARX4H+XaW0aEJSFQkQCv6KA==
+  dependencies:
+    prop-types "^15.6.2"
+    react-native-iphone-x-helper "^1.0.3"
 
 react-native-modal-datetime-picker@^8.5.4:
   version "8.5.4"

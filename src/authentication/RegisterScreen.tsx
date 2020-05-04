@@ -19,7 +19,7 @@ const RegisterScreen = ({ navigation }: RegisterScreenProps) => {
     const [userRegistration, setUserRegistration] = useState(new UserRegistration());
 
     return (
-        <ScrollContainer>
+        <ScrollContainer keyboardShouldPersistTaps='handled' keyboardDismissMode='on-drag'>
             <LogoHeader heading="Create Account" />
 
             <Input attributes={{ placeholder: 'First Name', autoCompleteType: 'name' }}
