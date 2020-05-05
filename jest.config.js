@@ -9,5 +9,8 @@ module.exports = {
     ],
     setupFilesAfterEnv: [
         "<rootDir>jest_test_setup.tsx"
+    ],
+    transformIgnorePatterns: [
+        'node_modules/(?!(jest-)?react-native|@react-native-community|@react-navigation)',
     ]
 };

@@ -2,12 +2,13 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../Router";
 import { resetNavigate } from "../navigation/NavigationUtilities";
 import Colors from "../Colors";
 import { ComponentClass } from "enzyme";
+import { getNavigation } from "../navigation/RootNavigation";
 
 type FooterProps = {
   active: keyof RootStackParamList
@@ -41,7 +42,8 @@ type ItemProps = {
 }
 
 const Item = (props: ItemProps) => {
-  const nav = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const nav: NavigationProp<RootStackParamList, keyof RootStackParamList> = getNavigation();
+
   return (
     <TouchableOpacity style={styles.item} onPress={() => resetNavigate(props.navigateTo, nav)}>
       <props.icon size={20} name={props.iconName}
