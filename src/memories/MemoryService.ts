@@ -28,9 +28,7 @@ export const getMemory = (mid: number): Promise<Memory> => Gateway.get('/memory/
 
 const formatMemory = (memory: Memory): Memory => {
     if (memory.displayContent != null) {
-        console.log(memory.displayContent.fileKey);
-        memory.displayContent.fileKey = formatFileKey(memory.displayContent.fileKey)
-        console.log(memory.displayContent.fileKey);
+        memory.displayContent.fileKey = formatFileKey(memory.displayContent.fileKey);
     }
 
     // Memory actually comes back as a string, so it needs to be converted to a number
