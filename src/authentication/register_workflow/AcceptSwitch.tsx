@@ -1,7 +1,8 @@
-import {StyleSheet, Switch, Text, View} from 'react-native';
+import { StyleSheet, Switch, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import Colors from '../../Colors';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type AcceptBoxProps = {
     children?: any,
@@ -9,22 +10,25 @@ type AcceptBoxProps = {
     required?: boolean
 };
 
-const AcceptBox = ({children, onEmit, required}: AcceptBoxProps) => {
+const AcceptBox = ({ children, onEmit, required }: AcceptBoxProps) => {
     const [accepted, setAccepted] = useState(false);
+
     return (
         <View style={[
             styles.container,
             required ? styles.required : undefined,
             accepted ? styles.accepted : undefined
         ]} data-testid="container">
-            <Text style={styles.condition}>{children}</Text>
+            <Text style={
+                [styles.condition, accepted ? styles.acceptedText : undefined]
+            }>{children}</Text>
             <View style={styles.switchContainer}>
                 <Switch style={styles.switch}
-                        value={accepted}
-                        onValueChange={v => {
-                            setAccepted(v);
-                            onEmit(v);
-                        }}
+                    value={accepted}
+                    onValueChange={v => {
+                        setAccepted(v);
+                        onEmit(v);
+                    }}
                 />
             </View>
         </View>
@@ -56,7 +60,11 @@ const styles = StyleSheet.create({
         borderColor: Colors.DARK
     },
     accepted: {
-        borderColor: Colors.VALID_GREEN
+        borderColor: Colors.VALID_GREEN_DARK,
+        backgroundColor: Colors.VALID_GREEN,
+    },
+    acceptedText: {
+        color: 'white'
     },
     condition: {
         color: Colors.DARK,
@@ -69,7 +77,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     switch: {
-        transform: [{scaleX: .8}, {scaleY: .8}]
+        transform: [{ scaleX: .8 }, { scaleY: .8 }]
     }
 });
 

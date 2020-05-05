@@ -32,7 +32,12 @@ describe('Switch', () => {
     test('should turn the container border green', () => {
         tb.setValueChanged();
 
-        expect(tb.doesContainerStyleContain('borderColor', Colors.VALID_GREEN)).toBe(true);
+        expect(tb.doesContainerStyleContain('borderColor', Colors.VALID_GREEN_DARK)).toBe(true);
+    });
+
+    test('should set the background to green', () => {
+        tb.setValueChanged();
+        expect(tb.doesContainerStyleContain('backgroundColor', Colors.VALID_GREEN)).toBe(true);
     });
 });
 

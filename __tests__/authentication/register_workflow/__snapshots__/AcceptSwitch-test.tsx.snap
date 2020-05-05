@@ -23,10 +23,13 @@ exports[`should maintain snapshot 1`] = `
 >
   <Text
     style={
-      Object {
-        "color": "rgb(37, 37, 37)",
-        "width": "80%",
-      }
+      Array [
+        Object {
+          "color": "rgb(37, 37, 37)",
+          "width": "80%",
+        },
+        undefined,
+      ]
     }
   >
     Some Condition

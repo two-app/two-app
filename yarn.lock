@@ -6364,7 +6364,7 @@ prettier@^2.0.2:
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.4.tgz#2d1bae173e355996ee355ec9830a7a1ee05457ef"
   integrity sha512-SVJIQ51spzFDvh4fIbCLvciiDMCrRhlN3mbZvv/+ycjvmF5E73bKdGfU8QDLNmjYJf+lsGnDBC4UUnvTe5OO0w==
 
-pretty-format@^24.7.0, pretty-format@^24.9.0:
+pretty-format@^24.0.0, pretty-format@^24.7.0, pretty-format@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-24.9.0.tgz#12fac31b37019a4eea3c11aa9a959eb7628aa7c9"
   integrity sha512-00ZMZUiHaJrNfk33guavqgvfJS30sLYf0f8+Srklv0AMPodGGHcoHgksZ3OThYnIvOd+8yMCn0YiEOogjlgsnA==
@@ -6571,10 +6571,18 @@ react-native-image-viewing@^0.1.8:
   resolved "https://registry.yarnpkg.com/react-native-image-viewing/-/react-native-image-viewing-0.1.8.tgz#b4cc3a382cfe289045e792879c71ea52ecf50286"
   integrity sha512-cyFD92g4RFfQ5V7U5GYMQx4IQ8XJqEl/8BKJaaUeKC4l0X1O8XOQMa2SC+7OEEAfPHszp6QiKHpCNDR6b75PGQ==
 
-react-native-iphone-x-helper@^1.2.1:
+react-native-iphone-x-helper@^1.0.3, react-native-iphone-x-helper@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
   integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
+
+react-native-keyboard-aware-scroll-view@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.9.1.tgz#9e54b565a5f19b30bed12221d48921781f7630af"
+  integrity sha512-tBZ8rmjELN0F6t5UBp5CW3NYmZXgVnJSzVCssv/OqG2t6kiB+OUTqxNvUP24K+HARX4H+XaW0aEJSFQkQCv6KA==
+  dependencies:
+    prop-types "^15.6.2"
+    react-native-iphone-x-helper "^1.0.3"
 
 react-native-modal-datetime-picker@^8.5.4:
   version "8.5.4"
@@ -6624,6 +6632,13 @@ react-native-screens@^2.5.0:
   integrity sha512-5Ak/J41eZzvU2zvik8YH825ppFdKR4cootbAq9ETwdQoN0fu4GBdOpX7paKW2jFCTsh3OOoyRRW2xYvLczZqVw==
   dependencies:
     debounce "^1.2.0"
+
+react-native-testing-library@^1.13.2:
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/react-native-testing-library/-/react-native-testing-library-1.13.2.tgz#0d56e72cb38a9ceb065402607449deb5eb328b47"
+  integrity sha512-ljUo4U5cCoMudNh11/TXN74Fy/uVKcF4sWaTM1xgNDCU6hWdnud87BZo3a4FArkTuF3kFaiILj666JnIkr1VMQ==
+  dependencies:
+    pretty-format "^24.0.0"
 
 react-native-vector-icons@^6.6.0:
   version "6.6.0"

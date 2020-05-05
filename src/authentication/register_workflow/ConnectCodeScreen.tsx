@@ -4,13 +4,11 @@ import Clipboard from "@react-native-community/clipboard";
 import { connect, ConnectedProps } from 'react-redux';
 import { ScrollContainer } from '../../views/View';
 import LogoHeader from '../LogoHeader';
-import { User } from '../UserModel';
 import Colors from '../../Colors';
 import Input from '../../forms/Input';
 import SubmitButton from '../../forms/SubmitButton';
 import { TwoState } from '../../state/reducers';
-import { selectUnconnectedUser, storeUser } from '../../user';
-import { storeTokens } from '../store';
+import { selectUnconnectedUser } from '../../user';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../Router';
 import { Button } from '../../forms/Button';
@@ -18,14 +16,13 @@ import { resetNavigate } from '../../navigation/NavigationUtilities';
 import ConnectService from '../../user/ConnectService';
 
 const mapState = (state: TwoState) => ({ user: selectUnconnectedUser(state.user) });
-const mapDispatch = { storeUser, storeTokens };
-const connector = connect(mapState, mapDispatch);
+const connector = connect(mapState);
 type ConnectorProps = ConnectedProps<typeof connector>;
 type ConnectCodeScreenProps = ConnectorProps & {
     navigation: StackNavigationProp<RootStackParamList, 'ConnectCodeScreen'>
 };
 
-const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: ConnectCodeScreenProps) => {
+const ConnectCodeScreen = ({ navigation, user }: ConnectCodeScreenProps) => {
     const [partnerConnectCode, setPartnerConnectCode] = useState('');
     const isPartnerCodeValid = (partnerCode: string) => partnerCode.length === 6 && partnerCode !== user.connectCode;
     const [submitted, setSubmitted] = useState(false);
@@ -35,9 +32,7 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
     const connectToPartner = (connectCode: string) => {
         setError(null);
         setSubmitted(true);
-        ConnectService.performConnection(connectCode).then(() => {
-            setSubmitted(false);
-        }).catch((error: Error) => {
+        ConnectService.performConnection(connectCode).catch((error: Error) => {
             setSubmitted(false);
             setError(error.message);
         });
@@ -46,9 +41,7 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
     const refresh = () => {
         setError(null);
         setRefreshing(true);
-        ConnectService.checkConnection().then(() => {
-            setRefreshing(false);
-        }).catch(() => {
+        ConnectService.checkConnection().catch(() => {
             setRefreshing(false);
             setError("Something went wrong on our end.");
         });
@@ -64,6 +57,7 @@ const ConnectCodeScreen = ({ navigation, user, storeUser, storeTokens }: Connect
                     onRefresh={refresh}
                 />
             }
+            keyboardShouldPersistTaps='always'
         >
             <LogoHeader heading="Connect Your Partner" />
             <Text style={styles.subheading}>Thanks for joining us!</Text>
@@ -212,7 +206,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     footer: {
-        marginBottom: 40
+        marginBottom: 0
     }
 });
 

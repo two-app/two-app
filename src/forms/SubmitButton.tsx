@@ -1,20 +1,48 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {StyleSheet, Text, TouchableOpacity} from "react-native";
+import { View, Keyboard } from "react-native";
 import Colors from "../Colors";
+import { Button } from "./Button";
 
-type SubmitButtonProps = {
-    text: string,
-    onSubmit: () => any,
+type DisabledButtonProps = {
+    text: string
+};
+
+type EnabledButtonProps = DisabledButtonProps & {
+    onSubmit: () => any
+};
+
+type SubmitButtonProps = EnabledButtonProps & {
     disabled: boolean
-}
+};
 
-const SubmitButton = ({text, onSubmit, disabled}: SubmitButtonProps) => (
-    <TouchableOpacity style={[styles.submitButton, disabled ? styles.disabledSubmitButton : undefined]}
-                      onPress={onSubmit}
-                      disabled={disabled}>
-        <Text style={styles.submitText}>{text}</Text>
-    </TouchableOpacity>
+const SubmitButton = ({ text, onSubmit, disabled }: SubmitButtonProps) => (
+    <View style={{ marginVertical: 25 }}>
+        {disabled ?
+            <DisabledSubmitButton text={text} />
+            :
+            <EnabledSubmitButton onSubmit={() => {
+                Keyboard.dismiss();
+                onSubmit();
+            }} text={text} />
+        }
+    </View>
+);
+
+const DisabledSubmitButton = ({ text }: DisabledButtonProps) => {
+    const style = { backgroundColor: 'white', textColor: Colors.FADED };
+    return (
+        <Button onPress={() => Keyboard.dismiss()} text={text}
+            buttonStyle={style} pressedButtonStyle={style}
+        />
+    )
+};
+
+const EnabledSubmitButton = ({ text, onSubmit }: EnabledButtonProps) => (
+    <Button onPress={onSubmit} text={text}
+        buttonStyle={{ backgroundColor: Colors.VALID_GREEN, textColor: 'white' }}
+        pressedButtonStyle={{ backgroundColor: Colors.VALID_GREEN_DARK, textColor: 'white' }}
+    />
 );
 
 SubmitButton.propTypes = {
@@ -26,23 +54,5 @@ SubmitButton.propTypes = {
 SubmitButton.defaultProps = {
     disabled: false
 };
-
-const styles = StyleSheet.create({
-    submitButton: {
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: Colors.SALMON,
-        padding: 20,
-        marginTop: 25,
-        marginBottom: 25
-    },
-    disabledSubmitButton: {
-        backgroundColor: Colors.FADED
-    },
-    submitText: {
-        color: "white",
-        fontWeight: "bold"
-    }
-});
 
 export default SubmitButton;

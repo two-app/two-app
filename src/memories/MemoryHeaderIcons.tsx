@@ -17,8 +17,8 @@ export const TimelineIcon = ({focused}: { focused?: boolean }) => {
 };
 
 export const GroupedIcon = ({focused}: { focused?: boolean }) => {
-    const iconStyle = {...s.icon, ...getFocusedStyle(focused), marginTop: 2};
-    const textStyle = {...s.text, ...getFocusedStyle(focused)};
+    const iconStyle = {...s.icon, ...getFocusedStyle(focused), marginTop: 2, color: Colors.FADED};
+    const textStyle = {...s.text, ...getFocusedStyle(focused), color: Colors.FADED};
     return (
         <View style={s.container}>
             <AntIcon name="tagso" style={iconStyle}/>
@@ -28,8 +28,8 @@ export const GroupedIcon = ({focused}: { focused?: boolean }) => {
 };
 
 export const GridIcon = ({focused}: { focused?: boolean }) => {
-    const iconStyle = {...s.icon, ...getFocusedStyle(focused), fontSize: 18};
-    const textStyle = {...s.text, ...getFocusedStyle(focused)};
+    const iconStyle = {...s.icon, ...getFocusedStyle(focused), fontSize: 18, color: Colors.FADED};
+    const textStyle = {...s.text, ...getFocusedStyle(focused), color: Colors.FADED};
     return (
         <View style={s.container}>
             <MaterialIcon name="grid-on" style={iconStyle}/>
