@@ -6,8 +6,13 @@ import Enzyme from 'enzyme';
 Enzyme.configure({ adapter: new Adapter() });
 
 // Ignore React Web errors when using React Native
+const originalConsoleError = console.error;
 console.error = (message: string) => {
-    return message;
+  if (message.startsWith('Warning:')) {
+    return;
+  }
+
+  originalConsoleError(message);
 };
 
 // @ts-ignore

@@ -43,7 +43,7 @@ type PostMemoryResponse = {
     memoryId: number
 };
 
-export const uploadMemory = (upload: MemoryUpload, setProgress: (pcntg: number) => void): Promise<number[]> => {
+export const uploadMemory = (upload: MemoryUpload, setProgress: (percentage: number) => void): Promise<number[]> => {
     setProgress(0);
     return createMemory(upload).then(mid => uploadToMemory(mid, upload, setProgress));
 }
@@ -56,7 +56,7 @@ export const createMemory = (description: MemoryDescription): Promise<number> =>
     );
 };
 
-export const uploadToMemory = (mid: number, upload: MemoryUpload, setProgress: (pcntg: number) => void): Promise<number[]> => {
+export const uploadToMemory = (mid: number, upload: MemoryUpload, setProgress: (percentage: number) => void): Promise<number[]> => {
     const doneTotal = upload.content.length + 1;
     let doneCount = 1;
 
