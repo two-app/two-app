@@ -7,7 +7,6 @@ import { ScrollContainer } from '../../views/View';
 import Colors from '../../Colors';
 import { connect, ConnectedProps } from 'react-redux';
 import AuthenticationService, { UserResponse } from '../AuthenticationService';
-import LoadingView from '../../views/LoadingView';
 import { UserRegistration } from './UserRegistrationModel';
 import { storeUnconnectedUser } from '../../user';
 import { UnconnectedUser } from '../UserModel';
