@@ -1,10 +1,17 @@
-import {ActivityIndicator, Dimensions, StyleSheet, View} from "react-native";
+import { ActivityIndicator, Dimensions, StyleSheet, View, Text } from "react-native";
 import Colors from "../Colors";
 import React from "react";
 
-const LoadingView = () => <View style={styles.overlay}>
-    <ActivityIndicator size="small" color="black" style={styles.overlayIndicator}/>
-</View>;
+type LoadingViewProps = {
+    loadingPercentage?: number
+}
+
+const LoadingView = ({ loadingPercentage }: LoadingViewProps) => (
+    <View style={styles.overlay}>
+        {loadingPercentage != null && <Text style={styles.percentage}>{loadingPercentage}%</Text>}
+        <ActivityIndicator size="small" color="black" style={styles.overlayIndicator} />
+    </View>
+);
 
 const styles = StyleSheet.create({
     overlay: {
@@ -21,8 +28,10 @@ const styles = StyleSheet.create({
     overlayIndicator: {
         zIndex: 3
     },
-    error: {
-        color: Colors.DARK_SALMON
+    percentage: {
+        color: Colors.DARK,
+        fontWeight: 'bold',
+        marginBottom: 5
     }
 });
 

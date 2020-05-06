@@ -9,6 +9,7 @@ import EmailValidator from '../../src/forms/EmailValidator';
 import AuthenticationService, { UserResponse } from '../../src/authentication/AuthenticationService';
 import { User, UnconnectedUser } from '../../src/authentication/UserModel';
 import { Tokens } from '../../src/authentication/AuthenticationModel';
+import { ErrorResponse } from '../../src/http/Response';
 
 describe('LoginScreen', () => {
 
@@ -145,13 +146,14 @@ describe('LoginScreen', () => {
 
         describe('With Error Response', () => {
             test('it should display the error', done => {
-                const message = 'test failure message';
-                tb.onLoginFail(message);
+                const error: ErrorResponse = {code: 400, status: '400 Bad Request', reason: 'Some API Error Message'};
+                tb.onLoginFail(error);
+
                 tb.performLogin('user@two.com', 'testPassword');
 
                 setImmediate(() => {
-                    const error = tb.wrapper.find("Text[data-testid=\'error-message\']").first();
-                    expect(error.render().text()).toEqual(message);
+                    const errorMessage = tb.wrapper.find("Text[data-testid=\'error-message\']").first();
+                    expect(errorMessage.render().text()).toEqual(error.reason);
                     done();
                 });
             });
@@ -180,8 +182,8 @@ class LoginScreenTestBed {
         AuthenticationService.login = jest.fn().mockResolvedValue(response);
     }
 
-    onLoginFail = (message: string) => {
-        AuthenticationService.login = jest.fn().mockRejectedValue(new Error(message));
+    onLoginFail = (error: ErrorResponse) => {
+        AuthenticationService.login = jest.fn().mockRejectedValue(error);
     }
 
     performLogin = (email: string, password: string) => {

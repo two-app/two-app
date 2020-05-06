@@ -43,6 +43,11 @@ type PostMemoryResponse = {
     memoryId: number
 };
 
+export const uploadMemory = (upload: MemoryUpload, setProgress: (percentage: number) => void): Promise<number[]> => {
+    setProgress(0);
+    return createMemory(upload).then(mid => uploadToMemory(mid, upload, setProgress));
+}
+
 export const createMemory = (description: MemoryDescription): Promise<number> => {
     description.date = description.date.toString() as any;
 
@@ -51,7 +56,10 @@ export const createMemory = (description: MemoryDescription): Promise<number> =>
     );
 };
 
-export const uploadToMemory = (mid: number, upload: MemoryUpload): Promise<number[]> => {
+export const uploadToMemory = (mid: number, upload: MemoryUpload, setProgress: (percentage: number) => void): Promise<number[]> => {
+    const doneTotal = upload.content.length + 1;
+    let doneCount = 1;
+
     const uploadPromises: Promise<AxiosResponse<number[]>>[] = upload.content.map((content: Image, index: number) => {
         const form = new FormData();
         form.append('content', {
@@ -64,8 +72,12 @@ export const uploadToMemory = (mid: number, upload: MemoryUpload): Promise<numbe
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
+        }).finally(() => {
+            doneCount++;
+            setProgress(Math.round((doneCount / doneTotal) * 100));
         });
     });
+
 
     return Promise.all(uploadPromises).then(responses => {
         return responses.map(axiosResponse => axiosResponse.data[0]);

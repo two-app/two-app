@@ -7,6 +7,7 @@ import {AcceptTermsScreen} from '../../../src/authentication/register_workflow/A
 import {UserRegistration} from '../../../src/authentication/register_workflow/UserRegistrationModel';
 import AuthenticationService, {UserResponse} from '../../../src/authentication/AuthenticationService';
 import {CommonActions} from '@react-navigation/native';
+import { ErrorResponse } from '../../../src/http/Response';
 
 describe('AcceptTermsScreen', () => {
     test('should maintain snapshot', () => expect(renderer.create(<AcceptTermsScreen
@@ -80,12 +81,13 @@ describe('AcceptTermsScreen', () => {
         ).toBe(true));
 
         test('should display error if auth service throws in promise', done => {
-            AuthenticationService.registerUser = jest.fn().mockRejectedValue(new Error('Some API Error Message'));
+            const error: ErrorResponse = {code: 400, status: '400 Bad Request', reason: 'Some API Error Message'};
+            AuthenticationService.registerUser = jest.fn().mockRejectedValue(error);
 
             tb.checkFieldsAndSubmitForm();
 
             setImmediate(() => {
-                expect(tb.wrapper.find('Text[data-testid=\'error-message\']').render().text()).toEqual('Some API Error Message');
+                expect(tb.wrapper.find('Text[data-testid=\'error-message\']').render().text()).toEqual(error.reason);
                 done();
             });
         });
