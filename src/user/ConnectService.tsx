@@ -9,6 +9,7 @@ import { getNavigation } from "../navigation/RootNavigation";
 import { AxiosError, AxiosResponse } from "axios";
 import Gateway from "../http/Gateway";
 import { Tokens } from "../authentication/AuthenticationModel";
+import { ErrorResponse } from "../http/Response";
 
 const connectToPartner = (connectCode: String): Promise<UserResponse> => Gateway.post(`/partner/${connectCode}`)
     .then((r: AxiosResponse<Tokens>): UserResponse => ({
@@ -38,9 +39,9 @@ const performConnection = (code: string): Promise<void> => {
       store.dispatch(storeUser(response.user as User));
       store.dispatch(storeTokens(response.tokens));
       resetNavigate('HomeScreen', getNavigation() as any);
-    }).catch((error: AxiosError) => {
+    }).catch((error: AxiosError<ErrorResponse>) => {
       const status = error.response?.status;
-      const reason = error.response?.data['reason']?.toString();
+      const reason = error.response?.data.reason;
       if (status === 400 && reason === 'User already has a partner.') {
         // if user already has a partner, refresh the connection
         return checkConnection();

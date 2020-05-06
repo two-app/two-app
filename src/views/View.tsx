@@ -34,8 +34,14 @@ type Container = {
      * Creates a full-screen opaque overlay with a loading spinner in the
      * centre. The view underneath the screen is not interactive.
      */
-    isLoading?: boolean
-}
+    isLoading?: boolean,
+
+    /**
+     * If the view is loading, this percentage number will be displayed.
+     * See the 'isLoading' prop.
+     */
+    loadingPercentage?: number
+};
 
 /**
  * Containers
@@ -71,7 +77,7 @@ type ScrollViewContainerProps = ScrollViewProps & Container;
  */
 export const ScrollContainer = (props: ScrollViewContainerProps) => (
     <Wrapper>
-        {props.isLoading === true && <LoadingView/>}
+        {props.isLoading === true && <LoadingView loadingPercentage={props.loadingPercentage}/>}
         <KeyboardAwareScrollView showsVerticalScrollIndicator={false}
             contentContainerStyle={{ flexGrow: 1, marginLeft: '5%', marginRight: '5%' }}
             {...props}>

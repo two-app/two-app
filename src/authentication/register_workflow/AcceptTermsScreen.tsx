@@ -15,6 +15,7 @@ import { storeTokens } from '../store';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../Router';
 import { CommonActions, RouteProp } from '@react-navigation/native';
+import { ErrorResponse } from '../../http/Response';
 
 const mapState = null;
 const mapDispatch = { storeUnconnectedUser, storeTokens };
@@ -43,9 +44,9 @@ const AcceptTermsScreen = ({ navigation, route, storeUnconnectedUser, storeToken
             storeUnconnectedUser(response.user as UnconnectedUser);
             storeTokens(response.tokens);
             navigateToConnectCodeScreen();
-        }).catch((e: Error) => {
+        }).catch((e: ErrorResponse) => {
             setSubmitted(false);
-            setRegistrationError(e.message);
+            setRegistrationError(e.reason);
         });
     }
 

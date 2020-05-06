@@ -15,6 +15,7 @@ import { connect, ConnectedProps } from "react-redux";
 import { isUnconnectedUser } from "./UserModel";
 import LoadingView from "../views/LoadingView";
 import { resetNavigate } from "../navigation/NavigationUtilities";
+import { ErrorResponse } from "../http/Response";
 
 
 const mapState = null;
@@ -43,9 +44,9 @@ const LoginScreen = ({ navigation, storeUser, storeUnconnectedUser, storeTokens 
                 storeUser(response.user);
             }
             resetNavigate('LoadingScreen', navigation);
-        }).catch((e: Error) => {
+        }).catch((e: ErrorResponse) => {
             setSubmitted(false);
-            setLoginError(e.message);
+            setLoginError(e.reason);
         });
     }
 

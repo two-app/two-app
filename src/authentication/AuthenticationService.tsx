@@ -8,6 +8,7 @@ import { storeTokens } from './store';
 import { getNavigation } from '../navigation/RootNavigation';
 import { resetNavigate } from '../navigation/NavigationUtilities';
 import { storeUser, storeUnconnectedUser } from '../user';
+import { ErrorResponse } from '../http/Response';
 
 export type UserResponse = {
     user: UnconnectedUser | User,
@@ -22,21 +23,17 @@ export type LoginCredentials = {
 export const areCredentialsValid = ({ email, rawPassword }: LoginCredentials) =>
     UserRegistrationModel.isEmailValid(email) && rawPassword.length > 3;
 
-const login = (loginCredentials: LoginCredentials): Promise<UserResponse> => Gateway.post("/login", loginCredentials)
+const login = (loginCredentials: LoginCredentials): Promise<UserResponse | ErrorResponse> => Gateway.post("/login", loginCredentials)
     .then((r: AxiosResponse<Tokens>): UserResponse => ({
         user: detectUserFromAccessToken(r.data.accessToken),
         tokens: {accessToken: r.data.accessToken, refreshToken: r.data.refreshToken}
-    })).catch((e: AxiosError) => {
-        throw new Error(e.response?.data['reason'].toString());
-    });
+    }));
 
 const registerUser = (userRegistration: UserRegistration): Promise<UserResponse> => Gateway.post('/self', userRegistration)
     .then((r: AxiosResponse<Tokens>): UserResponse => ({
         user: unconnectedUserFromAccessToken(r.data.accessToken),
         tokens: {accessToken: r.data.accessToken, refreshToken: r.data.refreshToken}
-    })).catch((e: AxiosError) => {
-        throw new Error(e.response?.data['reason'].toString());
-    });
+    }));
 
 const connectToPartner = (connectCode: String): Promise<UserResponse> => Gateway.post(`/partner/${connectCode}`)
     .then((r: AxiosResponse<Tokens>): UserResponse => ({
@@ -48,8 +45,8 @@ const refreshTokens = () => Gateway.post("/refresh").then((response: AxiosRespon
     const accessToken = response.data;
     handleTokenChange(accessToken);
     return accessToken;
-}).catch((error: AxiosError) => {
-    if (error.response?.status === 401) {
+}).catch((error: ErrorResponse) => {
+    if (error.code === 401) {
         resetNavigate('LogoutScreen', getNavigation() as any);
     }
     

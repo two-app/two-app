@@ -1,6 +1,6 @@
 import React, { useEffect, useState, ComponentClass } from 'react';
 import { Wrapper, NoWrapContainer } from '../views/View';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Linking } from 'react-native';
 import { Footer } from '../home/Footer';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
@@ -35,30 +35,33 @@ export const ProfileScreen = ({ navigation, user }: ProfileScreenProps) => {
     PartnerService.getPartner().then(setPartnerProfile);
   }, []);
 
-  const data: MenuItemProps[] = [{
+  const data: MenuItemProps[] = [/*{
     icon: EvilIcon,
     iconName: 'tag',
     text: 'Manage Tags'
-  }, {
+  },*/ {
     icon: EvilIcon,
     iconName: 'envelope',
-    text: 'Submit Feedback'
+    text: 'Submit Feedback',
+    onPress: () => Linking.openURL('mailto:feedback@two.date?subject=Feedback&body=Let%20us%20know%20how%20to%20improve...')
   }, {
     icon: EvilIcon,
     iconName: 'exclamation',
-    text: 'Report a Problem'
-  }, {
+    text: 'Report a Problem',
+    onPress: () => Linking.openURL('mailto:problem@two.date?subject=Report%20a%20Problem&body=Let%20us%20know%what%went%wrong...')
+  }/*, {
     icon: EvilIcon,
     iconName: 'location',
     text: 'Location Settings'
-  }, {
+  }*//*, {
     icon: EvilIcon,
     iconName: 'archive',
     text: 'Terms and Conditions'
-  },{
+  }*/,{
     icon: EvilIcon,
     iconName: 'lock',
-    text: 'Privacy Policy'
+    text: 'Privacy Policy',
+    onPress: () => Linking.openURL('https://two.date/privacy.html')
   }, {
     icon: Feather,
     iconName: 'power',
@@ -126,7 +129,7 @@ MenuItem.defaultProps = {
   iconSize: 25,
   iconStyle: {},
   onPress: () => { }
-}
+};
 
 const styles = StyleSheet.create({
   profilePicture: {
