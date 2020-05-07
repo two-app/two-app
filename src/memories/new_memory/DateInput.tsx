@@ -35,8 +35,6 @@ const DateInput = ({setDate}: { setDate: Function }) => {
             isVisible={isVisible}
             minimumDate={new Date(Date.UTC(0, 0, 0, 0, 0, 0))}
             maximumDate={new Date()}
-            is24Hour={true}
-            locale="en_GB"
             mode="date"
             onConfirm={selectDate}
             onCancel={() => setVisibility(false)}
