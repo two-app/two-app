@@ -56,6 +56,7 @@ export const NewTagScreen = ({ navigation, route }: NewTagScreenProps) => {
         <View style={{ flexDirection: 'row', alignItems: "baseline" }}>
           <Text style={{ ...s.subtitle, marginRight: 10 }}>Preview</Text>
           <TagButton tag={{ tid: -1, name, color }} />
+          <TagButton tag={{ tid: -1, name, color }} focused={true}/>
         </View>
       }
 

@@ -29,14 +29,16 @@ const DateInput = ({setDate}: { setDate: Function }) => {
             </View>
             {pickerValue == null && <Text style={{color: Colors.REGULAR}}>When it took place...</Text>}
             {pickerValue != null && <Text
-                style={{color: Colors.DARK}}>{moment(pickerValue).format("LLLL")}</Text>}
+                style={{color: Colors.DARK}}>{moment(pickerValue).format("LL")}</Text>}
         </TouchableCard>
         <DateTimePickerModal
             isVisible={isVisible}
+            minimumDate={new Date(Date.UTC(0, 0, 0, 0, 0, 0))}
             maximumDate={new Date()}
-            mode="datetime"
+            mode="date"
             onConfirm={selectDate}
             onCancel={() => setVisibility(false)}
+            display='calendar'
         />
     </>);
 };

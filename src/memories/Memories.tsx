@@ -34,7 +34,7 @@ export const Memories = () => {
     const refreshMemories = () => {
         setEffect(prev => ({ ...prev, loading: true }));
         getMemories()
-            .then(memories => setEffect(prev => ({...prev, memories})))
+            .then(memories => setEffect(prev => ({...prev, memories, loadingError: false})))
             .catch(() => setEffect(prev => ({...prev, loadingError: true})))
             .finally(() => setEffect(prev => ({...prev, loading: false, refreshing: false})));
     };
@@ -111,7 +111,7 @@ const MemoryItemNavigation = ({ item, navigation }: MemoryItemNavigationProps) =
 const EmptyMemoriesComponent = ({ effect }: { effect: MemoryEffect }) => (
     <>
         <Text style={{ textAlign: 'center', color: Colors.REGULAR, marginTop: 40 }}>
-            {effect.loadingError != null ?
+            {effect.loadingError ?
                 `Sorry, we were unable to load your memories.\nTry again soon.`
                 :
                 (effect.loading ? 'Loading your memories...' : `You don't have any memories. Create some!`)

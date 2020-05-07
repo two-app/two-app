@@ -15,6 +15,7 @@ import PartnerService from './PartnerService';
 import Colors from '../Colors';
 import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import { resetNavigate } from '../navigation/NavigationUtilities';
+import Config from 'react-native-config';
 
 
 const mapStateToProps = (state: TwoState) => ({ user: selectUser(state.user) });
@@ -61,7 +62,7 @@ export const ProfileScreen = ({ navigation, user }: ProfileScreenProps) => {
     icon: EvilIcon,
     iconName: 'lock',
     text: 'Privacy Policy',
-    onPress: () => Linking.openURL('https://two.date/privacy.html')
+    onPress: () => Linking.openURL(Config.PRIVACY_POLICY_URL)
   }, {
     icon: Feather,
     iconName: 'power',

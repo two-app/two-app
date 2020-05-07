@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Linking } from 'react-native';
 import AcceptBox from './AcceptSwitch';
 import LogoHeader from '../LogoHeader';
 import SubmitButton from '../../forms/SubmitButton';
@@ -15,6 +15,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../Router';
 import { CommonActions, RouteProp } from '@react-navigation/native';
 import { ErrorResponse } from '../../http/Response';
+import Config from 'react-native-config';
 
 const mapState = null;
 const mapDispatch = { storeUnconnectedUser, storeTokens };
@@ -56,8 +57,7 @@ const AcceptTermsScreen = ({ navigation, route, storeUnconnectedUser, storeToken
                 <AcceptBox onEmit={acceptedTerms => setUserRegistration({ ...userRegistration, acceptedTerms })}
                     data-testid="terms"
                     required>
-                    I agree to the <Text style={{ fontWeight: 'bold' }}>Terms & Conditions</Text> and
-                <Text style={{ fontWeight: 'bold' }}> Privacy Policy.</Text>
+                    I agree to the <Text style={{ fontWeight: 'bold' }} onPress={() => Linking.openURL(Config.PRIVACY_POLICY_URL)}>Privacy Policy.</Text>
                 </AcceptBox>
                 <AcceptBox onEmit={ofAge => setUserRegistration({ ...userRegistration, ofAge })}
                     data-testid="age"

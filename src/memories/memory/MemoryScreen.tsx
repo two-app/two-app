@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, RefreshControl, View } from 'react-native';
+import { FlatList, RefreshControl, View, Modal } from 'react-native';
 import { Memory, Content } from '../MemoryModels';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../Router';
@@ -11,10 +11,10 @@ import { createImageProgress } from 'react-native-image-progress';
 import FastImage from 'react-native-fast-image';
 const Image = createImageProgress(FastImage);
 import { getMemory, getMemoryContent } from '../MemoryService';
-import ImageView from "react-native-image-viewing";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { MemoryDisplayView } from '../MemoryDisplayView';
 
+import GallerySwiper from "react-native-gallery-swiper";
 
 type MemoryScreenProps = {
     navigation: StackNavigationProp<RootStackParamList, 'MemoryScreen'>,
@@ -45,13 +45,16 @@ const MemoryScreen = ({ route }: MemoryScreenProps) => {
 
     return (
         <Container>
-            <ImageView
-                images={content.map(c => ({ uri: c.fileKey }))}
-                // @ts-ignore
-                imageIndex={galleryIndex}
-                visible={galleryIndex != null}
-                onRequestClose={() => setGalleryIndex(null)}
-            />
+            <Modal animationType={"fade"} visible={galleryIndex != null} onRequestClose={() => setGalleryIndex(null)}>
+                <GallerySwiper
+                    images={content.map(c => ({uri: c.fileKey, dimensions: { width: 1080, height: 1920 }}))}
+                    initialNumToRender={content.length}
+                    initialPage={galleryIndex || 0}
+                    onSwipeDownReleased={() => setGalleryIndex(null)}
+                    onSwipeUpReleased={() => setGalleryIndex(null)}
+                    imageComponent={imageProps => <Image {...imageProps}/>}
+                />
+            </Modal>
             <FlatList
                 numColumns={numColumns}
                 data={paddedArray}

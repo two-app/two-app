@@ -8,6 +8,7 @@ import PartnerService from '../../src/user/PartnerService';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { User } from '../../src/authentication/UserModel';
 import { CommonActions } from '@react-navigation/native';
+import Config from 'react-native-config';
 
 const mockOpenURLFn = jest.fn().mockResolvedValue({});
 
@@ -90,7 +91,7 @@ describe('PartnerScreen', () => {
 
       expect(mockOpenURLFn).toHaveBeenCalledTimes(1);
       expect(mockOpenURLFn).toHaveBeenCalledWith(
-        'https://two.date/privacy.html'
+        tb.privacyPolicyURL
       );
     });
   });
@@ -118,6 +119,7 @@ class PartnerScreenTestBed {
   user: User = { uid: 1, pid: 2, cid: 3 };
   userProfile: UserProfile = { ...this.user, firstName: 'ABC', lastName: '123' };
   partnerProfile: UserProfile = { uid: 2, pid: 1, cid: 3, firstName: 'XYZ', lastName: '789' };
+  privacyPolicyURL: string = 'test_privacy_policy_url';
 
   dispatchFn = jest.fn();
   wrapper: RenderAPI = render(<Text>Not Implemented</Text>);
@@ -125,6 +127,7 @@ class PartnerScreenTestBed {
   constructor() {
     UserService.getSelf = jest.fn().mockResolvedValue(this.userProfile);
     PartnerService.getPartner = jest.fn().mockResolvedValue(this.partnerProfile);
+    Config.PRIVACY_POLICY_URL = this.privacyPolicyURL;
   }
 
   build = (): PartnerScreenTestBed => {
