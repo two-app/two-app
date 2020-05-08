@@ -12,10 +12,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Install
-        uses: borales/actions-yarn@v2.0.0
+      - name: Setup Node
+        uses: actions/setup-node@v1
         with:
-          cmd: install # will run `yarn install` command
+          node-version: '12'
+      - run: yarn install
       - name: Fastlane Beta
         uses: maierj/fastlane-action@v1.4.0
         with:
@@ -32,10 +33,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Install
-        uses: borales/actions-yarn@v2.0.0
+      - name: Setup Node
+        uses: actions/setup-node@v1
         with:
-          cmd: install # will run `yarn install` command
+          node-version: '12'
+      - run: yarn install
       - name: Increment Version Code
         run: echo "$(awk '{sub(/versionCode [[:digit:]]+$/,"versionCode "$2+1)}1' android/app/build.gradle)" > android/app/build.gradle
       - name: Commit files
