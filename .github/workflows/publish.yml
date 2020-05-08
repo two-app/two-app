@@ -36,7 +36,7 @@ jobs:
           git config --local user.name "GitHub Action"
           git commit -m "Bumped Android version code." -a
       - name: Write Secret Key
-        run: cd android; echo ${{ secrets.ANDROID_PUBLISH_KEY }} > key.json; cd ../
+        run: cd android; echo '${{ secrets.ANDROID_PUBLISH_KEY }}' > key.json; cd ../
       - name: Fastlane Beta
         uses: maierj/fastlane-action@v1.4.0
         with:
