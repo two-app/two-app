@@ -1,0 +1,35 @@
+name: Beta Publish
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  env:
+    ENVFILE: .env.prod
+    FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+  ios:
+    name: Publish iOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Fastlane Beta
+        uses: maierj/fastlane-action@v1.4.0
+        with:
+          lane: 'beta'
+          subdirectory: 'ios'
+  android:
+    name: Publish android
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Increment Version Code
+        run: echo "$(awk '{sub(/versionCode [[:digit:]]+$/,"versionCode "$2+1)}1' android/app/build.gradle)" > android/app/build.gradle
+      - name: Fastlane Beta
+        uses: maierj/fastlane-action@v1.4.0
+        with:
+          lane: 'beta'
+          subdirectory: 'android'
