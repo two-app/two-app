@@ -28,8 +28,19 @@ jobs:
         uses: actions/checkout@v1
       - name: Increment Version Code
         run: echo "$(awk '{sub(/versionCode [[:digit:]]+$/,"versionCode "$2+1)}1' android/app/build.gradle)" > android/app/build.gradle
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "Bumped Android version code." -a
+      - name: Write Secret Key
+        run: cd android; echo ${{ secrets.ANDROID_PUBLISH_KEY }} > key.json; cd ../
       - name: Fastlane Beta
         uses: maierj/fastlane-action@v1.4.0
         with:
           lane: 'beta'
           subdirectory: 'android'
+      - name: Push Changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
