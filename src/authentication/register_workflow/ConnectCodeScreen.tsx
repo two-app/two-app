@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Vibration, Share, RefreshControl } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Share, RefreshControl } from 'react-native';
 import Clipboard from "@react-native-community/clipboard";
 import { connect, ConnectedProps } from 'react-redux';
 import { ScrollContainer } from '../../views/View';
@@ -14,6 +14,7 @@ import { RootStackParamList } from '../../../Router';
 import { Button } from '../../forms/Button';
 import { resetNavigate } from '../../navigation/NavigationUtilities';
 import ConnectService from '../../user/ConnectService';
+import HapticFeedback from "react-native-haptic-feedback";
 
 const mapState = (state: TwoState) => ({ user: selectUnconnectedUser(state.user) });
 const connector = connect(mapState);
@@ -100,7 +101,7 @@ const CopyConnectCodeButton = ({ code }: { code: string }) => {
 
     const onCopy = () => {
         Clipboard.setString(code);
-        Vibration.vibrate(5);
+        HapticFeedback.trigger('selection', {enableVibrateFallback: false});
         setCopied(true);
     };
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, ViewProps, Vibration, TouchableWithoutFeedback } from 'react-native';
+import { View, ViewProps, TouchableWithoutFeedback } from 'react-native';
+import HapticFeedback from "react-native-haptic-feedback";
 
 const noop = () => { };
 
@@ -28,7 +29,7 @@ export const Touchable = (props: TouchableProps) => {
     <TouchableWithoutFeedback
       {...events}
       onPressIn={() => {
-        Vibration.vibrate(5);
+        HapticFeedback.trigger('selection', {enableVibrateFallback: false});
         events.onPressIn();
       }}
       >
