@@ -1,0 +1,53 @@
+name: Beta Publish
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  ios:
+    name: Publish iOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Fastlane Beta
+        uses: maierj/fastlane-action@v1.4.0
+        with:
+          lane: 'beta'
+          subdirectory: 'ios'
+        env:
+          ENVFILE: .env.prod
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+  android:
+    name: Publish Android
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Increment Version Code
+        run: echo "$(awk '{sub(/versionCode [[:digit:]]+$/,"versionCode "$2+1)}1' android/app/build.gradle)" > android/app/build.gradle
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "Bumped Android version code." -a
+      - name: Write Secret Key
+        run: cd android; echo ${{ secrets.ANDROID_PUBLISH_KEY }} > key.json; cd ../
+      - name: Fastlane Beta
+        uses: maierj/fastlane-action@v1.4.0
+        with:
+          lane: 'beta'
+          subdirectory: 'android'
+        env:
+          ENVFILE: .env.prod
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+      - name: Push Changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
