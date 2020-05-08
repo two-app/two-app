@@ -23,7 +23,7 @@ jobs:
           FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
   android:
-    name: Publish android
+    name: Publish Android
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
