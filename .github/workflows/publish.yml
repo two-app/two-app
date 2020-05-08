@@ -6,9 +6,6 @@ on:
       - master
 
 jobs:
-  env:
-    ENVFILE: .env.prod
-    FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APPLICATION_SPECIFIC_PASSWORD }}
   ios:
     name: Publish iOS
     runs-on: macos-latest
@@ -20,6 +17,11 @@ jobs:
         with:
           lane: 'beta'
           subdirectory: 'ios'
+        env:
+          ENVFILE: .env.prod
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
   android:
     name: Publish android
     runs-on: ubuntu-latest
@@ -40,6 +42,11 @@ jobs:
         with:
           lane: 'beta'
           subdirectory: 'android'
+        env:
+          ENVFILE: .env.prod
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
       - name: Push Changes
         uses: ad-m/github-push-action@master
         with:
