@@ -20,7 +20,7 @@ jobs:
       - name: Fastlane Beta
         uses: maierj/fastlane-action@v1.4.0
         with:
-          lane: 'beta'
+          lane: 'alpha'
           subdirectory: 'ios'
         env:
           ENVFILE: .env.prod
@@ -63,7 +63,7 @@ jobs:
       - name: Fastlane Beta
         uses: maierj/fastlane-action@v1.4.0
         with:
-          lane: 'beta'
+          lane: 'alpha'
           subdirectory: 'android'
         env:
           ENVFILE: .env.prod

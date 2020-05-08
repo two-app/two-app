@@ -22,6 +22,28 @@ platform :android do
     gradle(task: "test")
   end
 
+  lane :alpha do
+    build_app(
+      workspace: "two.xcworkspace",
+      scheme: "two",
+      clean: true,
+      export_method: "app-store",
+      export_options: {
+        provisioningProfiles: { 
+            CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier) => CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier) + " AppStore" # Value of this parameter is the name of the Provisioning Profile. By default, it will be "{bundleId} AppStore"
+        }
+      },
+      build_path: "./builds",
+      output_directory: "./builds"
+    )
+
+    firebase_app_distribution(
+        app: "1:585621126829:android:278c6064cd8e899e27d024",
+        groups: "android-family",
+        release_notes: "Lots of amazing new features to test out!"
+    )
+  end
+
   desc "Submit a new Beta Build to Play Store"
   lane :beta do
     store_password = ENV["ANDROID_KEY_PASSWORD"]
