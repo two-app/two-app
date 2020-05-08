@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, Platform, TouchableWithoutFeedback, View, Vibration } from "react-native";
+import { Text, StyleSheet, Platform, TouchableWithoutFeedback, View } from "react-native";
 import Colors from "../Colors";
+import HapticFeedback from "react-native-haptic-feedback";
 
 type ButtonStyle = {
   backgroundColor: string,
@@ -48,8 +49,8 @@ export const Button = ({ text, onPress, buttonStyle, pressedButtonStyle }: Butto
   return (
     <TouchableWithoutFeedback
       onPressIn={() => {
-        setPressed(true)
-        Vibration.vibrate(5)
+        setPressed(true);
+        HapticFeedback.trigger('selection', {enableVibrateFallback: false});
       }}
       onPressOut={() => setPressed(false)}
       onPress={onPress}>

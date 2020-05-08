@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, View, Platform, Vibration, TouchableWithoutFeedback, Animated, StyleProp, ViewStyle } from 'react-native';
+import { StyleSheet, View, Platform, TouchableWithoutFeedback, Animated } from 'react-native';
 import Colors from '../Colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import HapticFeedback from "react-native-haptic-feedback";
 
 const Card = ({ children, style }: { children?: any, style?: any }) => (
     <View style={{ ...s.card, ...style }}>{children}</View>
@@ -41,7 +42,7 @@ const AndroidTouchableCard = ({ children, style, onPress }: TouchableCardProps) 
         <TouchableWithoutFeedback
             onPressIn={() => {
                 animateOpacity(0.8);
-                Vibration.vibrate(4);
+                HapticFeedback.trigger('selection', {enableVibrateFallback: false});
             }}
             onPress={() => onPress && onPress()}
             onPressOut={() => {
