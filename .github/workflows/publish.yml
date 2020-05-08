@@ -47,6 +47,8 @@ jobs:
           git commit -m "Bumped Android version code." -a
       - name: Write Secret Key
         run: cd android; echo '${{ secrets.ANDROID_PUBLISH_KEY }}' > key.json; cd ../
+      - name: Write Publish Keystore
+        run: cd android; echo ${{ secrets.ANDROID_RELEASE_KEYSTORE }} | base64 --decode > my-release-key.keystore; cd ../
       - name: Fastlane Beta
         uses: maierj/fastlane-action@v1.4.0
         with:
