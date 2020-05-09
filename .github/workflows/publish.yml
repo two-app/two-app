@@ -36,6 +36,7 @@ jobs:
           FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CLONE_TOKEN: ${{ secrets.CLONE_TOKEN }}
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"

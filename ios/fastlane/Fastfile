@@ -28,7 +28,7 @@ platform :ios do
       type: "adhoc",
       readonly: is_ci,
       app_identifier: "date.two",
-      git_basic_authorization: Base64.strict_encode64("gerryfletch".concat(ENV["GITHUB_TOKEN"]))
+      git_basic_authorization: Base64.strict_encode64("gerryfletch".concat(ENV["CLONE_TOKEN"]))
     )
 
     build_app(
