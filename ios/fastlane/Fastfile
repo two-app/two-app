@@ -49,16 +49,6 @@ platform :ios do
         groups: "ios-family",
         release_notes: ""
     )
-
-    github_release = set_github_release(
-      repository_name: "two-app/two-app",
-      api_token: ENV["GITHUB_TOKEN"],
-      name: "Two App",
-      tag_name: "v".concat(ENV["RELEASE_VERSION"]),
-      description: (File.read("changelog") rescue "No changelog provided"),
-      commitish: "master",
-      upload_assets: ["example_integration.ipa", "./pkg/built.gem"]
-    )
   end
 
   lane :beta do
