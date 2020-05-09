@@ -22,6 +22,31 @@ platform :android do
     gradle(task: "test")
   end
 
+  lane :alpha do
+    store_password = ENV["ANDROID_KEY_PASSWORD"]
+    key_password = ENV["ANDROID_KEY_PASSWORD"]
+    
+    releaseFilePath = File.join(Dir.pwd, "..", "my-release-key.keystore")
+    gradle(task: 'clean')
+    gradle(
+      task: 'assemble',
+      build_type: 'Release',
+      print_command: false,
+      properties: {
+        "android.injected.signing.store.file" => releaseFilePath,
+        "android.injected.signing.store.password" => store_password,
+        "android.injected.signing.key.alias" => "my-key-alias",
+        "android.injected.signing.key.password" => key_password,
+      }
+    )
+
+    firebase_app_distribution(
+        app: "1:585621126829:android:278c6064cd8e899e27d024",
+        groups: "android-family",
+        release_notes: ""
+    )
+  end
+
   desc "Submit a new Beta Build to Play Store"
   lane :beta do
     store_password = ENV["ANDROID_KEY_PASSWORD"]

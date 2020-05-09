@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "585621126829",
+    "firebase_url": "https://two-app-2d6a4.firebaseio.com",
+    "project_id": "two-app-2d6a4",
+    "storage_bucket": "two-app-2d6a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:585621126829:android:278c6064cd8e899e27d024",
+        "android_client_info": {
+          "package_name": "com.two"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "585621126829-i120d94bmpmcikkjjkdsfjkju1v8mq1g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoVAJ1Nzu5BwXHuz4NlCXPpYvgYJI_qBU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "585621126829-i120d94bmpmcikkjjkdsfjkju1v8mq1g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "585621126829-d6c9ul1iv0rej61o20apchv49a86nr28.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "date.two"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

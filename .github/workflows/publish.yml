@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
   ios:
@@ -20,7 +23,7 @@ jobs:
       - name: Fastlane Beta
         uses: maierj/fastlane-action@v1.4.0
         with:
-          lane: 'beta'
+          lane: 'alpha'
           subdirectory: 'ios'
         env:
           ENVFILE: .env.prod
@@ -28,6 +31,7 @@ jobs:
           FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       - name: Commit files
         run: |
           git config --local user.email "action@github.com"
@@ -63,7 +67,7 @@ jobs:
       - name: Fastlane Beta
         uses: maierj/fastlane-action@v1.4.0
         with:
-          lane: 'beta'
+          lane: 'alpha'
           subdirectory: 'android'
         env:
           ENVFILE: .env.prod
@@ -71,6 +75,7 @@ jobs:
           FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       - name: Push Changes
         uses: ad-m/github-push-action@master
         with:
