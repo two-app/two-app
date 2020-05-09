@@ -47,7 +47,7 @@ platform :ios do
     firebase_app_distribution(
         app: "1:585621126829:ios:fc193f28d8a69ee327d024",
         groups: "ios-family",
-        release_notes: "Lots of amazing new features to test out!"
+        release_notes: ""
     )
   end
 

@@ -43,7 +43,7 @@ platform :android do
     firebase_app_distribution(
         app: "1:585621126829:android:278c6064cd8e899e27d024",
         groups: "android-family",
-        release_notes: "Lots of amazing new features to test out!"
+        release_notes: ""
     )
   end
 
