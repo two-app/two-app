@@ -25,6 +25,7 @@ jobs:
         with:
           lane: 'alpha'
           subdirectory: 'ios'
+          bundle-install-path: 'vendor/bundle'
         env:
           ENVFILE: .env.prod
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APPLICATION_SPECIFIC_PASSWORD }}
@@ -69,6 +70,7 @@ jobs:
         with:
           lane: 'alpha'
           subdirectory: 'android'
+          bundle-install-path: 'vendor/bundle'
         env:
           ENVFILE: .env.prod
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APPLICATION_SPECIFIC_PASSWORD }}

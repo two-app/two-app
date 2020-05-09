@@ -27,7 +27,8 @@ platform :ios do
     match(
       type: "adhoc",
       readonly: is_ci,
-      app_identifier: "date.two"
+      app_identifier: "date.two",
+      git_basic_authorization: Base64.strict_encode64("gerryfletch".concat(ENV["GITHUB_TOKEN"]))
     )
 
     build_app(
