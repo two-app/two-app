@@ -20,6 +20,8 @@ jobs:
         with:
           node-version: '12'
       - run: yarn install
+      - name: Install Firebase CLI
+        run: curl -sL https://firebase.tools | bash
       - name: Fastlane Beta
         uses: maierj/fastlane-action@v1.4.0
         with:
@@ -55,6 +57,8 @@ jobs:
         with:
           node-version: '12'
       - run: yarn install
+      - name: Install Firebase CLI
+        run: curl -sL https://firebase.tools | bash
       - name: Increment Version Code
         run: echo "$(awk '{sub(/versionCode [[:digit:]]+$/,"versionCode "$2+1)}1' android/app/build.gradle)" > android/app/build.gradle
       - name: Commit files
