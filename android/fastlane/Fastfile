@@ -23,6 +23,15 @@ platform :android do
   end
 
   lane :alpha do
+    increment_version_code(
+        gradle_file_path: "../app/build.gradle",
+    )
+    
+    commit_android_version_bump(
+      message: "Android 🤖 version code bump -> #{version_code} [skip ci]",
+      gradle_file_folder: '../app'
+    )
+
     store_password = ENV["ANDROID_KEY_PASSWORD"]
     key_password = ENV["ANDROID_KEY_PASSWORD"]
     
