@@ -32,10 +32,11 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           MATCH_TOKEN: ${{ secrets.CLONE_TOKEN }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-      - name: Push Version Changes
+      - name: Merge Version Changes
+        run: git pull --rebase
+      - name: Push Changes
         uses: ad-m/github-push-action@master
         with:
-          force: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
   android:
@@ -67,8 +68,9 @@ jobs:
           ENVFILE: .env.prod
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: Merge Version Changes
+        run: git pull --rebase
       - name: Push Changes
         uses: ad-m/github-push-action@master
         with:
-          force: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
