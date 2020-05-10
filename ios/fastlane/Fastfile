@@ -27,8 +27,7 @@ platform :ios do
     match(
       type: "adhoc",
       readonly: is_ci,
-      app_identifier: "date.two",
-      git_basic_authorization: Base64.strict_encode64("gerryfletch".concat(ENV["CLONE_TOKEN"]))
+      app_identifier: "date.two"
     )
 
     build_app(
