@@ -26,7 +26,8 @@ platform :ios do
     
     commit_version_bump(
       message: "iOS 🍏 build number bump [skip ci]",
-      force: true
+      force: true,
+      xcodeproj: "two.xcodeproj"
     )
 
     match(
