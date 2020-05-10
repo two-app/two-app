@@ -2,8 +2,6 @@ name: Beta Publish
 
 on:
   push:
-    branches:
-      - master
     # Sequence of patterns matched against refs/tags
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
@@ -50,45 +48,45 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
-  # android:
-  #   name: Publish Android
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v1
-  #     - name: Setup Node
-  #       uses: actions/setup-node@v1
-  #       with:
-  #         node-version: '12'
-  #     - run: yarn install
-  #     - name: Install Firebase CLI
-  #       run: npm install -g firebase-tools
-  #     - run: firebase --version
-  #     - name: Increment Version Code
-  #       run: echo "$(awk '{sub(/versionCode [[:digit:]]+$/,"versionCode "$2+1)}1' android/app/build.gradle)" > android/app/build.gradle
-  #     - name: Commit files
-  #       run: |
-  #         git config --local user.email "action@github.com"
-  #         git config --local user.name "GitHub Action"
-  #         git commit -m "Bumped Android version code." -a
-  #     - name: Write Secret Key
-  #       run: cd android; echo '${{ secrets.ANDROID_PUBLISH_KEY }}' > key.json; cd ../
-  #     - name: Write Publish Keystore
-  #       run: cd android; echo ${{ secrets.ANDROID_RELEASE_KEYSTORE }} | base64 --decode > my-release-key.keystore; cd ../
-  #     - name: Fastlane Beta - Build and Publish to Firebase
-  #       uses: maierj/fastlane-action@v1.4.0
-  #       with:
-  #         lane: 'alpha'
-  #         subdirectory: 'android'
-  #         bundle-install-path: 'vendor/bundle'
-  #       env:
-  #         ENVFILE: .env.prod
-  #         FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APPLICATION_SPECIFIC_PASSWORD }}
-  #         FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
-  #         FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
-  #         ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-  #         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-  #     - name: Push Changes
-  #       uses: ad-m/github-push-action@master
-  #       with:
-  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+  android:
+    name: Publish Android
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+      - run: yarn install
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+      - run: firebase --version
+      - name: Increment Version Code
+        run: echo "$(awk '{sub(/versionCode [[:digit:]]+$/,"versionCode "$2+1)}1' android/app/build.gradle)" > android/app/build.gradle
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "Bumped Android version code." -a
+      - name: Write Secret Key
+        run: cd android; echo '${{ secrets.ANDROID_PUBLISH_KEY }}' > key.json; cd ../
+      - name: Write Publish Keystore
+        run: cd android; echo ${{ secrets.ANDROID_RELEASE_KEYSTORE }} | base64 --decode > my-release-key.keystore; cd ../
+      - name: Fastlane Beta - Build and Publish to Firebase
+        uses: maierj/fastlane-action@v1.4.0
+        with:
+          lane: 'alpha'
+          subdirectory: 'android'
+          bundle-install-path: 'vendor/bundle'
+        env:
+          ENVFILE: .env.prod
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: Push Changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
