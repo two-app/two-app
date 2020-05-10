@@ -27,12 +27,12 @@ jobs:
         run: npm install -g firebase-tools
       - name: Install Pods
         run: cd ios; pod deintegrate && pod install; cd ../
-      - name: Fastlane Beta - Build and Publish to Firebase
-        uses: maierj/fastlane-action@v1.4.0
-        with:
-          lane: 'alpha'
-          subdirectory: 'ios'
-          bundle-install-path: 'vendor/bundle'
+      - name: Fastlane Alpha
+        run: |
+          cd ios
+          bundle install
+          bundle exec fastlane alpha --env beta
+          cd ../
         env:
           ENVFILE: .env.prod
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
