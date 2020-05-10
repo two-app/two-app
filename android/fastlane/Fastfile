@@ -29,6 +29,7 @@ platform :android do
     
     commit_android_version_bump(
       message: "Android 🤖 version code bump [skip ci]",
+      app_folder_name: "app"
     )
 
     store_password = ENV["ANDROID_KEY_PASSWORD"]
