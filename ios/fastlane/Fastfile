@@ -23,6 +23,7 @@ platform :ios do
 
   lane :alpha do
     increment_build_number(xcodeproj: "two.xcodeproj")
+    
     commit_version_bump(
       message: "iOS 🍏 build number bump -> #{build_number} [skip ci]",
       force: true
