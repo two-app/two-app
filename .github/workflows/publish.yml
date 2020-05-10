@@ -12,7 +12,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.1.0
-      - run: git status
+        run: git checkout master
+      - name: Configure Git
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "Release Bot"
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
@@ -45,7 +49,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2.1.0
+        run: git checkout master
       - name: Configure Git
         run: |
           git config --global user.email "action@github.com"
