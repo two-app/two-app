@@ -61,7 +61,7 @@ jobs:
       - name: Write Publish Keystore
         run: cd android; echo ${{ secrets.ANDROID_RELEASE_KEYSTORE }} | base64 --decode > my-release-key.keystore; cd ../
       - name: Install Fastlane & Bundler
-        run: sudo gem install fastlane -NV bundle
+        run: sudo gem install fastlane -NV bundler
       - name: Fastlane Alpha
         run: |
           cd android
