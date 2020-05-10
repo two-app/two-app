@@ -63,7 +63,6 @@ jobs:
         with:
           lane: 'alpha'
           subdirectory: 'android'
-          bundle-install-path: 'vendor/bundle'
         env:
           ENVFILE: .env.prod
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}

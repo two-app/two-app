@@ -12,5 +12,3 @@ fastlane/test_output
 
 # Fastlane builds
 builds/*
-
-android/vendor/
