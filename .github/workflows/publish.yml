@@ -50,7 +50,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.1.0
-        run: git checkout master
       - name: Configure Git
         run: |
           git checkout master
