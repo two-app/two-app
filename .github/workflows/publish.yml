@@ -56,15 +56,22 @@ jobs:
         run: cd android; echo '${{ secrets.ANDROID_PUBLISH_KEY }}' > key.json; cd ../
       - name: Write Publish Keystore
         run: cd android; echo ${{ secrets.ANDROID_RELEASE_KEYSTORE }} | base64 --decode > my-release-key.keystore; cd ../
-      - name: Fastlane Beta - Build and Publish to Firebase
-        uses: maierj/fastlane-action@v1.4.0
-        with:
-          lane: 'alpha'
-          subdirectory: 'android'
+      - name: Install Fastlane
+        run: sudo gem install fastlane -NV
+      - run: bundle exec fastlane alpha --env beta
         env:
           ENVFILE: .env.prod
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      # - name: Fastlane Beta - Build and Publish to Firebase
+      #   uses: maierj/fastlane-action@v1.4.0
+      #   with:
+      #     lane: 'alpha'
+      #     subdirectory: 'android'
+      #   env:
+      #     ENVFILE: .env.prod
+      #     ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+      #     FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       - name: Merge Version Changes
         run: git pull --rebase
       - name: Push Changes
