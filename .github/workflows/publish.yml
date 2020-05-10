@@ -64,7 +64,11 @@ jobs:
         run: sudo gem install fastlane -NV
       - name: Install bundle
         run: gem install bundler
-      - run: cd android; bundle exec fastlane alpha --env beta; cd ../
+      - run: |
+          cd android
+          bundle install
+          bundle exec fastlane alpha --env beta
+          cd ../
         env:
           ENVFILE: .env.prod
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
