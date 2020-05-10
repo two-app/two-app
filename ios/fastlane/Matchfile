@@ -1,4 +1,4 @@
-git_url("https://" + ENV["MATCH_GIT_BASIC_AUTHORIZATION"] + "@github.com/gerryfletch/certificates.git")
+git_url("https://" + ENV["MATCH_TOKEN"] + "@github.com/gerryfletch/certificates.git")
 
 storage_mode("git")
 
