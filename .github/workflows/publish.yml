@@ -12,9 +12,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.1.0
+        with:
+          ref: 'master'
       - name: Configure Git
         run: |
-          git checkout origin/master
           git config --global user.email "action@github.com"
           git config --global user.name "Release Bot"
       - name: Setup Node
@@ -50,9 +51,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2.1.0
+        with:
+          ref: 'master'
       - name: Configure Git
         run: |
-          git checkout origin/master
           git config --global user.email "action@github.com"
           git config --global user.name "Release Bot"
       - name: Set up Ruby v2.6
