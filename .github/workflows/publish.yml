@@ -22,7 +22,6 @@ jobs:
       - run: yarn install
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
-      - run: firebase --version
       - name: Install Pods
         run: cd ios; pod deintegrate && pod install; cd ../
       - name: Fastlane Beta - Build and Publish to Firebase
@@ -60,14 +59,8 @@ jobs:
       - run: yarn install
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
-      - run: firebase --version
       - name: Increment Version Code
         run: echo "$(awk '{sub(/versionCode [[:digit:]]+$/,"versionCode "$2+1)}1' android/app/build.gradle)" > android/app/build.gradle
-      - name: Commit files
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git commit -m "Bumped Android version code." -a
       - name: Write Secret Key
         run: cd android; echo '${{ secrets.ANDROID_PUBLISH_KEY }}' > key.json; cd ../
       - name: Write Publish Keystore
@@ -82,6 +75,11 @@ jobs:
           ENVFILE: .env.prod
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "Bumped Android version code." -a
       - name: Push Changes
         uses: ad-m/github-push-action@master
         with:
