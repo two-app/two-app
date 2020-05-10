@@ -39,7 +39,9 @@ jobs:
           MATCH_TOKEN: ${{ secrets.CLONE_TOKEN }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
       - name: Merge Version Changes
-        run: git pull --rebase
+        run: |
+          git clean -f -d
+          git pull --rebase
       - name: Push Changes
         uses: ad-m/github-push-action@master
         with:
