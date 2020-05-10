@@ -122,7 +122,7 @@ class ConnectCodeScreenTestBed {
         ConnectService.performConnection = jest.fn().mockResolvedValue({});
     };
 
-    whenConnectReject = (error: Error) => {
+    whenConnectReject = (error: ErrorResponse) => {
         ConnectService.performConnection = jest.fn().mockRejectedValue(error);
     };
 }
