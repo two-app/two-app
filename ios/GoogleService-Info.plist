@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>585621126829-d6c9ul1iv0rej61o20apchv49a86nr28.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.585621126829-d6c9ul1iv0rej61o20apchv49a86nr28</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD-3m41umCmCbqsvhKsWYUcEKS9bbt198M</string>
+	<key>GCM_SENDER_ID</key>
+	<string>585621126829</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>date.two</string>
+	<key>PROJECT_ID</key>
+	<string>two-app-2d6a4</string>
+	<key>STORAGE_BUCKET</key>
+	<string>two-app-2d6a4.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:585621126829:ios:fc193f28d8a69ee327d024</string>
+	<key>DATABASE_URL</key>
+	<string>https://two-app-2d6a4.firebaseio.com</string>
+</dict>
+</plist>

@@ -34,6 +34,7 @@ platform :ios do
       workspace: "two.xcworkspace",
       scheme: "two",
       clean: true,
+      silent: true,
       export_method: "ad-hoc",
       export_options: {
         provisioningProfiles: { 
