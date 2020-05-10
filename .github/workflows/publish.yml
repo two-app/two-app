@@ -58,6 +58,8 @@ jobs:
         run: cd android; echo ${{ secrets.ANDROID_RELEASE_KEYSTORE }} | base64 --decode > my-release-key.keystore; cd ../
       - name: Install Fastlane
         run: sudo gem install fastlane -NV
+      - name: Install Ruby Bundler
+        run: gem install bundler
       - run: bundle exec fastlane alpha --env beta
         env:
           ENVFILE: .env.prod
