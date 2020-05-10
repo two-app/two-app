@@ -25,7 +25,7 @@ platform :ios do
     increment_build_number(xcodeproj: "two.xcodeproj")
     
     commit_version_bump(
-      message: "iOS 🍏 build number bump -> #{build_number} [skip ci]",
+      message: "iOS 🍏 build number bump [skip ci]",
       force: true
     )
 
