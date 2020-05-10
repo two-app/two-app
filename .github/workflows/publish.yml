@@ -45,11 +45,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Set up Ruby 2.6
+      - name: Set up Ruby v2.6
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 2.6
-      - name: Setup Node
+      - name: Setup Node v12
         uses: actions/setup-node@v1
         with:
           node-version: '12'
@@ -64,7 +64,7 @@ jobs:
         run: sudo gem install fastlane -NV
       - name: Install bundle
         run: gem install bundler
-      - run: bundle exec fastlane alpha --env beta
+      - run: cd android; bundle exec fastlane alpha --env beta; cd ../
         env:
           ENVFILE: .env.prod
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
