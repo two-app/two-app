@@ -45,7 +45,7 @@ type PostMemoryResponse = {
 export const uploadMemory = (upload: MemoryUpload, setProgress: (percentage: number) => void): Promise<number[]> => {
     setProgress(0);
     return createMemory(upload).then(mid => uploadToMemory(mid, upload, setProgress));
-}
+};
 
 export const createMemory = (description: MemoryDescription): Promise<number> => {
     description.date = description.date.toString() as any;
@@ -76,7 +76,6 @@ export const uploadToMemory = (mid: number, upload: MemoryUpload, setProgress: (
             setProgress(Math.round((doneCount / doneTotal) * 100));
         });
     });
-
 
     return Promise.all(uploadPromises).then(responses => {
         return responses.map(axiosResponse => axiosResponse.data[0]);
