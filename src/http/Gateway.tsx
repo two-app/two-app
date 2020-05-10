@@ -1,7 +1,7 @@
-import Axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios';
+import Axios, { AxiosInstance, AxiosRequestConfig, AxiosError, AxiosResponse } from 'axios';
 import { store } from '../state/reducers';
 import Config from 'react-native-config';
-import { mapErrorResponse } from './Response';
+import { mapErrorResponse, ErrorResponse } from './Response';
 
 const Gateway: AxiosInstance = Axios.create({
     baseURL: Config.API_URL,
@@ -27,12 +27,12 @@ Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
 });
 
 Gateway.interceptors.response.use(
-    response => {
-        return Promise.resolve(response)
-    },
-    (error: AxiosError<any>) => {
-        return Promise.reject(mapErrorResponse(error));
-    }
+    (response: AxiosResponse<any>): Promise<AxiosResponse<any>> => Promise.resolve(
+        response
+    ),
+    (error: AxiosError<any>): Promise<ErrorResponse> => Promise.reject(
+        mapErrorResponse(error)
+    )
 );
 
 export default Gateway;

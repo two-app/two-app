@@ -12,23 +12,20 @@ import { Tokens } from "../authentication/AuthenticationModel";
 import { ErrorResponse } from "../http/Response";
 
 const connectToPartner = (connectCode: String): Promise<UserResponse> => Gateway.post(`/partner/${connectCode}`)
-    .then((r: AxiosResponse<Tokens>): UserResponse => ({
-        user: userFromAccessToken(r.data.accessToken),
-        tokens: {accessToken: r.data.accessToken, refreshToken: r.data.refreshToken}
-    }));
+  .then((r: AxiosResponse<Tokens>): UserResponse => ({
+    user: userFromAccessToken(r.data.accessToken),
+    tokens: { accessToken: r.data.accessToken, refreshToken: r.data.refreshToken }
+  }));
 
 /**
  * Checks if the user has a partner.
  * If the user does, the tokens are
  * refreshed.
  */
-const checkConnection = async (): Promise<void> => {
-  const maybeUser = await PartnerService.getPartnerPreConnect();
-  if (maybeUser != null) {
-    // partner has connected with user. Refresh tokens.
-    return AuthenticationService.refreshTokens().then(() => { });
-  }
-};
+const checkConnection = async (): Promise<void> => PartnerService.getPartnerPreConnect()
+  .then(
+    () => AuthenticationService.refreshTokens().then(() => { })
+  );
 
 const performConnection = (code: string): Promise<void> => {
   return connectToPartner(code)

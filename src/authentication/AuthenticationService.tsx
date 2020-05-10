@@ -1,8 +1,8 @@
 import Gateway from '../http/Gateway';
-import {AxiosError, AxiosResponse} from 'axios';
-import UserRegistrationModel, {UserRegistration} from './register_workflow/UserRegistrationModel';
-import {UnconnectedUser, unconnectedUserFromAccessToken, User, userFromAccessToken, detectUserFromAccessToken, isUnconnectedUser} from './UserModel';
-import {Tokens} from './AuthenticationModel';
+import { AxiosResponse } from 'axios';
+import UserRegistrationModel, { UserRegistration } from './register_workflow/UserRegistrationModel';
+import { UnconnectedUser, unconnectedUserFromAccessToken, User, userFromAccessToken, detectUserFromAccessToken, isUnconnectedUser } from './UserModel';
+import { Tokens } from './AuthenticationModel';
 import { store } from '../state/reducers';
 import { storeTokens } from './store';
 import { getNavigation } from '../navigation/RootNavigation';
@@ -23,25 +23,25 @@ export type LoginCredentials = {
 export const areCredentialsValid = ({ email, rawPassword }: LoginCredentials) =>
     UserRegistrationModel.isEmailValid(email) && rawPassword.length > 3;
 
-const login = (loginCredentials: LoginCredentials): Promise<UserResponse | ErrorResponse> => Gateway.post("/login", loginCredentials)
+const login = (loginCredentials: LoginCredentials): Promise<UserResponse> => Gateway.post("/login", loginCredentials)
     .then((r: AxiosResponse<Tokens>): UserResponse => ({
         user: detectUserFromAccessToken(r.data.accessToken),
-        tokens: {accessToken: r.data.accessToken, refreshToken: r.data.refreshToken}
+        tokens: { accessToken: r.data.accessToken, refreshToken: r.data.refreshToken }
     }));
 
 const registerUser = (userRegistration: UserRegistration): Promise<UserResponse> => Gateway.post('/self', userRegistration)
     .then((r: AxiosResponse<Tokens>): UserResponse => ({
         user: unconnectedUserFromAccessToken(r.data.accessToken),
-        tokens: {accessToken: r.data.accessToken, refreshToken: r.data.refreshToken}
+        tokens: { accessToken: r.data.accessToken, refreshToken: r.data.refreshToken }
     }));
 
 const connectToPartner = (connectCode: String): Promise<UserResponse> => Gateway.post(`/partner/${connectCode}`)
     .then((r: AxiosResponse<Tokens>): UserResponse => ({
         user: userFromAccessToken(r.data.accessToken),
-        tokens: {accessToken: r.data.accessToken, refreshToken: r.data.refreshToken}
+        tokens: { accessToken: r.data.accessToken, refreshToken: r.data.refreshToken }
     }));
 
-const refreshTokens = () => Gateway.post("/refresh").then((response: AxiosResponse<string>): string => {
+const refreshTokens = (): Promise<string> => Gateway.post("/refresh").then((response: AxiosResponse<string>): string => {
     const accessToken = response.data;
     handleTokenChange(accessToken);
     return accessToken;
@@ -49,15 +49,19 @@ const refreshTokens = () => Gateway.post("/refresh").then((response: AxiosRespon
     if (error.code === 401) {
         resetNavigate('LogoutScreen', getNavigation() as any);
     }
-    
-    return 'Something went wrong on our end.';
+
+    return Promise.reject({
+        code: 500,
+        status: "Generated Internal Server Error: Invalid client-side mapping of token refresh failure.",
+        reason: 'Something went wrong on our end.'
+    });
 });
 
 const handleTokenChange = (newAccessToken: string) => {
-    const {accessToken, refreshToken} = getTokensFromStore();
+    const { accessToken, refreshToken } = getTokensFromStore();
 
     // 1. store the new access token
-    store.dispatch(storeTokens({accessToken: newAccessToken, refreshToken}));
+    store.dispatch(storeTokens({ accessToken: newAccessToken, refreshToken }));
 
     const oldUser = detectUserFromAccessToken(accessToken);
     const newUser = detectUserFromAccessToken(newAccessToken);
@@ -75,7 +79,7 @@ const handleTokenChange = (newAccessToken: string) => {
     }
 };
 
-const getTokensFromStore = (): {accessToken: string, refreshToken: string} => {
+const getTokensFromStore = (): { accessToken: string, refreshToken: string } => {
     const refreshToken = store.getState().auth?.refreshToken;
     const accessToken = store.getState().auth?.accessToken;
 
@@ -83,7 +87,7 @@ const getTokensFromStore = (): {accessToken: string, refreshToken: string} => {
         throw new Error("Inconsistent authentication state.");
     }
 
-    return {accessToken, refreshToken};
+    return { accessToken, refreshToken };
 }
 
-export default {login, registerUser, connectToPartner, refreshTokens};
+export default { login, registerUser, connectToPartner, refreshTokens };

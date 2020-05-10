@@ -15,6 +15,7 @@ import { Button } from '../../forms/Button';
 import { resetNavigate } from '../../navigation/NavigationUtilities';
 import ConnectService from '../../user/ConnectService';
 import HapticFeedback from "react-native-haptic-feedback";
+import { ErrorResponse } from '../../http/Response';
 
 const mapState = (state: TwoState) => ({ user: selectUnconnectedUser(state.user) });
 const connector = connect(mapState);
@@ -33,19 +34,17 @@ const ConnectCodeScreen = ({ navigation, user }: ConnectCodeScreenProps) => {
     const connectToPartner = (connectCode: string) => {
         setError(null);
         setSubmitted(true);
-        ConnectService.performConnection(connectCode).catch((error: Error) => {
-            setSubmitted(false);
-            setError(error.message);
-        });
+        ConnectService.performConnection(connectCode).catch((e: ErrorResponse) => {
+            setError(e.reason);
+        }).finally(() => setSubmitted(false));
     };
 
     const refresh = () => {
         setError(null);
         setRefreshing(true);
-        ConnectService.checkConnection().catch(() => {
-            setRefreshing(false);
-            setError("Something went wrong on our end.");
-        });
+        ConnectService.checkConnection().catch((e: ErrorResponse) => {
+            setError(e.reason);
+        }).finally(() => setRefreshing(false));;
     };
 
     return (

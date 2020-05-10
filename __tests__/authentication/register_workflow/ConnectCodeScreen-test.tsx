@@ -6,6 +6,7 @@ import { shallow } from 'enzyme';
 import { UnconnectedUser } from '../../../src/authentication/UserModel';
 import { ConnectCodeScreen } from '../../../src/authentication/register_workflow/ConnectCodeScreen';
 import ConnectService from '../../../src/user/ConnectService';
+import { ErrorResponse } from '../../../src/http/Response';
 
 describe('ConnectCodeScreen', () => {
     let tb: ConnectCodeScreenTestBed;
@@ -79,15 +80,15 @@ describe('ConnectCodeScreen', () => {
         });
 
         describe('On failed connect', () => {
-            const response = new Error('Error Message');
+            const error: ErrorResponse = {code: 400, status: '400 Bad Request', reason: 'Some API Error Message'};
             beforeEach(() => {
-                tb.whenConnectReject(response);
+                tb.whenConnectReject(error);
                 tb.clickSubmit();
             });
 
             test('hides loading view', () => expect(tb.wrapper.exists('LoadingView')).toBe(false));
 
-            test('displays error message', () => expect(tb.getErrorText()).toEqual(response.message));
+            test('displays error message', () => expect(tb.getErrorText()).toEqual(error.reason));
         });
     });
 });
@@ -121,7 +122,7 @@ class ConnectCodeScreenTestBed {
         ConnectService.performConnection = jest.fn().mockResolvedValue({});
     };
 
-    whenConnectReject = (error: Error) => {
+    whenConnectReject = (error: ErrorResponse) => {
         ConnectService.performConnection = jest.fn().mockRejectedValue(error);
     };
 }
