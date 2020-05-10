@@ -52,8 +52,6 @@ jobs:
       - run: yarn install
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
-      - name: Increment Version Code
-        run: echo "$(awk '{sub(/versionCode [[:digit:]]+$/,"versionCode "$2+1)}1' android/app/build.gradle)" > android/app/build.gradle
       - name: Write Secret Key
         run: cd android; echo '${{ secrets.ANDROID_PUBLISH_KEY }}' > key.json; cd ../
       - name: Write Publish Keystore
