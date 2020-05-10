@@ -2,6 +2,8 @@ name: Beta Publish
 
 on:
   push:
+    branches:
+      - master
     # Sequence of patterns matched against refs/tags
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
@@ -31,10 +33,6 @@ jobs:
           bundle-install-path: 'vendor/bundle'
         env:
           ENVFILE: .env.prod
-          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APPLICATION_SPECIFIC_PASSWORD }}
-          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
-          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
-          FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           MATCH_TOKEN: ${{ secrets.CLONE_TOKEN }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
@@ -81,9 +79,6 @@ jobs:
           bundle-install-path: 'vendor/bundle'
         env:
           ENVFILE: .env.prod
-          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APPLICATION_SPECIFIC_PASSWORD }}
-          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
-          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       - name: Push Changes
