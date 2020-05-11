@@ -40,6 +40,7 @@ jobs:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
       - name: Merge Version Changes
         run: |
+          git reset --hard
           git clean -f -d
           git pull --rebase
       - name: Push Changes
@@ -90,6 +91,7 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       - name: Merge Version Changes
         run: |
+          git reset --hard
           git clean -f -d
           git pull --rebase
       - name: Push Changes
