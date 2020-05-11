@@ -8,18 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* twoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* twoTests.m */; };
+		0E044BCE0CB4FC3916629CB2 /* libPods-twoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F59BCD8FBE911F2726A07C0F /* libPods-twoTests.a */; };
+		13A2BC83C2678BDE39F39666 /* libPods-two-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A668ADB9CF12D204E714ED9 /* libPods-two-tvOS.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		161C4C4468AD4097B4A15E01 /* Montserrat-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E644DB671BE84C04A0858EC2 /* Montserrat-ExtraBoldItalic.ttf */; };
+		18351D4C30E152CCAFC3AC61 /* libPods-two.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CAAB9695432DCD380FB9E883 /* libPods-two.a */; };
 		1E95D152DABE4B9E92835E66 /* Montserrat-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75865A065B1F4F8E93C435E3 /* Montserrat-ExtraLight.ttf */; };
 		1FA17302F56A42CEBAC0986F /* Montserrat-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7081A4C5E0474547A8D4B0AE /* Montserrat-BlackItalic.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* twoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* twoTests.m */; };
-		3BC29B8C2277F19F85C77528 /* libPods-twoTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4C7D4D1D6A6AD8CF8DF5043 /* libPods-twoTests.a */; };
 		4CDAE0674F1F4F74949F045B /* Montserrat-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E14FEBDAAED84BA49A090295 /* Montserrat-SemiBoldItalic.ttf */; };
 		56482243EB0D439CBFB41346 /* Montserrat-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 70AEF9672FA24278A5E995FC /* Montserrat-Thin.ttf */; };
 		59F4849D43024ADA9892C2BE /* Montserrat-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D44C60A338F54E248EFB9E37 /* Montserrat-LightItalic.ttf */; };
@@ -29,14 +31,12 @@
 		63CC4F1CED574C40B4285FB7 /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0723094947C94CC3B039E8AD /* Montserrat-Light.ttf */; };
 		6CE2FACE2467FFF200B57743 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6CE2FACD2467FFF200B57743 /* GoogleService-Info.plist */; };
 		6FC6081585FF4B65865C8F0B /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9607F367FA77413D89CCC568 /* Montserrat-Bold.ttf */; };
-		79078BFDBD2EC27C27648B72 /* libPods-two-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A723CF16C872490F7CE309A /* libPods-two-tvOS.a */; };
 		8962D2118CFA482EB3ACE250 /* Montserrat-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E1D6085FE3FE488980CE7AE5 /* Montserrat-Italic.ttf */; };
 		9C3BE996F63645BEA83DB604 /* Montserrat-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B7B01664D21B4313A19D26BB /* Montserrat-ThinItalic.ttf */; };
 		A7A42444527949D2BE770801 /* Montserrat-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9548693C98044302B290DA9C /* Montserrat-ExtraBold.ttf */; };
 		B5228AC3EADA4702AC420B86 /* Montserrat-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE46D980747B4E338FB53ED9 /* Montserrat-SemiBold.ttf */; };
-		BACA8854706AAC127368B9BA /* libPods-two.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A36CA7063CEC4DE0BCC3512 /* libPods-two.a */; };
-		BC529C8842C1895CDDF09E4B /* libPods-two-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E4F24B571EAABC045CD3CC8 /* libPods-two-tvOSTests.a */; };
 		BCEFDD3334574FE0919E9CF7 /* Montserrat-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2A7FB70444AF4282B739A5B4 /* Montserrat-ExtraLightItalic.ttf */; };
+		F7801B920758BD89B3E4AAF1 /* libPods-two-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A802ADC9BD9DD8B301A219A /* libPods-two-tvOSTests.a */; };
 		FE9790E902D14DCA8828D130 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1C92F1A42EAF476BB019345B /* Montserrat-Regular.ttf */; };
 		FFD6D4CEA6154CF1988289E6 /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA417C8A28E8405F96C0CB9B /* Montserrat-Black.ttf */; };
 /* End PBXBuildFile section */
@@ -64,8 +64,6 @@
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* twoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = twoTests.m; sourceTree = "<group>"; };
 		0723094947C94CC3B039E8AD /* Montserrat-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Light.ttf"; path = "../assets/fonts/Montserrat-Light.ttf"; sourceTree = "<group>"; };
-		0A723CF16C872490F7CE309A /* libPods-two-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-two-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0B1E7AAD060266E465EF9B7E /* Pods-two-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-two-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-two-tvOS/Pods-two-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* Two.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Two.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = two/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = two/AppDelegate.m; sourceTree = "<group>"; };
@@ -73,37 +71,39 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = two/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = two/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = two/main.m; sourceTree = "<group>"; };
+		174046880EE00A660C8A8FB7 /* Pods-two-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-two-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-two-tvOSTests/Pods-two-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		1C92F1A42EAF476BB019345B /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Regular.ttf"; path = "../assets/fonts/Montserrat-Regular.ttf"; sourceTree = "<group>"; };
+		256924B9E18E1780D290816A /* Pods-two.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-two.debug.xcconfig"; path = "Target Support Files/Pods-two/Pods-two.debug.xcconfig"; sourceTree = "<group>"; };
+		29DD0C4038CC9B6967F972AB /* Pods-two-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-two-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-two-tvOSTests/Pods-two-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2A7FB70444AF4282B739A5B4 /* Montserrat-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraLightItalic.ttf"; path = "../assets/fonts/Montserrat-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
+		2A802ADC9BD9DD8B301A219A /* libPods-two-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-two-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E47B1E0B4A5D006451C7 /* two-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "two-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* two-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "two-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2E4F24B571EAABC045CD3CC8 /* libPods-two-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-two-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		3B651EAEBC53D3BE2F51D921 /* Pods-two-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-two-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-two-tvOSTests/Pods-two-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		3D40903FBF11249F80E4B12C /* Pods-two-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-two-tvOS.release.xcconfig"; path = "Target Support Files/Pods-two-tvOS/Pods-two-tvOS.release.xcconfig"; sourceTree = "<group>"; };
-		4A36CA7063CEC4DE0BCC3512 /* libPods-two.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-two.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3EF7B3459A4708A155112C37 /* Pods-twoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-twoTests.debug.xcconfig"; path = "Target Support Files/Pods-twoTests/Pods-twoTests.debug.xcconfig"; sourceTree = "<group>"; };
+		43257DA58018F7BFE6667DD7 /* Pods-two-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-two-tvOS.release.xcconfig"; path = "Target Support Files/Pods-two-tvOS/Pods-two-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		6CE2FACD2467FFF200B57743 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6EE8917BEB4ED3B88A3B2BC4 /* Pods-two-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-two-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-two-tvOS/Pods-two-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		7081A4C5E0474547A8D4B0AE /* Montserrat-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-BlackItalic.ttf"; path = "../assets/fonts/Montserrat-BlackItalic.ttf"; sourceTree = "<group>"; };
 		70AEF9672FA24278A5E995FC /* Montserrat-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Thin.ttf"; path = "../assets/fonts/Montserrat-Thin.ttf"; sourceTree = "<group>"; };
-		7536AD963C220BC64FED6BE8 /* Pods-two.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-two.release.xcconfig"; path = "Target Support Files/Pods-two/Pods-two.release.xcconfig"; sourceTree = "<group>"; };
 		75865A065B1F4F8E93C435E3 /* Montserrat-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraLight.ttf"; path = "../assets/fonts/Montserrat-ExtraLight.ttf"; sourceTree = "<group>"; };
-		8AA2112F7C7B58FD8373E779 /* Pods-two-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-two-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-two-tvOSTests/Pods-two-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		7A668ADB9CF12D204E714ED9 /* libPods-two-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-two-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9548693C98044302B290DA9C /* Montserrat-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraBold.ttf"; path = "../assets/fonts/Montserrat-ExtraBold.ttf"; sourceTree = "<group>"; };
 		9607F367FA77413D89CCC568 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Bold.ttf"; path = "../assets/fonts/Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		9DD2D61F916949959A7724E8 /* Montserrat-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-BoldItalic.ttf"; path = "../assets/fonts/Montserrat-BoldItalic.ttf"; sourceTree = "<group>"; };
-		ABE50EF9AA7BEEE9E7D23AC0 /* Pods-two.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-two.debug.xcconfig"; path = "Target Support Files/Pods-two/Pods-two.debug.xcconfig"; sourceTree = "<group>"; };
+		9DDA72A3E0369E7894C3A828 /* Pods-twoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-twoTests.release.xcconfig"; path = "Target Support Files/Pods-twoTests/Pods-twoTests.release.xcconfig"; sourceTree = "<group>"; };
 		AE46D980747B4E338FB53ED9 /* Montserrat-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBold.ttf"; path = "../assets/fonts/Montserrat-SemiBold.ttf"; sourceTree = "<group>"; };
 		B7B01664D21B4313A19D26BB /* Montserrat-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ThinItalic.ttf"; path = "../assets/fonts/Montserrat-ThinItalic.ttf"; sourceTree = "<group>"; };
-		BCA84672558C4203AFFDE788 /* Pods-twoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-twoTests.release.xcconfig"; path = "Target Support Files/Pods-twoTests/Pods-twoTests.release.xcconfig"; sourceTree = "<group>"; };
+		CAAB9695432DCD380FB9E883 /* libPods-two.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-two.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D11BC98C94744ED8BFE25F73 /* Montserrat-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Medium.ttf"; path = "../assets/fonts/Montserrat-Medium.ttf"; sourceTree = "<group>"; };
 		D44C60A338F54E248EFB9E37 /* Montserrat-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-LightItalic.ttf"; path = "../assets/fonts/Montserrat-LightItalic.ttf"; sourceTree = "<group>"; };
-		D4C7D4D1D6A6AD8CF8DF5043 /* libPods-twoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-twoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA417C8A28E8405F96C0CB9B /* Montserrat-Black.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Black.ttf"; path = "../assets/fonts/Montserrat-Black.ttf"; sourceTree = "<group>"; };
 		E14FEBDAAED84BA49A090295 /* Montserrat-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-SemiBoldItalic.ttf"; path = "../assets/fonts/Montserrat-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		E1D6085FE3FE488980CE7AE5 /* Montserrat-Italic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-Italic.ttf"; path = "../assets/fonts/Montserrat-Italic.ttf"; sourceTree = "<group>"; };
 		E644DB671BE84C04A0858EC2 /* Montserrat-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-ExtraBoldItalic.ttf"; path = "../assets/fonts/Montserrat-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		E9420C656735B64EE2632DA2 /* Pods-two.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-two.release.xcconfig"; path = "Target Support Files/Pods-two/Pods-two.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		ED2B5E21ACE49B745DB6DBF0 /* Pods-twoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-twoTests.debug.xcconfig"; path = "Target Support Files/Pods-twoTests/Pods-twoTests.debug.xcconfig"; sourceTree = "<group>"; };
+		F59BCD8FBE911F2726A07C0F /* libPods-twoTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-twoTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF0732B7354E4519AEC95A6B /* Montserrat-MediumItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Montserrat-MediumItalic.ttf"; path = "../assets/fonts/Montserrat-MediumItalic.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -112,7 +112,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BC29B8C2277F19F85C77528 /* libPods-twoTests.a in Frameworks */,
+				0E044BCE0CB4FC3916629CB2 /* libPods-twoTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,7 +120,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BACA8854706AAC127368B9BA /* libPods-two.a in Frameworks */,
+				18351D4C30E152CCAFC3AC61 /* libPods-two.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,7 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				79078BFDBD2EC27C27648B72 /* libPods-two-tvOS.a in Frameworks */,
+				13A2BC83C2678BDE39F39666 /* libPods-two-tvOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,7 +136,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC529C8842C1895CDDF09E4B /* libPods-two-tvOSTests.a in Frameworks */,
+				F7801B920758BD89B3E4AAF1 /* libPods-two-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,10 +180,10 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				4A36CA7063CEC4DE0BCC3512 /* libPods-two.a */,
-				0A723CF16C872490F7CE309A /* libPods-two-tvOS.a */,
-				2E4F24B571EAABC045CD3CC8 /* libPods-two-tvOSTests.a */,
-				D4C7D4D1D6A6AD8CF8DF5043 /* libPods-twoTests.a */,
+				CAAB9695432DCD380FB9E883 /* libPods-two.a */,
+				7A668ADB9CF12D204E714ED9 /* libPods-two-tvOS.a */,
+				2A802ADC9BD9DD8B301A219A /* libPods-two-tvOSTests.a */,
+				F59BCD8FBE911F2726A07C0F /* libPods-twoTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -225,14 +225,14 @@
 		BC7FF20F0081789C54178130 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				ABE50EF9AA7BEEE9E7D23AC0 /* Pods-two.debug.xcconfig */,
-				7536AD963C220BC64FED6BE8 /* Pods-two.release.xcconfig */,
-				0B1E7AAD060266E465EF9B7E /* Pods-two-tvOS.debug.xcconfig */,
-				3D40903FBF11249F80E4B12C /* Pods-two-tvOS.release.xcconfig */,
-				3B651EAEBC53D3BE2F51D921 /* Pods-two-tvOSTests.debug.xcconfig */,
-				8AA2112F7C7B58FD8373E779 /* Pods-two-tvOSTests.release.xcconfig */,
-				ED2B5E21ACE49B745DB6DBF0 /* Pods-twoTests.debug.xcconfig */,
-				BCA84672558C4203AFFDE788 /* Pods-twoTests.release.xcconfig */,
+				256924B9E18E1780D290816A /* Pods-two.debug.xcconfig */,
+				E9420C656735B64EE2632DA2 /* Pods-two.release.xcconfig */,
+				6EE8917BEB4ED3B88A3B2BC4 /* Pods-two-tvOS.debug.xcconfig */,
+				43257DA58018F7BFE6667DD7 /* Pods-two-tvOS.release.xcconfig */,
+				29DD0C4038CC9B6967F972AB /* Pods-two-tvOSTests.debug.xcconfig */,
+				174046880EE00A660C8A8FB7 /* Pods-two-tvOSTests.release.xcconfig */,
+				3EF7B3459A4708A155112C37 /* Pods-twoTests.debug.xcconfig */,
+				9DDA72A3E0369E7894C3A828 /* Pods-twoTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -269,7 +269,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "twoTests" */;
 			buildPhases = (
-				669D42C204609FA153763944 /* [CP] Check Pods Manifest.lock */,
+				BA7220F2DF305F640C7F8B7A /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
@@ -288,13 +288,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "two" */;
 			buildPhases = (
-				3FA0656CF7E45FF4AE921694 /* [CP] Check Pods Manifest.lock */,
+				873C2EAD2AF9A92DB8B545C9 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				CC14EB2430D9F04B90547739 /* [CP] Copy Pods Resources */,
+				E8D44C87DF900F4864C87105 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -309,7 +309,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "two-tvOS" */;
 			buildPhases = (
-				E0C2920D843E045133CDE471 /* [CP] Check Pods Manifest.lock */,
+				801B587FBF0BACD604706B08 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F122414F3F0027D42C /* Start Packager */,
 				2D02E4771E0B4A5D006451C7 /* Sources */,
 				2D02E4781E0B4A5D006451C7 /* Frameworks */,
@@ -329,7 +329,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "two-tvOSTests" */;
 			buildPhases = (
-				AE1A67B698F504665982A0F4 /* [CP] Check Pods Manifest.lock */,
+				3E9646A1939F4BFC5E834EB9 /* [CP] Check Pods Manifest.lock */,
 				2D02E48C1E0B4A5D006451C7 /* Sources */,
 				2D02E48D1E0B4A5D006451C7 /* Frameworks */,
 				2D02E48E1E0B4A5D006451C7 /* Resources */,
@@ -479,51 +479,7 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		3FA0656CF7E45FF4AE921694 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-two-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		669D42C204609FA153763944 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-twoTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AE1A67B698F504665982A0F4 /* [CP] Check Pods Manifest.lock */ = {
+		3E9646A1939F4BFC5E834EB9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -545,7 +501,73 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CC14EB2430D9F04B90547739 /* [CP] Copy Pods Resources */ = {
+		801B587FBF0BACD604706B08 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-two-tvOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		873C2EAD2AF9A92DB8B545C9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-two-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BA7220F2DF305F640C7F8B7A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-twoTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E8D44C87DF900F4864C87105 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -595,28 +617,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-two/Pods-two-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		E0C2920D843E045133CDE471 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-two-tvOS-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -724,7 +724,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ED2B5E21ACE49B745DB6DBF0 /* Pods-twoTests.debug.xcconfig */;
+			baseConfigurationReference = 3EF7B3459A4708A155112C37 /* Pods-twoTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = 45LF6D4B7F;
@@ -748,7 +748,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BCA84672558C4203AFFDE788 /* Pods-twoTests.release.xcconfig */;
+			baseConfigurationReference = 9DDA72A3E0369E7894C3A828 /* Pods-twoTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -771,13 +771,13 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ABE50EF9AA7BEEE9E7D23AC0 /* Pods-two.debug.xcconfig */;
+			baseConfigurationReference = 256924B9E18E1780D290816A /* Pods-two.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 45LF6D4B7F;
 				INFOPLIST_FILE = two/Info.plist;
@@ -797,12 +797,12 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7536AD963C220BC64FED6BE8 /* Pods-two.release.xcconfig */;
+			baseConfigurationReference = E9420C656735B64EE2632DA2 /* Pods-two.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 9;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = 45LF6D4B7F;
 				INFOPLIST_FILE = two/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -822,7 +822,7 @@
 		};
 		2D02E4971E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0B1E7AAD060266E465EF9B7E /* Pods-two-tvOS.debug.xcconfig */;
+			baseConfigurationReference = 6EE8917BEB4ED3B88A3B2BC4 /* Pods-two-tvOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -851,7 +851,7 @@
 		};
 		2D02E4981E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3D40903FBF11249F80E4B12C /* Pods-two-tvOS.release.xcconfig */;
+			baseConfigurationReference = 43257DA58018F7BFE6667DD7 /* Pods-two-tvOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -882,7 +882,7 @@
 		};
 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3B651EAEBC53D3BE2F51D921 /* Pods-two-tvOSTests.debug.xcconfig */;
+			baseConfigurationReference = 29DD0C4038CC9B6967F972AB /* Pods-two-tvOSTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
@@ -910,7 +910,7 @@
 		};
 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8AA2112F7C7B58FD8373E779 /* Pods-two-tvOSTests.release.xcconfig */;
+			baseConfigurationReference = 174046880EE00A660C8A8FB7 /* Pods-two-tvOSTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ANALYZER_NONNULL = YES;
