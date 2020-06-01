@@ -1,30 +1,43 @@
-import React, { useState } from 'react';
-import { FormStyle } from '../memories/new_memory/FormStyles';
+import React, {useState} from 'react';
+import {FormStyle} from '../memories/new_memory/FormStyles';
 import Modal from 'react-native-modal';
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text} from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import Colors from '../Colors';
-import { useNavigation } from '@react-navigation/native';
-import { Tag } from './Tag';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { TouchableCard } from '../forms/Card';
+import {Tag} from './Tag';
+import {TouchableCard} from '../forms/Card';
+import {
+  Button,
+  LightButtonStyle,
+  LightButtonPressedStyle,
+} from '../forms/Button';
+import {getNavigation} from '../navigation/RootNavigation';
 
-export const NewTagButton = ({ onCreated }: { onCreated: (tag: Tag) => void }) => {
-  const { navigate } = useNavigation();
-
-  return (
-    <TouchableCard style={FormStyle.card} onPress={() => navigate('NewTagScreen', { onSubmit: onCreated })}>
-      <View style={FormStyle.iconContainer}>
-        <AntIcon name="tago" style={{ fontSize: 13, color: Colors.REGULAR }} />
-      </View>
-      <Text style={{ color: Colors.REGULAR }}>
-        Optional tag, e.g Anniversary or Birthday...
-      </Text>
-    </TouchableCard>
-  );
+type NewTagButtonProps = {
+  onCreated: (tag: Tag) => void;
 };
 
-export const TagCard = ({ tag, onDeselect }: { tag: Tag, onDeselect: () => void }) => {
+export const NewTagButton = ({onCreated}: NewTagButtonProps) => (
+  <TouchableCard
+    style={FormStyle.card}
+    onPress={() =>
+      getNavigation().navigate('NewTagScreen', {onSubmit: onCreated})
+    }>
+    <View style={FormStyle.iconContainer}>
+      <AntIcon name="tago" style={{fontSize: 13, color: Colors.REGULAR}} />
+    </View>
+    <Text style={{color: Colors.REGULAR}}>
+      Optional tag, e.g Anniversary or Birthday...
+    </Text>
+  </TouchableCard>
+);
+
+type TagCardProps = {
+  tag: Tag;
+  onDeselect: () => void;
+};
+
+export const TagCard = ({tag, onDeselect}: TagCardProps) => {
   const [showModal, setShowModal] = useState(false);
   return (
     <>
@@ -36,54 +49,51 @@ export const TagCard = ({ tag, onDeselect }: { tag: Tag, onDeselect: () => void 
       />
       <TouchableCard style={FormStyle.card} onPress={() => setShowModal(true)}>
         <View style={FormStyle.iconContainer}>
-          <AntIcon name="tago" style={{ fontSize: 13, color: Colors.REGULAR }} />
+          <AntIcon name="tago" style={{fontSize: 13, color: Colors.REGULAR}} />
         </View>
-        <Text style={{ color: Colors.DARK }}>
-          {tag.name}
-        </Text>
+        <Text style={{color: Colors.DARK}}>{tag.name}</Text>
       </TouchableCard>
     </>
   );
 };
 
 type DeselectModalProps = {
-  tag: Tag,
-  isVisible: boolean,
-  onExit: () => void,
-  onDeselect: () => void
-}
+  tag: Tag;
+  isVisible: boolean;
+  onExit: () => void;
+  onDeselect: () => void;
+};
 
-const DeselectModal = ({ tag, isVisible, onExit, onDeselect }: DeselectModalProps) => (
-  <Modal
-    isVisible={isVisible}
-    onSwipeComplete={() => onExit()}
-    onBackdropPress={() => onExit()}
-    onBackButtonPress={() => onExit()}
-    swipeDirection={['up', 'left', 'right', 'down']}
-    style={{ justifyContent: "flex-end", margin: 0 }}
-    backdropOpacity={0.5}
-  >
-    <TouchableOpacity style={styles.content} onPress={() => {
-      onExit()
-      onDeselect();
-    }}>
-      <Text>Remove <Text style={{ color: tag.color }}>{tag.name}</Text> Tag</Text>
-    </TouchableOpacity>
-  </Modal>
-)
+const DeselectModal = ({
+  tag,
+  isVisible,
+  onExit,
+  onDeselect,
+}: DeselectModalProps) => {
+  const [shouldDeselect, setShouldDeselect] = useState(false);
+  const onModalHide = () => shouldDeselect && onDeselect();
 
-const styles = StyleSheet.create({
-  content: {
-    backgroundColor: 'white',
-    padding: 20,
-    paddingBottom: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
-  },
-  contentTitle: {
-    fontSize: 20,
-    marginBottom: 12,
-  },
-});
+  return (
+    <Modal
+      isVisible={isVisible}
+      onSwipeComplete={onExit}
+      onBackdropPress={onExit}
+      onBackButtonPress={onExit}
+      onModalHide={onModalHide}
+      swipeDirection={['up', 'down']}
+      style={{justifyContent: 'center', margin: 0}}
+      backdropOpacity={0.8}>
+      <View style={{margin: 20}}>
+        <Button
+          onPress={() => {
+            setShouldDeselect(true);
+            onExit();
+          }}
+          text={`Deselect ${tag.name} Tag`}
+          buttonStyle={LightButtonStyle}
+          pressedButtonStyle={LightButtonPressedStyle}
+        />
+      </View>
+    </Modal>
+  );
+};

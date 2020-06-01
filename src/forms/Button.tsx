@@ -36,7 +36,7 @@ type ButtonProps = {
  */
 export const Button = ({ text, onPress, buttonStyle, pressedButtonStyle }: ButtonProps) => {
   const [isPressed, setPressed] = useState(false);
-  
+
   const combinedButtonStyle = { ...styles.button, backgroundColor: buttonStyle.backgroundColor };
   const combinedPressedButtonStyle = { ...styles.button, backgroundColor: pressedButtonStyle.backgroundColor };
 
@@ -50,7 +50,7 @@ export const Button = ({ text, onPress, buttonStyle, pressedButtonStyle }: Butto
     <TouchableWithoutFeedback
       onPressIn={() => {
         setPressed(true);
-        HapticFeedback.trigger('selection', {enableVibrateFallback: false});
+        HapticFeedback.trigger('selection', { enableVibrateFallback: false });
       }}
       onPressOut={() => setPressed(false)}
       onPress={onPress}>
@@ -92,3 +92,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-SemiBold'
   }
 });
+
+export const LightButtonStyle: ButtonStyle = {
+  backgroundColor: 'white', textColor: Colors.DARK
+};
+
+export const LightButtonPressedStyle: PressedButtonStyle = {
+  backgroundColor: '#fafafa', textColor: Colors.VERY_DARK
+}
