@@ -41,7 +41,7 @@ export const NewTagScreen = ({ navigation, route }: NewTagScreenProps) => {
 
       {/* Name Input */}
       <Text style={s.subtitle}>Tag Name</Text>
-      <Text style={s.paragraph}>Pick a short and concise name, like 'First Anniversary'.</Text>
+      <Text style={s.paragraph}>Pick a short and concise name.</Text>
       <TagInput setTag={setName} />
 
       {/* Colour Input */}
