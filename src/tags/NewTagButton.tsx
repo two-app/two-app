@@ -6,11 +6,7 @@ import AntIcon from 'react-native-vector-icons/AntDesign';
 import Colors from '../Colors';
 import {Tag} from './Tag';
 import {TouchableCard} from '../forms/Card';
-import {
-  Button,
-  LightButtonStyle,
-  LightButtonPressedStyle,
-} from '../forms/Button';
+import {Button, ButtonStyles} from '../forms/Button';
 import {getNavigation} from '../navigation/RootNavigation';
 
 type NewTagButtonProps = {
@@ -90,8 +86,8 @@ const DeselectModal = ({
             onExit();
           }}
           text={`Deselect ${tag.name} Tag`}
-          buttonStyle={LightButtonStyle}
-          pressedButtonStyle={LightButtonPressedStyle}
+          buttonStyle={ButtonStyles.light}
+          pressedButtonStyle={ButtonStyles.lightPressed}
         />
       </View>
     </Modal>

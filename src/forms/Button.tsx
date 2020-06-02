@@ -8,26 +8,28 @@ type ButtonStyle = {
   textColor: string
 }
 
-const defaultButtonStyle: ButtonStyle = {
-  backgroundColor: Colors.DARK,
-  textColor: 'white'
-}
-
-type PressedButtonStyle = {
-  backgroundColor: string,
-  textColor: string
-}
-
-const defaultPressedButtonStyle: PressedButtonStyle = {
-  backgroundColor: 'black',
-  textColor: 'white'
-}
+export const ButtonStyles = {
+  dark: {
+    backgroundColor: Colors.DARK,
+    textColor: 'white'
+  },
+  darkPressed: {
+    backgroundColor: Colors.DARK,
+    textColor: 'white'
+  },
+  light: {
+    backgroundColor: 'white', textColor: Colors.DARK
+  },
+  lightPressed: {
+    backgroundColor: '#fafafa', textColor: Colors.VERY_DARK
+  }
+};
 
 type ButtonProps = {
   text: string,
   onPress: () => void,
   buttonStyle: ButtonStyle,
-  pressedButtonStyle: PressedButtonStyle
+  pressedButtonStyle: ButtonStyle
 }
 
 /**
@@ -62,9 +64,9 @@ export const Button = ({ text, onPress, buttonStyle, pressedButtonStyle }: Butto
 };
 
 Button.defaultProps = {
-  buttonStyle: defaultButtonStyle,
-  pressedButtonStyle: defaultPressedButtonStyle
-}
+  buttonStyle: ButtonStyles.dark,
+  pressedButtonStyle: ButtonStyles.darkPressed
+};
 
 const styles = StyleSheet.create({
   button: {
@@ -92,11 +94,3 @@ const styles = StyleSheet.create({
     fontFamily: 'Montserrat-SemiBold'
   }
 });
-
-export const LightButtonStyle: ButtonStyle = {
-  backgroundColor: 'white', textColor: Colors.DARK
-};
-
-export const LightButtonPressedStyle: PressedButtonStyle = {
-  backgroundColor: '#fafafa', textColor: Colors.VERY_DARK
-}
