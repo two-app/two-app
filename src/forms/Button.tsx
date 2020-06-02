@@ -8,26 +8,28 @@ type ButtonStyle = {
   textColor: string
 }
 
-const defaultButtonStyle: ButtonStyle = {
-  backgroundColor: Colors.DARK,
-  textColor: 'white'
-}
-
-type PressedButtonStyle = {
-  backgroundColor: string,
-  textColor: string
-}
-
-const defaultPressedButtonStyle: PressedButtonStyle = {
-  backgroundColor: 'black',
-  textColor: 'white'
-}
+export const ButtonStyles = {
+  dark: {
+    backgroundColor: Colors.DARK,
+    textColor: 'white'
+  },
+  darkPressed: {
+    backgroundColor: Colors.DARK,
+    textColor: 'white'
+  },
+  light: {
+    backgroundColor: 'white', textColor: Colors.DARK
+  },
+  lightPressed: {
+    backgroundColor: '#fafafa', textColor: Colors.VERY_DARK
+  }
+};
 
 type ButtonProps = {
   text: string,
   onPress: () => void,
   buttonStyle: ButtonStyle,
-  pressedButtonStyle: PressedButtonStyle
+  pressedButtonStyle: ButtonStyle
 }
 
 /**
@@ -36,7 +38,7 @@ type ButtonProps = {
  */
 export const Button = ({ text, onPress, buttonStyle, pressedButtonStyle }: ButtonProps) => {
   const [isPressed, setPressed] = useState(false);
-  
+
   const combinedButtonStyle = { ...styles.button, backgroundColor: buttonStyle.backgroundColor };
   const combinedPressedButtonStyle = { ...styles.button, backgroundColor: pressedButtonStyle.backgroundColor };
 
@@ -50,7 +52,7 @@ export const Button = ({ text, onPress, buttonStyle, pressedButtonStyle }: Butto
     <TouchableWithoutFeedback
       onPressIn={() => {
         setPressed(true);
-        HapticFeedback.trigger('selection', {enableVibrateFallback: false});
+        HapticFeedback.trigger('selection', { enableVibrateFallback: false });
       }}
       onPressOut={() => setPressed(false)}
       onPress={onPress}>
@@ -62,9 +64,9 @@ export const Button = ({ text, onPress, buttonStyle, pressedButtonStyle }: Butto
 };
 
 Button.defaultProps = {
-  buttonStyle: defaultButtonStyle,
-  pressedButtonStyle: defaultPressedButtonStyle
-}
+  buttonStyle: ButtonStyles.dark,
+  pressedButtonStyle: ButtonStyles.darkPressed
+};
 
 const styles = StyleSheet.create({
   button: {
