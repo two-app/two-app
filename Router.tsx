@@ -35,7 +35,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const AppStack = () => (
     <Stack.Navigator initialRouteName="LoadingScreen" headerMode={'none'}
-        screenOptions={{ cardStyle: { backgroundColor: "white" }, headerShown: false }}
+        screenOptions={{ cardStyle: { backgroundColor: "white" }, headerShown: false, cardOverlayEnabled: false, cardShadowEnabled: false }}
     >
         <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
         <Stack.Screen name="LogoutScreen" component={LogoutScreen} />
@@ -44,7 +44,7 @@ const AppStack = () => (
         <Stack.Screen name="AcceptTermsScreen" component={AcceptTermsScreen} />
         <Stack.Screen name="ConnectCodeScreen" component={ConnectCodeScreen} />
         <Stack.Screen name="HomeScreen" component={HomeScreen} options={{animationEnabled: false}} />
-        <Stack.Screen name="NewMemoryScreen" component={NewMemoryScreen} />
+        <Stack.Screen name="NewMemoryScreen" component={NewMemoryScreen}/>
         <Stack.Screen name="MemoryScreen" component={MemoryScreen} />
         <Stack.Screen name="NewTagScreen" component={NewTagScreen} />
         <Stack.Screen name="SearchScreen" component={SearchScreen} />
