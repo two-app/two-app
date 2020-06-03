@@ -1,19 +1,19 @@
-import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import LoadingScreen from './src/LoadingScreen';
-import LogoutScreen from './src/LogoutScreen';
+import React from 'react';
 import LoginScreen from './src/authentication/LoginScreen';
 import RegisterScreen from './src/authentication/RegisterScreen';
 import AcceptTermsScreen from './src/authentication/register_workflow/AcceptTermsScreen';
 import ConnectCodeScreen from './src/authentication/register_workflow/ConnectCodeScreen';
-import HomeScreen from './src/home/HomeScreen';
-import {NewMemoryScreen} from './src/memories/new_memory/NewMemoryScreen';
 import {UserRegistration} from './src/authentication/register_workflow/UserRegistrationModel';
+import HomeScreen from './src/home/HomeScreen';
+import LoadingScreen from './src/LoadingScreen';
+import LogoutScreen from './src/LogoutScreen';
 import {MemoryScreen} from './src/memories/memory/MemoryScreen';
 import {Memory} from './src/memories/MemoryModels';
+import {NewMemoryScreen} from './src/memories/new_memory/NewMemoryScreen';
+import {SearchScreen} from './src/search/SearchScreen';
 import {NewTagScreen} from './src/tags/NewTagScreen';
 import {Tag} from './src/tags/Tag';
-import {SearchScreen} from './src/search/SearchScreen';
 import ProfileScreen from './src/user/ProfileScreen';
 
 export type RootStackParamList = {
@@ -45,6 +45,8 @@ const AppStack = () => (
       gestureResponseDistance: {
         vertical: 50,
       },
+      cardOverlayEnabled: false,
+      cardShadowEnabled: false,
     }}>
     <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
     <Stack.Screen name="LogoutScreen" component={LogoutScreen} />
