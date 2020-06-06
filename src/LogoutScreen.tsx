@@ -4,7 +4,6 @@ import { clearState, persistor } from './state/reducers';
 import { connect } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../Router';
-import { CommonActions } from '@react-navigation/native';
 import { resetNavigate } from './navigation/NavigationUtilities';
 
 type LogoutScreenProps = {

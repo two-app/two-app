@@ -47,6 +47,10 @@ class NewTagButtonTestBed {
 describe('TagCard', () => {
   let tb: TagCardTestBed;
 
+  // required for the waitFor function to work
+  beforeAll(jest.useRealTimers);
+  afterAll(jest.useFakeTimers);
+
   beforeEach(() => (tb = new TagCardTestBed().build()));
   afterEach(cleanup);
 
@@ -66,6 +70,8 @@ describe('TagCard', () => {
           throw new Error('Deselect not called yet.');
         }
       });
+
+      jest.useFakeTimers();
 
       expect(tb.onDeselect).toHaveBeenCalledTimes(1);
     });
