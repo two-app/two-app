@@ -6,7 +6,7 @@ import {
   RenderAPI,
   fireEvent,
   cleanup,
-  waitForElement,
+  waitFor,
 } from 'react-native-testing-library';
 import {NewTagButton, TagCard} from '../../src/tags/NewTagButton';
 import {Tag} from '../../src/tags/Tag';
@@ -61,7 +61,7 @@ describe('TagCard', () => {
     test('it should call the deselect function on press', async () => {
       tb.pressTag().pressDeselect();
 
-      await waitForElement(() => {
+      await waitFor(() => {
         if (tb.onDeselect.mock.calls.length == 0) {
           throw new Error('Deselect not called yet.');
         }
