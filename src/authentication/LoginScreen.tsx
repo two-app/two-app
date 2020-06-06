@@ -13,7 +13,6 @@ import { storeTokens } from './store';
 import { storeUser, storeUnconnectedUser } from '../user';
 import { connect, ConnectedProps } from "react-redux";
 import { isUnconnectedUser } from "./UserModel";
-import LoadingView from "../views/LoadingView";
 import { resetNavigate } from "../navigation/NavigationUtilities";
 import { ErrorResponse } from "../http/Response";
 

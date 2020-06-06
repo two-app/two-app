@@ -25,3 +25,5 @@ jest.mock('react-native/Libraries/Components/Touchable/TouchableOpacity', () => 
 jest.mock('react-native/Libraries/Components/TextInput/TextInput', () => 'TextInput');
 
 jest.mock('./src/navigation/RootNavigation', () => jest.requireActual('./src/navigation/__mocks__/RootNavigation'));
+
+jest.useFakeTimers();
