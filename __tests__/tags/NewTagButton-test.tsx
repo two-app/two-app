@@ -71,8 +71,6 @@ describe('TagCard', () => {
         }
       });
 
-      jest.useFakeTimers();
-
       expect(tb.onDeselect).toHaveBeenCalledTimes(1);
     });
   });
