@@ -25,8 +25,13 @@ type NewMemoryScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'NewMemoryScreen'>;
 };
 
+type Loading = {
+  isLoading: boolean;
+  percentage: number | undefined;
+};
+
 const NewMemoryScreen = ({navigation}: NewMemoryScreenProps) => {
-  const [loading, setLoading] = useState({isLoading: false, percentage: 0});
+  const [loading, setLoading] = useState<Loading>({isLoading: false, percentage: 0});
   const [uploadError, setUploadError] = useState<string>();
   const [formState, setFormState] = useState<MemoryUpload>({
     title: '',
@@ -70,7 +75,11 @@ const NewMemoryScreen = ({navigation}: NewMemoryScreenProps) => {
             setTagId(tag != null ? tag.tid : undefined)
           }
         />
-        <ContentInput setContent={setContent} />
+        <ContentInput
+          setContent={setContent}
+          onOpen={() => setLoading({isLoading: true, percentage: undefined})}
+          onClose={() => setLoading({isLoading: false, percentage: 0})}
+        />
         {formState.content.length > 0 && (
           <ContentPreview content={formState.content} />
         )}
