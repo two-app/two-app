@@ -16,6 +16,8 @@ const ContentInput = ({ setContent }: { setContent: Function }) => {
         };
         ImagePicker.openPicker(options).then((value: Image | Image[]) => {
             Array.isArray(value) ? setContent(value) : setContent([value]);
+        }).catch(e => {
+            console.log(e);
         });
     };
 
