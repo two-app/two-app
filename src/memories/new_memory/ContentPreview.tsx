@@ -4,45 +4,57 @@ import Video from 'react-native-video';
 import React from 'react';
 import Colors from '../../Colors';
 
+const isVideo = (file: ImageType) => file.mime.startsWith('video');
+
 const ContentPreview = ({content}: {content: ImageType[]}) => {
+  const videoCount = content.filter((file) => isVideo(file)).length;
+  const imageCount = content.length - videoCount;
+
+  const previews = content.map((file) =>
+    isVideo(file) ? (
+      <VideoPreview content={file} />
+    ) : (
+      <ImagePreview content={file} />
+    ),
+  );
+
   return (
     <>
       <Text style={s.previewTitle}>
-        {content.length} images and videos chosen.
+        {imageCount} images and {videoCount} videos chosen.
       </Text>
 
-      <View style={s.previewContainer}>
-        {content.map((image: ImageType) => {
-          if (image.mime.startsWith('video')) {
-            return (
-              <View pointerEvents="none">
-                <Video
-                  repeat={true}
-                  source={{uri: image.path}}
-                  style={s.previewImage}
-                  paused={false}
-                  muted={true}
-                  disableFocus={true}
-                  resizeMode={'cover'}
-                  playInBackground={true}
-                  
-                />
-              </View>
-            );
-          } else {
-            return (
-              <Image
-                source={{uri: 'file://' + image.path}}
-                style={s.previewImage}
-                key={image.path}
-              />
-            );
-          }
-        })}
-      </View>
+      <View style={s.previewContainer}>{previews}</View>
     </>
   );
 };
+
+type PreviewProps = {
+  content: ImageType;
+};
+
+const ImagePreview = ({content}: PreviewProps) => (
+  <Image
+    source={{uri: content.path}}
+    style={s.previewContent}
+    key={content.path}
+  />
+);
+
+const VideoPreview = ({content}: PreviewProps) => (
+  <View pointerEvents="none">
+    <Video
+      repeat={true}
+      source={{uri: content.path}}
+      style={s.previewContent}
+      paused={false}
+      muted={true}
+      disableFocus={true}
+      resizeMode={'cover'}
+      playInBackground={true}
+    />
+  </View>
+);
 
 const s = StyleSheet.create({
   previewTitle: {
@@ -55,7 +67,7 @@ const s = StyleSheet.create({
     justifyContent: 'space-around',
     flexWrap: 'wrap',
   },
-  previewImage: {
+  previewContent: {
     width: 70,
     height: 70,
     marginTop: 20,
