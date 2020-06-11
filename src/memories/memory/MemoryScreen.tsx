@@ -1,109 +1,112 @@
-import React, { useState, useEffect } from 'react';
-import { FlatList, RefreshControl, View, Modal } from 'react-native';
-import { Memory, Content } from '../MemoryModels';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../../Router';
-import { RouteProp } from '@react-navigation/native';
-import { Container } from '../../views/View';
-// @ts-ignore
-import { createImageProgress } from 'react-native-image-progress';
-// @ts-ignore
-import FastImage from 'react-native-fast-image';
-const Image = createImageProgress(FastImage);
-import { getMemory, getMemoryContent } from '../MemoryService';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { MemoryDisplayView } from '../MemoryDisplayView';
+import React, {useState, useEffect} from 'react';
+import {FlatList, RefreshControl} from 'react-native';
+import {Memory, Content} from '../MemoryModels';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RootStackParamList} from '../../../Router';
+import {RouteProp} from '@react-navigation/native';
+import {Container} from '../../views/View';
+import {getMemory, getMemoryContent} from '../MemoryService';
+import {MemoryDisplayView} from '../MemoryDisplayView';
 
-import GallerySwiper from "react-native-gallery-swiper";
+import _ from 'lodash';
+import {chunkContentToRows, GridRow, ImageCell, VideoCell} from './Grid';
+import {ContentGallery} from './ContentGallery';
 
 type MemoryScreenProps = {
-    navigation: StackNavigationProp<RootStackParamList, 'MemoryScreen'>,
-    route: RouteProp<RootStackParamList, 'MemoryScreen'>;
+  navigation: StackNavigationProp<RootStackParamList, 'MemoryScreen'>;
+  route: RouteProp<RootStackParamList, 'MemoryScreen'>;
 };
 
-const MemoryScreen = ({ route }: MemoryScreenProps) => {
-    const [memory, updateMemory] = useState<Memory>(route.params.memory);
-    const [refreshing, setRefreshing] = useState<boolean>(false);
-    const [content, setContent] = useState<Content[]>([]);
-    const [galleryIndex, setGalleryIndex] = useState<number | null>(null);
+export const MemoryScreen = ({route}: MemoryScreenProps) => {
+  const [memory, setMemory] = useState<Memory>(route.params.memory);
+  const [content, setContent] = useState<Content[]>([]);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
-    const refreshMemory = () => {
-        getMemory(memory.id).then((updatedMemory: Memory) => {
-            updateMemory(updatedMemory);
-            setRefreshing(false);
-        });
-    };
+  const refreshMemory = () => {
+    Promise.all([getMemory(memory.id), getMemoryContent(memory.id)])
+      .then((result: any[]) => {
+        setMemory(result[0]);
+        setContent(result[1]);
+      })
+      .finally(() => setRefreshing(false));
+  };
 
-    useEffect(() => {
-        getMemoryContent(memory.id).then(setContent);
-    }, []);
+  useEffect(() => {
+    getMemoryContent(memory.id).then(setContent);
+  }, []);
 
-    const numColumns: number = 4;
-    const remainder: number = content.length % numColumns;
-    const fill: number = numColumns - remainder;
-    const paddedArray = content.concat(new Array(fill).fill({}))
+  return (
+    <Container>
+      <ContentGrid
+        memory={memory}
+        content={content}
+        refreshing={refreshing}
+        onRefresh={() => {
+          setRefreshing(true);
+          refreshMemory();
+        }}
+      />
+    </Container>
+  );
+};
 
-    return (
-        <Container>
-            <Modal animationType={"fade"} visible={galleryIndex != null} onRequestClose={() => setGalleryIndex(null)}>
-                <GallerySwiper
-                    images={content.map(c => ({uri: c.fileKey, dimensions: { width: 1080, height: 1920 }}))}
-                    initialNumToRender={content.length}
-                    initialPage={galleryIndex || 0}
-                    onSwipeDownReleased={() => setGalleryIndex(null)}
-                    onSwipeUpReleased={() => setGalleryIndex(null)}
-                    imageComponent={imageProps => <Image {...imageProps}/>}
+type ContentGridProps = {
+  memory: Memory;
+  content: Content[];
+  refreshing: boolean;
+  onRefresh: () => void;
+};
+
+const ContentGrid = ({
+  memory,
+  content,
+  refreshing,
+  onRefresh,
+}: ContentGridProps) => {
+  const [galleryIndex, setGalleryIndex] = useState<number | null>(null);
+  const numberOfColumns = 4;
+  const rows = chunkContentToRows(content, numberOfColumns);
+
+  return (
+    <>
+      <ContentGallery
+        content={content}
+        index={galleryIndex}
+        onClose={() => setGalleryIndex(null)}
+      />
+      <FlatList
+        ListHeaderComponent={() => <MemoryDisplayView memory={memory} />}
+        data={rows}
+        renderItem={({item, index: rowIndex}) => (
+          <GridRow
+            content={item}
+            renderCell={(content, colIndex) => {
+              const childIndex = rowIndex * numberOfColumns + colIndex;
+              return content.contentType === 'image' ? (
+                <ImageCell
+                  item={content}
+                  onClick={() => setGalleryIndex(childIndex)}
                 />
-            </Modal>
-            <FlatList
-                numColumns={numColumns}
-                data={paddedArray}
-                renderItem={({ item, index }) => {
-                    if (index >= content.length) {
-                        return <EmptyItem />;
-                    } else {
-                        return <ContentItem item={item} index={index} onClick={setGalleryIndex} />;
-                    }
-                }}
-                columnWrapperStyle={{ margin: -5 }}
-                ListHeaderComponentStyle={{ marginBottom: 10 }}
-                keyExtractor={item => item.fileKey}
-                ListHeaderComponent={() => <MemoryDisplayView memory={memory} />}
-                refreshControl={
-                    <RefreshControl
-                        colors={['#9Bd35A', '#689F38']}
-                        refreshing={refreshing}
-                        onRefresh={() => {
-                            setRefreshing(true);
-                            refreshMemory();
-                        }}
-                    />
-                }
-                showsVerticalScrollIndicator={false}
-            />
-        </Container>
-    )
+              ) : (
+                <VideoCell
+                  item={content}
+                  onClick={() => setGalleryIndex(childIndex)}
+                />
+              );
+            }}
+          />
+        )}
+        keyExtractor={(i) =>
+          i.map((c) => (c == null ? 'empty' : c.fileKey)).join('-')
+        }
+        refreshControl={
+          <RefreshControl
+            colors={['#9Bd35A', '#689F38']}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+      />
+    </>
+  );
 };
-
-type ContentItemProps = {
-    item: Content,
-    index: number,
-    onClick: (index: number) => void
-};
-
-const ContentItem = ({ item, index, onClick }: ContentItemProps) => (
-    <View style={{ flex: 1, aspectRatio: 1, padding: 5, marginTop: 10 }}>
-        <TouchableOpacity style={{ width: '100%', height: '100%' }} onPress={() => onClick(index)}>
-            <Image
-                source={{ uri: item.fileKey }}
-                style={{ flex: 1 }}
-            />
-        </TouchableOpacity>
-    </View>
-);
-
-const EmptyItem = () => (
-    <View style={{ flex: 1, aspectRatio: 1, margin: 5 }}></View>
-)
-
-export { MemoryScreen };
