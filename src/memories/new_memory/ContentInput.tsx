@@ -24,14 +24,10 @@ const ContentInput = ({setContent, onOpen, onClose}: ContentInputProps) => {
     };
 
     ImagePicker.openPicker(options)
-      .then((value: Image | Image[]) => {
-        console.log(value);
-        Array.isArray(value) ? setContent(value) : setContent([value]);
-      })
-      .catch((e) => {
-        console.log('Failed to select media.');
-        console.log(e);
-      })
+      .then((value: Image | Image[]) =>
+        Array.isArray(value) ? setContent(value) : setContent([value]),
+      )
+      .catch((e) => console.log('Failed to select media.', e))
       .finally(onClose);
   };
 
