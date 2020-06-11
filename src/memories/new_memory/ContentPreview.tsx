@@ -1,7 +1,7 @@
+import React from 'react';
 import {Image as ImageType} from 'react-native-image-crop-picker';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import Video from 'react-native-video';
-import React from 'react';
 import Colors from '../../Colors';
 
 const isVideo = (file: ImageType) => file.mime.startsWith('video');

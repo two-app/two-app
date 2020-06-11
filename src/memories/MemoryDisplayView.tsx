@@ -1,14 +1,20 @@
 import React from 'react';
-import { Memory, Content } from './MemoryModels';
-import { View, Text, StyleSheet } from 'react-native';
+import {Memory, Content} from './MemoryModels';
+import {View, Text, StyleSheet} from 'react-native';
 // @ts-ignore
 import Image from 'react-native-image-progress';
 // @ts-ignore
 import Progress from 'react-native-progress/Circle';
-import { MemoryLocation, MemoryDate, MemoryImageCount, MemoryVideoCount, MemoryTag } from './MemoryIcons';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import {
+  MemoryLocation,
+  MemoryDate,
+  MemoryImageCount,
+  MemoryVideoCount,
+  MemoryTag,
+} from './MemoryIcons';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-export const MemoryDisplayView = ({ memory }: { memory: Memory }) => (
+export const MemoryDisplayView = ({memory}: {memory: Memory}) => (
   <View>
     <Text style={s.heading}>{memory.title}</Text>
     <View style={s.spacedRow}>
@@ -16,64 +22,60 @@ export const MemoryDisplayView = ({ memory }: { memory: Memory }) => (
       <MemoryDate date={memory.date} />
     </View>
     <View style={s.spacedRow}>
-      <View style={{ flexDirection: 'row' }}>
-        {memory.imageCount > 0 && <MemoryImageCount pictureCount={memory.imageCount} />}
-        {memory.videoCount > 0 && <MemoryVideoCount videoCount={memory.videoCount} pad={memory.imageCount > 0} />}
+      <View style={{flexDirection: 'row'}}>
+        {memory.imageCount > 0 && (
+          <MemoryImageCount pictureCount={memory.imageCount} />
+        )}
+        {memory.videoCount > 0 && (
+          <MemoryVideoCount
+            videoCount={memory.videoCount}
+            pad={memory.imageCount > 0}
+          />
+        )}
       </View>
       {memory.tag != null && <MemoryTag tag={memory.tag} />}
     </View>
-    {memory.displayContent != null ?
+    {memory.displayContent != null && (
       <MemoryDisplayPicture content={memory.displayContent} />
-      :
-      <EmptyContentPlaceholder />
-    }
+    )}
   </View>
 );
 
-const MemoryDisplayPicture = ({ content }: { content: Content }) => (
+const MemoryDisplayPicture = ({content}: {content: Content}) => (
   <View style={s.image}>
     <Image
-      style={{ width: '100%', height: '100%' }}
-      source={{ uri: content.fileKey }}
+      style={{width: '100%', height: '100%'}}
+      source={{uri: content.fileKey}}
       indicator={Progress}
       indicatorProps={{
         borderWidth: 1,
         borderColor: Colors.REGULAR,
-        color: Colors.REGULAR
+        color: Colors.REGULAR,
       }}
     />
   </View>
 );
 
-const EmptyContentPlaceholder = () => (
-  <View>
-    <Text style={{ color: Colors.REGULAR }}>
-      There's no content in this memory.
-    </Text>
-  </View>
-)
-
 const s = StyleSheet.create({
   heading: {
     color: Colors.DARK,
     fontSize: 25,
-    fontFamily: 'Montserrat-Bold'
+    fontFamily: 'Montserrat-Bold',
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10
+    marginTop: 10,
   },
   spacedRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 10
+    marginTop: 10,
   },
   image: {
     flexDirection: 'row',
-    flex: 1,
     height: 200,
-    marginTop: 10
-  }
+    marginTop: 10,
+  },
 });

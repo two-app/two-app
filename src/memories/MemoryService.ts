@@ -62,7 +62,7 @@ export const uploadToMemory = (mid: number, upload: MemoryUpload, setProgress: (
     const uploadPromises: Promise<AxiosResponse<number[]>>[] = upload.content.map((content: Image, index: number) => {
         const form = new FormData();
         form.append('content', {
-            name: `file-${index}-memory`,
+            name: content.filename,
             type: content.mime,
             uri: content.path
         });
