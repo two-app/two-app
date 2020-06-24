@@ -6924,36 +6924,10 @@ react-native-config@^1.2.1:
   resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-1.2.1.tgz#f80454fc58ea89b549819ccb4bdab26518a9f0db"
   integrity sha512-u7MDku3fUUKAtxfUFLLwnj4htBYO840EBGdlDB9ry/eX1TY+asHwULaUkAj9x+pJo4vSpIp8GtYxxi8dLzDtJw==
 
-react-native-easy-guesture-responder@^1.1.2, react-native-easy-guesture-responder@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/react-native-easy-guesture-responder/-/react-native-easy-guesture-responder-1.1.3.tgz#0a9c0e8eb68b9b43b4f86e4689786ba7525cc1b9"
-  integrity sha512-/1yHMRcslMWQJc1iRNCSjJ32npPrY3Atme0lzKxmhYJg67E7Douowq2FalGEegdid8yeZVnPKk+BkyIGyx2dCw==
-  dependencies:
-    prop-types "^15.6.2"
-
-react-native-easy-view-transformer@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-easy-view-transformer/-/react-native-easy-view-transformer-1.2.0.tgz#4281b351c169a38763bdcdf00138cb1f40c69e07"
-  integrity sha512-SawalQrXWQ6M5WOnWhTV8y3cyhRlrTgH2VC2+qPEk7GE10vLkH5/9ncM8lNjHKiXCgWrVk+0DI3pmEouDYd/GQ==
-  dependencies:
-    prop-types "^15.6.2"
-    react-native-easy-guesture-responder "^1.1.2"
-    react-native-scrolling "^1.0.2"
-
 react-native-fast-image@^8.1.5:
   version "8.1.5"
   resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.1.5.tgz#0a6404c988dad68c98d26f91155d0a5293ba2ea5"
   integrity sha512-DoAWGLeQ2hbllummrpXH9B38OgM0TFmNYCF34F90/hdHZirqUtYHzF4QDdb/NV7ebSijHmM3mpkzct8PXtcYyg==
-
-react-native-gallery-swiper@^1.26.0:
-  version "1.26.0"
-  resolved "https://registry.yarnpkg.com/react-native-gallery-swiper/-/react-native-gallery-swiper-1.26.0.tgz#d89c5c584021c033d0611c8bdfa37015521670d3"
-  integrity sha512-zp0IZ2ZgOqhYO0Q3PcfWFXqkQIed12N6vJUXDjDAVla6JcuuttMX3hchpaFK7zoMxhRJyuZQX7BNFkehGq4Cmg==
-  dependencies:
-    prop-types "^15.6.2"
-    react-native-easy-guesture-responder "^1.1.3"
-    react-native-image-transformer "^1.5.1"
-    react-native-page-list "^1.1.3"
 
 react-native-gesture-handler@^1.6.1:
   version "1.6.1"
@@ -6986,14 +6960,6 @@ react-native-image-progress@^1.1.1:
   integrity sha512-5rI2UjUo1bJoggU3lZAa+Wv29bm+N322XVR49mxfczfhaOyFdoXMIRgd5x2eXG+RQi9PcLleD6wxVDxGAPPO9Q==
   dependencies:
     prop-types "^15.5.10"
-
-react-native-image-transformer@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/react-native-image-transformer/-/react-native-image-transformer-1.5.1.tgz#33e7061d4312e79f459529e2bfc10a83dd21adc9"
-  integrity sha512-CNwjnJxf4DUqQu+vWi/a+MA8jgw46ss80UKeSjoHwdzlt9JnGA6z4VABLURTFytN15LaemZomUEwZ81B9I8SuA==
-  dependencies:
-    prop-types "^15.6.2"
-    react-native-easy-view-transformer "^1.2.0"
 
 react-native-image-zoom-viewer@^3.0.1:
   version "3.0.1"
@@ -7030,15 +6996,6 @@ react-native-modal@^11.5.6:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
 
-react-native-page-list@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/react-native-page-list/-/react-native-page-list-1.1.3.tgz#4b90895ca4bb2da07529f36f57e545db99671e03"
-  integrity sha512-LvbU9qxxLTujQV6/IKUbzKkosSDGBG6enhf3cb/5oSy0wG50TTloXKaeZY75/ssp/mX7qSZiU9aayV7Q+Q8iUQ==
-  dependencies:
-    prop-types "^15.6.2"
-    react-native-easy-guesture-responder "^1.1.2"
-    react-native-scrolling "^1.0.2"
-
 react-native-progress@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-4.1.2.tgz#ffb2264ddfeba409c730e36a9791bb7bbe07a00d"
@@ -7070,13 +7027,6 @@ react-native-screens@^2.8.0:
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.8.0.tgz#9f989096fc5ccf248e0dfa93a74f1a64057e15f1"
   integrity sha512-fUCIQLZX+5XB0ypWX038P3zso54IFFjTsQUZJWEsjC3pp5rPItAt5SzqtJn+uVjcJaczZ+dpIuvj6IFLqkWLZQ==
-
-react-native-scrolling@^1.0.2:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/react-native-scrolling/-/react-native-scrolling-1.0.3.tgz#ad3e964070d6a8c713f1bd703171ab26d83ab5d5"
-  integrity sha512-V8ORRnRA4sdOREJlDHxnPfM/7IK6rj/HZejgTaym1ACjKr9a3Pej4ZDOQA9qnBgNac8kMVhDup40HgJxYG//EA==
-  dependencies:
-    prop-types "^15.6.2"
 
 react-native-testing-library@^2.0.1:
   version "2.0.1"
