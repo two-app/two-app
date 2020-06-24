@@ -1,6 +1,6 @@
 import React from 'react';
 import {Memory, Content} from './MemoryModels';
-import {View, Text, StyleSheet, Image as RNImage} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 // @ts-ignore
 import Image from 'react-native-image-progress';
 // @ts-ignore
