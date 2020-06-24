@@ -1,18 +1,18 @@
 import React from 'react';
-import {Memory, Content} from './MemoryModels';
-import {View, Text, StyleSheet} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 // @ts-ignore
 import Image from 'react-native-image-progress';
 // @ts-ignore
 import Progress from 'react-native-progress/Circle';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 import {
-  MemoryLocation,
   MemoryDate,
   MemoryImageCount,
-  MemoryVideoCount,
+  MemoryLocation,
   MemoryTag,
+  MemoryVideoCount
 } from './MemoryIcons';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { Content, Memory } from './MemoryModels';
 
 export const MemoryDisplayView = ({memory}: {memory: Memory}) => (
   <View>

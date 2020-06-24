@@ -1,15 +1,9 @@
-import React, {useState} from 'react';
-import Video from 'react-native-video';
-import {
-  Image,
-  Animated,
-  View,
-  Modal,
-  Dimensions,
-} from 'react-native';
-import {Content, ImageContent} from '../MemoryModels';
+import React from 'react';
+import { Animated, Dimensions, Image, Modal, View } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import {buildContentURI} from '../MemoryService';
+import Video from 'react-native-video';
+import { Content, ImageContent } from '../MemoryModels';
+import { buildContentURI } from '../MemoryService';
 
 type ContentGalleryProps = {
   content: Content[];
@@ -67,12 +61,12 @@ export const ContentGallery = ({
                 source={{uri}}
                 onError={console.log}
                 style={{width: '100%', height: '100%'}}
-                resizeMode='contain'
+                resizeMode="contain"
                 key={uri}
               />
             </View>
           ) : (
-            <ProgressiveImage content={c} key={uri}/>
+            <ProgressiveImage content={c} key={uri} />
           );
         }}
       />

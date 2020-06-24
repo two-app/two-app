@@ -1,15 +1,15 @@
-import {
-  Memory,
-  MemoryDescription,
-  Content,
-  ImageContent,
-  VideoContent,
-} from './MemoryModels';
-import Gateway from '../http/Gateway';
-import {AxiosResponse} from 'axios';
-import {Image} from 'react-native-image-crop-picker';
+import { AxiosResponse } from 'axios';
 import FormData from 'form-data';
 import Config from 'react-native-config';
+import { Image } from 'react-native-image-crop-picker';
+import Gateway from '../http/Gateway';
+import {
+  Content,
+  ImageContent,
+  Memory,
+  MemoryDescription,
+  VideoContent
+} from './MemoryModels';
 
 export type MemoryUpload = MemoryDescription & {
   content: Image[];
