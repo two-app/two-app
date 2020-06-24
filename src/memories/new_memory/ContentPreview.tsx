@@ -12,9 +12,9 @@ const ContentPreview = ({content}: {content: ImageType[]}) => {
 
   const previews = content.map((file) =>
     isVideo(file) ? (
-      <VideoPreview content={file} />
+      <VideoPreview content={file} key={file.path}/>
     ) : (
-      <ImagePreview content={file} />
+      <ImagePreview content={file} key={file.path}/>
     ),
   );
 

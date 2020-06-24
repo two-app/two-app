@@ -1,12 +1,9 @@
 import React from 'react';
-import GallerySwiper from 'react-native-gallery-swiper';
+import { Animated, Dimensions, Image, Modal, View } from 'react-native';
+import ImageViewer from 'react-native-image-zoom-viewer';
 import Video from 'react-native-video';
-import FastImage from 'react-native-fast-image';
-// @ts-ignore
-import {createImageProgress} from 'react-native-image-progress';
-const Image = createImageProgress(FastImage);
-import {Modal} from 'react-native';
-import {Content} from '../MemoryModels';
+import { Content, ImageContent } from '../MemoryModels';
+import { buildContentURI } from '../MemoryService';
 
 type ContentGalleryProps = {
   content: Content[];
@@ -19,35 +16,100 @@ export const ContentGallery = ({
   index,
   onClose,
 }: ContentGalleryProps) => {
+  const urls = content.map((c, index) => {
+    const url = buildContentURI(c.fileKey, c.gallery);
+    if (c.contentType === 'image') {
+      Image.prefetch(url);
+      const g = c.gallery as ImageContent;
+      return {url, props: {index}, width: g.width, height: g.height};
+    } else {
+      return {
+        url,
+        props: {index},
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+      };
+    }
+  });
+
   return (
-    <Modal
-      animationType={'fade'}
-      visible={index != null}
-      onRequestClose={onClose}>
-      <GallerySwiper
-        images={content.map((c) => ({
-          uri: c.fileKey,
-          dimensions: {width: 1080, height: 1920},
-        }))}
-        style={{backgroundColor: 'white'}}
-        initialNumToRender={content.length}
-        initialPage={index || 0}
-        onSwipeDownReleased={onClose}
-        onSwipeUpReleased={onClose}
-        imageComponent={(imageProps, dim, index) =>
-          content[index].contentType === 'video' ? (
-            <Video
-              repeat={true}
-              // @ts-ignore
-              source={imageProps.source}
-              style={{width: '100%', height: '100%'}}
-              onError={console.log}
-            />
+    <Modal visible={index != null} transparent={true} onDismiss={onClose}>
+      <ImageViewer
+        enablePreload={false}
+        menuContext={false}
+        enableSwipeDown={true}
+        saveToLocalByLongPress={false}
+        onSwipeDown={onClose}
+        onCancel={onClose}
+        // @ts-ignore
+        index={index}
+        imageUrls={urls}
+        renderImage={(a) => {
+          const c = content[a.index];
+          const uri = buildContentURI(c.fileKey, c.gallery);
+          return c.contentType === 'video' ? (
+            <View
+              style={{
+                flex: 1
+              }}>
+              <Video
+                controls={false}
+                repeat={true}
+                source={{uri}}
+                onError={console.log}
+                style={{flex: 1}}
+                resizeMode="contain"
+                key={uri}
+              />
+            </View>
           ) : (
-            <Image {...imageProps} />
-          )
-        }
+            <ProgressiveImage content={c} key={uri} />
+          );
+        }}
       />
     </Modal>
+  );
+};
+
+type ProgressiveImage = {
+  content: Content;
+};
+
+const ProgressiveImage = ({content}: ProgressiveImage) => {
+  const thumbnail = buildContentURI(content.fileKey, content.thumbnail);
+  const gallery = buildContentURI(content.fileKey, content.gallery);
+  const {width, height} = content.gallery as ImageContent;
+
+  const animatedOpacity = new Animated.Value(0);
+
+  return (
+    <View style={{flex: 1}}>
+      <Image
+        source={{uri: thumbnail}}
+        blurRadius={5}
+        width={width}
+        height={height}
+        resizeMethod="resize"
+        resizeMode="cover"
+        style={{width: '100%', height: '100%'}}
+      />
+      <Animated.Image
+        source={{uri: gallery}}
+        width={width}
+        height={height}
+        style={{
+          opacity: animatedOpacity,
+          width: '100%',
+          height: '100%',
+          position: 'absolute',
+        }}
+        onLoad={() =>
+          Animated.timing(animatedOpacity, {
+            toValue: 1,
+            useNativeDriver: false,
+          }).start()
+        }
+      />
+    </View>
   );
 };

@@ -1,8 +1,9 @@
 import React from 'react';
-import {View, TouchableOpacity, Image} from 'react-native';
+import {View, TouchableOpacity, Image, Text, ImageBackground} from 'react-native';
 import {Content} from '../MemoryModels';
 import _ from 'lodash';
-import Video from 'react-native-video';
+import Icon from 'react-native-vector-icons/FontAwesome'
+import { buildContentURI } from '../MemoryService';
 
 /**
  * Chunks the content into rows.
@@ -41,7 +42,7 @@ type GridRowProps = {
 export const GridRow = ({content, renderCell}: GridRowProps) => (
   <View style={{flexDirection: 'row', flex: 1, margin: -5}}>
     {content.map((cell, index) =>
-      cell === null ? <EmptyCell /> : renderCell(cell, index),
+      cell === null ? <EmptyCell key={index} /> : renderCell(cell, index),
     )}
   </View>
 );
@@ -51,34 +52,28 @@ type CellProps = {
   onClick: () => void;
 };
 
-export const EmptyCell = () => (
-  <Cell/>
-);
+export const EmptyCell = () => <Cell />;
 
 export const ImageCell = ({item, onClick}: CellProps) => (
-  <Cell>
+  <Cell key={item.fileKey}>
     <TouchableOpacity style={{width: '100%', height: '100%'}} onPress={onClick}>
-      <Image source={{uri: item.fileKey}} style={{flex: 1}} />
+      <Image
+        source={{uri: buildContentURI(item.fileKey, item.thumbnail)}}
+        style={{flex: 1}}
+      />
     </TouchableOpacity>
   </Cell>
 );
 
 export const VideoCell = ({item, onClick}: CellProps) => (
-  <Cell>
-    <TouchableOpacity onPress={onClick} style={{width: '100%', height: '100%'}}>
-      <View pointerEvents="none">
-        <Video
-          repeat={true}
-          source={{uri: item.fileKey}}
-          style={{width: '100%', height: '100%'}}
-          onError={console.log}
-          paused={false}
-          muted={true}
-          disableFocus={true}
-          resizeMode={'cover'}
-          playInBackground={true}
-        />
-      </View>
+  <Cell key={item.fileKey}>
+    <TouchableOpacity style={{width: '100%', height: '100%'}} onPress={onClick}>
+      <ImageBackground
+        source={{uri: buildContentURI(item.fileKey, item.thumbnail)}}
+        style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+      >
+        <Icon name="play-circle" color="white" size={30}/>
+      </ImageBackground>
     </TouchableOpacity>
   </Cell>
 );

@@ -94,6 +94,7 @@ const ContentGrid = ({
                 />
               );
             }}
+            key={rowIndex}
           />
         )}
         keyExtractor={(i) =>

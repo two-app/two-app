@@ -1,18 +1,18 @@
 import React from 'react';
-import {Memory, Content} from './MemoryModels';
-import {View, Text, StyleSheet} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 // @ts-ignore
 import Image from 'react-native-image-progress';
 // @ts-ignore
 import Progress from 'react-native-progress/Circle';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 import {
-  MemoryLocation,
   MemoryDate,
   MemoryImageCount,
-  MemoryVideoCount,
+  MemoryLocation,
   MemoryTag,
+  MemoryVideoCount
 } from './MemoryIcons';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { Content, Memory } from './MemoryModels';
 
 export const MemoryDisplayView = ({memory}: {memory: Memory}) => (
   <View>
@@ -41,20 +41,23 @@ export const MemoryDisplayView = ({memory}: {memory: Memory}) => (
   </View>
 );
 
-const MemoryDisplayPicture = ({content}: {content: Content}) => (
-  <View style={s.image}>
-    <Image
-      style={{width: '100%', height: '100%'}}
-      source={{uri: content.fileKey}}
-      indicator={Progress}
-      indicatorProps={{
-        borderWidth: 1,
-        borderColor: Colors.REGULAR,
-        color: Colors.REGULAR,
-      }}
-    />
-  </View>
-);
+const MemoryDisplayPicture = ({content}: {content: Content}) => {
+  const uri: string = `${content.fileKey}-${content.display.suffix}.${content.display.extension}`;
+  return (
+    <View style={s.image}>
+      <Image
+        style={{width: '100%', height: '100%'}}
+        source={{uri}}
+        indicator={Progress}
+        indicatorProps={{
+          borderWidth: 1,
+          borderColor: Colors.REGULAR,
+          color: Colors.REGULAR,
+        }}
+      />
+    </View>
+  );
+};
 
 const s = StyleSheet.create({
   heading: {
