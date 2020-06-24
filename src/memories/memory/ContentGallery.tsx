@@ -50,17 +50,14 @@ export const ContentGallery = ({
           return c.contentType === 'video' ? (
             <View
               style={{
-                width: Dimensions.get('window').width,
-                height: Dimensions.get('window').height,
-                justifyContent: 'center',
-                alignItems: 'center',
+                flex: 1
               }}>
               <Video
                 controls={false}
                 repeat={true}
                 source={{uri}}
                 onError={console.log}
-                style={{width: '100%', height: '100%'}}
+                style={{flex: 1}}
                 resizeMode="contain"
                 key={uri}
               />
