@@ -16,7 +16,6 @@ export const MemoryLocation = ({location}: { location: string }) => (
     </View>
 );
 
-// @ts-ignore
 export const MemoryDate = ({date}: { date: number }) => (
     <View style={c.icon}>
         <Text style={s.text}>{moment(date).fromNow()}</Text>

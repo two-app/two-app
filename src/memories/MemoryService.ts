@@ -1,91 +1,129 @@
-import { Memory, MemoryDescription, Content } from './MemoryModels';
+import {
+  Memory,
+  MemoryDescription,
+  Content,
+  ImageContent,
+  VideoContent,
+} from './MemoryModels';
 import Gateway from '../http/Gateway';
-import { AxiosResponse } from 'axios';
-import { Image } from 'react-native-image-crop-picker';
+import {AxiosResponse} from 'axios';
+import {Image} from 'react-native-image-crop-picker';
 import FormData from 'form-data';
 import Config from 'react-native-config';
 
 export type MemoryUpload = MemoryDescription & {
-    content: Image[]
+  content: Image[];
 };
 
-export const isMemoryUploadValid = (upload: MemoryUpload) => upload.title.length > 0 && upload.location.length > 0;
+export const isMemoryUploadValid = (upload: MemoryUpload) =>
+  upload.title.length > 0 && upload.location.length > 0;
 
 /**
  * Retrieves the memories for the user.
  * Display images are updated to localised AWS.
  */
-export const getMemories = (): Promise<Memory[]> => Gateway.get('/memory')
-    .then((v: AxiosResponse<Memory[]>) => v.data.map(formatMemory));
+export const getMemories = (): Promise<Memory[]> =>
+  Gateway.get('/memory').then((v: AxiosResponse<Memory[]>) =>
+    v.data.map(formatMemory),
+  );
 
 /**
  * Retrieves a specific memory.
  * Display image is updated to localised AWS.
  * @param mid the memory ID to retrieve.
  */
-export const getMemory = (mid: number): Promise<Memory> => Gateway.get('/memory/' + mid.toString())
-    .then((response: AxiosResponse<Memory>) => formatMemory(response.data));
+export const getMemory = (mid: number): Promise<Memory> =>
+  Gateway.get(
+    '/memory/' + mid.toString(),
+  ).then((response: AxiosResponse<Memory>) => formatMemory(response.data));
 
 const formatMemory = (memory: Memory): Memory => {
-    if (memory.displayContent != null) {
-        memory.displayContent.fileKey = formatFileKey(memory.displayContent.fileKey);
-    }
+  if (memory.displayContent != null) {
+    memory.displayContent.fileKey = formatFileKey(
+      memory.displayContent.fileKey,
+    );
+  }
 
-    // Memory actually comes back as a string, so it needs to be converted to a number
-    memory.date = Number.parseInt(memory.date as any);
-    return memory;
+  // Memory actually comes back as a string, so it needs to be converted to a number
+  memory.date = Number.parseInt(memory.date as any);
+  return memory;
 };
 
-const formatFileKey = (fileKey: string): string => `${Config.S3_URL}/${fileKey}`;
+const formatFileKey = (fileKey: string): string =>
+  `${Config.S3_URL}/${fileKey}`;
 
 type PostMemoryResponse = {
-    memoryId: number
+  memoryId: number;
 };
 
-export const uploadMemory = (upload: MemoryUpload, setProgress: (percentage: number) => void): Promise<number[]> => {
-    setProgress(0);
-    return createMemory(upload).then(mid => uploadToMemory(mid, upload, setProgress));
+export const uploadMemory = (
+  upload: MemoryUpload,
+  setProgress: (percentage: number) => void,
+): Promise<number[]> => {
+  setProgress(0);
+  return createMemory(upload).then((mid) =>
+    uploadToMemory(mid, upload, setProgress),
+  );
 };
 
-export const createMemory = (description: MemoryDescription): Promise<number> => {
-    description.date = description.date.toString() as any;
+export const createMemory = (
+  description: MemoryDescription,
+): Promise<number> => {
+  description.date = description.date.toString() as any;
 
-    return Gateway.post('/memory', description).then(
-        (v: AxiosResponse<PostMemoryResponse>) => v.data.memoryId
-    );
+  return Gateway.post('/memory', description).then(
+    (v: AxiosResponse<PostMemoryResponse>) => v.data.memoryId,
+  );
 };
 
-export const uploadToMemory = (mid: number, upload: MemoryUpload, setProgress: (percentage: number) => void): Promise<number[]> => {
-    const doneTotal = upload.content.length + 1;
-    let doneCount = 1;
+export const uploadToMemory = (
+  mid: number,
+  upload: MemoryUpload,
+  setProgress: (percentage: number) => void,
+): Promise<number[]> => {
+  const doneTotal = upload.content.length + 1;
+  let doneCount = 1;
 
-    const uploadPromises: Promise<AxiosResponse<number[]>>[] = upload.content.map((content: Image, index: number) => {
-        const form = new FormData();
-        form.append('content', {
-            name: content.filename,
-            type: content.mime,
-            uri: content.path
-        });
+  const uploadPromises: Promise<AxiosResponse<number[]>>[] = upload.content.map(
+    (content: Image) => {
+      const form = new FormData();
 
-        return Gateway.post<number[]>(`/memory/${mid}/content`, form, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }).finally(() => {
-            doneCount++;
-            setProgress(Math.round((doneCount / doneTotal) * 100));
-        });
-    });
+      form.append('content', {
+        name: content.filename,
+        type: content.mime,
+        uri: content.path,
+      });
 
-    return Promise.all(uploadPromises).then(responses => {
-        return responses.map(axiosResponse => axiosResponse.data[0]);
-    });
+      return Gateway.post<number[]>(`/memory/${mid}/content`, form, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        timeout: 60 * 1000, // 1m
+      }).finally(() => {
+        doneCount++;
+        setProgress(Math.round((doneCount / doneTotal) * 100));
+      });
+    },
+  );
+
+  return Promise.all(uploadPromises).then((responses) => {
+    return responses.map((axiosResponse) => axiosResponse.data[0]);
+  });
+};
+
+export const buildContentURI = (
+  fileKey: String,
+  content: ImageContent | VideoContent,
+): string => {
+  return `${fileKey}-${content.suffix}.${content.extension}`;
 };
 
 export const getMemoryContent = (mid: number): Promise<Content[]> =>
-    Gateway.get<Content[]>(`/memory/${mid}/content`).then((v: AxiosResponse<Content[]>) => {
-        return v.data.map(content => {
-            content.fileKey = formatFileKey(content.fileKey)
-            return content;
-        })
-    });
+  Gateway.get<Content[]>(`/memory/${mid}/content`).then(
+    (v: AxiosResponse<Content[]>) => {
+      return v.data.map((content) => {
+        content.fileKey = formatFileKey(content.fileKey);
+        return content;
+      });
+    },
+  );

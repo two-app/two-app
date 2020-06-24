@@ -56,8 +56,10 @@ const NewMemoryScreen = ({navigation}: NewMemoryScreenProps) => {
       setLoading({isLoading: true, percentage}),
     )
       .then(() => resetNavigate('HomeScreen', navigation))
-      .catch((e: ErrorResponse) => setUploadError(e.reason))
-      .finally(() => setLoading({isLoading: false, percentage: 0}));
+      .catch((e: ErrorResponse) => {
+        setLoading({isLoading: false, percentage: 0});
+        setUploadError(e.reason);
+      });
   };
 
   return (
