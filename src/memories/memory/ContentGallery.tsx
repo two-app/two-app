@@ -1,5 +1,6 @@
 import React from 'react';
-import { Animated, Dimensions, Image, Modal, View } from 'react-native';
+import { Animated, Dimensions, Modal, View } from 'react-native';
+import Image from 'react-native-fast-image'
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Video from 'react-native-video';
 import { Content, ImageContent } from '../MemoryModels';
@@ -19,7 +20,6 @@ export const ContentGallery = ({
   const urls = content.map((c, index) => {
     const url = buildContentURI(c.fileKey, c.gallery);
     if (c.contentType === 'image') {
-      Image.prefetch(url);
       const g = c.gallery as ImageContent;
       return {url, props: {index}, width: g.width, height: g.height};
     } else {
@@ -33,9 +33,9 @@ export const ContentGallery = ({
   });
 
   return (
-    <Modal visible={index != null} transparent={true} onDismiss={onClose}>
+    <Modal visible={index != null} transparent={true} onDismiss={onClose} animated={true} animationType="fade">
       <ImageViewer
-        enablePreload={false}
+        enablePreload={true}
         menuContext={false}
         enableSwipeDown={true}
         saveToLocalByLongPress={false}
@@ -48,10 +48,7 @@ export const ContentGallery = ({
           const c = content[a.index];
           const uri = buildContentURI(c.fileKey, c.gallery);
           return c.contentType === 'video' ? (
-            <View
-              style={{
-                flex: 1
-              }}>
+            <View style={{flex: 1}}>
               <Video
                 controls={false}
                 repeat={true}
@@ -85,12 +82,7 @@ const ProgressiveImage = ({content}: ProgressiveImage) => {
   return (
     <View style={{flex: 1}}>
       <Image
-        source={{uri: thumbnail}}
-        blurRadius={5}
-        width={width}
-        height={height}
-        resizeMethod="resize"
-        resizeMode="cover"
+        source={{uri: thumbnail, priority: "high"}}
         style={{width: '100%', height: '100%'}}
       />
       <Animated.Image
