@@ -8,7 +8,8 @@ import {
   ImageContent,
   Memory,
   MemoryDescription,
-  VideoContent
+  VideoContent,
+  MemoryPatch
 } from './MemoryModels';
 
 export type MemoryUpload = MemoryDescription & {
@@ -127,3 +128,10 @@ export const getMemoryContent = (mid: number): Promise<Content[]> =>
       });
     },
   );
+
+export const patchMemory = (mid: number, patch: MemoryPatch): Promise<void> => {
+  return Gateway.patch<any>(`/memory/${mid}`, patch).then((r: AxiosResponse<any>) => {
+    console.log(`Successfully patched memory. Response status: ${r.status}`)
+    return Promise.resolve();
+  });
+};

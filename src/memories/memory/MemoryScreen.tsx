@@ -1,16 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, RefreshControl} from 'react-native';
+import {FlatList, RefreshControl, View, Text, StyleSheet} from 'react-native';
 import {Memory, Content} from '../MemoryModels';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../Router';
 import {RouteProp} from '@react-navigation/native';
 import {Container} from '../../views/View';
 import {getMemory, getMemoryContent} from '../MemoryService';
-import {MemoryDisplayView} from '../MemoryDisplayView';
 
 import _ from 'lodash';
 import {chunkContentToRows, GridRow, ImageCell, VideoCell} from './Grid';
 import {ContentGallery} from './ContentGallery';
+import { MemoryToolbar } from './MemoryToolbar';
 
 type MemoryScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'MemoryScreen'>;
@@ -75,7 +75,7 @@ const ContentGrid = ({
         onClose={() => setGalleryIndex(null)}
       />
       <FlatList
-        ListHeaderComponent={() => <MemoryDisplayView memory={memory} />}
+        ListHeaderComponent={() => <MemoryToolbar memory={memory} />}
         data={rows}
         renderItem={({item, index: rowIndex}) => (
           <GridRow

@@ -8,7 +8,9 @@ import moment from 'moment';
 import {TouchableCard} from '../../forms/Card';
 
 type DateTimePickerProps = {
-  onSetDateTime: (datetime: number) => void;
+  setDateTime: (datetime: number) => void;
+  initialValue: number;
+  placeholder?: string;
 };
 
 /**
@@ -16,10 +18,14 @@ type DateTimePickerProps = {
  * On iOS, there is no native datetime picker, so a two-step modal is used. The intermediary 'date' value
  * is stored as the `pickerValue`.
  */
-export const DateTimePicker = ({onSetDateTime}: DateTimePickerProps) => {
+export const DateTimePicker = ({
+  setDateTime,
+  initialValue,
+  placeholder,
+}: DateTimePickerProps) => {
   const [isVisible, setVisibility] = useState(false);
   const [pickerValue, setPickerValue] = useState<number>();
-  const [date, setDate] = useState<number>();
+  const [date, setDate] = useState<number>(initialValue);
   const [selecting, setSelecting] = useState<'date' | 'time'>('date');
 
   const openPicker = () => {
@@ -35,7 +41,7 @@ export const DateTimePicker = ({onSetDateTime}: DateTimePickerProps) => {
 
   const updateDate = (date: number) => {
     setDate(date);
-    onSetDateTime(date);
+    setDateTime(date);
     reset();
   };
 
@@ -49,7 +55,7 @@ export const DateTimePicker = ({onSetDateTime}: DateTimePickerProps) => {
           />
         </View>
         {date == null && (
-          <Text style={{color: Colors.REGULAR}}>When it took place...</Text>
+          <Text style={{color: Colors.REGULAR}}>{placeholder}</Text>
         )}
         {date != null && (
           <Text style={{color: Colors.DARK}}>{moment(date).format('LLL')}</Text>
@@ -87,4 +93,9 @@ export const DateTimePicker = ({onSetDateTime}: DateTimePickerProps) => {
       )}
     </>
   );
+};
+
+DateTimePicker.defaultProps = {
+  initialValue: undefined,
+  placeholder: 'When it took place...',
 };

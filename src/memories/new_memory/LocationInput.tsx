@@ -5,14 +5,20 @@ import Colors from '../../Colors';
 import React, { useState } from 'react';
 import { FormStyle } from './FormStyles';
 
-const LocationInput = ({ setLocation }: { setLocation: Function }) => {
-    const [value, setValue] = useState<string>();
+type LocationInputProps = {
+    setLocation: (location: string) => void;
+    initialValue: string;
+    placeholder?: string;
+};
+
+const LocationInput = ({ setLocation, initialValue, placeholder }: LocationInputProps) => {
+    const [value, setValue] = useState<string>(initialValue);
     return (
         <Card style={FormStyle.card}>
             <View style={FormStyle.iconContainer}>
                 <FoundationIcon name="marker" style={{ fontSize: 15, color: Colors.REGULAR }} />
             </View>
-            <TextInput placeholder="Where it took place..." placeholderTextColor={Colors.REGULAR}
+            <TextInput placeholder={placeholder} placeholderTextColor={Colors.REGULAR}
                 style={{ color: Colors.DARK, flex: 1, paddingVertical: 0 }}
                 onChangeText={setValue}
                 value={value}
@@ -20,6 +26,11 @@ const LocationInput = ({ setLocation }: { setLocation: Function }) => {
             />
         </Card>
     );
+};
+
+LocationInput.defaultProps = {
+    initialValue: "",
+    placeholder: "Where it took place..."
 };
 
 export { LocationInput };

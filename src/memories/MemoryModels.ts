@@ -39,3 +39,11 @@ export type Memory = MemoryDescription & {
   displayContent?: Content;
   content: Content[];
 };
+
+export type MemoryPatch = {
+  title?: string;
+  location?: string;
+  date?: string;
+  displayContentId?: number;
+  tagId?: number;
+};
