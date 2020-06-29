@@ -75,9 +75,9 @@ type ProgressiveImage = {
 const ProgressiveImage = ({content}: ProgressiveImage) => {
   const thumbnail = buildContentURI(content.fileKey, content.thumbnail);
   const gallery = buildContentURI(content.fileKey, content.gallery);
-  const {width, height} = content.gallery as ImageContent;
 
   const animatedOpacity = new Animated.Value(0);
+  const AnimatedFastImage = Animated.createAnimatedComponent(Image);
 
   return (
     <View style={{flex: 1}}>
@@ -85,20 +85,19 @@ const ProgressiveImage = ({content}: ProgressiveImage) => {
         source={{uri: thumbnail, priority: "high"}}
         style={{width: '100%', height: '100%'}}
       />
-      <Animated.Image
+      <AnimatedFastImage
         source={{uri: gallery}}
-        width={width}
-        height={height}
         style={{
           opacity: animatedOpacity,
           width: '100%',
           height: '100%',
           position: 'absolute',
         }}
-        onLoad={() =>
+        onLoadEnd={() =>
           Animated.timing(animatedOpacity, {
             toValue: 1,
             useNativeDriver: false,
+            duration: 0.2
           }).start()
         }
       />
