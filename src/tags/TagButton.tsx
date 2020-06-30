@@ -11,6 +11,8 @@ export const TagButton = ({ tag, onClick, focused }: { tag: Tag, onClick?: Funct
 
   return (
     <TouchableOpacity
+      accessibilityHint={`Selects the tag ${tag.name}.`}
+      accessibilityLabel={`Select the tag ${tag.name}`}
       style={style}
       onPress={() => onClick != null && onClick(tag)}>
       <Text style={{ color: focused ? 'white' : tag.color }}>{tag.name}</Text>

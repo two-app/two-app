@@ -9,6 +9,11 @@ exports[`SubmitButton should maintain snapshot 1`] = `
   }
 >
   <View
+    accessibilityState={
+      Object {
+        "disabled": false,
+      }
+    }
     accessible={true}
     focusable={true}
     onClick={[Function]}

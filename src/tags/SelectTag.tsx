@@ -9,10 +9,11 @@ import { TagButton } from './TagButton';
 
 type SelectTagProps = {
   onTagChange: (tag: undefined | Tag) => void
+  initialValue?: Tag;
 };
 
-export const SelectTag = ({ onTagChange }: SelectTagProps) => {
-  const [selected, setSelected] = useState<Tag>();
+export const SelectTag = ({ onTagChange, initialValue }: SelectTagProps) => {
+  const [selected, setSelected] = useState<Tag|undefined>(initialValue);
   const [availableTags, setAvailableTags] = useState<Tag[]>([]);
 
   useEffect(() => {
@@ -48,12 +49,12 @@ export const SelectTag = ({ onTagChange }: SelectTagProps) => {
             keyExtractor={tag => tag.name}
             renderItem={({ item }) => (
               <TagButton tag={item} onClick={(tag: Tag) => {
-                if (tag == selected) {
+                if (tag.tid == selected?.tid) {
                   updateSelectedTag(undefined);
                 } else {
                   updateSelectedTag(tag);
                 }
-              }} focused={selected == item} />
+              }} focused={item.tid === selected?.tid} />
             )}
           />
         </>

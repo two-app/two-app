@@ -7,7 +7,7 @@ type LoadingViewProps = {
 }
 
 const LoadingView = ({ loadingPercentage }: LoadingViewProps) => (
-    <View style={styles.overlay}>
+    <View style={styles.overlay} accessibilityState={{busy: true}} accessibilityHint="Waiting for an action to finish...">
         {loadingPercentage != null && <Text style={styles.percentage}>{loadingPercentage}%</Text>}
         <ActivityIndicator size="small" color="black" style={styles.overlayIndicator} />
     </View>

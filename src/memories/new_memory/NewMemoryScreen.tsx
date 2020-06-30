@@ -71,7 +71,7 @@ const NewMemoryScreen = ({navigation}: NewMemoryScreenProps) => {
 
         <TitleInput setTitle={setTitle} />
         <LocationInput setLocation={setLocation} />
-        <DateTimePicker onSetDateTime={setDate} />
+        <DateTimePicker setDateTime={setDate} />
         <SelectTag
           onTagChange={(tag: undefined | Tag) =>
             setTagId(tag != null ? tag.tid : undefined)
