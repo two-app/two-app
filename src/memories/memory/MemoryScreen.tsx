@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, RefreshControl, View, Text, StyleSheet} from 'react-native';
+import {FlatList, RefreshControl} from 'react-native';
 import {Memory, Content} from '../MemoryModels';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../Router';
@@ -8,7 +8,7 @@ import {Container} from '../../views/View';
 import {getMemory, getMemoryContent} from '../MemoryService';
 
 import _ from 'lodash';
-import {chunkContentToRows, GridRow, ImageCell, VideoCell} from './Grid';
+import {GridRow, TouchableImageCell, TouchableVideoCell, chunkToRows} from './Grid';
 import {ContentGallery} from './ContentGallery';
 import { MemoryToolbar } from './MemoryToolbar';
 
@@ -65,7 +65,7 @@ const ContentGrid = ({
 }: ContentGridProps) => {
   const [galleryIndex, setGalleryIndex] = useState<number | null>(null);
   const numberOfColumns = 4;
-  const rows = chunkContentToRows(content, numberOfColumns);
+  const rows = chunkToRows(content, numberOfColumns);
 
   return (
     <>
@@ -83,12 +83,12 @@ const ContentGrid = ({
             renderCell={(content, colIndex) => {
               const childIndex = rowIndex * numberOfColumns + colIndex;
               return content.contentType === 'image' ? (
-                <ImageCell
+                <TouchableImageCell
                   item={content}
                   onClick={() => setGalleryIndex(childIndex)}
                 />
               ) : (
-                <VideoCell
+                <TouchableVideoCell
                   item={content}
                   onClick={() => setGalleryIndex(childIndex)}
                 />

@@ -11,6 +11,7 @@ import {
   VideoContent,
   MemoryPatch
 } from './MemoryModels';
+import { PickedContent } from './new_memory/ContentInput';
 
 export type MemoryUpload = MemoryDescription & {
   content: Image[];
@@ -61,9 +62,8 @@ export const uploadMemory = (
   upload: MemoryUpload,
   setProgress: (percentage: number) => void,
 ): Promise<number[]> => {
-  setProgress(0);
   return createMemory(upload).then((mid) =>
-    uploadToMemory(mid, upload, setProgress),
+    uploadToMemory(mid, upload.content, setProgress),
   );
 };
 
@@ -79,13 +79,14 @@ export const createMemory = (
 
 export const uploadToMemory = (
   mid: number,
-  upload: MemoryUpload,
+  content: PickedContent[],
   setProgress: (percentage: number) => void,
 ): Promise<number[]> => {
-  const doneTotal = upload.content.length + 1;
+  setProgress(0);
+  const doneTotal = content.length + 1;
   let doneCount = 1;
 
-  const uploadPromises: Promise<AxiosResponse<number[]>>[] = upload.content.map(
+  const uploadPromises: Promise<AxiosResponse<number[]>>[] = content.map(
     (content: Image) => {
       const form = new FormData();
 

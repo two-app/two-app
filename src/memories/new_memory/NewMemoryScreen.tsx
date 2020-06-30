@@ -52,9 +52,8 @@ const NewMemoryScreen = ({navigation}: NewMemoryScreenProps) => {
 
   const createMemory = () => {
     setLoading({isLoading: true, percentage: 0});
-    uploadMemory(formState, (percentage: number) =>
-      setLoading({isLoading: true, percentage}),
-    )
+    uploadMemory(formState, (percentage: number) => 
+      setLoading({isLoading: true, percentage}))
       .then(() => resetNavigate('HomeScreen', navigation))
       .catch((e: ErrorResponse) => {
         setLoading({isLoading: false, percentage: 0});
