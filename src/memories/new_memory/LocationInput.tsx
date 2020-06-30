@@ -18,7 +18,10 @@ const LocationInput = ({ setLocation, initialValue, placeholder }: LocationInput
             <View style={FormStyle.iconContainer}>
                 <FoundationIcon name="marker" style={{ fontSize: 15, color: Colors.REGULAR }} />
             </View>
-            <TextInput placeholder={placeholder} placeholderTextColor={Colors.REGULAR}
+            <TextInput
+                accessibilityLabel="Set Location"
+                placeholder={placeholder}
+                placeholderTextColor={Colors.REGULAR}
                 style={{ color: Colors.DARK, flex: 1, paddingVertical: 0 }}
                 onChangeText={setValue}
                 value={value}

@@ -31,9 +31,12 @@ export type MemoryDescription = {
   date: number;
 };
 
-export type Memory = MemoryDescription & {
-  tag?: Tag;
+export type Memory = {
   id: number;
+  tag?: Tag;
+  title: string;
+  location: string;
+  date: number;
   imageCount: number;
   videoCount: number;
   displayContent?: Content;

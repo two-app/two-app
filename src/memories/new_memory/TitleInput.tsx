@@ -18,7 +18,10 @@ const TitleInput = ({ setTitle, placeholder, initialValue }: TitleInputProps) =>
             <View style={FormStyle.iconContainer}>
                 <SimpleLineIcon name="pencil" style={{ fontSize: 13, color: Colors.REGULAR }} />
             </View>
-            <TextInput placeholder={placeholder} placeholderTextColor={Colors.REGULAR}
+            <TextInput
+                accessibilityLabel="Set Title"
+                placeholder={placeholder}
+                placeholderTextColor={Colors.REGULAR}
                 autoFocus={true} style={{ color: Colors.DARK, flex: 1, paddingVertical: 0 }}
                 onChangeText={setValue}
                 value={value}

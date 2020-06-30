@@ -47,7 +47,10 @@ export const DateTimePicker = ({
 
   return (
     <>
-      <TouchableCard style={FormStyle.card} onPress={openPicker}>
+      <TouchableCard
+        a11={{accessibilityLabel: 'Set the Date and Time'}}
+        style={FormStyle.card}
+        onPress={openPicker}>
         <View style={FormStyle.iconContainer}>
           <AntIcon
             name={'calendar'}
@@ -63,6 +66,7 @@ export const DateTimePicker = ({
       </TouchableCard>
       {Platform.OS === 'android' ? (
         <DateTimePickerModal
+          accessibilityLabel={selecting === 'date' ? 'Pick the Date' : 'Pick the Time'}
           isVisible={isVisible}
           maximumDate={new Date()}
           mode="datetime"
@@ -71,6 +75,7 @@ export const DateTimePicker = ({
         />
       ) : (
         <DateTimePickerModal
+          accessibilityLabel={selecting === 'date' ? 'Pick the Date' : 'Pick the Time'}
           isVisible={isVisible}
           maximumDate={new Date()}
           mode={selecting}

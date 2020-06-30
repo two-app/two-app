@@ -11,8 +11,10 @@ import {DateTimePicker} from '../new_memory/DateInput';
 import {LocationInput} from '../new_memory/LocationInput';
 import {SelectTag} from '../../tags/SelectTag';
 import {Tag} from '../../tags/Tag';
-import {View} from 'react-native';
+import {View, Text} from 'react-native';
 import {patchMemory} from '../MemoryService';
+import {ErrorResponse} from '../../http/Response';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 type EditMemoryScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'EditMemoryScreen'>;
@@ -66,9 +68,13 @@ const buildPatch = (memory: Memory, form: FormState): MemoryPatch => {
   return patch;
 };
 
-export const EditMemoryScreen = ({route, navigation}: EditMemoryScreenProps) => {
+export const EditMemoryScreen = ({
+  route,
+  navigation,
+}: EditMemoryScreenProps) => {
   const memory = route.params.memory;
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const [formState, setFormState] = useState<FormState>({
     title: memory.title,
     location: memory.location,
@@ -76,13 +82,12 @@ export const EditMemoryScreen = ({route, navigation}: EditMemoryScreenProps) => 
     tagId: memory.tag?.tid,
   });
 
-  console.log(memory);
-
   const submitEdit = () => {
     setLoading(true);
-    patchMemory(memory.id, buildPatch(memory, formState)).then(() => {
-      navigation.goBack();
-    }).finally(() => setLoading(false));
+    patchMemory(memory.id, buildPatch(memory, formState))
+      .then(() => navigation.goBack())
+      .catch((e: ErrorResponse) => setError(e.reason))
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -119,7 +124,15 @@ export const EditMemoryScreen = ({route, navigation}: EditMemoryScreenProps) => 
           onSubmit={submitEdit}
           text="Update Memory"
           disabled={!isValidUpdate(memory, formState)}
+          accessibilityHint="Updates the memory with the newly entered values."
+          accessibilityLabel="Update Memory"
         />
+
+        <Text
+          style={{color: Colors.DARK_SALMON}}
+          accessibilityHint="The error encountered with the edit.">
+          {error}
+        </Text>
       </View>
     </ScrollContainer>
   );
