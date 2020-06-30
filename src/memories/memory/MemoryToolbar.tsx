@@ -8,7 +8,7 @@ import _ from 'lodash';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {getNavigation} from '../../navigation/RootNavigation';
 import Colors from '../../Colors';
-import {ContentPicker, PickedContent} from '../new_memory/ContentInput';
+import { ContentPicker, PickedContent } from '../../content/ContentPicker';
 
 export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   <View>
@@ -39,7 +39,7 @@ const EditButton = ({memory}: {memory: Memory}) => (
   </TouchableOpacity>
 );
 
-const UploadContentButton = ({memory}: {memory: Memory}) => (
+export const UploadContentButton = ({memory}: {memory: Memory}) => (
   <TouchableOpacity
     accessibilityLabel="Upload Content"
     style={styles.icon}

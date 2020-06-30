@@ -102,11 +102,14 @@ type MemoryItemNavigationProps = {
     navigation: StackNavigationProp<RootStackParamList>
 }
 
-const MemoryItemNavigation = ({ item, navigation }: MemoryItemNavigationProps) => (
-    <TouchableOpacity style={containers.item} onPress={() => navigation.navigate('MemoryScreen', { memory: item })}>
+const MemoryItemNavigation = ({ item, navigation }: MemoryItemNavigationProps) => {
+    console.log(item.title);
+    return (
+    <TouchableOpacity style={containers.item} onPress={() => { console.log("navigating to item", item); navigation.navigate('MemoryScreen', { memory: item })}}>
         <MemoryDisplayView memory={item} />
     </TouchableOpacity>
 );
+    };
 
 const EmptyMemoriesComponent = ({ effect }: { effect: MemoryEffect }) => (
     <>

@@ -24,14 +24,11 @@ export function chunkToRows<T>(
 
   const numFullRows: number = Math.floor(content.length / numColumns);
   const lastRowColumnCount: number = content.length - numFullRows * numColumns;
-  console.log(lastRowColumnCount);
   const ghostColumnCount: number = numColumns - lastRowColumnCount;
 
   const rows: any[][] = _.chunk(content, numColumns);
   const last: number = rows.length - 1;
   rows[last] = rows[last].concat(new Array(ghostColumnCount).fill(null));
-
-  console.log(rows.map(i => i.length))
 
   return rows;
 }

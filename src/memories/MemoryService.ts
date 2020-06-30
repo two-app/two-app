@@ -1,7 +1,7 @@
-import { AxiosResponse } from 'axios';
+import {AxiosResponse} from 'axios';
 import FormData from 'form-data';
 import Config from 'react-native-config';
-import { Image } from 'react-native-image-crop-picker';
+import {Image} from 'react-native-image-crop-picker';
 import Gateway from '../http/Gateway';
 import {
   Content,
@@ -9,15 +9,13 @@ import {
   Memory,
   MemoryDescription,
   VideoContent,
-  MemoryPatch
+  MemoryPatch,
 } from './MemoryModels';
-import { PickedContent } from './new_memory/ContentInput';
+import {PickedContent} from './new_memory/ContentInput';
+import {RootStackParamList} from '../../Router';
+import {NavigationProp} from '@react-navigation/native';
 
-export type MemoryUpload = MemoryDescription & {
-  content: Image[];
-};
-
-export const isMemoryUploadValid = (upload: MemoryUpload) =>
+export const isMemoryDescriptionValid = (upload: MemoryDescription) =>
   upload.title.length > 0 && upload.location.length > 0;
 
 /**
@@ -58,13 +56,33 @@ type PostMemoryResponse = {
   memoryId: number;
 };
 
-export const uploadMemory = (
-  upload: MemoryUpload,
-  setProgress: (percentage: number) => void,
-): Promise<number[]> => {
-  return createMemory(upload).then((mid) =>
-    uploadToMemory(mid, upload.content, setProgress),
-  );
+/**
+ * Resets the navigation stack to load the memory screen after the home screen.
+ * This means, once the memory screen is loaded, the previous is the HomeScreen.
+ * This is useful for navigating, for example, on memory creation.
+ * Home Screen -> Memory{mid}
+ *
+ * @param mid to load
+ * @param navigation obj to use
+ */
+export const loadMemoryAndNavigate = (
+  mid: number,
+  navigation: NavigationProp<RootStackParamList, keyof RootStackParamList>,
+) => {
+  return getMemory(mid).then((memory: Memory) => {
+    navigation.reset({
+      index: 1,
+      routes: [
+        {
+          name: 'HomeScreen',
+        },
+        {
+          name: 'MemoryScreen',
+          params: {memory},
+        },
+      ],
+    });
+  });
 };
 
 export const createMemory = (
@@ -131,8 +149,10 @@ export const getMemoryContent = (mid: number): Promise<Content[]> =>
   );
 
 export const patchMemory = (mid: number, patch: MemoryPatch): Promise<void> => {
-  return Gateway.patch<any>(`/memory/${mid}`, patch).then((r: AxiosResponse<any>) => {
-    console.log(`Successfully patched memory. Response status: ${r.status}`)
-    return Promise.resolve();
-  });
+  return Gateway.patch<any>(`/memory/${mid}`, patch).then(
+    (r: AxiosResponse<any>) => {
+      console.log(`Successfully patched memory. Response status: ${r.status}`);
+      return Promise.resolve();
+    },
+  );
 };

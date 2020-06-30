@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {ScrollContainer, Container} from '../views/View';
+import {Container} from '../views/View';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../Router';
 import {RouteProp} from '@react-navigation/native';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import Colors from '../Colors';
 import {Heading} from '../home/Heading';
 import {chunkToRows, GridRow, Cell} from '../memories/memory/Grid';
@@ -13,9 +13,7 @@ import Image from 'react-native-fast-image';
 import Video from 'react-native-video';
 import SubmitButton from '../forms/SubmitButton';
 import {MemoryImageCount, MemoryVideoCount} from '../memories/MemoryIcons';
-import Icon from 'react-native-vector-icons/AntDesign';
-import {getNavigation} from '../navigation/RootNavigation';
-import {patchMemory, uploadToMemory} from '../memories/MemoryService';
+import {uploadToMemory} from '../memories/MemoryService';
 import {ErrorResponse} from '../http/Response';
 
 type ContentUploadScreenProps = {
