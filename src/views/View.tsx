@@ -63,7 +63,7 @@ export const NoWrapContainer = (props: ViewContainerProps) => (
  */
 export const Container = (props: ViewContainerProps) => (
     <Wrapper>
-        {props.isLoading === true && <LoadingView/>}
+        {props.isLoading === true && <LoadingView loadingPercentage={props.loadingPercentage}/>}
         <View {...props} style={{ flex: 1, marginLeft: '5%', marginRight: '5%' }}>
             {props.children}
         </View>

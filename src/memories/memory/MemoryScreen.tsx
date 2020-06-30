@@ -15,6 +15,7 @@ import {
 } from './Grid';
 import {ContentGallery} from './ContentGallery';
 import {MemoryToolbar} from './MemoryToolbar';
+import Colors from '../../Colors';
 
 type MemoryScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'MemoryScreen'>;
@@ -91,11 +92,13 @@ const ContentGrid = ({
                 <TouchableImageCell
                   item={content}
                   onClick={() => setGalleryIndex(childIndex)}
+                  key={content.fileKey}
                 />
               ) : (
                 <TouchableVideoCell
                   item={content}
                   onClick={() => setGalleryIndex(childIndex)}
+                  key={content.fileKey}
                 />
               );
             }}
@@ -119,7 +122,7 @@ const ContentGrid = ({
 
 const EmptyMemory = () => (
   <View style={{padding: 20, marginTop: 5, alignItems: 'center'}}>
-    <Text style={{textAlign: 'center', lineHeight: 25, marginBottom: 30}}>
+    <Text style={{color: Colors.REGULAR, textAlign: 'center', lineHeight: 25, marginBottom: 30}}>
       You haven't added any content to this memory yet! Upload some pictures 🖼️
       and videos 📹
     </Text>

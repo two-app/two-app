@@ -8,13 +8,13 @@ import Colors from '../Colors';
 import {Heading} from '../home/Heading';
 import {chunkToRows, GridRow, Cell} from '../memories/memory/Grid';
 import {FlatList} from 'react-native-gesture-handler';
-import {PickedContent} from '../memories/new_memory/ContentInput';
 import Image from 'react-native-fast-image';
 import Video from 'react-native-video';
 import SubmitButton from '../forms/SubmitButton';
 import {MemoryImageCount, MemoryVideoCount} from '../memories/MemoryIcons';
 import {uploadToMemory} from '../memories/MemoryService';
 import {ErrorResponse} from '../http/Response';
+import {PickedContent} from './ContentPicker';
 
 type ContentUploadScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'ContentUploadScreen'>;
@@ -39,10 +39,12 @@ export const ContentUploadScreen = ({
   const images = content.filter((c) => c.mime.startsWith('image'));
   const videos = content.filter((c) => c.mime.startsWith('video'));
 
+  const setLoadingPercentage = (percentage: number) => {
+    setLoading({isLoading: true, percentage});
+  };
+
   const upload = () => {
-    uploadToMemory(memory.id, content, (percentage: number) =>
-      setLoading({isLoading: true, percentage}),
-    )
+    uploadToMemory(memory.id, content, setLoadingPercentage)
       .then(() => navigation.goBack())
       .catch((e: ErrorResponse) => setUploadError(e.reason))
       .finally(() => setLoading({isLoading: false, percentage: undefined}));
@@ -89,25 +91,23 @@ type HeaderProps = {
   numberOfVideos: number;
 };
 
-const Header = ({numberOfImages, numberOfVideos}: HeaderProps) => {
-  return (
-    <>
-      <Heading style={{marginTop: 10}}>Upload Content</Heading>
-      <View style={{flexDirection: 'row', marginVertical: 10}}>
-        <MemoryImageCount pictureCount={numberOfImages} />
-        <MemoryVideoCount videoCount={numberOfVideos} pad={true} />
-      </View>
-    </>
-  );
+const Header = ({numberOfImages, numberOfVideos}: HeaderProps) => (
+  <>
+    <Heading style={{marginTop: 10}}>Upload Content</Heading>
+    <View style={{flexDirection: 'row', marginVertical: 10}}>
+      <MemoryImageCount pictureCount={numberOfImages} />
+      <MemoryVideoCount videoCount={numberOfVideos} pad={true} />
+    </View>
+  </>
+);
+
+const renderCell = (content: PickedContent) => {
+  const Preview = content.mime.startsWith('video') ? VideoCell : ImageCell;
+  return <Preview content={content} key={content.filename} />;
 };
 
 type PreviewProps = {
   content: PickedContent;
-};
-
-const renderCell = (content: PickedContent) => {
-  const Preview = content.mime.startsWith('video') ? VideoCell : ImageCell;
-  return <Preview content={content} />;
 };
 
 const ImageCell = ({content}: PreviewProps) => (
