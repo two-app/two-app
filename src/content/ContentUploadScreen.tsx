@@ -44,6 +44,7 @@ export const ContentUploadScreen = ({
   };
 
   const upload = () => {
+    setLoading({isLoading: true, percentage: 0});
     uploadToMemory(memory.id, content, setLoadingPercentage)
       .then(() => navigation.goBack())
       .catch((e: ErrorResponse) => setUploadError(e.reason))
@@ -52,7 +53,11 @@ export const ContentUploadScreen = ({
 
   const footer = (
     <>
-      <SubmitButton onSubmit={upload} text="Upload" />
+      <SubmitButton
+        onSubmit={upload}
+        text="Upload"
+        accessibilityLabel="Upload Content"
+      />
       <Text
         accessibilityHint="The error encountered with the upload."
         style={{color: Colors.DARK_SALMON}}>
@@ -75,12 +80,11 @@ export const ContentUploadScreen = ({
             />
           }
           ListFooterComponent={footer}
-          renderItem={({item, index: rowIndex}) => (
+          renderItem={({item}) => (
             <GridRow content={item} renderCell={renderCell} />
           )}
           keyExtractor={(i) => i.map((x) => x?.filename).join()}
         />
-        <Text style={{color: Colors.DARK_SALMON}}>{uploadError}</Text>
       </View>
     </Container>
   );
@@ -111,7 +115,7 @@ type PreviewProps = {
 };
 
 const ImageCell = ({content}: PreviewProps) => (
-  <Cell>
+  <Cell a11={{accessibilityLabel: 'A preview of selected content.'}}>
     <Image
       source={{uri: content.path}}
       style={s.previewContent}
@@ -121,7 +125,7 @@ const ImageCell = ({content}: PreviewProps) => (
 );
 
 const VideoCell = ({content}: PreviewProps) => (
-  <Cell>
+  <Cell a11={{accessibilityLabel: 'A preview of selected content.'}}>
     <View pointerEvents="none">
       <Video
         repeat={true}
