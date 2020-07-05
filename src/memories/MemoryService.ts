@@ -108,9 +108,6 @@ export const uploadToMemory = (
     (content: Image) => {
       const form = new FormData();
 
-      console.log(content.filename);
-      console.log(content.path);
-
       form.append('content', {
         name: content.filename || "tmp-file-name",
         type: content.mime,
