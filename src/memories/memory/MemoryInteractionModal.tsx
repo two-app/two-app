@@ -8,8 +8,12 @@ import {ButtonStyles, Button} from '../../forms/Button';
 import Modal from 'react-native-modal';
 import Colors from '../../Colors';
 import {ErrorResponse} from '../../http/Response';
+import {connect, ConnectedProps} from 'react-redux';
+import {updateMemory} from '../store';
 
-type MemoryInteractionModalProps = {
+const connector = connect();
+
+type MemoryInteractionModalProps = ConnectedProps<typeof connector> & {
   memory: Memory;
   onClose: () => void;
   content?: Content;
@@ -34,6 +38,7 @@ export const MemoryInteractionModal = ({
   memory,
   content,
   onClose,
+  dispatch,
 }: MemoryInteractionModalProps) => {
   const [loading, setLoading] = useState<ButtonLoading>(noLoading);
   const [error, setError] = useState<string>('');
@@ -52,7 +57,10 @@ export const MemoryInteractionModal = ({
   const updateDisplayPicture = (contentId: number) => {
     setLoading({...loading, setDisplayPicture: true});
     setMemoryDisplayPicture(memory.id, contentId)
-      .then(closeModal)
+      .then((updatedMemory: Memory) => {
+        dispatch(updateMemory({mid: memory.id, memory: updatedMemory}));
+        closeModal();
+      })
       .catch((e: ErrorResponse) => setError(e.reason))
       .finally(() => setLoading(noLoading));
   };
@@ -106,6 +114,8 @@ export const MemoryInteractionModal = ({
     </Modal>
   );
 };
+
+export default connector(MemoryInteractionModal);
 
 const styles = StyleSheet.create({
   modal: {

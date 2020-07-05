@@ -11,23 +11,23 @@ import {
   GridRow,
   TouchableImageCell,
   TouchableVideoCell,
-  chunkToRows
+  chunkToRows,
 } from './Grid';
 import {ContentGallery} from './ContentGallery';
 import {MemoryToolbar} from './MemoryToolbar';
 import Colors from '../../Colors';
-import { MemoryInteractionModal } from './MemoryInteractionModal';
-import { TwoState } from '../../state/reducers';
-import { selectMemory, updateMemory } from '../store';
-import { connect, ConnectedProps } from 'react-redux';
+import MemoryInteractionModal from './MemoryInteractionModal';
+import {TwoState} from '../../state/reducers';
+import {selectMemory, updateMemory} from '../store';
+import {connect, ConnectedProps} from 'react-redux';
 
 type NavigationProps = {
   navigation: StackNavigationProp<RootStackParamList, 'MemoryScreen'>;
   route: RouteProp<RootStackParamList, 'MemoryScreen'>;
-}
+};
 
 const mapStateToProps = (state: TwoState, ownProps: NavigationProps) => ({
-  memory: selectMemory(state.memories, ownProps.route.params.mid)
+  memory: selectMemory(state.memories, ownProps.route.params.mid),
 });
 
 const connector = connect(mapStateToProps);
@@ -44,7 +44,8 @@ const MemoryScreen = ({memory, dispatch}: MemoryScreenProps) => {
         const [memory, content] = result;
         dispatch(updateMemory({mid: memory.id, memory}));
         setContent(content);
-      }).finally(() => setRefreshing(false));
+      })
+      .finally(() => setRefreshing(false));
   };
 
   useEffect(() => {
@@ -156,5 +157,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 25,
     marginBottom: 30,
-  }
+  },
 });

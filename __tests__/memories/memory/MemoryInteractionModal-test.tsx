@@ -6,15 +6,13 @@ import {
   RenderAPI,
   fireEvent,
   cleanup,
-  waitFor,
-  waitForElementToBeRemoved
+  waitFor
 } from 'react-native-testing-library';
 import * as ContentService from '../../../src/content/ContentService';
 import {MemoryInteractionModal} from '../../../src/memories/memory/MemoryInteractionModal';
 import moment from 'moment';
 import {Memory, Content} from '../../../src/memories/MemoryModels';
 import {ErrorResponse} from '../../../src/http/Response';
-import Modal from 'react-native-modal';
 
 describe('MemoryInteractionModal', () => {
   let tb: MemoryInteractionModalTestBed;
@@ -75,7 +73,7 @@ class MemoryInteractionModalTestBed {
   memory: Memory = testMemory;
   content: Content | undefined;
   onCloseFn: jest.Mock;
-  setMemoryDisplayPictureFn: jest.SpyInstance<Promise<void>, [number, number]>;
+  setMemoryDisplayPictureFn: jest.SpyInstance<Promise<Memory>, [number, number]>;
 
   constructor() {
     this.content = undefined;
@@ -93,7 +91,8 @@ class MemoryInteractionModalTestBed {
   };
 
   onSetMemoryDisplayPictureResolve = (): MemoryInteractionModalTestBed => {
-    this.setMemoryDisplayPictureFn.mockResolvedValue();
+    // TODO write tests for updated memory dispatch fn
+    this.setMemoryDisplayPictureFn.mockResolvedValue({} as Memory);
     return this;
   };
 
@@ -120,6 +119,8 @@ class MemoryInteractionModalTestBed {
         memory={this.memory}
         content={this.content}
         onClose={this.onCloseFn}
+        // TODO write tests
+        dispatch={jest.fn()}
       />,
     );
     return this;
