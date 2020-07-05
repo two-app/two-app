@@ -15,9 +15,9 @@ import {SearchScreen} from './src/search/SearchScreen';
 import {NewTagScreen} from './src/tags/NewTagScreen';
 import {Tag} from './src/tags/Tag';
 import ProfileScreen from './src/user/ProfileScreen';
-import {EditMemoryScreen} from './src/memories/memory/EditMemoryScreen';
+import EditMemoryScreen from './src/memories/memory/EditMemoryScreen';
 import {ContentUploadScreen} from './src/content/ContentUploadScreen';
-import { PickedContent } from './src/content/ContentPicker';
+import {PickedContent} from './src/content/ContentPicker';
 
 export type RootStackParamList = {
   LoadingScreen: undefined;
@@ -32,7 +32,7 @@ export type RootStackParamList = {
   NewTagScreen: {onSubmit: (tag: Tag) => void};
   SearchScreen: undefined;
   ProfileScreen: undefined;
-  EditMemoryScreen: {memory: Memory};
+  EditMemoryScreen: {mid: number};
   ContentUploadScreen: {memory: Memory; content: PickedContent[]};
 };
 

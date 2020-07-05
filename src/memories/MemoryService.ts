@@ -150,11 +150,11 @@ export const getMemoryContent = (mid: number): Promise<Content[]> =>
     },
   );
 
-export const patchMemory = (mid: number, patch: MemoryPatch): Promise<void> => {
+export const patchMemory = (mid: number, patch: MemoryPatch): Promise<Memory> => {
   return Gateway.patch<any>(`/memory/${mid}`, patch).then(
     (r: AxiosResponse<any>) => {
       console.log(`Successfully patched memory. Response status: ${r.status}`);
-      return Promise.resolve();
+      return getMemory(mid);
     },
   );
 };

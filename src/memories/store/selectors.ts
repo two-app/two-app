@@ -8,6 +8,6 @@ export const selectMemories = (memoryState: MemoryState): Memory[] => {
 export const selectMemory = (
   memoryState: MemoryState,
   mid: number,
-): Memory | undefined => {
-  return memoryState.allMemories.find((m) => m.id === mid);
+): Memory => {
+  return memoryState.allMemories.find((m) => m.id === mid)!;
 };

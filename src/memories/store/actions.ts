@@ -7,4 +7,4 @@ export const updateMemory = createAction('UPDATE_MEMORY')<{
   memory: Memory;
 }>();
 export const emptyMemories = createAction('EMPTY_MEMORIES')();
-export default {storeMemories, emptyMemories};
+export default {storeMemories, updateMemory, emptyMemories};

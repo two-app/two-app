@@ -5,7 +5,7 @@ import {
   Reducer,
   PayloadAction,
 } from 'typesafe-actions';
-import {storeMemories, emptyMemories} from './actions';
+import {storeMemories, emptyMemories, updateMemory} from './actions';
 
 export type MemoryState = {
   readonly allMemories: Memory[];
@@ -42,4 +42,5 @@ export const memoryReducer: Reducer<MemoryState, MemoryActions> = createReducer<
   MemoryActions
 >(defaultState)
   .handleAction(storeMemories, handleStoreMemories)
+  .handleAction(updateMemory, handleUpdateMemory)
   .handleAction(emptyMemories, handleEmptyMemories);

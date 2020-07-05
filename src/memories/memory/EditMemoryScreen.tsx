@@ -15,11 +15,22 @@ import {View, Text} from 'react-native';
 import {patchMemory} from '../MemoryService';
 import {ErrorResponse} from '../../http/Response';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {TwoState} from '../../state/reducers';
+import {selectMemory, updateMemory} from '../store';
+import {connect, ConnectedProps} from 'react-redux';
+import {dispatchFn} from '../../navigation/__mocks__/RootNavigation';
 
-type EditMemoryScreenProps = {
+type NavigationProps = {
   navigation: StackNavigationProp<RootStackParamList, 'EditMemoryScreen'>;
   route: RouteProp<RootStackParamList, 'EditMemoryScreen'>;
 };
+
+const mapStateToProps = (state: TwoState, ownProps: NavigationProps) => ({
+  memory: selectMemory(state.memories, ownProps.route.params.mid),
+});
+
+const connector = connect(mapStateToProps);
+type EditMemoryScreenProps = ConnectedProps<typeof connector> & NavigationProps;
 
 type FormState = {
   title?: string;
@@ -69,12 +80,12 @@ const buildPatch = (memory: Memory, form: FormState): MemoryPatch => {
 };
 
 export const EditMemoryScreen = ({
-  route,
   navigation,
+  memory,
+  dispatch,
 }: EditMemoryScreenProps) => {
-  const memory = route.params.memory;
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
   const [formState, setFormState] = useState<FormState>({
     title: memory.title,
     location: memory.location,
@@ -85,7 +96,15 @@ export const EditMemoryScreen = ({
   const submitEdit = () => {
     setLoading(true);
     patchMemory(memory.id, buildPatch(memory, formState))
-      .then(() => navigation.goBack())
+      .then((patchedMemory: Memory) => {
+        dispatch(
+          updateMemory({
+            mid: memory.id,
+            memory: patchedMemory,
+          }),
+        );
+        navigation.goBack();
+      })
       .catch((e: ErrorResponse) => setError(e.reason))
       .finally(() => setLoading(false));
   };
@@ -137,3 +156,5 @@ export const EditMemoryScreen = ({
     </ScrollContainer>
   );
 };
+
+export default connector(EditMemoryScreen);

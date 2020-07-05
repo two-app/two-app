@@ -20,7 +20,6 @@ import { MemoryInteractionModal } from './MemoryInteractionModal';
 import { TwoState } from '../../state/reducers';
 import { selectMemory, updateMemory } from '../store';
 import { connect, ConnectedProps } from 'react-redux';
-import { resetNavigate } from '../../navigation/NavigationUtilities';
 
 type NavigationProps = {
   navigation: StackNavigationProp<RootStackParamList, 'MemoryScreen'>;
@@ -35,12 +34,7 @@ const connector = connect(mapStateToProps);
 type ConnectorProps = ConnectedProps<typeof connector>;
 type MemoryScreenProps = ConnectorProps & NavigationProps;
 
-const MemoryScreen = ({memory, navigation, dispatch}: MemoryScreenProps) => {
-  if (memory == null) { // something has gone wrong in the redux state.
-    resetNavigate("HomeScreen", navigation);
-    return null;
-  }
-
+const MemoryScreen = ({memory, dispatch}: MemoryScreenProps) => {
   const [content, setContent] = useState<Content[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 

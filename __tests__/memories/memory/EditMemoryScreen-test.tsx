@@ -232,7 +232,10 @@ class EditMemoryScreenTestBed {
         initialSafeAreaInsets={{top: 1, left: 2, right: 3, bottom: 4}}>
         <EditMemoryScreen
           navigation={{goBack: this.goBackFn} as any}
-          route={{params: {memory: this.memory}} as any}
+          route={{params: {mid: this.memory.id}} as any}
+          memory={this.memory}
+          // TODO test jest.fn dispatch
+          dispatch={jest.fn()}
         />
       </SafeAreaProvider>,
     );
