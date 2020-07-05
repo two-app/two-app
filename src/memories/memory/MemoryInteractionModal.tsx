@@ -27,8 +27,8 @@ type ButtonLoading = {
 
 const noLoading: ButtonLoading = {
   setDisplayPicture: false,
-  deleteContent: false
-}
+  deleteContent: false,
+};
 
 export const MemoryInteractionModal = ({
   memory,
@@ -36,7 +36,7 @@ export const MemoryInteractionModal = ({
   onClose,
 }: MemoryInteractionModalProps) => {
   const [loading, setLoading] = useState<ButtonLoading>(noLoading);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
   const [modal, setModal] = useState<ModalData>({
     content,
     isVisible: false,
@@ -96,7 +96,11 @@ export const MemoryInteractionModal = ({
             loading={loading.deleteContent}
           />
 
-          <Text style={{color: Colors.DARK_SALMON, marginTop: 15}} accessibilityLabel="Resulting error from your action.">{error}</Text>
+          <Text
+            style={styles.errorText}
+            accessibilityLabel="Resulting error from your action.">
+            {error}
+          </Text>
         </View>
       )}
     </Modal>
@@ -104,12 +108,6 @@ export const MemoryInteractionModal = ({
 };
 
 const styles = StyleSheet.create({
-  emptyText: {
-    color: Colors.REGULAR,
-    textAlign: 'center',
-    lineHeight: 25,
-    marginBottom: 30,
-  },
   modal: {
     backgroundColor: 'white',
     padding: 20,
@@ -117,5 +115,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 4,
     borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  errorText: {
+    color: Colors.DARK_SALMON,
+    marginTop: 15,
   },
 });
