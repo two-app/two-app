@@ -1,23 +1,28 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, RefreshControl, View, Text, StyleSheet} from 'react-native';
+import {FlatList, RefreshControl, Text, View} from 'react-native';
 import {Memory, Content} from '../MemoryModels';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../Router';
 import {RouteProp} from '@react-navigation/native';
 import {Container} from '../../views/View';
 import {getMemory, getMemoryContent} from '../MemoryService';
-
 import _ from 'lodash';
-import {chunkContentToRows, GridRow, ImageCell, VideoCell} from './Grid';
+import {
+  GridRow,
+  TouchableImageCell,
+  TouchableVideoCell,
+  chunkToRows,
+} from './Grid';
 import {ContentGallery} from './ContentGallery';
-import { MemoryToolbar } from './MemoryToolbar';
+import {MemoryToolbar} from './MemoryToolbar';
+import Colors from '../../Colors';
 
 type MemoryScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'MemoryScreen'>;
   route: RouteProp<RootStackParamList, 'MemoryScreen'>;
 };
 
-export const MemoryScreen = ({route}: MemoryScreenProps) => {
+export const MemoryScreen = ({navigation, route}: MemoryScreenProps) => {
   const [memory, setMemory] = useState<Memory>(route.params.memory);
   const [content, setContent] = useState<Content[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -65,7 +70,7 @@ const ContentGrid = ({
 }: ContentGridProps) => {
   const [galleryIndex, setGalleryIndex] = useState<number | null>(null);
   const numberOfColumns = 4;
-  const rows = chunkContentToRows(content, numberOfColumns);
+  const rows = chunkToRows(content, numberOfColumns);
 
   return (
     <>
@@ -76,6 +81,7 @@ const ContentGrid = ({
       />
       <FlatList
         ListHeaderComponent={() => <MemoryToolbar memory={memory} />}
+        ListEmptyComponent={EmptyMemory}
         data={rows}
         renderItem={({item, index: rowIndex}) => (
           <GridRow
@@ -83,14 +89,16 @@ const ContentGrid = ({
             renderCell={(content, colIndex) => {
               const childIndex = rowIndex * numberOfColumns + colIndex;
               return content.contentType === 'image' ? (
-                <ImageCell
+                <TouchableImageCell
                   item={content}
                   onClick={() => setGalleryIndex(childIndex)}
+                  key={content.fileKey}
                 />
               ) : (
-                <VideoCell
+                <TouchableVideoCell
                   item={content}
                   onClick={() => setGalleryIndex(childIndex)}
+                  key={content.fileKey}
                 />
               );
             }}
@@ -111,3 +119,12 @@ const ContentGrid = ({
     </>
   );
 };
+
+const EmptyMemory = () => (
+  <View style={{padding: 20, marginTop: 5, alignItems: 'center'}}>
+    <Text style={{color: Colors.REGULAR, textAlign: 'center', lineHeight: 25, marginBottom: 30}}>
+      You haven't added any content to this memory yet! Upload some pictures 🖼️
+      and videos 📹
+    </Text>
+  </View>
+);
