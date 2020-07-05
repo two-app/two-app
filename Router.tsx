@@ -16,8 +16,8 @@ import {NewTagScreen} from './src/tags/NewTagScreen';
 import {Tag} from './src/tags/Tag';
 import ProfileScreen from './src/user/ProfileScreen';
 import {EditMemoryScreen} from './src/memories/memory/EditMemoryScreen';
-import {PickedContent} from './src/memories/new_memory/ContentInput';
 import {ContentUploadScreen} from './src/content/ContentUploadScreen';
+import { PickedContent } from './src/content/ContentPicker';
 
 export type RootStackParamList = {
   LoadingScreen: undefined;

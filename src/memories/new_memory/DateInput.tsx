@@ -66,7 +66,7 @@ export const DateTimePicker = ({
       </TouchableCard>
       {Platform.OS === 'android' ? (
         <DateTimePickerModal
-          accessibilityLabel={selecting === 'date' ? 'Pick the Date' : 'Pick the Time'}
+          accessibilityLabel='Pick the Date'
           isVisible={isVisible}
           maximumDate={new Date()}
           mode="datetime"

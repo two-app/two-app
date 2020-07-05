@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {FlatList, RefreshControl, Text, View} from 'react-native';
+import {FlatList, RefreshControl, Text, View, StyleSheet} from 'react-native';
 import {Memory, Content} from '../MemoryModels';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../../../Router';
@@ -11,18 +11,19 @@ import {
   GridRow,
   TouchableImageCell,
   TouchableVideoCell,
-  chunkToRows,
+  chunkToRows
 } from './Grid';
 import {ContentGallery} from './ContentGallery';
 import {MemoryToolbar} from './MemoryToolbar';
 import Colors from '../../Colors';
+import { MemoryInteractionModal } from './MemoryInteractionModal';
 
 type MemoryScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'MemoryScreen'>;
   route: RouteProp<RootStackParamList, 'MemoryScreen'>;
 };
 
-export const MemoryScreen = ({navigation, route}: MemoryScreenProps) => {
+export const MemoryScreen = ({route}: MemoryScreenProps) => {
   const [memory, setMemory] = useState<Memory>(route.params.memory);
   const [content, setContent] = useState<Content[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
@@ -69,11 +70,17 @@ const ContentGrid = ({
   onRefresh,
 }: ContentGridProps) => {
   const [galleryIndex, setGalleryIndex] = useState<number | null>(null);
+  const [modalIndex, setModalIndex] = useState<number | undefined>();
   const numberOfColumns = 4;
   const rows = chunkToRows(content, numberOfColumns);
 
   return (
     <>
+      <MemoryInteractionModal
+        memory={memory}
+        content={content[modalIndex!]}
+        onClose={() => setModalIndex(undefined)}
+      />
       <ContentGallery
         content={content}
         index={galleryIndex}
@@ -92,12 +99,14 @@ const ContentGrid = ({
                 <TouchableImageCell
                   item={content}
                   onClick={() => setGalleryIndex(childIndex)}
+                  onLongPress={() => setModalIndex(childIndex)}
                   key={content.fileKey}
                 />
               ) : (
                 <TouchableVideoCell
                   item={content}
                   onClick={() => setGalleryIndex(childIndex)}
+                  onLongPress={() => setModalIndex(childIndex)}
                   key={content.fileKey}
                 />
               );
@@ -122,9 +131,18 @@ const ContentGrid = ({
 
 const EmptyMemory = () => (
   <View style={{padding: 20, marginTop: 5, alignItems: 'center'}}>
-    <Text style={{color: Colors.REGULAR, textAlign: 'center', lineHeight: 25, marginBottom: 30}}>
+    <Text style={styles.emptyText}>
       You haven't added any content to this memory yet! Upload some pictures 🖼️
       and videos 📹
     </Text>
   </View>
 );
+
+const styles = StyleSheet.create({
+  emptyText: {
+    color: Colors.REGULAR,
+    textAlign: 'center',
+    lineHeight: 25,
+    marginBottom: 30,
+  }
+});

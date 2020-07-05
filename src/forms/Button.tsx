@@ -6,6 +6,8 @@ import {
   TouchableWithoutFeedback,
   View,
   AccessibilityState,
+  ViewStyle,
+  ActivityIndicator,
 } from 'react-native';
 import Colors from '../Colors';
 import HapticFeedback from 'react-native-haptic-feedback';
@@ -32,16 +34,26 @@ export const ButtonStyles = {
     backgroundColor: '#fafafa',
     textColor: Colors.VERY_DARK,
   },
+  red: {
+    backgroundColor: Colors.SALMON,
+    textColor: 'white',
+  },
+  redPressed: {
+    backgroundColor: Colors.DARK_SALMON,
+    textColor: 'white',
+  },
 };
 
 type ButtonProps = {
   text: string;
   onPress: () => void;
+  loading?: boolean;
   buttonStyle: ButtonStyle;
   pressedButtonStyle: ButtonStyle;
   accessibilityHint?: string;
   accessibilityLabel?: string;
   accessibilityState?: AccessibilityState;
+  style?: ViewStyle;
 };
 
 /**
@@ -51,11 +63,13 @@ type ButtonProps = {
 export const Button = ({
   text,
   onPress,
+  loading,
   buttonStyle,
   pressedButtonStyle,
   accessibilityHint,
   accessibilityLabel,
-  accessibilityState
+  accessibilityState,
+  style,
 }: ButtonProps) => {
   const [isPressed, setPressed] = useState(false);
 
@@ -90,8 +104,9 @@ export const Button = ({
       }}
       onPressOut={() => setPressed(false)}
       onPress={onPress}>
-      <View style={viewStyle}>
+      <View style={[viewStyle, style]}>
         <Text style={textStyle}>{text}</Text>
+        {loading && <ActivityIndicator color={textStyle.color} style={{marginLeft: 5}} size='small'/>}
       </View>
     </TouchableWithoutFeedback>
   );
