@@ -11,9 +11,9 @@ import {
   VideoContent,
   MemoryPatch,
 } from './MemoryModels';
-import {PickedContent} from './new_memory/ContentInput';
 import {RootStackParamList} from '../../Router';
 import {NavigationProp} from '@react-navigation/native';
+import { PickedContent } from '../content/ContentPicker';
 
 export const isMemoryDescriptionValid = (upload: MemoryDescription) =>
   upload.title.length > 0 && upload.location.length > 0;
@@ -108,11 +108,16 @@ export const uploadToMemory = (
     (content: Image) => {
       const form = new FormData();
 
+      console.log(content.filename);
+      console.log(content.path);
+
       form.append('content', {
-        name: content.filename,
+        name: content.filename || "tmp-file-name",
         type: content.mime,
         uri: content.path,
       });
+
+      console.log(form);
 
       return Gateway.post<number[]>(`/memory/${mid}/content`, form, {
         headers: {

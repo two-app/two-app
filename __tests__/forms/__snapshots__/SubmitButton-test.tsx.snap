@@ -24,24 +24,27 @@ exports[`SubmitButton should maintain snapshot 1`] = `
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
     style={
-      Object {
-        "alignItems": "center",
-        "backgroundColor": "#3AB795",
-        "borderColor": "rgba(0, 0, 0, 0.2)",
-        "borderRadius": 90,
-        "borderWidth": 0.5,
-        "flexDirection": "row",
-        "justifyContent": "center",
-        "marginHorizontal": 3,
-        "padding": 12,
-        "shadowColor": "rgb(37, 37, 37)",
-        "shadowOffset": Object {
-          "height": 2,
-          "width": 0,
+      Array [
+        Object {
+          "alignItems": "center",
+          "backgroundColor": "#3AB795",
+          "borderColor": "rgba(0, 0, 0, 0.2)",
+          "borderRadius": 90,
+          "borderWidth": 0.5,
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "marginHorizontal": 3,
+          "padding": 12,
+          "shadowColor": "rgb(37, 37, 37)",
+          "shadowOffset": Object {
+            "height": 2,
+            "width": 0,
+          },
+          "shadowOpacity": 0.3,
+          "shadowRadius": 3,
         },
-        "shadowOpacity": 0.3,
-        "shadowRadius": 3,
-      }
+        undefined,
+      ]
     }
   >
     <Text

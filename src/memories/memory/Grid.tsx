@@ -61,13 +61,17 @@ export const GridRow = <T extends {}>({
 type CellProps = {
   item: Content;
   onClick: () => void;
+  onLongPress: () => void;
 };
 
 export const EmptyCell = () => <Cell />;
 
-export const TouchableImageCell = ({item, onClick}: CellProps) => (
+export const TouchableImageCell = ({item, onClick, onLongPress}: CellProps) => (
   <Cell key={item.fileKey}>
-    <TouchableOpacity style={{width: '100%', height: '100%'}} onPress={onClick}>
+    <TouchableOpacity
+      style={{width: '100%', height: '100%'}}
+      onPress={onClick}
+      onLongPress={onLongPress}>
       <Image
         source={{uri: buildContentURI(item.fileKey, item.thumbnail)}}
         style={{flex: 1, backgroundColor: Colors.DARK}}
@@ -76,9 +80,21 @@ export const TouchableImageCell = ({item, onClick}: CellProps) => (
   </Cell>
 );
 
-export const TouchableVideoCell = ({item, onClick}: CellProps) => (
+export const ImageCell = ({item}: {item: Content}) => (
+  <Cell key={item.fileKey} a11={{accessibilityLabel: 'A preview of selected content.'}}>
+    <Image
+      source={{uri: buildContentURI(item.fileKey, item.thumbnail)}}
+      style={{flex: 1, backgroundColor: Colors.DARK}}
+    />
+  </Cell>
+);
+
+export const TouchableVideoCell = ({item, onClick, onLongPress}: CellProps) => (
   <Cell key={item.fileKey}>
-    <TouchableOpacity style={{width: '100%', height: '100%'}} onPress={onClick}>
+    <TouchableOpacity
+      style={{width: '100%', height: '100%'}}
+      onPress={onClick}
+      onLongPress={onLongPress}>
       <ImageBackground
         source={{uri: buildContentURI(item.fileKey, item.thumbnail)}}
         style={{

@@ -33,7 +33,7 @@ export const ContentGallery = ({
   });
 
   return (
-    <Modal visible={index != null} transparent={true} onDismiss={onClose} animated={true} animationType="fade">
+    <Modal visible={index != null} transparent={true} onDismiss={onClose} animated={true} animationType="fade" onRequestClose={onClose}>
       <ImageViewer
         enablePreload={true}
         menuContext={false}
