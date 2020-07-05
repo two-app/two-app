@@ -172,7 +172,7 @@ class EditMemoryScreenTestBed {
   };
 
   goBackFn: jest.Mock;
-  patchMemoryFn: jest.SpyInstance<Promise<void>, [number, MemoryPatch]>;
+  patchMemoryFn: jest.SpyInstance<Promise<Memory>, [number, MemoryPatch]>;
 
   constructor() {
     this.patchMemoryFn = jest.spyOn(MemoryService, 'patchMemory').mockClear();
@@ -182,7 +182,8 @@ class EditMemoryScreenTestBed {
   }
 
   onPatchResolve = (): EditMemoryScreenTestBed => {
-    this.patchMemoryFn.mockResolvedValue();
+    // TODO write a test that the dispatch function is called with the updated patched memory
+    this.patchMemoryFn.mockResolvedValue({...this.memory, title: 'BLABLABLAALABLA'});
     return this;
   };
 

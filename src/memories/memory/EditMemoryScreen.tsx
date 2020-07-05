@@ -18,7 +18,6 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {TwoState} from '../../state/reducers';
 import {selectMemory, updateMemory} from '../store';
 import {connect, ConnectedProps} from 'react-redux';
-import {dispatchFn} from '../../navigation/__mocks__/RootNavigation';
 
 type NavigationProps = {
   navigation: StackNavigationProp<RootStackParamList, 'EditMemoryScreen'>;
