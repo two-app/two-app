@@ -8,7 +8,7 @@ import {UserRegistration} from './src/authentication/register_workflow/UserRegis
 import HomeScreen from './src/home/HomeScreen';
 import LoadingScreen from './src/LoadingScreen';
 import LogoutScreen from './src/LogoutScreen';
-import {MemoryScreen} from './src/memories/memory/MemoryScreen';
+import MemoryScreen from './src/memories/memory/MemoryScreen';
 import {Memory} from './src/memories/MemoryModels';
 import {NewMemoryScreen} from './src/memories/new_memory/NewMemoryScreen';
 import {SearchScreen} from './src/search/SearchScreen';
@@ -28,7 +28,7 @@ export type RootStackParamList = {
   ConnectCodeScreen: undefined;
   HomeScreen: undefined;
   NewMemoryScreen: undefined;
-  MemoryScreen: {memory: Memory};
+  MemoryScreen: {mid: number};
   NewTagScreen: {onSubmit: (tag: Tag) => void};
   SearchScreen: undefined;
   ProfileScreen: undefined;

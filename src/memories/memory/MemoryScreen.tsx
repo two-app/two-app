@@ -17,24 +17,40 @@ import {ContentGallery} from './ContentGallery';
 import {MemoryToolbar} from './MemoryToolbar';
 import Colors from '../../Colors';
 import { MemoryInteractionModal } from './MemoryInteractionModal';
+import { TwoState } from '../../state/reducers';
+import { selectMemory, updateMemory } from '../store';
+import { connect, ConnectedProps } from 'react-redux';
+import { resetNavigate } from '../../navigation/NavigationUtilities';
 
-type MemoryScreenProps = {
+type NavigationProps = {
   navigation: StackNavigationProp<RootStackParamList, 'MemoryScreen'>;
   route: RouteProp<RootStackParamList, 'MemoryScreen'>;
-};
+}
 
-export const MemoryScreen = ({route}: MemoryScreenProps) => {
-  const [memory, setMemory] = useState<Memory>(route.params.memory);
+const mapStateToProps = (state: TwoState, ownProps: NavigationProps) => ({
+  memory: selectMemory(state.memories, ownProps.route.params.mid)
+});
+
+const connector = connect(mapStateToProps);
+type ConnectorProps = ConnectedProps<typeof connector>;
+type MemoryScreenProps = ConnectorProps & NavigationProps;
+
+const MemoryScreen = ({memory, navigation, dispatch}: MemoryScreenProps) => {
+  if (memory == null) { // something has gone wrong in the redux state.
+    resetNavigate("HomeScreen", navigation);
+    return null;
+  }
+
   const [content, setContent] = useState<Content[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const refreshMemory = () => {
     Promise.all([getMemory(memory.id), getMemoryContent(memory.id)])
-      .then((result: any[]) => {
-        setMemory(result[0]);
-        setContent(result[1]);
-      })
-      .finally(() => setRefreshing(false));
+      .then((result: [Memory, Content[]]) => {
+        const [memory, content] = result;
+        dispatch(updateMemory({mid: memory.id, memory}));
+        setContent(content);
+      }).finally(() => setRefreshing(false));
   };
 
   useEffect(() => {
@@ -55,6 +71,8 @@ export const MemoryScreen = ({route}: MemoryScreenProps) => {
     </Container>
   );
 };
+
+export default connector(MemoryScreen);
 
 type ContentGridProps = {
   memory: Memory;

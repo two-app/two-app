@@ -2,15 +2,16 @@ import {userReducer, UserState} from '../user';
 import AsyncStorage from '@react-native-community/async-storage';
 import {persistReducer, persistStore} from 'redux-persist';
 import {combineReducers, createStore} from 'redux';
-import {DeepReadonly} from 'utility-types';
 import {createAction, getType} from 'typesafe-actions';
 import {Persistor} from 'redux-persist/es/types';
 import {authReducer, AuthState} from '../authentication/store';
+import { MemoryState, memoryReducer } from '../memories/store/reducers';
 
-export type TwoState = DeepReadonly<{
+export type TwoState = {
     user?: UserState
     auth?: AuthState
-}>;
+    memories: MemoryState
+};
 
 const persistConfig = {
     key: 'root',
@@ -19,7 +20,8 @@ const persistConfig = {
 
 const reducer = combineReducers({
     user: userReducer,
-    auth: authReducer
+    auth: authReducer,
+    memories: memoryReducer
 });
 
 const clearState = createAction('CLEAR_STATE')();
