@@ -33,10 +33,7 @@ const handleUpdateMemory = (
   return {
     ...state,
     allMemories: state.allMemories
-      .map((m) => {
-        if (m.id !== mid) return m;
-        return memory;
-      })
+      .map((m) => (m.id === mid ? memory : m))
       .sort(inAscending),
   };
 };
