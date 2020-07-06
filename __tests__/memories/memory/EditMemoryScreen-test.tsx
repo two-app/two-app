@@ -19,6 +19,7 @@ import {Tag} from '../../../src/tags/Tag';
 import * as MemoryService from '../../../src/memories/MemoryService';
 import {ErrorResponse} from '../../../src/http/Response';
 import {ReactTestInstance} from 'react-test-renderer';
+import { updateMemory } from '../../../src/memories/store';
 
 describe('EditMemoryScreen', () => {
   let tb: EditMemoryScreenTestBed;
@@ -149,6 +150,23 @@ describe('EditMemoryScreen', () => {
       expect(a11yError).toBeTruthy();
       expect(errorText).toBeTruthy();
     });
+
+    test('it should dispatch the updated memory to redux', async () => {
+      const updatedMemory: Memory = {...tb.memory, title: 'brand new title'};
+      tb.onPatchResolve(updatedMemory).pressSubmitButton();
+
+      await waitFor(() => {
+        if (tb.dispatchFn.mock.calls.length == 0) throw new Error('Zero calls');
+      });
+
+      expect(tb.dispatchFn).toHaveBeenCalledTimes(1);
+      expect(tb.dispatchFn).toHaveBeenCalledWith(
+        updateMemory({
+          mid: updatedMemory.id,
+          memory: updatedMemory,
+        }),
+      );
+    });
   });
 });
 
@@ -172,17 +190,18 @@ class EditMemoryScreenTestBed {
 
   goBackFn: jest.Mock;
   patchMemoryFn: jest.SpyInstance<Promise<Memory>, [number, MemoryPatch]>;
+  dispatchFn: jest.Mock;
 
   constructor() {
     this.patchMemoryFn = jest.spyOn(MemoryService, 'patchMemory').mockClear();
     jest.spyOn(TagService, 'getTags').mockResolvedValue(this.tags);
     this.goBackFn = jest.fn();
-    this.onPatchResolve();
+    this.dispatchFn = jest.fn();
+    this.onPatchResolve(this.memory);
   }
 
-  onPatchResolve = (): EditMemoryScreenTestBed => {
-    // TODO write a test that the dispatch function is called with the updated patched memory
-    this.patchMemoryFn.mockResolvedValue({...this.memory, title: 'BLABLABLAALABLA'});
+  onPatchResolve = (updatedMemory: Memory): EditMemoryScreenTestBed => {
+    this.patchMemoryFn.mockResolvedValue(updatedMemory);
     return this;
   };
 
@@ -224,7 +243,7 @@ class EditMemoryScreenTestBed {
 
   getLoadingScreen = (): ReactTestInstance => {
     return this.render.getByA11yHint('Waiting for an action to finish...');
-  }
+  };
 
   build = (): EditMemoryScreenTestBed => {
     this.render = render(
@@ -234,8 +253,7 @@ class EditMemoryScreenTestBed {
           navigation={{goBack: this.goBackFn} as any}
           route={{params: {mid: this.memory.id}} as any}
           memory={this.memory}
-          // TODO test jest.fn dispatch
-          dispatch={jest.fn()}
+          dispatch={this.dispatchFn}
         />
       </SafeAreaProvider>,
     );
