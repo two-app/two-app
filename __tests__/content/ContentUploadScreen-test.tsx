@@ -40,10 +40,7 @@ describe('ContentUploadScreen', () => {
   });
 
   test('it should navigate back on success', async () => {
-    const updatedMemory: Memory = {...tb.memory, imageCount: 99};
-    const updatedContent: Content[] = [{test: 'test'} as any];
-
-    tb.onUploadToMemoryResolve(updatedMemory, updatedContent);
+    tb.onUploadToMemoryResolve(tb.memory, []);
     tb.pressSubmit();
 
     await waitForElementToBeRemoved(tb.queryLoadingScreen);
