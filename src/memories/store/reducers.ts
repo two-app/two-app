@@ -44,19 +44,10 @@ const handleUpdateMemory = (
 const handleInsertMemory = (
   state: MemoryState,
   action: PayloadAction<'INSERT_MEMORY', Memory>,
-): MemoryState => {
-  console.log("inserting memory:");
-  console.log(action.payload);
-  console.log(state.allMemories.length);
-  console.log({
-    ...state,
-    allMemories: [...state.allMemories, action.payload].sort(inAscending),
-  }.allMemories.length);
-  return {
-    ...state,
-    allMemories: [...state.allMemories, action.payload].sort(inAscending),
-  };
-};
+): MemoryState => ({
+  ...state,
+  allMemories: [...state.allMemories, action.payload].sort(inAscending),
+});
 
 const inAscending = (a: Memory, b: Memory) => b.date - a.date;
 

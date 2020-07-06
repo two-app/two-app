@@ -39,15 +39,9 @@ export const NewMemoryScreen = ({navigation, dispatch}: NewMemoryScreenProps) =>
   const createNewMemory = () => {
     setLoading(true);
     createMemory(formState)
-      .then((mid: number) => {
-
-        console.log("got mid " + mid);
-        return getMemory(mid)
-      })
+      .then((mid: number) => getMemory(mid))
       .then((newMemory: Memory) => {
-        console.log("new memory: " + newMemory)
         dispatch(insertMemory(newMemory));
-        console.log("navigating");
         navigation.reset({
           index: 1,
           routes: [
