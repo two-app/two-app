@@ -13,11 +13,12 @@ import {
 import {SafeAreaProvider} from 'react-native-safe-area-view';
 import {ContentUploadScreen} from '../../src/content/ContentUploadScreen';
 import {PickedContent} from '../../src/content/ContentPicker';
-import {Memory} from '../../src/memories/MemoryModels';
+import {Memory, Content} from '../../src/memories/MemoryModels';
 import moment from 'moment';
 import {ReactTestInstance} from 'react-test-renderer';
 import * as MemoryService from '../../src/memories/MemoryService';
 import {ErrorResponse} from '../../src/http/Response';
+import {updateMemory, storeContent} from '../../src/memories/store';
 
 describe('ContentUploadScreen', () => {
   let tb: ContentUploadScreenTestBed;
@@ -39,12 +40,35 @@ describe('ContentUploadScreen', () => {
   });
 
   test('it should navigate back on success', async () => {
-    tb.onUploadToMemoryResolve();
+    const updatedMemory: Memory = {...tb.memory, imageCount: 99};
+    const updatedContent: Content[] = [{test: 'test'} as any];
+
+    tb.onUploadToMemoryResolve(updatedMemory, updatedContent);
     tb.pressSubmit();
 
     await waitForElementToBeRemoved(tb.queryLoadingScreen);
 
     expect(tb.goBackFn).toHaveBeenCalledTimes(1);
+  });
+
+  test('it should update the state in redux on success', async () => {
+    const updatedMemory: Memory = {...tb.memory, imageCount: 99};
+    const updatedContent: Content[] = [{test: 'test'} as any];
+
+    tb.onUploadToMemoryResolve(updatedMemory, updatedContent);
+    tb.pressSubmit();
+
+    await waitForElementToBeRemoved(tb.queryLoadingScreen);
+
+    expect(tb.dispatchFn).toHaveBeenCalledTimes(2);
+    expect(tb.dispatchFn).toHaveBeenNthCalledWith(
+      1,
+      updateMemory({mid: updatedMemory.id, memory: updatedMemory}),
+    );
+    expect(tb.dispatchFn).toHaveBeenNthCalledWith(
+      2,
+      storeContent({mid: updatedMemory.id, content: updatedContent}),
+    );
   });
 
   test('it should display an error on failure', async () => {
@@ -53,7 +77,7 @@ describe('ContentUploadScreen', () => {
       status: 'Bad Request',
       reason: 'Test Reason',
     };
-    
+
     tb.onUploadToMemoryReject(error);
     tb.pressSubmit();
 
@@ -72,15 +96,21 @@ class ContentUploadScreenTestBed {
   memory: Memory = testMemoryData;
   uploadContent: PickedContent[] = testContentData;
   goBackFn: jest.Mock;
+  dispatchFn: jest.Mock;
 
   constructor() {
-    this.onUploadToMemoryResolve();
+    this.onUploadToMemoryResolve(this.memory, []);
     this.goBackFn = jest.fn();
+    this.dispatchFn = jest.fn();
   }
 
-  onUploadToMemoryResolve = () => {
-    // TODO write a proper test with the resolved value + dispatch fn
-    jest.spyOn(MemoryService, 'uploadToMemory').mockResolvedValue([{} as any, {} as any]);
+  onUploadToMemoryResolve = (
+    updatedMemory: Memory,
+    updatedContent: Content[],
+  ) => {
+    jest
+      .spyOn(MemoryService, 'uploadToMemory')
+      .mockResolvedValue([updatedMemory, updatedContent]);
   };
 
   onUploadToMemoryReject = (e: ErrorResponse) => {
@@ -111,9 +141,8 @@ class ContentUploadScreenTestBed {
             name: 'ContentUploadScreen',
             key: 'test-key',
           }}
-          dispatch={jest.fn()}
-          // TODO write tests for memory + dispatch ^
-          memory={{} as any}
+          dispatch={this.dispatchFn}
+          memory={this.memory}
         />
       </SafeAreaProvider>,
     );
