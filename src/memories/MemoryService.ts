@@ -56,35 +56,6 @@ type PostMemoryResponse = {
   memoryId: number;
 };
 
-/**
- * Resets the navigation stack to load the memory screen after the home screen.
- * This means, once the memory screen is loaded, the previous is the HomeScreen.
- * This is useful for navigating, for example, on memory creation.
- * Home Screen -> Memory{mid}
- *
- * @param mid to load
- * @param navigation obj to use
- */
-export const loadMemoryAndNavigate = (
-  mid: number,
-  navigation: NavigationProp<RootStackParamList, keyof RootStackParamList>,
-) => {
-  return getMemory(mid).then((memory: Memory) => {
-    navigation.reset({
-      index: 1,
-      routes: [
-        {
-          name: 'HomeScreen',
-        },
-        {
-          name: 'MemoryScreen',
-          params: {memory},
-        },
-      ],
-    });
-  });
-};
-
 export const createMemory = (
   description: MemoryDescription,
 ): Promise<number> => {
@@ -99,7 +70,7 @@ export const uploadToMemory = (
   mid: number,
   content: PickedContent[],
   setProgress: (percentage: number) => void,
-): Promise<number[]> => {
+): Promise<[Memory, Content[]]> => {
   setProgress(0);
   const doneTotal = content.length + 1;
   let doneCount = 1;
@@ -128,8 +99,8 @@ export const uploadToMemory = (
     },
   );
 
-  return Promise.all(uploadPromises).then((responses) => {
-    return responses.map((axiosResponse) => axiosResponse.data[0]);
+  return Promise.all(uploadPromises).then(() => {
+    return Promise.all([getMemory(mid), getMemoryContent(mid)])
   });
 };
 
@@ -150,11 +121,11 @@ export const getMemoryContent = (mid: number): Promise<Content[]> =>
     },
   );
 
-export const patchMemory = (mid: number, patch: MemoryPatch): Promise<void> => {
+export const patchMemory = (mid: number, patch: MemoryPatch): Promise<Memory> => {
   return Gateway.patch<any>(`/memory/${mid}`, patch).then(
     (r: AxiosResponse<any>) => {
       console.log(`Successfully patched memory. Response status: ${r.status}`);
-      return Promise.resolve();
+      return getMemory(mid);
     },
   );
 };

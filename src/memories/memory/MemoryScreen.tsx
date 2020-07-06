@@ -11,34 +11,55 @@ import {
   GridRow,
   TouchableImageCell,
   TouchableVideoCell,
-  chunkToRows
+  chunkToRows,
 } from './Grid';
 import {ContentGallery} from './ContentGallery';
 import {MemoryToolbar} from './MemoryToolbar';
 import Colors from '../../Colors';
-import { MemoryInteractionModal } from './MemoryInteractionModal';
+import MemoryInteractionModal from './MemoryInteractionModal';
+import {TwoState} from '../../state/reducers';
+import {
+  selectMemory,
+  updateMemory,
+  selectMemoryContent,
+  storeContent,
+} from '../store';
+import {connect, ConnectedProps} from 'react-redux';
 
-type MemoryScreenProps = {
+type NavigationProps = {
   navigation: StackNavigationProp<RootStackParamList, 'MemoryScreen'>;
   route: RouteProp<RootStackParamList, 'MemoryScreen'>;
 };
 
-export const MemoryScreen = ({route}: MemoryScreenProps) => {
-  const [memory, setMemory] = useState<Memory>(route.params.memory);
-  const [content, setContent] = useState<Content[]>([]);
+const mapStateToProps = (state: TwoState, ownProps: NavigationProps) => {
+  const mid = ownProps.route.params.mid;
+  return {
+    memory: selectMemory(state.memories, mid),
+    content: selectMemoryContent(state.memories, mid),
+  };
+};
+
+const connector = connect(mapStateToProps);
+type ConnectorProps = ConnectedProps<typeof connector>;
+type MemoryScreenProps = ConnectorProps & NavigationProps;
+
+const MemoryScreen = ({memory, dispatch, content}: MemoryScreenProps) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const refreshMemory = () => {
     Promise.all([getMemory(memory.id), getMemoryContent(memory.id)])
-      .then((result: any[]) => {
-        setMemory(result[0]);
-        setContent(result[1]);
+      .then((result: [Memory, Content[]]) => {
+        const [memory, content] = result;
+        dispatch(updateMemory({mid: memory.id, memory}));
+        dispatch(storeContent({mid: memory.id, content}));
       })
       .finally(() => setRefreshing(false));
   };
 
   useEffect(() => {
-    getMemoryContent(memory.id).then(setContent);
+    getMemoryContent(memory.id).then((content) => {
+      dispatch(storeContent({mid: memory.id, content}));
+    });
   }, []);
 
   return (
@@ -55,6 +76,8 @@ export const MemoryScreen = ({route}: MemoryScreenProps) => {
     </Container>
   );
 };
+
+export default connector(MemoryScreen);
 
 type ContentGridProps = {
   memory: Memory;
@@ -144,5 +167,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 25,
     marginBottom: 30,
-  }
+  },
 });

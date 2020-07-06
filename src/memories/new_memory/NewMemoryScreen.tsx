@@ -10,18 +10,23 @@ import {ScrollContainer} from '../../views/View';
 import {
   isMemoryDescriptionValid,
   createMemory,
-  loadMemoryAndNavigate,
+  getMemory,
 } from '../MemoryService';
 import {DateTimePicker} from './DateInput';
 import {LocationInput} from './LocationInput';
 import TitleInput from './TitleInput';
-import {MemoryDescription} from '../MemoryModels';
+import {MemoryDescription, Memory} from '../MemoryModels';
+import {connect, ConnectedProps} from 'react-redux';
+import {insertMemory} from '../store';
 
-type NewMemoryScreenProps = {
+type NavigationProps = {
   navigation: StackNavigationProp<RootStackParamList, 'NewMemoryScreen'>;
 };
 
-const NewMemoryScreen = ({navigation}: NewMemoryScreenProps) => {
+const connector = connect();
+type NewMemoryScreenProps = ConnectedProps<typeof connector> & NavigationProps;
+
+export const NewMemoryScreen = ({navigation, dispatch}: NewMemoryScreenProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [uploadError, setUploadError] = useState<string>();
   const [formState, setFormState] = useState<MemoryDescription>({
@@ -34,7 +39,20 @@ const NewMemoryScreen = ({navigation}: NewMemoryScreenProps) => {
   const createNewMemory = () => {
     setLoading(true);
     createMemory(formState)
-      .then((mid: number) => loadMemoryAndNavigate(mid, navigation))
+      .then((mid: number) => getMemory(mid))
+      .then((newMemory: Memory) => {
+        dispatch(insertMemory(newMemory));
+        navigation.reset({
+          index: 1,
+          routes: [
+            {name: 'HomeScreen'},
+            {
+              name: 'MemoryScreen',
+              params: {mid: newMemory.id},
+            },
+          ],
+        });
+      })
       .catch((e: ErrorResponse) => {
         setLoading(false);
         setUploadError(e.reason);
@@ -47,10 +65,14 @@ const NewMemoryScreen = ({navigation}: NewMemoryScreenProps) => {
         <Heading>New Memory</Heading>
 
         <TitleInput setTitle={(title) => setFormState({...formState, title})} />
-        <LocationInput setLocation={(location) => setFormState({...formState, location})} />
-        <DateTimePicker setDateTime={(date) => setFormState({...formState, date})} />
+        <LocationInput
+          setLocation={(location) => setFormState({...formState, location})}
+        />
+        <DateTimePicker
+          setDateTime={(date) => setFormState({...formState, date})}
+        />
         <SelectTag
-            onTagChange={tag => setFormState({...formState, tag: tag?.tid})}
+          onTagChange={(tag) => setFormState({...formState, tag: tag?.tid})}
         />
 
         <SubmitButton
@@ -65,4 +87,4 @@ const NewMemoryScreen = ({navigation}: NewMemoryScreenProps) => {
   );
 };
 
-export {NewMemoryScreen};
+export default connector(NewMemoryScreen);

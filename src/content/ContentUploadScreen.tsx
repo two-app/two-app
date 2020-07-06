@@ -15,11 +15,23 @@ import {MemoryImageCount, MemoryVideoCount} from '../memories/MemoryIcons';
 import {uploadToMemory} from '../memories/MemoryService';
 import {ErrorResponse} from '../http/Response';
 import {PickedContent} from './ContentPicker';
+import {connect, ConnectedProps} from 'react-redux';
+import {updateMemory, selectMemory, storeContent} from '../memories/store';
+import {TwoState} from '../state/reducers';
+import {Content, Memory} from '../memories/MemoryModels';
 
-type ContentUploadScreenProps = {
+type NavigationProps = {
   navigation: StackNavigationProp<RootStackParamList, 'ContentUploadScreen'>;
   route: RouteProp<RootStackParamList, 'ContentUploadScreen'>;
 };
+
+const mapStateToProps = (state: TwoState, ownProps: NavigationProps) => ({
+  memory: selectMemory(state.memories, ownProps.route.params.mid),
+});
+
+const connector = connect(mapStateToProps);
+type ContentUploadScreenProps = ConnectedProps<typeof connector> &
+  NavigationProps;
 
 type Loading = {
   isLoading: boolean;
@@ -29,13 +41,15 @@ type Loading = {
 export const ContentUploadScreen = ({
   navigation,
   route,
+  dispatch,
+  memory,
 }: ContentUploadScreenProps) => {
   const [loading, setLoading] = useState<Loading>({
     isLoading: false,
     percentage: 0,
   });
   const [uploadError, setUploadError] = useState<string>('');
-  const {memory, content} = route.params;
+  const {content} = route.params;
   const images = content.filter((c) => c.mime.startsWith('image'));
   const videos = content.filter((c) => c.mime.startsWith('video'));
 
@@ -46,7 +60,11 @@ export const ContentUploadScreen = ({
   const upload = () => {
     setLoading({isLoading: true, percentage: 0});
     uploadToMemory(memory.id, content, setLoadingPercentage)
-      .then(() => navigation.goBack())
+      .then(([updatedMemory, updatedContent]: [Memory, Content[]]) => {
+        dispatch(updateMemory({mid: memory.id, memory: updatedMemory}));
+        dispatch(storeContent({mid: memory.id, content: updatedContent}));
+        navigation.goBack();
+      })
       .catch((e: ErrorResponse) => setUploadError(e.reason))
       .finally(() => setLoading({isLoading: false, percentage: undefined}));
   };
@@ -89,6 +107,8 @@ export const ContentUploadScreen = ({
     </Container>
   );
 };
+
+export default connector(ContentUploadScreen);
 
 type HeaderProps = {
   numberOfImages: number;

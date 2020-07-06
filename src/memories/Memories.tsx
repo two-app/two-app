@@ -19,43 +19,56 @@ import {RootStackParamList} from '../../Router';
 import {useNavigation} from '@react-navigation/native';
 import {MemoryDisplayView} from './MemoryDisplayView';
 import {TouchableCard} from '../forms/Card';
+import {TwoState, persistor} from '../state/reducers';
+import {connect, ConnectedProps} from 'react-redux';
+import {selectMemories} from './store/selectors';
+import {storeMemories, emptyMemories} from './store/actions';
+import { getNavigation } from '../navigation/RootNavigation';
 
-type MemoryEffect = {
+const mapStateToProps = (state: TwoState) => ({
+  memories: selectMemories(state.memories),
+});
+
+const connector = connect(mapStateToProps);
+type ConnectorProps = ConnectedProps<typeof connector>;
+type MemoriesProps = ConnectorProps;
+
+type LoadingStatus = {
   loading: boolean;
   refreshing: boolean;
   loadingError: boolean;
-  memories: Memory[];
 };
 
-export const Memories = () => {
-  const [effect, setEffect] = useState<MemoryEffect>({
+const Memories = ({memories, dispatch}: MemoriesProps) => {
+  let memoryFlatListRef: FlatList<Memory> | null;
+  const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>({
     loading: true,
     refreshing: false,
     loadingError: false,
-    memories: [],
   });
 
-  let memoryFlatListRef: FlatList<Memory> | null;
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-
   const refreshMemories = () => {
-    setEffect((prev) => ({...prev, loading: true}));
+    setLoadingStatus({...loadingStatus, loading: true});
     getMemories()
-      .then((memories) =>
-        setEffect((prev) => ({...prev, memories, loadingError: false})),
-      )
-      .catch(() => setEffect((prev) => ({...prev, loadingError: true})))
+      .then((memories: Memory[]) => {
+        dispatch(storeMemories(memories));
+        setLoadingStatus({...loadingStatus, loadingError: false});
+        persistor.persist();
+      })
+      .catch(() => setLoadingStatus({...loadingStatus, loadingError: true}))
       .finally(() =>
-        setEffect((prev) => ({...prev, loading: false, refreshing: false})),
+        setLoadingStatus({...loadingStatus, loading: false, refreshing: false}),
       );
   };
 
-  const scrollToTop = () =>
-    memoryFlatListRef != null &&
-    memoryFlatListRef.scrollToOffset({
-      offset: 75,
-      animated: true,
-    });
+  const scrollToTop = (): void => {
+    if (memoryFlatListRef != null) {
+      memoryFlatListRef.scrollToOffset({
+        offset: 75,
+        animated: true,
+      });
+    }
+  }
 
   useEffect(() => {
     refreshMemories();
@@ -63,22 +76,24 @@ export const Memories = () => {
 
   return (
     <FlatList
-      data={effect.memories}
+      data={memories}
       ref={(ref) => (memoryFlatListRef = ref)}
       onContentSizeChange={scrollToTop}
       renderItem={(item) => (
-        <MemoryItemNavigation navigation={navigation} item={item.item} />
+        <MemoryItemNavigation item={item.item} />
       )}
       keyExtractor={(i) => i.id.toString()}
       showsVerticalScrollIndicator={false}
       ListHeaderComponent={MemoryHeader}
-      ListEmptyComponent={() => <EmptyMemoriesComponent effect={effect} />}
+      ListEmptyComponent={() => (
+        <EmptyMemoriesComponent loadingStatus={loadingStatus} />
+      )}
       refreshControl={
         <RefreshControl
           colors={['#9Bd35A', '#689F38']}
-          refreshing={effect.refreshing}
+          refreshing={loadingStatus.refreshing}
           onRefresh={() => {
-            setEffect((prev) => ({...prev, refreshing: true}));
+            setLoadingStatus({...loadingStatus, refreshing: true});
             refreshMemories();
           }}
         />
@@ -125,26 +140,28 @@ const MemoryHeader = () => {
 
 type MemoryItemNavigationProps = {
   item: Memory;
-  navigation: StackNavigationProp<RootStackParamList>;
 };
 
 const MemoryItemNavigation = ({
-  item,
-  navigation,
+  item
 }: MemoryItemNavigationProps) => (
   <TouchableOpacity
     style={containers.item}
-    onPress={() => navigation.navigate('MemoryScreen', {memory: item})}>
+    onPress={() => getNavigation().navigate('MemoryScreen', {mid: item.id})}>
     <MemoryDisplayView memory={item} />
   </TouchableOpacity>
 );
 
-const EmptyMemoriesComponent = ({effect}: {effect: MemoryEffect}) => (
+const EmptyMemoriesComponent = ({
+  loadingStatus,
+}: {
+  loadingStatus: LoadingStatus;
+}) => (
   <>
     <Text style={{textAlign: 'center', color: Colors.REGULAR, marginTop: 40}}>
-      {effect.loadingError
+      {loadingStatus.loadingError
         ? `Sorry, we were unable to load your memories.\nTry again soon.`
-        : effect.loading
+        : loadingStatus.loading
         ? 'Loading your memories...'
         : `You don't have any memories. Create some!`}
     </Text>
@@ -163,3 +180,5 @@ const containers = StyleSheet.create({
     marginTop: 10,
   },
 });
+
+export default connector(Memories);

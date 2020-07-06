@@ -40,7 +40,6 @@ export type Memory = {
   imageCount: number;
   videoCount: number;
   displayContent?: Content;
-  content: Content[];
 };
 
 export type MemoryPatch = {

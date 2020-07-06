@@ -34,7 +34,7 @@ const BackButton = () => (
 const EditButton = ({memory}: {memory: Memory}) => (
   <TouchableOpacity
     style={styles.icon}
-    onPress={() => getNavigation().navigate('EditMemoryScreen', {memory})}>
+    onPress={() => getNavigation().navigate('EditMemoryScreen', {mid: memory.id})}>
     <Icon name="edit" size={25} color={Colors.DARK} />
   </TouchableOpacity>
 );
@@ -47,7 +47,7 @@ export const UploadContentButton = ({memory}: {memory: Memory}) => (
       ContentPicker.open(
         () => {},
         (content: PickedContent[]) => {
-          getNavigation().navigate('ContentUploadScreen', {memory, content})
+          getNavigation().navigate('ContentUploadScreen', {mid: memory.id, content})
         },
       );
     }}>

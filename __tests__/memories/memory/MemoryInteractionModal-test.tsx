@@ -7,14 +7,13 @@ import {
   fireEvent,
   cleanup,
   waitFor,
-  waitForElementToBeRemoved
 } from 'react-native-testing-library';
 import * as ContentService from '../../../src/content/ContentService';
 import {MemoryInteractionModal} from '../../../src/memories/memory/MemoryInteractionModal';
 import moment from 'moment';
 import {Memory, Content} from '../../../src/memories/MemoryModels';
 import {ErrorResponse} from '../../../src/http/Response';
-import Modal from 'react-native-modal';
+import {updateMemory} from '../../../src/memories/store';
 
 describe('MemoryInteractionModal', () => {
   let tb: MemoryInteractionModalTestBed;
@@ -52,6 +51,23 @@ describe('MemoryInteractionModal', () => {
         );
       });
 
+      test('it should update the state in redux', async () => {
+        const updatedMemory: Memory = {...tb.memory, title: 'another title'}; // any update will do
+        tb.onSetMemoryDisplayPictureResolve(updatedMemory);
+
+        tb.pressUpdateDisplayContentButton();
+        await waitFor(() => {
+          if (tb.isModalVisible()) {
+            throw new Error('Modal still visible');
+          }
+        });
+
+        expect(tb.dispatchFn).toHaveBeenCalledTimes(1);
+        expect(tb.dispatchFn).toHaveBeenCalledWith(
+          updateMemory({mid: updatedMemory.id, memory: updatedMemory}),
+        );
+      });
+
       test('it should display an error if one occurs', async () => {
         const e: ErrorResponse = {
           code: 400,
@@ -62,9 +78,9 @@ describe('MemoryInteractionModal', () => {
         tb.onSetMemoryDisplayPictureReject(e).pressUpdateDisplayContentButton();
         await waitFor(() => tb.render.getByText(e.reason));
 
-        expect(
-          tb.render.getByText(e.reason).props.accessibilityLabel
-        ).toEqual('Resulting error from your action.');
+        expect(tb.render.getByText(e.reason).props.accessibilityLabel).toEqual(
+          'Resulting error from your action.',
+        );
       });
     });
   });
@@ -75,16 +91,21 @@ class MemoryInteractionModalTestBed {
   memory: Memory = testMemory;
   content: Content | undefined;
   onCloseFn: jest.Mock;
-  setMemoryDisplayPictureFn: jest.SpyInstance<Promise<void>, [number, number]>;
+  dispatchFn: jest.Mock;
+  setMemoryDisplayPictureFn: jest.SpyInstance<
+    Promise<Memory>,
+    [number, number]
+  >;
 
   constructor() {
     this.content = undefined;
     this.onCloseFn = jest.fn();
+    this.dispatchFn = jest.fn();
     this.setMemoryDisplayPictureFn = jest.spyOn(
       ContentService,
       'setMemoryDisplayPicture',
     );
-    this.onSetMemoryDisplayPictureResolve();
+    this.onSetMemoryDisplayPictureResolve(this.memory);
   }
 
   setContent = (content: Content): MemoryInteractionModalTestBed => {
@@ -92,8 +113,10 @@ class MemoryInteractionModalTestBed {
     return this;
   };
 
-  onSetMemoryDisplayPictureResolve = (): MemoryInteractionModalTestBed => {
-    this.setMemoryDisplayPictureFn.mockResolvedValue();
+  onSetMemoryDisplayPictureResolve = (
+    memory: Memory,
+  ): MemoryInteractionModalTestBed => {
+    this.setMemoryDisplayPictureFn.mockResolvedValue(memory);
     return this;
   };
 
@@ -111,8 +134,8 @@ class MemoryInteractionModalTestBed {
   };
 
   isModalVisible = (): boolean => {
-    return this.render.getAllByTestId('interaction-modal')[0].props.visible
-  }
+    return this.render.getAllByTestId('interaction-modal')[0].props.visible;
+  };
 
   build = (): MemoryInteractionModalTestBed => {
     this.render = render(
@@ -120,6 +143,7 @@ class MemoryInteractionModalTestBed {
         memory={this.memory}
         content={this.content}
         onClose={this.onCloseFn}
+        dispatch={this.dispatchFn}
       />,
     );
     return this;
@@ -132,7 +156,6 @@ const testMemory: Memory = {
   location: 'Test Location',
   date: moment().valueOf(),
   tag: undefined,
-  content: [],
   imageCount: 0,
   videoCount: 0,
   displayContent: undefined,
