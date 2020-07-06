@@ -47,7 +47,7 @@ export const UploadContentButton = ({memory}: {memory: Memory}) => (
       ContentPicker.open(
         () => {},
         (content: PickedContent[]) => {
-          getNavigation().navigate('ContentUploadScreen', {memory, content})
+          getNavigation().navigate('ContentUploadScreen', {mid: memory.id, content})
         },
       );
     }}>

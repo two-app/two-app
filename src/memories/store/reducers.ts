@@ -1,14 +1,21 @@
-import {Memory} from '../MemoryModels';
+import {Memory, Content} from '../MemoryModels';
 import {
   ActionType,
   createReducer,
   Reducer,
   PayloadAction,
 } from 'typesafe-actions';
-import {storeMemories, emptyMemories, updateMemory} from './actions';
+import {
+  storeMemories,
+  emptyMemories,
+  updateMemory,
+  storeContent,
+  insertMemory,
+} from './actions';
 
 export type MemoryState = {
   readonly allMemories: Memory[];
+  readonly content: Record<number, Content[]>;
 };
 
 type MemoryActions = ActionType<typeof import('./actions').default>;
@@ -16,7 +23,7 @@ type MemoryActions = ActionType<typeof import('./actions').default>;
 const handleStoreMemories = (
   state: MemoryState,
   action: PayloadAction<'STORE_MEMORIES', Memory[]>,
-): MemoryState => ({allMemories: action.payload});
+): MemoryState => ({...state, allMemories: action.payload});
 
 const handleUpdateMemory = (
   state: MemoryState,
@@ -24,18 +31,51 @@ const handleUpdateMemory = (
 ): MemoryState => {
   const {mid, memory} = action.payload;
   return {
-    allMemories: state.allMemories.map((m) => {
-      if (m.id !== mid) return m;
-      return memory;
-    }),
+    ...state,
+    allMemories: state.allMemories
+      .map((m) => {
+        if (m.id !== mid) return m;
+        return memory;
+      })
+      .sort(inAscending),
   };
 };
 
-const handleEmptyMemories = (): MemoryState => ({allMemories: []});
+const handleInsertMemory = (
+  state: MemoryState,
+  action: PayloadAction<'INSERT_MEMORY', Memory>,
+): MemoryState => {
+  console.log("inserting memory:");
+  console.log(action.payload);
+  console.log(state.allMemories.length);
+  console.log({
+    ...state,
+    allMemories: [...state.allMemories, action.payload].sort(inAscending),
+  }.allMemories.length);
+  return {
+    ...state,
+    allMemories: [...state.allMemories, action.payload].sort(inAscending),
+  };
+};
+
+const inAscending = (a: Memory, b: Memory) => b.date - a.date;
+
+const handleStoreContent = (
+  state: MemoryState,
+  action: PayloadAction<'STORE_CONTENT', {mid: number; content: Content[]}>,
+): MemoryState => {
+  const {mid, content} = action.payload;
+  const newContent = {...state.content};
+  newContent[mid] = content;
+  return {...state, content: newContent};
+};
 
 const defaultState: MemoryState = {
   allMemories: [],
+  content: {},
 };
+
+const handleEmptyMemories = (): MemoryState => defaultState;
 
 export const memoryReducer: Reducer<MemoryState, MemoryActions> = createReducer<
   MemoryState,
@@ -43,4 +83,6 @@ export const memoryReducer: Reducer<MemoryState, MemoryActions> = createReducer<
 >(defaultState)
   .handleAction(storeMemories, handleStoreMemories)
   .handleAction(updateMemory, handleUpdateMemory)
+  .handleAction(insertMemory, handleInsertMemory)
+  .handleAction(storeContent, handleStoreContent)
   .handleAction(emptyMemories, handleEmptyMemories);

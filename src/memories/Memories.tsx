@@ -22,7 +22,7 @@ import {TouchableCard} from '../forms/Card';
 import {TwoState, persistor} from '../state/reducers';
 import {connect, ConnectedProps} from 'react-redux';
 import {selectMemories} from './store/selectors';
-import {storeMemories} from './store/actions';
+import {storeMemories, emptyMemories} from './store/actions';
 import { getNavigation } from '../navigation/RootNavigation';
 
 const mapStateToProps = (state: TwoState) => ({

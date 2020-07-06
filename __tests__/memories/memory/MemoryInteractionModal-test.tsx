@@ -133,7 +133,6 @@ const testMemory: Memory = {
   location: 'Test Location',
   date: moment().valueOf(),
   tag: undefined,
-  content: [],
   imageCount: 0,
   videoCount: 0,
   displayContent: undefined,

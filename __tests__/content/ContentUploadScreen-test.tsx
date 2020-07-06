@@ -79,7 +79,8 @@ class ContentUploadScreenTestBed {
   }
 
   onUploadToMemoryResolve = () => {
-    jest.spyOn(MemoryService, 'uploadToMemory').mockResolvedValue([1, 2]);
+    // TODO write a proper test with the resolved value + dispatch fn
+    jest.spyOn(MemoryService, 'uploadToMemory').mockResolvedValue([{} as any, {} as any]);
   };
 
   onUploadToMemoryReject = (e: ErrorResponse) => {
@@ -106,10 +107,13 @@ class ContentUploadScreenTestBed {
         <ContentUploadScreen
           navigation={{goBack: this.goBackFn} as any}
           route={{
-            params: {content: this.uploadContent, memory: this.memory},
+            params: {content: this.uploadContent, mid: this.memory.id},
             name: 'ContentUploadScreen',
             key: 'test-key',
           }}
+          dispatch={jest.fn()}
+          // TODO write tests for memory + dispatch ^
+          memory={{} as any}
         />
       </SafeAreaProvider>,
     );
@@ -119,7 +123,6 @@ class ContentUploadScreenTestBed {
 
 const testMemoryData: Memory = {
   id: 10,
-  content: [],
   date: moment().valueOf(),
   imageCount: 0,
   videoCount: 0,

@@ -9,14 +9,13 @@ import HomeScreen from './src/home/HomeScreen';
 import LoadingScreen from './src/LoadingScreen';
 import LogoutScreen from './src/LogoutScreen';
 import MemoryScreen from './src/memories/memory/MemoryScreen';
-import {Memory} from './src/memories/MemoryModels';
-import {NewMemoryScreen} from './src/memories/new_memory/NewMemoryScreen';
+import NewMemoryScreen from './src/memories/new_memory/NewMemoryScreen';
 import {SearchScreen} from './src/search/SearchScreen';
 import {NewTagScreen} from './src/tags/NewTagScreen';
 import {Tag} from './src/tags/Tag';
 import ProfileScreen from './src/user/ProfileScreen';
 import EditMemoryScreen from './src/memories/memory/EditMemoryScreen';
-import {ContentUploadScreen} from './src/content/ContentUploadScreen';
+import ContentUploadScreen from './src/content/ContentUploadScreen';
 import {PickedContent} from './src/content/ContentPicker';
 
 export type RootStackParamList = {
@@ -33,7 +32,7 @@ export type RootStackParamList = {
   SearchScreen: undefined;
   ProfileScreen: undefined;
   EditMemoryScreen: {mid: number};
-  ContentUploadScreen: {memory: Memory; content: PickedContent[]};
+  ContentUploadScreen: {mid: number; content: PickedContent[]};
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

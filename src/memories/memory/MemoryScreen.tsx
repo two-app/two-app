@@ -18,7 +18,12 @@ import {MemoryToolbar} from './MemoryToolbar';
 import Colors from '../../Colors';
 import MemoryInteractionModal from './MemoryInteractionModal';
 import {TwoState} from '../../state/reducers';
-import {selectMemory, updateMemory} from '../store';
+import {
+  selectMemory,
+  updateMemory,
+  selectMemoryContent,
+  storeContent,
+} from '../store';
 import {connect, ConnectedProps} from 'react-redux';
 
 type NavigationProps = {
@@ -26,16 +31,19 @@ type NavigationProps = {
   route: RouteProp<RootStackParamList, 'MemoryScreen'>;
 };
 
-const mapStateToProps = (state: TwoState, ownProps: NavigationProps) => ({
-  memory: selectMemory(state.memories, ownProps.route.params.mid),
-});
+const mapStateToProps = (state: TwoState, ownProps: NavigationProps) => {
+  const mid = ownProps.route.params.mid;
+  return {
+    memory: selectMemory(state.memories, mid),
+    content: selectMemoryContent(state.memories, mid),
+  };
+};
 
 const connector = connect(mapStateToProps);
 type ConnectorProps = ConnectedProps<typeof connector>;
 type MemoryScreenProps = ConnectorProps & NavigationProps;
 
-const MemoryScreen = ({memory, dispatch}: MemoryScreenProps) => {
-  const [content, setContent] = useState<Content[]>([]);
+const MemoryScreen = ({memory, dispatch, content}: MemoryScreenProps) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const refreshMemory = () => {
@@ -43,13 +51,15 @@ const MemoryScreen = ({memory, dispatch}: MemoryScreenProps) => {
       .then((result: [Memory, Content[]]) => {
         const [memory, content] = result;
         dispatch(updateMemory({mid: memory.id, memory}));
-        setContent(content);
+        dispatch(storeContent({mid: memory.id, content}));
       })
       .finally(() => setRefreshing(false));
   };
 
   useEffect(() => {
-    getMemoryContent(memory.id).then(setContent);
+    getMemoryContent(memory.id).then((content) => {
+      dispatch(storeContent({mid: memory.id, content}));
+    });
   }, []);
 
   return (

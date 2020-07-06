@@ -165,7 +165,6 @@ class EditMemoryScreenTestBed {
     location: 'Test Location',
     date: moment().valueOf(),
     tag: this.selectedTag,
-    content: [],
     imageCount: 3,
     videoCount: 4,
     displayContent: undefined,
