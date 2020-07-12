@@ -12,3 +12,10 @@ export const setMemoryDisplayPicture = (
 
   return Gateway.patch(`/memory/${mid}`, patch).then(() => getMemory(mid));
 };
+
+export const deleteMemoryContent = (
+  mid: number,
+  contentId: number
+): Promise<void> => {
+  return Gateway.delete(`/memory/${mid}/content/${contentId}`);
+}

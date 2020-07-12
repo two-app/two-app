@@ -85,8 +85,6 @@ export const uploadToMemory = (
         uri: content.path,
       });
 
-      console.log(form);
-
       return Gateway.post<number[]>(`/memory/${mid}/content`, form, {
         headers: {
           'Content-Type': 'multipart/form-data',

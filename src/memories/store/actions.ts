@@ -1,5 +1,6 @@
 import {Memory, Content} from '../MemoryModels';
 import {createAction} from 'typesafe-actions';
+import { number } from 'prop-types';
 
 export const storeMemories = createAction('STORE_MEMORIES')<Memory[]>();
 
@@ -13,8 +14,13 @@ export const storeContent = createAction('STORE_CONTENT')<{
   content: Content[];
 }>();
 
+export const deleteContent = createAction('DELETE_CONTENT')<{
+  mid: number;
+  contentId: number;
+}>();
+
 export const insertMemory = createAction('INSERT_MEMORY')<Memory>();
 
 export const emptyMemories = createAction('EMPTY_MEMORIES')();
 
-export default {storeMemories, updateMemory, insertMemory, storeContent, emptyMemories};
+export default {storeMemories, updateMemory, insertMemory, storeContent, deleteContent, emptyMemories};

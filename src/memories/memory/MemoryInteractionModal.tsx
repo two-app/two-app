@@ -1,7 +1,10 @@
 import {Memory, Content} from '../MemoryModels';
 import {Text} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {setMemoryDisplayPicture} from '../../content/ContentService';
+import {
+  setMemoryDisplayPicture,
+  deleteMemoryContent,
+} from '../../content/ContentService';
 import {View, StyleSheet} from 'react-native';
 import {ImageCell} from './Grid';
 import {ButtonStyles, Button} from '../../forms/Button';
@@ -9,7 +12,7 @@ import Modal from 'react-native-modal';
 import Colors from '../../Colors';
 import {ErrorResponse} from '../../http/Response';
 import {connect, ConnectedProps} from 'react-redux';
-import {updateMemory} from '../store';
+import {updateMemory, deleteContent as deleteContentReducer} from '../store';
 
 const connector = connect();
 
@@ -67,6 +70,13 @@ export const MemoryInteractionModal = ({
 
   const deleteContent = (contentId: number) => {
     setLoading({...loading, deleteContent: true});
+    deleteMemoryContent(memory.id, contentId)
+      .then(() => {
+        closeModal();
+        dispatch(deleteContentReducer({mid: memory.id, contentId}));
+      })
+      .catch((e: ErrorResponse) => setError(e.reason))
+      .finally(() => setLoading(noLoading));
   };
 
   return (
