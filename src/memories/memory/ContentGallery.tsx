@@ -1,17 +1,10 @@
-import React, {useRef, useEffect, RefObject, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Animated, Dimensions, Modal, View} from 'react-native';
 import Image from 'react-native-fast-image';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Video from 'react-native-video';
 import {Content, ImageContent} from '../MemoryModels';
 import {buildContentURI} from '../MemoryService';
-import { State } from 'react-native-image-zoom-viewer/built/image-viewer.type';
-
-type ModalContentRefs = {
-  videoByIndex: Record<number, {
-    muted: boolean
-  }>;
-}
 
 type ContentGalleryProps = {
   content: Content[];
