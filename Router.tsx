@@ -1,4 +1,4 @@
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, CardStyleInterpolators} from '@react-navigation/stack';
 import React from 'react';
 import LoginScreen from './src/authentication/LoginScreen';
 import RegisterScreen from './src/authentication/RegisterScreen';
@@ -50,7 +50,7 @@ const AppStack = () => (
         vertical: 50,
       },
       cardOverlayEnabled: false,
-      cardShadowEnabled: false,
+      cardShadowEnabled: false
     }}>
     <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
     <Stack.Screen name="LogoutScreen" component={LogoutScreen} />
