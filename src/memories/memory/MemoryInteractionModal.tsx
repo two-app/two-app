@@ -26,6 +26,7 @@ type MemoryInteractionModalProps = ConnectedProps<typeof connector> & {
 type ModalData = {
   content?: Content;
   isVisible: boolean;
+  afterCloseFn?: Function;
 };
 
 type ButtonLoading = {
@@ -45,11 +46,10 @@ export const MemoryInteractionModal = ({
   dispatch,
 }: MemoryInteractionModalProps) => {
   const [loading, setLoading] = useState<ButtonLoading>(noLoading);
-  const [afterCloseFn, setAfterCloseFn] = useState<Function | null>(null);
   const [error, setError] = useState<string>('');
   const [modal, setModal] = useState<ModalData>({
     content,
-    isVisible: false
+    isVisible: false,
   });
 
   useEffect(() => setModal({content, isVisible: content != null}), [content]);
@@ -60,8 +60,11 @@ export const MemoryInteractionModal = ({
   };
 
   const dispatchAfterClosed = (action: PayloadAction<string, any>) => {
-    setAfterCloseFn(() => dispatch(action));
-    closeModal();
+    setModal({
+      ...modal,
+      isVisible: false,
+      afterCloseFn: () => dispatch(action),
+    });
   };
 
   const updateDisplayPicture = (contentId: number) => {
@@ -96,10 +99,11 @@ export const MemoryInteractionModal = ({
       onBackdropPress={closeModal}
       onBackButtonPress={closeModal}
       onModalHide={() => {
-        if (afterCloseFn != null) {
-          afterCloseFn();
-          setAfterCloseFn(null);
+        if (modal.afterCloseFn != null) {
+          modal.afterCloseFn();
+          setModal({...modal, afterCloseFn: undefined});
         }
+        
         onClose();
       }}
       testID="interaction-modal">
