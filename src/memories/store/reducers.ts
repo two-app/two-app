@@ -65,7 +65,9 @@ const handleDeleteContent = (
 ): MemoryState => {
   const {mid, contentId} = action.payload;
   const content = {...state.content};
-  const memoryContent = content[mid] || [];
+  
+  if (content[mid] == null) return state; // noop
+  const memoryContent: Content[] = content[mid];
 
   content[mid] = memoryContent.filter((c) => c.contentId !== contentId);
   return {...state, content};
