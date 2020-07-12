@@ -9,9 +9,8 @@ export class ContentPicker {
   ) => {
     const options: Options = {
       multiple: true,
-      maxFiles: 10,
-      compressImageMaxWidth: 1800,
-      compressImageMaxHeight: 1800,
+      compressImageMaxWidth: 2400,
+      compressImageMaxHeight: 2400,
     };
 
     ImagePicker.openPicker(options)
