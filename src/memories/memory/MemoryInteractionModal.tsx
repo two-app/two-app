@@ -1,7 +1,10 @@
 import {Memory, Content} from '../MemoryModels';
 import {Text} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import {setMemoryDisplayPicture} from '../../content/ContentService';
+import {
+  setMemoryDisplayPicture,
+  deleteMemoryContent,
+} from '../../content/ContentService';
 import {View, StyleSheet} from 'react-native';
 import {ImageCell} from './Grid';
 import {ButtonStyles, Button} from '../../forms/Button';
@@ -9,7 +12,8 @@ import Modal from 'react-native-modal';
 import Colors from '../../Colors';
 import {ErrorResponse} from '../../http/Response';
 import {connect, ConnectedProps} from 'react-redux';
-import {updateMemory} from '../store';
+import {updateMemory, deleteContent as deleteContentReducer} from '../store';
+import {PayloadAction} from 'typesafe-actions';
 
 const connector = connect();
 
@@ -22,6 +26,7 @@ type MemoryInteractionModalProps = ConnectedProps<typeof connector> & {
 type ModalData = {
   content?: Content;
   isVisible: boolean;
+  afterCloseFn?: Function;
 };
 
 type ButtonLoading = {
@@ -54,19 +59,34 @@ export const MemoryInteractionModal = ({
     setLoading(noLoading);
   };
 
+  const dispatchAfterClosed = (action: PayloadAction<string, any>) => {
+    setModal({
+      ...modal,
+      isVisible: false,
+      afterCloseFn: () => dispatch(action),
+    });
+  };
+
   const updateDisplayPicture = (contentId: number) => {
     setLoading({...loading, setDisplayPicture: true});
     setMemoryDisplayPicture(memory.id, contentId)
-      .then((updatedMemory: Memory) => {
-        dispatch(updateMemory({mid: memory.id, memory: updatedMemory}));
-        closeModal();
-      })
+      .then((updatedMemory: Memory) =>
+        dispatchAfterClosed(
+          updateMemory({mid: memory.id, memory: updatedMemory}),
+        ),
+      )
       .catch((e: ErrorResponse) => setError(e.reason))
       .finally(() => setLoading(noLoading));
   };
 
   const deleteContent = (contentId: number) => {
     setLoading({...loading, deleteContent: true});
+    deleteMemoryContent(memory.id, contentId)
+      .then(() =>
+        dispatchAfterClosed(deleteContentReducer({mid: memory.id, contentId})),
+      )
+      .catch((e: ErrorResponse) => setError(e.reason))
+      .finally(() => setLoading(noLoading));
   };
 
   return (
@@ -77,8 +97,16 @@ export const MemoryInteractionModal = ({
       isVisible={modal.isVisible}
       onSwipeComplete={closeModal}
       onBackdropPress={closeModal}
+      backdropTransitionOutTiming={0}
       onBackButtonPress={closeModal}
-      onModalHide={() => onClose()}
+      onModalHide={() => {
+        if (modal.afterCloseFn != null) {
+          modal.afterCloseFn();
+          setModal({...modal, afterCloseFn: undefined});
+        }
+
+        onClose();
+      }}
       testID="interaction-modal">
       {modal.content != null && (
         <View style={styles.modal}>

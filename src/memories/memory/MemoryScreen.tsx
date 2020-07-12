@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {FlatList, RefreshControl, Text, View, StyleSheet} from 'react-native';
 import {Memory, Content} from '../MemoryModels';
 import {StackNavigationProp} from '@react-navigation/stack';
@@ -45,6 +45,10 @@ type MemoryScreenProps = ConnectorProps & NavigationProps;
 
 const MemoryScreen = ({memory, dispatch, content}: MemoryScreenProps) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
+  const hasMounted = useRef<boolean>(false);
+  useEffect(() => {
+    hasMounted.current = true;
+  }, []);
 
   const refreshMemory = () => {
     Promise.all([getMemory(memory.id), getMemoryContent(memory.id)])
@@ -61,6 +65,11 @@ const MemoryScreen = ({memory, dispatch, content}: MemoryScreenProps) => {
       dispatch(storeContent({mid: memory.id, content}));
     });
   }, []);
+
+  // refresh entire memory on content change (update, delete)
+  useEffect(() => {
+    if (hasMounted) refreshMemory();
+  }, [JSON.stringify(content)]);
 
   return (
     <Container>
@@ -96,6 +105,11 @@ const ContentGrid = ({
   const [modalIndex, setModalIndex] = useState<number | undefined>();
   const numberOfColumns = 4;
   const rows = chunkToRows(content, numberOfColumns);
+
+  useEffect(() => {
+    setGalleryIndex(null);
+    setModalIndex(undefined);
+  }, [JSON.stringify(content)]);
 
   return (
     <>

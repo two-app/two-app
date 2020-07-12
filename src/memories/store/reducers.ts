@@ -11,6 +11,7 @@ import {
   updateMemory,
   storeContent,
   insertMemory,
+  deleteContent,
 } from './actions';
 
 export type MemoryState = {
@@ -58,6 +59,20 @@ const handleStoreContent = (
   return {...state, content: newContent};
 };
 
+const handleDeleteContent = (
+  state: MemoryState,
+  action: PayloadAction<'DELETE_CONTENT', {mid: number; contentId: number}>,
+): MemoryState => {
+  const {mid, contentId} = action.payload;
+  const content = {...state.content};
+  
+  if (content[mid] == null) return state; // noop
+  const memoryContent: Content[] = content[mid];
+
+  content[mid] = memoryContent.filter((c) => c.contentId !== contentId);
+  return {...state, content};
+};
+
 const defaultState: MemoryState = {
   allMemories: [],
   content: {},
@@ -73,4 +88,5 @@ export const memoryReducer: Reducer<MemoryState, MemoryActions> = createReducer<
   .handleAction(updateMemory, handleUpdateMemory)
   .handleAction(insertMemory, handleInsertMemory)
   .handleAction(storeContent, handleStoreContent)
+  .handleAction(deleteContent, handleDeleteContent)
   .handleAction(emptyMemories, handleEmptyMemories);
