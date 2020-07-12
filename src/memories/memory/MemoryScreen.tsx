@@ -124,7 +124,9 @@ const ContentGrid = ({
         onClose={() => setGalleryIndex(null)}
       />
       <FlatList
+        showsVerticalScrollIndicator={false}
         ListHeaderComponent={() => <MemoryToolbar memory={memory} />}
+        contentContainerStyle={{paddingBottom: 100}}
         ListEmptyComponent={EmptyMemory}
         data={rows}
         renderItem={({item, index: rowIndex}) => (

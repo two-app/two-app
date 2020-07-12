@@ -1,10 +1,10 @@
-import React from 'react';
-import { Animated, Dimensions, Modal, View } from 'react-native';
-import Image from 'react-native-fast-image'
+import React, {useEffect, useState} from 'react';
+import {Animated, Dimensions, Modal, View} from 'react-native';
+import Image from 'react-native-fast-image';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Video from 'react-native-video';
-import { Content, ImageContent } from '../MemoryModels';
-import { buildContentURI } from '../MemoryService';
+import {Content, ImageContent} from '../MemoryModels';
+import {buildContentURI} from '../MemoryService';
 
 type ContentGalleryProps = {
   content: Content[];
@@ -17,8 +17,12 @@ export const ContentGallery = ({
   index,
   onClose,
 }: ContentGalleryProps) => {
+  const [currentIndex, setCurrentIndex] = useState(index);
+  useEffect(() => setCurrentIndex(index), [index]);
+
   const urls = content.map((c, index) => {
     const url = buildContentURI(c.fileKey, c.gallery);
+
     if (c.contentType === 'image') {
       const g = c.gallery as ImageContent;
       return {url, props: {index}, width: g.width, height: g.height};
@@ -33,7 +37,13 @@ export const ContentGallery = ({
   });
 
   return (
-    <Modal visible={index != null} transparent={true} onDismiss={onClose} animated={true} animationType="fade" onRequestClose={onClose}>
+    <Modal
+      visible={index != null}
+      transparent={true}
+      onDismiss={onClose}
+      animated={true}
+      animationType="fade"
+      onRequestClose={onClose}>
       <ImageViewer
         enablePreload={true}
         menuContext={false}
@@ -43,14 +53,20 @@ export const ContentGallery = ({
         onCancel={onClose}
         // @ts-ignore
         index={index}
+        onChange={newIndex => {
+          setCurrentIndex(newIndex || null);
+        }}
         imageUrls={urls}
         renderImage={(a) => {
           const c = content[a.index];
           const uri = buildContentURI(c.fileKey, c.gallery);
+          
           return c.contentType === 'video' ? (
             <View style={{flex: 1}}>
               <Video
                 controls={false}
+                paused={currentIndex !== a.index}
+                muted={currentIndex !== a.index}
                 repeat={true}
                 source={{uri}}
                 onError={console.log}
@@ -82,7 +98,7 @@ const ProgressiveImage = ({content}: ProgressiveImage) => {
   return (
     <View style={{flex: 1}}>
       <Image
-        source={{uri: thumbnail, priority: "high"}}
+        source={{uri: thumbnail, priority: 'high'}}
         style={{width: '100%', height: '100%'}}
       />
       <AnimatedFastImage
@@ -97,7 +113,7 @@ const ProgressiveImage = ({content}: ProgressiveImage) => {
           Animated.timing(animatedOpacity, {
             toValue: 1,
             useNativeDriver: false,
-            duration: 0.2
+            duration: 0.2,
           }).start()
         }
       />
