@@ -13,6 +13,7 @@ import Colors from '../../Colors';
 import {ErrorResponse} from '../../http/Response';
 import {connect, ConnectedProps} from 'react-redux';
 import {updateMemory, deleteContent as deleteContentReducer} from '../store';
+import {PayloadAction} from 'typesafe-actions';
 
 const connector = connect();
 
@@ -44,10 +45,11 @@ export const MemoryInteractionModal = ({
   dispatch,
 }: MemoryInteractionModalProps) => {
   const [loading, setLoading] = useState<ButtonLoading>(noLoading);
+  const [afterCloseFn, setAfterCloseFn] = useState<Function | null>(null);
   const [error, setError] = useState<string>('');
   const [modal, setModal] = useState<ModalData>({
     content,
-    isVisible: false,
+    isVisible: false
   });
 
   useEffect(() => setModal({content, isVisible: content != null}), [content]);
@@ -57,13 +59,19 @@ export const MemoryInteractionModal = ({
     setLoading(noLoading);
   };
 
+  const dispatchAfterClosed = (action: PayloadAction<string, any>) => {
+    setAfterCloseFn(() => dispatch(action));
+    closeModal();
+  };
+
   const updateDisplayPicture = (contentId: number) => {
     setLoading({...loading, setDisplayPicture: true});
     setMemoryDisplayPicture(memory.id, contentId)
-      .then((updatedMemory: Memory) => {
-        dispatch(updateMemory({mid: memory.id, memory: updatedMemory}));
-        closeModal();
-      })
+      .then((updatedMemory: Memory) =>
+        dispatchAfterClosed(
+          updateMemory({mid: memory.id, memory: updatedMemory}),
+        ),
+      )
       .catch((e: ErrorResponse) => setError(e.reason))
       .finally(() => setLoading(noLoading));
   };
@@ -71,10 +79,9 @@ export const MemoryInteractionModal = ({
   const deleteContent = (contentId: number) => {
     setLoading({...loading, deleteContent: true});
     deleteMemoryContent(memory.id, contentId)
-      .then(() => {
-        closeModal();
-        dispatch(deleteContentReducer({mid: memory.id, contentId}));
-      })
+      .then(() =>
+        dispatchAfterClosed(deleteContentReducer({mid: memory.id, contentId})),
+      )
       .catch((e: ErrorResponse) => setError(e.reason))
       .finally(() => setLoading(noLoading));
   };
@@ -88,7 +95,13 @@ export const MemoryInteractionModal = ({
       onSwipeComplete={closeModal}
       onBackdropPress={closeModal}
       onBackButtonPress={closeModal}
-      onModalHide={() => onClose()}
+      onModalHide={() => {
+        if (afterCloseFn != null) {
+          afterCloseFn();
+          setAfterCloseFn(null);
+        }
+        onClose();
+      }}
       testID="interaction-modal">
       {modal.content != null && (
         <View style={styles.modal}>
