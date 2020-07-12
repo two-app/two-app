@@ -97,13 +97,14 @@ export const MemoryInteractionModal = ({
       isVisible={modal.isVisible}
       onSwipeComplete={closeModal}
       onBackdropPress={closeModal}
+      backdropTransitionOutTiming={0}
       onBackButtonPress={closeModal}
       onModalHide={() => {
         if (modal.afterCloseFn != null) {
           modal.afterCloseFn();
           setModal({...modal, afterCloseFn: undefined});
         }
-        
+
         onClose();
       }}
       testID="interaction-modal">

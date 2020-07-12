@@ -11,8 +11,6 @@ import {
   VideoContent,
   MemoryPatch,
 } from './MemoryModels';
-import {RootStackParamList} from '../../Router';
-import {NavigationProp} from '@react-navigation/native';
 import { PickedContent } from '../content/ContentPicker';
 
 export const isMemoryDescriptionValid = (upload: MemoryDescription) =>
@@ -80,10 +78,14 @@ export const uploadToMemory = (
       const form = new FormData();
 
       form.append('content', {
-        name: content.filename || "tmp-file-name",
+        name: content.filename,
         type: content.mime,
         uri: content.path,
       });
+
+      console.log(`Uploading following content to memory with id ${mid}`);
+      console.log(content);
+      console.log("---")
 
       return Gateway.post<number[]>(`/memory/${mid}/content`, form, {
         headers: {

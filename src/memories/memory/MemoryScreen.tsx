@@ -46,10 +46,11 @@ type MemoryScreenProps = ConnectorProps & NavigationProps;
 const MemoryScreen = ({memory, dispatch, content}: MemoryScreenProps) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const hasMounted = useRef<boolean>(false);
-  useEffect(() => {hasMounted.current = true}, []);
+  useEffect(() => {
+    hasMounted.current = true;
+  }, []);
 
   const refreshMemory = () => {
-    console.log("refreshing");
     Promise.all([getMemory(memory.id), getMemoryContent(memory.id)])
       .then((result: [Memory, Content[]]) => {
         const [memory, content] = result;
@@ -67,11 +68,8 @@ const MemoryScreen = ({memory, dispatch, content}: MemoryScreenProps) => {
 
   // refresh entire memory on content change (update, delete)
   useEffect(() => {
-    if (hasMounted) {
-      console.log("Has mounted and content has changed.");
-      refreshMemory();
-    }
-  }, [JSON.stringify(content)])
+    if (hasMounted) refreshMemory();
+  }, [JSON.stringify(content)]);
 
   return (
     <Container>
