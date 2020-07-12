@@ -13,7 +13,7 @@ import {MemoryInteractionModal} from '../../../src/memories/memory/MemoryInterac
 import moment from 'moment';
 import {Memory, Content} from '../../../src/memories/MemoryModels';
 import {ErrorResponse} from '../../../src/http/Response';
-import {updateMemory} from '../../../src/memories/store';
+import {updateMemory, deleteContent} from '../../../src/memories/store';
 
 describe('MemoryInteractionModal', () => {
   let tb: MemoryInteractionModalTestBed;
@@ -83,6 +83,49 @@ describe('MemoryInteractionModal', () => {
         );
       });
     });
+
+    describe('Deleting the content', () => {
+      test('it should send a request with the content id', () => {
+        tb.pressDeleteContentButton();
+
+        expect(tb.deleteMemoryContentFn).toHaveBeenCalledTimes(1);
+        expect(tb.deleteMemoryContentFn).toHaveBeenCalledWith(
+          tb.memory.id,
+          tb.content!.contentId,
+        );
+      });
+
+      test('it should update the state in redux', async () => {
+        tb.onDeleteMemoryContentResolve();
+
+        tb.pressDeleteContentButton();
+        await waitFor(() => {
+          if (tb.isModalVisible()) {
+            throw new Error('Modal still visible');
+          }
+        });
+
+        expect(tb.dispatchFn).toHaveBeenCalledTimes(1);
+        expect(tb.dispatchFn).toHaveBeenCalledWith(
+          deleteContent({mid: tb.memory.id, contentId: testContent.contentId}),
+        );
+      });
+
+      test('it should display an error if one occurs', async () => {
+        const e: ErrorResponse = {
+          code: 400,
+          reason: 'Test Reason',
+          status: 'Bad Request',
+        };
+
+        tb.onDeleteMemoryContentReject(e).pressDeleteContentButton();
+        await waitFor(() => tb.render.getByText(e.reason));
+
+        expect(tb.render.getByText(e.reason).props.accessibilityLabel).toEqual(
+          'Resulting error from your action.',
+        );
+      });
+    });
   });
 });
 
@@ -96,16 +139,25 @@ class MemoryInteractionModalTestBed {
     Promise<Memory>,
     [number, number]
   >;
+  deleteMemoryContentFn: jest.SpyInstance<Promise<void>, [number, number]>;
 
   constructor() {
     this.content = undefined;
     this.onCloseFn = jest.fn();
     this.dispatchFn = jest.fn();
+
     this.setMemoryDisplayPictureFn = jest.spyOn(
       ContentService,
       'setMemoryDisplayPicture',
     );
+
+    this.deleteMemoryContentFn = jest.spyOn(
+      ContentService,
+      'deleteMemoryContent',
+    );
+
     this.onSetMemoryDisplayPictureResolve(this.memory);
+    this.onDeleteMemoryContentResolve();
   }
 
   setContent = (content: Content): MemoryInteractionModalTestBed => {
@@ -127,8 +179,26 @@ class MemoryInteractionModalTestBed {
     return this;
   };
 
+  onDeleteMemoryContentResolve = (): MemoryInteractionModalTestBed => {
+    this.deleteMemoryContentFn.mockResolvedValue();
+    return this;
+  };
+
+  onDeleteMemoryContentReject = (
+    e: ErrorResponse,
+  ): MemoryInteractionModalTestBed => {
+    this.deleteMemoryContentFn.mockRejectedValue(e);
+    return this;
+  };
+
   pressUpdateDisplayContentButton = (): MemoryInteractionModalTestBed => {
     const btn = this.render.getByA11yLabel('Set the Display Picture');
+    fireEvent.press(btn);
+    return this;
+  };
+
+  pressDeleteContentButton = (): MemoryInteractionModalTestBed => {
+    const btn = this.render.getByA11yLabel('Delete this content.');
     fireEvent.press(btn);
     return this;
   };
