@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Animated, Dimensions, Modal, View} from 'react-native';
+import {
+  Animated,
+  Dimensions,
+  Modal,
+  View,
+  ActivityIndicator,
+  StatusBar,
+} from 'react-native';
 import Image from 'react-native-fast-image';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Video from 'react-native-video';
@@ -19,6 +26,11 @@ export const ContentGallery = ({
 }: ContentGalleryProps) => {
   const [currentIndex, setCurrentIndex] = useState(index);
   useEffect(() => setCurrentIndex(index), [index]);
+
+  const closeGallery = () => {
+    setCurrentIndex(null);
+    onClose();
+  };
 
   const urls = content.map((c, index) => {
     const url = buildContentURI(c.fileKey, c.gallery);
@@ -40,43 +52,36 @@ export const ContentGallery = ({
     <Modal
       visible={index != null}
       transparent={true}
-      onDismiss={onClose}
+      onDismiss={closeGallery}
       animated={true}
       animationType="fade"
-      onRequestClose={onClose}>
+      onRequestClose={closeGallery}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={'black'}
+        animated={true}
+      />
       <ImageViewer
         enablePreload={true}
         menuContext={false}
         enableSwipeDown={true}
         saveToLocalByLongPress={false}
-        onSwipeDown={onClose}
-        onCancel={onClose}
+        onSwipeDown={closeGallery}
+        onCancel={closeGallery}
         // @ts-ignore
         index={index}
-        onChange={newIndex => {
-          setCurrentIndex(newIndex || null);
-        }}
+        onChange={(newIndex) => setCurrentIndex(newIndex || 0)}
         imageUrls={urls}
-        renderImage={(a) => {
-          const c = content[a.index];
-          const uri = buildContentURI(c.fileKey, c.gallery);
-          
-          return c.contentType === 'video' ? (
-            <View style={{flex: 1}}>
-              <Video
-                controls={false}
-                paused={currentIndex !== a.index}
-                muted={currentIndex !== a.index}
-                repeat={true}
-                source={{uri}}
-                onError={console.log}
-                style={{flex: 1}}
-                resizeMode="contain"
-                key={uri}
-              />
-            </View>
+        renderImage={({index}: {index: number}) => {
+          const renderContent = content[index];
+
+          return renderContent.contentType === 'video' ? (
+            <ProgressiveVideo
+              content={renderContent}
+              isActive={currentIndex === index}
+            />
           ) : (
-            <ProgressiveImage content={c} key={uri} />
+            <ProgressiveImage content={renderContent} />
           );
         }}
       />
@@ -96,7 +101,7 @@ const ProgressiveImage = ({content}: ProgressiveImage) => {
   const AnimatedFastImage = Animated.createAnimatedComponent(Image);
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1}} key={gallery}>
       <Image
         source={{uri: thumbnail, priority: 'high'}}
         style={{width: '100%', height: '100%'}}
@@ -116,6 +121,43 @@ const ProgressiveImage = ({content}: ProgressiveImage) => {
             duration: 0.2,
           }).start()
         }
+      />
+    </View>
+  );
+};
+
+type ProgressiveVideo = {
+  content: Content;
+  isActive: boolean;
+};
+
+const ProgressiveVideo = ({content, isActive}: ProgressiveVideo) => {
+  const [isBuffering, setBuffering] = useState(true);
+  const uri = buildContentURI(content.fileKey, content.gallery);
+  const player = React.createRef<Video>();
+
+  useEffect(() => {
+    if (isActive) player.current?.seek(0);
+  }, [isActive]);
+
+  return (
+    <View style={{flex: 1}} key={uri}>
+      {isBuffering && (
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <ActivityIndicator color="white" size="large" />
+        </View>
+      )}
+      <Video
+        ref={player}
+        controls={false}
+        paused={!isActive}
+        muted={!isActive}
+        repeat={true}
+        source={{uri}}
+        onError={console.log}
+        resizeMode="contain"
+        onLoad={() => setBuffering(false)}
+        style={{flex: isBuffering ? 0 : 1}}
       />
     </View>
   );
