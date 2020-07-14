@@ -1,4 +1,4 @@
-import React, {useEffect, useState, createRef, useRef} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Animated,
   Dimensions,
@@ -56,7 +56,11 @@ export const ContentGallery = ({
       animated={true}
       animationType="fade"
       onRequestClose={closeGallery}>
-      <StatusBar barStyle="light-content" backgroundColor={'black'} animated={true}/>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={'black'}
+        animated={true}
+      />
       <ImageViewer
         enablePreload={true}
         menuContext={false}
