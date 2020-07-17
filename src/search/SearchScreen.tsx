@@ -4,7 +4,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../Router';
 import { ScrollContainer } from '../views/View';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Button } from '../forms/Button';
 
 type SearchScreenProps = { navigation: StackNavigationProp<RootStackParamList, 'LoadingScreen'> }

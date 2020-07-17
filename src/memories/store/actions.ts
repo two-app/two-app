@@ -1,6 +1,5 @@
 import {Memory, Content} from '../MemoryModels';
 import {createAction} from 'typesafe-actions';
-import { number } from 'prop-types';
 
 export const storeMemories = createAction('STORE_MEMORIES')<Memory[]>();
 

@@ -2,7 +2,6 @@ import { StyleSheet, Switch, Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 import Colors from '../../Colors';
 import React, { useState } from 'react';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type AcceptBoxProps = {
     children?: any,
