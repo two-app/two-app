@@ -1,6 +1,5 @@
-import 'react-native';
-import React from 'react';
 import {Text} from 'react-native';
+import React from 'react';
 import {
   render,
   RenderAPI,
@@ -10,16 +9,17 @@ import {
   waitForElementToBeRemoved,
   QueryReturn,
 } from 'react-native-testing-library';
-import {EditMemoryScreen} from '../../../src/memories/memory/EditMemoryScreen';
-import {Memory, MemoryPatch} from '../../../src/memories/MemoryModels';
 import moment from 'moment';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {ReactTestInstance} from 'react-test-renderer';
+
+import {EditMemoryScreen} from '../../../src/memories/memory/EditMemoryScreen';
+import {Memory, MemoryPatch} from '../../../src/memories/MemoryModels';
 import * as TagService from '../../../src/tags/TagService';
 import {Tag} from '../../../src/tags/Tag';
 import * as MemoryService from '../../../src/memories/MemoryService';
 import {ErrorResponse} from '../../../src/http/Response';
-import {ReactTestInstance} from 'react-test-renderer';
-import { updateMemory } from '../../../src/memories/store';
+import {updateMemory} from '../../../src/memories/store';
 
 describe('EditMemoryScreen', () => {
   let tb: EditMemoryScreenTestBed;
@@ -116,7 +116,9 @@ describe('EditMemoryScreen', () => {
       tb.pressSubmitButton();
 
       await waitFor(() => {
-        if (tb.goBackFn.mock.calls.length == 0) throw new Error('Zero calls');
+        if (tb.goBackFn.mock.calls.length === 0) {
+          throw new Error('Zero calls');
+        }
       });
 
       expect(tb.goBackFn).toHaveBeenCalledTimes(1);
@@ -156,7 +158,9 @@ describe('EditMemoryScreen', () => {
       tb.onPatchResolve(updatedMemory).pressSubmitButton();
 
       await waitFor(() => {
-        if (tb.dispatchFn.mock.calls.length == 0) throw new Error('Zero calls');
+        if (tb.dispatchFn.mock.calls.length === 0) {
+          throw new Error('Zero calls');
+        }
       });
 
       expect(tb.dispatchFn).toHaveBeenCalledTimes(1);

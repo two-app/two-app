@@ -2,6 +2,9 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Image from 'react-native-fast-image';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+
+import {Content} from '../content/ContentModels';
+
 import {
   MemoryDate,
   MemoryImageCount,
@@ -9,7 +12,7 @@ import {
   MemoryTag,
   MemoryVideoCount,
 } from './MemoryIcons';
-import {Content, Memory} from './MemoryModels';
+import {Memory} from './MemoryModels';
 
 export const MemoryDisplayView = ({memory}: {memory: Memory}) => (
   <View>
@@ -52,11 +55,6 @@ const s = StyleSheet.create({
     color: Colors.DARK,
     fontSize: 25,
     fontFamily: 'Montserrat-Bold',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 10,
   },
   spacedRow: {
     flexDirection: 'row',

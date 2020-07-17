@@ -1,5 +1,5 @@
 export type Tag = {
-  tid: number,
-  name: string,
-  color: string
-}
+  tid: number;
+  name: string;
+  color: string;
+};

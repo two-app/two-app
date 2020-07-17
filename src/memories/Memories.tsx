@@ -7,23 +7,25 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {getMemories} from './MemoryService';
-import {Memory} from './MemoryModels';
-import Colors from '../Colors';
-import {GridIcon, GroupedIcon, TimelineIcon} from './MemoryHeaderIcons';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
-import {Heading} from '../home/Heading';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../Router';
 import {useNavigation} from '@react-navigation/native';
-import {MemoryDisplayView} from './MemoryDisplayView';
+import {connect, ConnectedProps} from 'react-redux';
+
+import Colors from '../Colors';
+import {Heading} from '../home/Heading';
+import {RootStackParamList} from '../../Router';
 import {TouchableCard} from '../forms/Card';
 import {TwoState, persistor} from '../state/reducers';
-import {connect, ConnectedProps} from 'react-redux';
+import {getNavigation} from '../navigation/RootNavigation';
+
+import {getMemories} from './MemoryService';
+import {Memory} from './MemoryModels';
+import {GridIcon, GroupedIcon, TimelineIcon} from './MemoryHeaderIcons';
+import {MemoryDisplayView} from './MemoryDisplayView';
 import {selectMemories} from './store/selectors';
 import {storeMemories} from './store/actions';
-import { getNavigation } from '../navigation/RootNavigation';
 
 const mapStateToProps = (state: TwoState) => ({
   memories: selectMemories(state.memories),
@@ -50,8 +52,8 @@ const Memories = ({memories, dispatch}: MemoriesProps) => {
   const refreshMemories = () => {
     setLoadingStatus({...loadingStatus, loading: true});
     getMemories()
-      .then((memories: Memory[]) => {
-        dispatch(storeMemories(memories));
+      .then((updatedMemories: Memory[]) => {
+        dispatch(storeMemories(updatedMemories));
         setLoadingStatus({...loadingStatus, loadingError: false});
         persistor.persist();
       })
@@ -68,7 +70,7 @@ const Memories = ({memories, dispatch}: MemoriesProps) => {
         animated: true,
       });
     }
-  }
+  };
 
   useEffect(() => {
     refreshMemories();
@@ -79,9 +81,7 @@ const Memories = ({memories, dispatch}: MemoriesProps) => {
       data={memories}
       ref={(ref) => (memoryFlatListRef = ref)}
       onContentSizeChange={scrollToTop}
-      renderItem={(item) => (
-        <MemoryItemNavigation item={item.item} />
-      )}
+      renderItem={(item) => <MemoryItemNavigation item={item.item} />}
       keyExtractor={(i) => i.id.toString()}
       showsVerticalScrollIndicator={false}
       ListHeaderComponent={MemoryHeader}
@@ -142,9 +142,7 @@ type MemoryItemNavigationProps = {
   item: Memory;
 };
 
-const MemoryItemNavigation = ({
-  item
-}: MemoryItemNavigationProps) => (
+const MemoryItemNavigation = ({item}: MemoryItemNavigationProps) => (
   <TouchableOpacity
     style={containers.item}
     onPress={() => getNavigation().navigate('MemoryScreen', {mid: item.id})}>
@@ -160,10 +158,10 @@ const EmptyMemoriesComponent = ({
   <>
     <Text style={{textAlign: 'center', color: Colors.REGULAR, marginTop: 40}}>
       {loadingStatus.loadingError
-        ? `Sorry, we were unable to load your memories.\nTry again soon.`
+        ? 'Sorry, we were unable to load your memories.\nTry again soon.'
         : loadingStatus.loading
         ? 'Loading your memories...'
-        : `You don't have any memories. Create some!`}
+        : "You don't have any memories. Create some!"}
     </Text>
   </>
 );
@@ -172,12 +170,6 @@ const containers = StyleSheet.create({
   item: {
     marginTop: 10,
     marginBottom: 20,
-  },
-  image: {
-    flexDirection: 'row',
-    flex: 1,
-    height: 200,
-    marginTop: 10,
   },
 });
 

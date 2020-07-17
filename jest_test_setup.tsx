@@ -1,9 +1,11 @@
+/* eslint-disable no-undef */
+/* eslint-disable import/order */
 import 'react-native';
 import 'jest-enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import Enzyme from 'enzyme';
 
-Enzyme.configure({ adapter: new Adapter() });
+Enzyme.configure({adapter: new Adapter()});
 
 // Ignore React Web errors when using React Native
 // https://github.com/enzymejs/enzyme/issues/831
@@ -21,9 +23,17 @@ import mockAsyncStorage from '@react-native-community/async-storage/jest/async-s
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
 
 // https://github.com/facebook/react-native/issues/27721
-jest.mock('react-native/Libraries/Components/Touchable/TouchableOpacity', () => 'TouchableOpacity');
-jest.mock('react-native/Libraries/Components/TextInput/TextInput', () => 'TextInput');
+jest.mock(
+  'react-native/Libraries/Components/Touchable/TouchableOpacity',
+  () => 'TouchableOpacity',
+);
+jest.mock(
+  'react-native/Libraries/Components/TextInput/TextInput',
+  () => 'TextInput',
+);
 
-jest.mock('./src/navigation/RootNavigation', () => jest.requireActual('./src/navigation/__mocks__/RootNavigation'));
+jest.mock('./src/navigation/RootNavigation', () =>
+  jest.requireActual('./src/navigation/__mocks__/RootNavigation'),
+);
 
 jest.useFakeTimers();

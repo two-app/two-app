@@ -1,17 +1,11 @@
 import {AxiosResponse} from 'axios';
-import FormData from 'form-data';
-import Config from 'react-native-config';
-import {Image} from 'react-native-image-crop-picker';
+
 import Gateway from '../http/Gateway';
-import {
-  Content,
-  ImageContent,
-  Memory,
-  MemoryDescription,
-  VideoContent,
-  MemoryPatch,
-} from './MemoryModels';
-import { PickedContent } from '../content/ContentPicker';
+import {PickedContent} from '../content/ContentPicker';
+import ContentService, {ContentUploadResponse} from '../content/ContentService';
+import {Content} from '../content/ContentModels';
+
+import {Memory, MemoryDescription, MemoryPatch} from './MemoryModels';
 
 export const isMemoryDescriptionValid = (upload: MemoryDescription) =>
   upload.title.length > 0 && upload.location.length > 0;
@@ -37,18 +31,15 @@ export const getMemory = (mid: number): Promise<Memory> =>
 
 const formatMemory = (memory: Memory): Memory => {
   if (memory.displayContent != null) {
-    memory.displayContent.fileKey = formatFileKey(
+    memory.displayContent.fileKey = ContentService.formatFileKey(
       memory.displayContent.fileKey,
     );
   }
 
   // Memory actually comes back as a string, so it needs to be converted to a number
-  memory.date = Number.parseInt(memory.date as any);
+  memory.date = Number.parseInt(memory.date as any, 10);
   return memory;
 };
-
-const formatFileKey = (fileKey: string): string =>
-  `${Config.S3_URL}/${fileKey}`;
 
 type PostMemoryResponse = {
   memoryId: number;
@@ -66,62 +57,35 @@ export const createMemory = (
 
 export const uploadToMemory = (
   mid: number,
-  content: PickedContent[],
+  contentToUpload: PickedContent[],
   setProgress: (percentage: number) => void,
 ): Promise<[Memory, Content[]]> => {
   setProgress(0);
-  const doneTotal = content.length + 1;
+  const doneTotal = contentToUpload.length + 1;
   let doneCount = 1;
 
-  const uploadPromises: Promise<AxiosResponse<number[]>>[] = content.map(
-    (content: Image) => {
-      const form = new FormData();
-
-      form.append('content', {
-        name: content.filename,
-        type: content.mime,
-        uri: content.path,
-      });
-
-      console.log(`Uploading following content to memory with id ${mid}`);
-      console.log(content);
-      console.log("---")
-
-      return Gateway.post<number[]>(`/memory/${mid}/content`, form, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        timeout: 60 * 1000, // 1m
-      }).finally(() => {
+  const uploadPromises: Promise<ContentUploadResponse>[] = contentToUpload.map(
+    (content: PickedContent) =>
+      ContentService.uploadContent(
+        mid,
+        content,
+        !!content.setDisplayPicture,
+      ).finally(() => {
         doneCount++;
         setProgress(Math.round((doneCount / doneTotal) * 100));
-      });
-    },
+      }),
   );
 
-  return Promise.all(uploadPromises).then(() => {
-    return Promise.all([getMemory(mid), getMemoryContent(mid)])
-  });
-};
-
-export const buildContentURI = (
-  fileKey: String,
-  content: ImageContent | VideoContent,
-): string => {
-  return `${fileKey}-${content.suffix}.${content.extension}`;
-};
-
-export const getMemoryContent = (mid: number): Promise<Content[]> =>
-  Gateway.get<Content[]>(`/memory/${mid}/content`).then(
-    (v: AxiosResponse<Content[]>) => {
-      return v.data.map((content) => {
-        content.fileKey = formatFileKey(content.fileKey);
-        return content;
-      });
-    },
+  // upload content, then retrieve latest memory + content data
+  return Promise.all(uploadPromises).then(() =>
+    Promise.all([getMemory(mid), ContentService.getContent(mid)]),
   );
+};
 
-export const patchMemory = (mid: number, patch: MemoryPatch): Promise<Memory> => {
+export const patchMemory = (
+  mid: number,
+  patch: MemoryPatch,
+): Promise<Memory> => {
   return Gateway.patch<any>(`/memory/${mid}`, patch).then(
     (r: AxiosResponse<any>) => {
       console.log(`Successfully patched memory. Response status: ${r.status}`);

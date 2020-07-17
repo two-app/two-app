@@ -1,6 +1,8 @@
 import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useState} from 'react';
 import {Text, View} from 'react-native';
+import {connect, ConnectedProps} from 'react-redux';
+
 import {RootStackParamList} from '../../../Router';
 import SubmitButton from '../../forms/SubmitButton';
 import {Heading} from '../../home/Heading';
@@ -12,12 +14,12 @@ import {
   createMemory,
   getMemory,
 } from '../MemoryService';
+import {MemoryDescription, Memory} from '../MemoryModels';
+import {insertMemory} from '../store';
+
 import {DateTimePicker} from './DateInput';
 import {LocationInput} from './LocationInput';
 import TitleInput from './TitleInput';
-import {MemoryDescription, Memory} from '../MemoryModels';
-import {connect, ConnectedProps} from 'react-redux';
-import {insertMemory} from '../store';
 
 type NavigationProps = {
   navigation: StackNavigationProp<RootStackParamList, 'NewMemoryScreen'>;
@@ -26,7 +28,10 @@ type NavigationProps = {
 const connector = connect();
 type NewMemoryScreenProps = ConnectedProps<typeof connector> & NavigationProps;
 
-export const NewMemoryScreen = ({navigation, dispatch}: NewMemoryScreenProps) => {
+export const NewMemoryScreen = ({
+  navigation,
+  dispatch,
+}: NewMemoryScreenProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [uploadError, setUploadError] = useState<string>();
   const [formState, setFormState] = useState<MemoryDescription>({

@@ -1,23 +1,24 @@
 import React, {useState} from 'react';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {RouteProp} from '@react-navigation/native';
+import {View, Text} from 'react-native';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {connect, ConnectedProps} from 'react-redux';
+
 import {MemoryPatch, Memory} from '../MemoryModels';
 import {ScrollContainer} from '../../views/View';
 import TitleInput from '../new_memory/TitleInput';
 import {RootStackParamList} from '../../../Router';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RouteProp} from '@react-navigation/native';
 import {Heading} from '../../home/Heading';
 import SubmitButton from '../../forms/SubmitButton';
 import {DateTimePicker} from '../new_memory/DateInput';
 import {LocationInput} from '../new_memory/LocationInput';
 import {SelectTag} from '../../tags/SelectTag';
 import {Tag} from '../../tags/Tag';
-import {View, Text} from 'react-native';
 import {patchMemory} from '../MemoryService';
 import {ErrorResponse} from '../../http/Response';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {TwoState} from '../../state/reducers';
 import {selectMemory, updateMemory} from '../store';
-import {connect, ConnectedProps} from 'react-redux';
 
 type NavigationProps = {
   navigation: StackNavigationProp<RootStackParamList, 'EditMemoryScreen'>;

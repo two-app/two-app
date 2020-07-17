@@ -1,14 +1,13 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Memory} from '../MemoryModels';
-import {MemoryDisplayView} from '../MemoryDisplayView';
 import Icon from 'react-native-vector-icons/AntDesign';
-
-import _ from 'lodash';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+
+import {MemoryDisplayView} from '../MemoryDisplayView';
+import {Memory} from '../MemoryModels';
 import {getNavigation} from '../../navigation/RootNavigation';
 import Colors from '../../Colors';
-import { ContentPicker, PickedContent } from '../../content/ContentPicker';
+import {ContentPicker, PickedContent} from '../../content/ContentPicker';
 
 export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   <View>
@@ -16,7 +15,7 @@ export const MemoryToolbar = ({memory}: {memory: Memory}) => (
       <BackButton />
       <View style={styles.toolbarGroup}>
         <EditButton memory={memory} />
-        <UploadContentButton memory={memory}/>
+        <UploadContentButton memory={memory} />
       </View>
     </View>
     <MemoryDisplayView memory={memory} />
@@ -34,7 +33,9 @@ const BackButton = () => (
 const EditButton = ({memory}: {memory: Memory}) => (
   <TouchableOpacity
     style={styles.icon}
-    onPress={() => getNavigation().navigate('EditMemoryScreen', {mid: memory.id})}>
+    onPress={() =>
+      getNavigation().navigate('EditMemoryScreen', {mid: memory.id})
+    }>
     <Icon name="edit" size={25} color={Colors.DARK} />
   </TouchableOpacity>
 );
@@ -47,7 +48,15 @@ export const UploadContentButton = ({memory}: {memory: Memory}) => (
       ContentPicker.open(
         () => {},
         (content: PickedContent[]) => {
-          getNavigation().navigate('ContentUploadScreen', {mid: memory.id, content})
+          if (memory.displayContent == null) {
+            // select first item as display picture
+            content[0].setDisplayPicture = true;
+          }
+
+          getNavigation().navigate('ContentUploadScreen', {
+            mid: memory.id,
+            content,
+          });
         },
       );
     }}>
