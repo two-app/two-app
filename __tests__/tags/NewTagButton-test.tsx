@@ -49,7 +49,7 @@ describe('TagCard', () => {
 
   // required for the waitFor function to work
   beforeAll(jest.useRealTimers);
-  afterAll(jest.useFakeTimers);
+  afterAll(() => jest.useFakeTimers());
 
   beforeEach(() => (tb = new TagCardTestBed().build()));
   afterEach(cleanup);
