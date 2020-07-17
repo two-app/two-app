@@ -1,12 +1,24 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {FlatList, RefreshControl, Text, View, StyleSheet} from 'react-native';
-import {Memory, Content} from '../MemoryModels';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../../Router';
 import {RouteProp} from '@react-navigation/native';
+import {connect, ConnectedProps} from 'react-redux';
+
+import {Memory} from '../MemoryModels';
+import {RootStackParamList} from '../../../Router';
 import {Container} from '../../views/View';
-import {getMemory, getMemoryContent} from '../MemoryService';
-import _ from 'lodash';
+import {getMemory} from '../MemoryService';
+import Colors from '../../Colors';
+import {TwoState} from '../../state/reducers';
+import {
+  selectMemory,
+  updateMemory,
+  selectMemoryContent,
+  storeContent,
+} from '../store';
+import {getContent} from '../../content/ContentService';
+import {Content} from '../../content/ContentModels';
+
 import {
   GridRow,
   TouchableImageCell,
@@ -15,16 +27,7 @@ import {
 } from './Grid';
 import {ContentGallery} from './ContentGallery';
 import {MemoryToolbar} from './MemoryToolbar';
-import Colors from '../../Colors';
 import MemoryInteractionModal from './MemoryInteractionModal';
-import {TwoState} from '../../state/reducers';
-import {
-  selectMemory,
-  updateMemory,
-  selectMemoryContent,
-  storeContent,
-} from '../store';
-import {connect, ConnectedProps} from 'react-redux';
 
 type NavigationProps = {
   navigation: StackNavigationProp<RootStackParamList, 'MemoryScreen'>;
@@ -32,7 +35,7 @@ type NavigationProps = {
 };
 
 const mapStateToProps = (state: TwoState, ownProps: NavigationProps) => {
-  const mid = ownProps.route.params.mid;
+  const {mid} = ownProps.route.params;
   return {
     memory: selectMemory(state.memories, mid),
     content: selectMemoryContent(state.memories, mid),
@@ -51,31 +54,35 @@ const MemoryScreen = ({memory, dispatch, content}: MemoryScreenProps) => {
   }, []);
 
   const refreshMemory = () => {
-    Promise.all([getMemory(memory.id), getMemoryContent(memory.id)])
+    Promise.all([getMemory(memory.id), getContent(memory.id)])
       .then((result: [Memory, Content[]]) => {
-        const [memory, content] = result;
-        dispatch(updateMemory({mid: memory.id, memory}));
-        dispatch(storeContent({mid: memory.id, content}));
+        const [updatedMemory, updatedContent] = result;
+        dispatch(updateMemory({mid: updatedMemory.id, memory: updatedMemory}));
+        dispatch(
+          storeContent({mid: updatedMemory.id, content: updatedContent}),
+        );
       })
       .finally(() => setRefreshing(false));
   };
 
   useEffect(() => {
-    getMemoryContent(memory.id).then((content) => {
-      dispatch(storeContent({mid: memory.id, content}));
+    getContent(memory.id).then((newContent) => {
+      dispatch(storeContent({mid: memory.id, content: newContent}));
     });
   }, []);
 
   // refresh entire memory on content change (update, delete)
   useEffect(() => {
-    if (hasMounted) refreshMemory();
+    if (hasMounted) {
+      refreshMemory();
+    }
   }, [JSON.stringify(content)]);
 
   return (
     <Container>
       <ContentGrid
         memory={memory}
-        content={content}
+        data={content}
         refreshing={refreshing}
         onRefresh={() => {
           setRefreshing(true);
@@ -90,36 +97,36 @@ export default connector(MemoryScreen);
 
 type ContentGridProps = {
   memory: Memory;
-  content: Content[];
+  data: Content[];
   refreshing: boolean;
   onRefresh: () => void;
 };
 
 const ContentGrid = ({
   memory,
-  content,
+  data,
   refreshing,
   onRefresh,
 }: ContentGridProps) => {
   const [galleryIndex, setGalleryIndex] = useState<number | null>(null);
   const [modalIndex, setModalIndex] = useState<number | undefined>();
   const numberOfColumns = 4;
-  const rows = chunkToRows(content, numberOfColumns);
+  const rows = chunkToRows(data, numberOfColumns);
 
   useEffect(() => {
     setGalleryIndex(null);
     setModalIndex(undefined);
-  }, [JSON.stringify(content)]);
+  }, [JSON.stringify(data)]);
 
   return (
     <>
       <MemoryInteractionModal
         memory={memory}
-        content={content[modalIndex!]}
+        content={data[modalIndex!]}
         onClose={() => setModalIndex(undefined)}
       />
       <ContentGallery
-        content={content}
+        content={data}
         index={galleryIndex}
         onClose={() => setGalleryIndex(null)}
       />

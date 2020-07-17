@@ -1,5 +1,6 @@
 import {ActionType, createReducer} from 'typesafe-actions';
 import {Reducer} from 'redux';
+
 import {storeTokens} from './actions';
 
 export type AuthState = {

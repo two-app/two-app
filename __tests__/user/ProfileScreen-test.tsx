@@ -1,14 +1,19 @@
-import 'react-native';
+import {Text} from 'react-native';
 import React from 'react';
-import { Text } from 'react-native';
-import { render, RenderAPI, fireEvent, cleanup } from 'react-native-testing-library';
-import { ProfileScreen } from '../../src/user/ProfileScreen';
-import UserService, { UserProfile } from '../../src/user/UserService';
-import PartnerService from '../../src/user/PartnerService';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { User } from '../../src/authentication/UserModel';
-import { CommonActions } from '@react-navigation/native';
+import {
+  render,
+  RenderAPI,
+  fireEvent,
+  cleanup,
+} from 'react-native-testing-library';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {CommonActions} from '@react-navigation/native';
 import Config from 'react-native-config';
+
+import {ProfileScreen} from '../../src/user/ProfileScreen';
+import UserService, {UserProfile} from '../../src/user/UserService';
+import PartnerService from '../../src/user/PartnerService';
+import {User} from '../../src/authentication/UserModel';
 
 const mockOpenURLFn = jest.fn().mockResolvedValue({});
 
@@ -23,15 +28,21 @@ describe('PartnerScreen', () => {
     mockOpenURLFn.mockClear();
     tb = new PartnerScreenTestBed().build();
   });
-  afterEach(cleanup)
+  afterEach(cleanup);
 
-  test('should display the users first and last name', () => expect(
-    tb.wrapper.getByText(`${tb.userProfile.firstName} ${tb.userProfile.lastName}`)
-  ).toBeTruthy());
+  test('should display the users first and last name', () =>
+    expect(
+      tb.wrapper.getByText(
+        `${tb.userProfile.firstName} ${tb.userProfile.lastName}`,
+      ),
+    ).toBeTruthy());
 
-  test('should display the partners first and last name', () => expect(
-    tb.wrapper.getByText(`${tb.partnerProfile.firstName} ${tb.partnerProfile.lastName}`)
-  ).toBeTruthy());
+  test('should display the partners first and last name', () =>
+    expect(
+      tb.wrapper.getByText(
+        `${tb.partnerProfile.firstName} ${tb.partnerProfile.lastName}`,
+      ),
+    ).toBeTruthy());
 
   // test('should have a Manage Tags link', () => expect(
   //   tb.wrapper.getByA11yLabel('Manage Tags')
@@ -46,9 +57,8 @@ describe('PartnerScreen', () => {
   // ).toBeTruthy());
 
   describe('Submit Feedback', () => {
-    test('should have a Submit Feedback link', () => expect(
-      tb.wrapper.getByA11yLabel('Submit Feedback')
-    ).toBeTruthy());
+    test('should have a Submit Feedback link', () =>
+      expect(tb.wrapper.getByA11yLabel('Submit Feedback')).toBeTruthy());
 
     test('should create an email to feedback@two.date', () => {
       const feedbackButton = tb.wrapper.getByA11yLabel('Submit Feedback');
@@ -57,15 +67,14 @@ describe('PartnerScreen', () => {
 
       expect(mockOpenURLFn).toHaveBeenCalledTimes(1);
       expect(mockOpenURLFn).toHaveBeenCalledWith(
-        'mailto:feedback@two.date?subject=Feedback&body=Let%20us%20know%20how%20to%20improve...'
-      )
+        'mailto:feedback@two.date?subject=Feedback&body=Let%20us%20know%20how%20to%20improve...',
+      );
     });
   });
 
   describe('Report Problem', () => {
-    test('should have a Report Problem link', () => expect(
-      tb.wrapper.getByA11yLabel('Report a Problem')
-    ).toBeTruthy());
+    test('should have a Report Problem link', () =>
+      expect(tb.wrapper.getByA11yLabel('Report a Problem')).toBeTruthy());
 
     test('should create an email to report@two.date', () => {
       const reportButton = tb.wrapper.getByA11yLabel('Report a Problem');
@@ -74,15 +83,14 @@ describe('PartnerScreen', () => {
 
       expect(mockOpenURLFn).toHaveBeenCalledTimes(1);
       expect(mockOpenURLFn).toHaveBeenCalledWith(
-        'mailto:problem@two.date?subject=Report%20a%20Problem&body=Let%20us%20know%what%went%wrong...'
+        'mailto:problem@two.date?subject=Report%20a%20Problem&body=Let%20us%20know%what%went%wrong...',
       );
     });
   });
 
   describe('Privacy Policy', () => {
-    test('should have a Privacy Policy link', () => expect(
-      tb.wrapper.getByA11yLabel('Privacy Policy')
-    ).toBeTruthy());
+    test('should have a Privacy Policy link', () =>
+      expect(tb.wrapper.getByA11yLabel('Privacy Policy')).toBeTruthy());
 
     test('should direct user to the privacy URL', () => {
       const privacyButton = tb.wrapper.getByA11yLabel('Privacy Policy');
@@ -90,35 +98,40 @@ describe('PartnerScreen', () => {
       fireEvent.press(privacyButton);
 
       expect(mockOpenURLFn).toHaveBeenCalledTimes(1);
-      expect(mockOpenURLFn).toHaveBeenCalledWith(
-        tb.privacyPolicyURL
-      );
+      expect(mockOpenURLFn).toHaveBeenCalledWith(tb.privacyPolicyURL);
     });
   });
 
   describe('Logout', () => {
-    test('should have a Logout link', () => expect(
-      tb.wrapper.getByA11yLabel('Logout')
-    ).toBeTruthy());
+    test('should have a Logout link', () =>
+      expect(tb.wrapper.getByA11yLabel('Logout')).toBeTruthy());
 
     test('should log the user out on press', () => {
       const logoutButton = tb.wrapper.getByA11yLabel('Logout');
-      
+
       fireEvent.press(logoutButton);
 
       expect(tb.dispatchFn).toHaveBeenCalledTimes(1);
-      expect(tb.dispatchFn).toHaveBeenCalledWith(CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'LogoutScreen' }]
-      }));
+      expect(tb.dispatchFn).toHaveBeenCalledWith(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'LogoutScreen'}],
+        }),
+      );
     });
   });
 });
 
 class PartnerScreenTestBed {
-  user: User = { uid: 1, pid: 2, cid: 3 };
-  userProfile: UserProfile = { ...this.user, firstName: 'ABC', lastName: '123' };
-  partnerProfile: UserProfile = { uid: 2, pid: 1, cid: 3, firstName: 'XYZ', lastName: '789' };
+  user: User = {uid: 1, pid: 2, cid: 3};
+  userProfile: UserProfile = {...this.user, firstName: 'ABC', lastName: '123'};
+  partnerProfile: UserProfile = {
+    uid: 2,
+    pid: 1,
+    cid: 3,
+    firstName: 'XYZ',
+    lastName: '789',
+  };
   privacyPolicyURL: string = 'test_privacy_policy_url';
 
   dispatchFn = jest.fn();
@@ -126,18 +139,22 @@ class PartnerScreenTestBed {
 
   constructor() {
     UserService.getSelf = jest.fn().mockResolvedValue(this.userProfile);
-    PartnerService.getPartner = jest.fn().mockResolvedValue(this.partnerProfile);
+    PartnerService.getPartner = jest
+      .fn()
+      .mockResolvedValue(this.partnerProfile);
     Config.PRIVACY_POLICY_URL = this.privacyPolicyURL;
   }
 
   build = (): PartnerScreenTestBed => {
     this.wrapper = render(
-      <SafeAreaProvider initialSafeAreaInsets={{ top: 1, left: 2, right: 3, bottom: 4 }}>
-        <ProfileScreen dispatch={{} as any}
-          navigation={{ dispatch: this.dispatchFn } as any}
-          user={{ uid: 1, pid: 2, cid: 3 }}
+      <SafeAreaProvider
+        initialSafeAreaInsets={{top: 1, left: 2, right: 3, bottom: 4}}>
+        <ProfileScreen
+          dispatch={{} as any}
+          navigation={{dispatch: this.dispatchFn} as any}
+          user={{uid: 1, pid: 2, cid: 3}}
         />
-      </SafeAreaProvider>
+      </SafeAreaProvider>,
     );
     return this;
   };

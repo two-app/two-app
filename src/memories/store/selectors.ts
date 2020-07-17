@@ -1,5 +1,7 @@
+import {Memory} from '../MemoryModels';
+import {Content} from '../../content/ContentModels';
+
 import {MemoryState} from './reducers';
-import {Memory, Content} from '../MemoryModels';
 
 export const selectMemories = (memoryState: MemoryState): Memory[] => {
   return memoryState.allMemories;

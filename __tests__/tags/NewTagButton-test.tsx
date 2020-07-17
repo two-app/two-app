@@ -1,6 +1,5 @@
-import 'react-native';
-import React from 'react';
 import {Text} from 'react-native';
+import React from 'react';
 import {
   render,
   RenderAPI,
@@ -8,6 +7,7 @@ import {
   cleanup,
   waitFor,
 } from 'react-native-testing-library';
+
 import {NewTagButton, TagCard} from '../../src/tags/NewTagButton';
 import {Tag} from '../../src/tags/Tag';
 import {navigateFn} from '../../src/navigation/__mocks__/RootNavigation';
@@ -42,7 +42,7 @@ class NewTagButtonTestBed {
     this.render = render(<NewTagButton onCreated={this.onCreated} />);
     return this;
   };
-};
+}
 
 describe('TagCard', () => {
   let tb: TagCardTestBed;
@@ -66,7 +66,7 @@ describe('TagCard', () => {
       tb.pressTag().pressDeselect();
 
       await waitFor(() => {
-        if (tb.onDeselect.mock.calls.length == 0) {
+        if (tb.onDeselect.mock.calls.length === 0) {
           throw new Error('Deselect not called yet.');
         }
       });
@@ -101,4 +101,4 @@ class TagCardTestBed {
     fireEvent.press(deselectButton);
     return this;
   };
-};
+}

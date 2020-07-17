@@ -1,13 +1,15 @@
 import React, {useState} from 'react';
-import {FormStyle} from '../memories/new_memory/FormStyles';
 import Modal from 'react-native-modal';
 import {View, Text} from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
+
+import {FormStyle} from '../memories/new_memory/FormStyles';
 import Colors from '../Colors';
-import {Tag} from './Tag';
 import {TouchableCard} from '../forms/Card';
 import {Button, ButtonStyles} from '../forms/Button';
 import {getNavigation} from '../navigation/RootNavigation';
+
+import {Tag} from './Tag';
 
 type NewTagButtonProps = {
   onCreated: (tag: Tag) => void;

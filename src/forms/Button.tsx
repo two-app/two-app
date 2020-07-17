@@ -9,8 +9,9 @@ import {
   ViewStyle,
   ActivityIndicator,
 } from 'react-native';
-import Colors from '../Colors';
 import HapticFeedback from 'react-native-haptic-feedback';
+
+import Colors from '../Colors';
 
 type ButtonStyle = {
   backgroundColor: string;
@@ -106,7 +107,13 @@ export const Button = ({
       onPress={onPress}>
       <View style={[viewStyle, style]}>
         <Text style={textStyle}>{text}</Text>
-        {loading && <ActivityIndicator color={textStyle.color} style={{marginLeft: 5}} size='small'/>}
+        {loading && (
+          <ActivityIndicator
+            color={textStyle.color}
+            style={{marginLeft: 5}}
+            size="small"
+          />
+        )}
       </View>
     </TouchableWithoutFeedback>
   );

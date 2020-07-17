@@ -1,10 +1,13 @@
-import {Memory, Content} from '../MemoryModels';
 import {
   ActionType,
   createReducer,
   Reducer,
   PayloadAction,
 } from 'typesafe-actions';
+
+import {Memory} from '../MemoryModels';
+import {Content} from '../../content/ContentModels';
+
 import {
   storeMemories,
   emptyMemories,
@@ -65,8 +68,10 @@ const handleDeleteContent = (
 ): MemoryState => {
   const {mid, contentId} = action.payload;
   const content = {...state.content};
-  
-  if (content[mid] == null) return state; // noop
+
+  if (content[mid] == null) {
+    return state;
+  } // noop
   const memoryContent: Content[] = content[mid];
 
   content[mid] = memoryContent.filter((c) => c.contentId !== contentId);

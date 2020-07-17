@@ -1,24 +1,27 @@
 import React, {useState} from 'react';
-import {Container} from '../views/View';
 import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from '../../Router';
 import {RouteProp} from '@react-navigation/native';
 import {View, Text, StyleSheet} from 'react-native';
-import Colors from '../Colors';
-import {Heading} from '../home/Heading';
-import {chunkToRows, GridRow, Cell} from '../memories/memory/Grid';
 import {FlatList} from 'react-native-gesture-handler';
 import Image from 'react-native-fast-image';
 import Video from 'react-native-video';
+import {connect, ConnectedProps} from 'react-redux';
+
+import {Container} from '../views/View';
+import {RootStackParamList} from '../../Router';
+import Colors from '../Colors';
+import {Heading} from '../home/Heading';
+import {chunkToRows, GridRow, Cell} from '../memories/memory/Grid';
 import SubmitButton from '../forms/SubmitButton';
 import {MemoryImageCount, MemoryVideoCount} from '../memories/MemoryIcons';
 import {uploadToMemory} from '../memories/MemoryService';
 import {ErrorResponse} from '../http/Response';
-import {PickedContent} from './ContentPicker';
-import {connect, ConnectedProps} from 'react-redux';
 import {updateMemory, selectMemory, storeContent} from '../memories/store';
 import {TwoState} from '../state/reducers';
-import {Content, Memory} from '../memories/MemoryModels';
+import {Memory} from '../memories/MemoryModels';
+
+import {PickedContent} from './ContentPicker';
+import {Content} from './ContentModels';
 
 type NavigationProps = {
   navigation: StackNavigationProp<RootStackParamList, 'ContentUploadScreen'>;
@@ -49,11 +52,11 @@ export const ContentUploadScreen = ({
     percentage: 0,
   });
   const [uploadError, setUploadError] = useState<string>('');
-  
-  const content: PickedContent[] = route.params.content.map(c => {
+
+  const content: PickedContent[] = route.params.content.map((c) => {
     if (c.filename == null) {
-      const ext = c.path.split(".").pop();
-      return {...c, filename: `${uuidv4()}.${ext}`}
+      const ext = c.path.split('.').pop();
+      return {...c, filename: `${uuidv4()}.${ext}`};
     } else {
       return c;
     }
@@ -171,12 +174,6 @@ const VideoCell = ({content}: PreviewProps) => (
 );
 
 const s = StyleSheet.create({
-  previewTitle: {
-    color: Colors.VERY_DARK,
-    marginTop: 15,
-    marginBottom: 5,
-    fontWeight: 'bold',
-  },
   previewContent: {
     width: '100%',
     height: '100%',
@@ -185,8 +182,11 @@ const s = StyleSheet.create({
 });
 
 function uuidv4() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    // eslint-disable-next-line no-bitwise
+    var r = (Math.random() * 16) | 0,
+      // eslint-disable-next-line no-bitwise
+      v = c === 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 }

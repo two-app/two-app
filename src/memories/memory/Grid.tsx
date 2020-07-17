@@ -5,12 +5,13 @@ import {
   ImageBackground,
   AccessibilityProps,
 } from 'react-native';
-import {Content} from '../MemoryModels';
 import Image from 'react-native-fast-image';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {buildContentURI} from '../MemoryService';
+
 import Colors from '../../Colors';
+import {Content} from '../../content/ContentModels';
+import {buildContentURI} from '../../content/ContentService';
 
 /**
  * Chunks the content into rows.
@@ -23,9 +24,15 @@ export function chunkToRows<T>(
   content: T[],
   numColumns: number,
 ): (T | null)[][] {
-  if (content.length === 0) return [];
-  if (content.length === numColumns) return [content];
-  if (content.length % numColumns === 0) return _.chunk(content, numColumns);
+  if (content.length === 0) {
+    return [];
+  }
+  if (content.length === numColumns) {
+    return [content];
+  }
+  if (content.length % numColumns === 0) {
+    return _.chunk(content, numColumns);
+  }
 
   const numFullRows: number = Math.floor(content.length / numColumns);
   const lastRowColumnCount: number = content.length - numFullRows * numColumns;
@@ -81,7 +88,9 @@ export const TouchableImageCell = ({item, onClick, onLongPress}: CellProps) => (
 );
 
 export const ImageCell = ({item}: {item: Content}) => (
-  <Cell key={item.fileKey} a11={{accessibilityLabel: 'A preview of selected content.'}}>
+  <Cell
+    key={item.fileKey}
+    a11={{accessibilityLabel: 'A preview of selected content.'}}>
     <Image
       source={{uri: buildContentURI(item.fileKey, item.thumbnail)}}
       style={{flex: 1, backgroundColor: Colors.DARK}}

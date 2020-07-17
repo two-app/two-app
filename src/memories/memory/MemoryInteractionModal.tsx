@@ -1,19 +1,21 @@
-import {Memory, Content} from '../MemoryModels';
-import {Text} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
 import React, {useState, useEffect} from 'react';
+import Modal from 'react-native-modal';
+import {connect, ConnectedProps} from 'react-redux';
+import {PayloadAction} from 'typesafe-actions';
+
 import {
   setMemoryDisplayPicture,
-  deleteMemoryContent,
+  deleteContent,
 } from '../../content/ContentService';
-import {View, StyleSheet} from 'react-native';
-import {ImageCell} from './Grid';
 import {ButtonStyles, Button} from '../../forms/Button';
-import Modal from 'react-native-modal';
 import Colors from '../../Colors';
 import {ErrorResponse} from '../../http/Response';
-import {connect, ConnectedProps} from 'react-redux';
 import {updateMemory, deleteContent as deleteContentReducer} from '../store';
-import {PayloadAction} from 'typesafe-actions';
+import {Memory} from '../MemoryModels';
+import {Content} from '../../content/ContentModels';
+
+import {ImageCell} from './Grid';
 
 const connector = connect();
 
@@ -79,9 +81,9 @@ export const MemoryInteractionModal = ({
       .finally(() => setLoading(noLoading));
   };
 
-  const deleteContent = (contentId: number) => {
+  const deleteContentThenUpdate = (contentId: number) => {
     setLoading({...loading, deleteContent: true});
-    deleteMemoryContent(memory.id, contentId)
+    deleteContent(memory.id, contentId)
       .then(() =>
         dispatchAfterClosed(deleteContentReducer({mid: memory.id, contentId})),
       )
@@ -123,7 +125,7 @@ export const MemoryInteractionModal = ({
           />
           <Button
             text="Delete Content"
-            onPress={() => deleteContent(modal.content!.contentId)}
+            onPress={() => deleteContentThenUpdate(modal.content!.contentId)}
             buttonStyle={ButtonStyles.red}
             pressedButtonStyle={ButtonStyles.redPressed}
             accessibilityHint="Deletes this content from the memory."

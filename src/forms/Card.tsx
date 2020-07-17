@@ -7,9 +7,10 @@ import {
   Animated,
   AccessibilityProps,
 } from 'react-native';
-import Colors from '../Colors';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import HapticFeedback from 'react-native-haptic-feedback';
+
+import Colors from '../Colors';
 
 type CardProps = {
   children?: React.ReactNode;

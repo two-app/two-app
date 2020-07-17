@@ -4,7 +4,7 @@ import {
   memoryReducer,
   deleteContent,
 } from '../../../src/memories/store';
-import {Content} from '../../../src/memories/MemoryModels';
+import {Content} from '../../../src/content/ContentModels';
 
 describe('MemoriesReducer', () => {
   const baseState: MemoryState = {
@@ -60,18 +60,25 @@ describe('MemoriesReducer', () => {
     });
 
     test('it should only delete one piece of content', () => {
-      const state: MemoryState = {...baseState, content: {
-        1: [{
-          ...testContent,
-          contentId: 1
-        }, {
-          ...testContent,
-          contentId: 2
-        }, {
-          ...testContent,
-          contentId: 3
-        }]
-      }};
+      const state: MemoryState = {
+        ...baseState,
+        content: {
+          1: [
+            {
+              ...testContent,
+              contentId: 1,
+            },
+            {
+              ...testContent,
+              contentId: 2,
+            },
+            {
+              ...testContent,
+              contentId: 3,
+            },
+          ],
+        },
+      };
 
       const newState = memoryReducer(
         state,

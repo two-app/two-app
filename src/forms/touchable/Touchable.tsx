@@ -1,18 +1,18 @@
 import React from 'react';
-import { View, ViewProps, TouchableWithoutFeedback } from 'react-native';
-import HapticFeedback from "react-native-haptic-feedback";
+import {View, ViewProps, TouchableWithoutFeedback} from 'react-native';
+import HapticFeedback from 'react-native-haptic-feedback';
 
-const noop = () => { };
+const noop = () => {};
 
 type TouchEvents = {
-  onPress: () => void,
-  onPressIn: () => void,
-  onPressOut: () => void
-}
+  onPress: () => void;
+  onPressIn: () => void;
+  onPressOut: () => void;
+};
 
 type TouchableView = ViewProps & {
-  children?: React.ReactNode
-}
+  children?: React.ReactNode;
+};
 
 type TouchableProps = TouchableView & TouchEvents;
 
@@ -31,11 +31,8 @@ export const Touchable = (props: TouchableProps) => {
       onPressIn={() => {
         HapticFeedback.trigger('selection', {enableVibrateFallback: false});
         events.onPressIn();
-      }}
-      >
-      <View {...viewProps}>
-        {viewProps.children}
-      </View>
+      }}>
+      <View {...viewProps}>{viewProps.children}</View>
     </TouchableWithoutFeedback>
   );
 };
@@ -43,5 +40,5 @@ export const Touchable = (props: TouchableProps) => {
 Touchable.defaultProps = {
   onPress: noop,
   onPressIn: noop,
-  onPressOut: noop
-}
+  onPressOut: noop,
+};

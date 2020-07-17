@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import {Keyboard, Text, View, Platform} from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-import Colors from '../../Colors';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {FormStyle} from './FormStyles';
 import moment from 'moment';
+
+import Colors from '../../Colors';
 import {TouchableCard} from '../../forms/Card';
+
+import {FormStyle} from './FormStyles';
 
 type DateTimePickerProps = {
   setDateTime: (datetime: number) => void;
@@ -39,9 +41,9 @@ export const DateTimePicker = ({
     setPickerValue(undefined);
   };
 
-  const updateDate = (date: number) => {
-    setDate(date);
-    setDateTime(date);
+  const updateDate = (newDate: number) => {
+    setDate(newDate);
+    setDateTime(newDate);
     reset();
   };
 
@@ -66,7 +68,7 @@ export const DateTimePicker = ({
       </TouchableCard>
       {Platform.OS === 'android' ? (
         <DateTimePickerModal
-          accessibilityLabel='Pick the Date'
+          accessibilityLabel="Pick the Date"
           isVisible={isVisible}
           maximumDate={new Date()}
           mode="datetime"
@@ -75,7 +77,9 @@ export const DateTimePicker = ({
         />
       ) : (
         <DateTimePickerModal
-          accessibilityLabel={selecting === 'date' ? 'Pick the Date' : 'Pick the Time'}
+          accessibilityLabel={
+            selecting === 'date' ? 'Pick the Date' : 'Pick the Time'
+          }
           isVisible={isVisible}
           maximumDate={new Date()}
           mode={selecting}

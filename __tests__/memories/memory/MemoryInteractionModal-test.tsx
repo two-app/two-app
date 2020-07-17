@@ -1,6 +1,5 @@
-import 'react-native';
-import React from 'react';
 import {Text} from 'react-native';
+import React from 'react';
 import {
   render,
   RenderAPI,
@@ -8,12 +7,15 @@ import {
   cleanup,
   waitFor,
 } from 'react-native-testing-library';
+import moment from 'moment';
+
 import * as ContentService from '../../../src/content/ContentService';
 import {MemoryInteractionModal} from '../../../src/memories/memory/MemoryInteractionModal';
-import moment from 'moment';
-import {Memory, Content} from '../../../src/memories/MemoryModels';
+import {Memory} from '../../../src/memories/MemoryModels';
 import {ErrorResponse} from '../../../src/http/Response';
 import {updateMemory, deleteContent} from '../../../src/memories/store';
+import {Content} from '../../../src/content/ContentModels';
+import {DeleteContentResponse} from '../../../src/content/ContentService';
 
 describe('MemoryInteractionModal', () => {
   let tb: MemoryInteractionModalTestBed;
@@ -88,8 +90,8 @@ describe('MemoryInteractionModal', () => {
       test('it should send a request with the content id', () => {
         tb.pressDeleteContentButton();
 
-        expect(tb.deleteMemoryContentFn).toHaveBeenCalledTimes(1);
-        expect(tb.deleteMemoryContentFn).toHaveBeenCalledWith(
+        expect(tb.deleteContentFn).toHaveBeenCalledTimes(1);
+        expect(tb.deleteContentFn).toHaveBeenCalledWith(
           tb.memory.id,
           tb.content!.contentId,
         );
@@ -139,7 +141,10 @@ class MemoryInteractionModalTestBed {
     Promise<Memory>,
     [number, number]
   >;
-  deleteMemoryContentFn: jest.SpyInstance<Promise<void>, [number, number]>;
+  deleteContentFn: jest.SpyInstance<
+    Promise<DeleteContentResponse>,
+    [number, number]
+  >;
 
   constructor() {
     this.content = undefined;
@@ -151,10 +156,7 @@ class MemoryInteractionModalTestBed {
       'setMemoryDisplayPicture',
     );
 
-    this.deleteMemoryContentFn = jest.spyOn(
-      ContentService,
-      'deleteMemoryContent',
-    );
+    this.deleteContentFn = jest.spyOn(ContentService, 'deleteContent');
 
     this.onSetMemoryDisplayPictureResolve(this.memory);
     this.onDeleteMemoryContentResolve();
@@ -180,14 +182,15 @@ class MemoryInteractionModalTestBed {
   };
 
   onDeleteMemoryContentResolve = (): MemoryInteractionModalTestBed => {
-    this.deleteMemoryContentFn.mockResolvedValue();
+    // TODO fix the tests that use this
+    this.deleteContentFn.mockResolvedValue({} as any);
     return this;
   };
 
   onDeleteMemoryContentReject = (
     e: ErrorResponse,
   ): MemoryInteractionModalTestBed => {
-    this.deleteMemoryContentFn.mockRejectedValue(e);
+    this.deleteContentFn.mockRejectedValue(e);
     return this;
   };
 

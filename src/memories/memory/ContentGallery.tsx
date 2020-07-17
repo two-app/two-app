@@ -10,8 +10,9 @@ import {
 import Image from 'react-native-fast-image';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Video from 'react-native-video';
-import {Content, ImageContent} from '../MemoryModels';
-import {buildContentURI} from '../MemoryService';
+
+import {Content, ImageContent} from '../../content/ContentModels';
+import {buildContentURI} from '../../content/ContentService';
 
 type ContentGalleryProps = {
   content: Content[];
@@ -32,16 +33,16 @@ export const ContentGallery = ({
     onClose();
   };
 
-  const urls = content.map((c, index) => {
+  const urls = content.map((c, idx) => {
     const url = buildContentURI(c.fileKey, c.gallery);
 
     if (c.contentType === 'image') {
       const g = c.gallery as ImageContent;
-      return {url, props: {index}, width: g.width, height: g.height};
+      return {url, props: {index: idx}, width: g.width, height: g.height};
     } else {
       return {
         url,
-        props: {index},
+        props: {index: idx},
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
       };
@@ -72,13 +73,13 @@ export const ContentGallery = ({
         index={index}
         onChange={(newIndex) => setCurrentIndex(newIndex || 0)}
         imageUrls={urls}
-        renderImage={({index}: {index: number}) => {
-          const renderContent = content[index];
+        renderImage={({index: idx}: {index: number}) => {
+          const renderContent = content[idx];
 
           return renderContent.contentType === 'video' ? (
             <ProgressiveVideo
               content={renderContent}
-              isActive={currentIndex === index}
+              isActive={currentIndex === idx}
             />
           ) : (
             <ProgressiveImage content={renderContent} />
@@ -137,7 +138,9 @@ const ProgressiveVideo = ({content, isActive}: ProgressiveVideo) => {
   const player = React.createRef<Video>();
 
   useEffect(() => {
-    if (isActive) player.current?.seek(0);
+    if (isActive) {
+      player.current?.seek(0);
+    }
   }, [isActive]);
 
   return (

@@ -4,6 +4,7 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View, Platform} from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import {RootStackParamList} from '../../Router';
 import Colors from '../Colors';
 import {resetNavigate} from '../navigation/NavigationUtilities';
