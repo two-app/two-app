@@ -12,4 +12,4 @@ type AuthActions = ActionType<typeof import('./actions').default>;
 export const authReducer: Reducer<AuthState, AuthActions> = createReducer<
   AuthState,
   AuthActions
->(null).handleAction(storeTokens, (state, action) => action.payload);
+>(null).handleAction(storeTokens, (_, action) => action.payload);

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card } from '../../forms/Card';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import Colors from '../../Colors';
 import { FormStyle } from './FormStyles';

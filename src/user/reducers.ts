@@ -12,5 +12,5 @@ export type UserState = {
 type UserActions = ActionType<typeof import('./actions').default>;
 
 export const userReducer: Reducer<UserState, UserActions> = createReducer<UserState, UserActions>(null)
-    .handleAction(storeUnconnectedUser, (state, action) => action.payload)
-    .handleAction(storeUser, (state, action) => action.payload)
+    .handleAction(storeUnconnectedUser, (_, action) => action.payload)
+    .handleAction(storeUser, (_, action) => action.payload)

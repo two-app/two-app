@@ -18,5 +18,6 @@ jobs:
         with:
           node-version: '12'
       - run: yarn install
+      - run: yarn eslint
       - run: yarn tsc
       - run: yarn test

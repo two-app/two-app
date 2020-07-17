@@ -1,6 +1,6 @@
 import Gateway from "../http/Gateway";
 import { User } from "../authentication/UserModel";
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 
 export type UserProfile = User & {
   firstName: string,

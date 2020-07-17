@@ -1,4 +1,4 @@
-import {UnconnectedUser, unconnectedUserFromAccessToken, userFromAccessToken} from '../../src/authentication/UserModel';
+import {unconnectedUserFromAccessToken} from '../../src/authentication/UserModel';
 
 describe('created from a JSON Web Token', () => {
 

@@ -2,7 +2,7 @@ import 'react-native';
 import React from 'react';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import RegisterScreen from '../../src/authentication/RegisterScreen';
 import EmailValidator from '../../src/forms/EmailValidator';
 import { UserRegistration } from '../../src/authentication/register_workflow/UserRegistrationModel';
