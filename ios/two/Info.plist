@@ -42,7 +42,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Permission required so you can take photos for your memories.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Permission required so you can upload photos and videos to your memories.</string>
 	<key>UIAppFonts</key>
@@ -80,6 +80,7 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Octicons.ttf</string>
 		<string>Zocial.ttf</string>
+		<string>Fontisto.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
