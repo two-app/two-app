@@ -173,7 +173,6 @@ const testContentData: PickedContent[] = [
     path: '/Users/testuser/Library/Developer/CoreSimulator/Devices/AFAAA949-5F37-4592-A018-0E519EB95721/data/Containers/Data/Application/A43C1CCC-2B3D-4524-A375-9ACA08C1B4D7/tmp/react-native-image-crop-picker/8810EF27-83E3-43C1-AE04-F4CA5791EB59.jpg', // prettier-ignore
     size: 719863,
     width: 2710,
-    duration: null,
   },
   {
     creationDate: '1255122560',
@@ -188,6 +187,5 @@ const testContentData: PickedContent[] = [
     path: '/Users/testuser/Library/Developer/CoreSimulator/Devices/AFAAA949-5F37-4592-A018-0E519EB95721/data/Containers/Data/Application/A43C1CCC-2B3D-4524-A375-9ACA08C1B4D7/tmp/react-native-image-crop-picker/2822F237-D39D-49EA-A951-84D0D1E0E5C7.jpg', // prettier-ignore
     size: 896588,
     width: 2710,
-    duration: null,
   },
 ];
