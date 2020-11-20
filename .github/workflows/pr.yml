@@ -35,6 +35,7 @@ jobs:
     - run: yarn install
     - uses: eskatos/gradle-command-action@v1
       with:
+        build-root-directory: android/
         arguments: build
   lint:
     name: lint
