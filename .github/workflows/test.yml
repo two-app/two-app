@@ -18,6 +18,7 @@ jobs:
         with:
           node-version: '12'
       - run: yarn install
+      - run: cd ios; pod deintegrate && pod install; cd ../
       - run: yarn test
   lint:
     name: Lint
