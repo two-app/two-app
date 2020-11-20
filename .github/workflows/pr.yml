@@ -33,10 +33,7 @@ jobs:
       with:
         java-version: 11
     - run: yarn install
-    - uses: eskatos/gradle-command-action@v1
-      with:
-        build-root-directory: ./android/
-        arguments: build
+    - run: cd android; gradle build; cd ..
   lint:
     name: lint
     runs-on: ubuntu-latest
