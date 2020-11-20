@@ -18,14 +18,14 @@ jobs:
       - run: yarn install
       - run: yarn test
   build-ios:
-    name: pod install
+    name: build ios
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - run: yarn install
       - run: cd ios; pod deintegrate && pod install; cd ../
   build-android:
-    name: gradle install
+    name: build android
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -35,7 +35,7 @@ jobs:
     - run: yarn install
     - uses: eskatos/gradle-command-action@v1
       with:
-        build-root-directory: android/
+        build-root-directory: ./android/
         arguments: build
   lint:
     name: lint
