@@ -22,16 +22,15 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
+      - run: yarn install
       # - run: cd ios; pod deintegrate && pod install; cd ../
-      - name: Install Fastlane
-        run: sudo gem install fastlane -NV
       - name: Install Bundler
         run: gem install bundler
       - name: Fastlane Alpha
         run: |
           cd android
           bundle install
-          bundle exec fastlane test_release --env beta
+          bundle exec fastlane test_release
           cd ../
       # - uses: actions/setup-java@v1
       #   with:
