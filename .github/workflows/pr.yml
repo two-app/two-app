@@ -31,7 +31,7 @@ jobs:
         run: |
           cd android
           bundle install
-          bundle exec fastlane test-release --env beta
+          bundle exec fastlane test_release --env beta
           cd ../
       # - uses: actions/setup-java@v1
       #   with:

@@ -22,7 +22,7 @@ platform :android do
     gradle(task: "test")
   end
 
-  lane :test-release do
+  lane :test_release do
     gradle(task: 'clean')
     gradle(task: 'assemble')
   end
