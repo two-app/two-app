@@ -31,18 +31,6 @@ jobs:
         with:
           build-root-directory: android
           gradle-version: 6.2
-  build-android:
-    name: build android
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-java@v1
-      with:
-        java-version: 11
-    - uses: eskatos/gradle-command-action@v1
-      with:
-        build-root-directory: android
-        gradle-version: 6.2
   lint:
     name: lint
     runs-on: ubuntu-latest
