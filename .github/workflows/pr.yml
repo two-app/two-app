@@ -22,8 +22,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - run: yarn install
-      - run: cd ios; pod deintegrate && pod install; cd ../
+      # - run: cd ios; pod deintegrate && pod install; cd ../
       - name: Install Fastlane
         run: sudo gem install fastlane -NV
       - name: Install Bundler
