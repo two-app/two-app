@@ -6,4 +6,4 @@ services:
       - .:/two-app:z
     working_dir: /two-app
     # Sources bashrc to run startup scripts to wait for dependencies
-    command: bundle exec fastlane test-release
+    command: bundle install

@@ -24,7 +24,16 @@ jobs:
       - uses: actions/checkout@v2
       - run: yarn install
       - run: cd ios; pod deintegrate && pod install; cd ../
-      - run: cd android; docker-compose run build; docker-compose down; cd ../
+      - name: Install Fastlane
+        run: sudo gem install fastlane -NV
+      - name: Install Bundler
+        run: gem install bundler
+      - name: Fastlane Alpha
+        run: |
+          cd android
+          bundle install
+          bundle exec fastlane test-release --env beta
+          cd ../
       # - uses: actions/setup-java@v1
       #   with:
       #     java-version: 11
