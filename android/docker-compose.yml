@@ -4,6 +4,6 @@ services:
     build: .
     volumes:
       - .:/two-app:z
-    working_dir: /memory-service
+    working_dir: /two-app
     # Sources bashrc to run startup scripts to wait for dependencies
     command: bundle exec fastlane test-release
