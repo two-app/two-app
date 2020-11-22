@@ -24,6 +24,12 @@ jobs:
       - uses: actions/checkout@v2
       - run: yarn install
       - run: gem install bundler
+      - name: Fastlane Xcode Build
+        run: |
+          cd ios
+          bundle install
+          bundle exec fastlane action xcbuild
+          cd ../
       - name: iOS Build
         run: |
           cd ios
