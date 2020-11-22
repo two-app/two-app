@@ -28,7 +28,7 @@ jobs:
         run: |
           cd ios
           bundle install
-          bundle exec fastlane action xcbuild
+          bundle exec fastlane action xcbuild build
           cd ../
       - name: iOS Build
         run: |
