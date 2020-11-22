@@ -22,7 +22,7 @@ platform :ios do
   end
 
   lane :test_release do
-    gym(scheme: "two")
+    gym(scheme: "two", clean: true)
   end
 
   lane :alpha do
