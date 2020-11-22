@@ -264,7 +264,7 @@
 				2D79F66D9F5E3D7EA998951E /* Pods-two-twoTests.debug.xcconfig */,
 				86F9FC588B73780A7EB829A5 /* Pods-two-twoTests.release.xcconfig */,
 			);
-			path = Pods;
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		E964749FA559431A96CE4666 /* Resources */ = {
