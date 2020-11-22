@@ -24,7 +24,6 @@ platform :ios do
   lane :test_release do
     cocoapods(
       clean_install: true,
-      podfile: "./CustomPodfile"
     )
 
     gym(scheme: "two", clean: true)
