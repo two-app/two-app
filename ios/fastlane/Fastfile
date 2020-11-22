@@ -22,12 +22,7 @@ platform :ios do
   end
 
   lane :test_release do
-    xcode_build(
-      xcodebuild(
-        scheme: "two",
-        workspace: "two.xcworkspace"
-      )
-    )
+    gym(scheme: "two"))
   end
 
   lane :alpha do
