@@ -23,14 +23,22 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: yarn install
-      - run: cd ios; pod deintegrate && pod install; cd ../
-      - uses: actions/setup-java@v1
-        with:
-          java-version: 11
-      - uses: eskatos/gradle-command-action@v1
-        with:
-          build-root-directory: android
-          gradle-version: 6.2
+      - run: gem install bundler
+      - name: iOS Build
+        # xcbuild takes 20+ minutes, more than 2x
+        # android, so we just install pods as a minor
+        # sanity check
+        run: |
+          cd ios
+          pod deintegrate
+          pod install
+          cd ../
+      - name: Android Build
+        run: |
+          cd android
+          bundle install
+          bundle exec fastlane test_release
+          cd ../
   lint:
     name: lint
     runs-on: ubuntu-latest
@@ -44,3 +52,4 @@ jobs:
       - run: yarn install
       - run: yarn eslint
       - run: yarn tsc
+

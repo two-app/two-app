@@ -22,6 +22,11 @@ platform :android do
     gradle(task: "test")
   end
 
+  lane :test_release do
+    gradle(task: 'clean')
+    gradle(task: 'build')
+  end
+
   lane :alpha do
     increment_version_code(
       gradle_file_path: "app/build.gradle",
