@@ -24,7 +24,7 @@ platform :android do
 
   lane :test_release do
     gradle(task: 'clean')
-    gradle(task: 'assemble')
+    gradle(task: 'build')
   end
 
   lane :alpha do
