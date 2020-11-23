@@ -30,7 +30,7 @@
     "@types/react-test-renderer": "^16.9.3",
     "axios": "^0.21.0",
     "form-data": "^3.0.0",
-    "jwt-decode": "^3.0.0",
+    "jwt-decode": "^3.1.2",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "prop-types": "^15.7.2",
