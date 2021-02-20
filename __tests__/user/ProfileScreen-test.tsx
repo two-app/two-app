@@ -5,7 +5,7 @@ import {
   RenderAPI,
   fireEvent,
   cleanup,
-} from 'react-native-testing-library';
+} from '@testing-library/react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {CommonActions} from '@react-navigation/native';
 import Config from 'react-native-config';

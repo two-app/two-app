@@ -6,7 +6,7 @@ import {
   fireEvent,
   cleanup,
   waitFor,
-} from 'react-native-testing-library';
+} from '@testing-library/react-native';
 
 import {NewTagButton, TagCard} from '../../src/tags/NewTagButton';
 import {Tag} from '../../src/tags/Tag';

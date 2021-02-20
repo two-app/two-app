@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Text, StyleSheet, View} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
 import {ScrollContainer} from '../views/View';
 import {RootStackParamList} from '../../Router';
@@ -10,9 +10,10 @@ import SubmitButton from '../forms/SubmitButton';
 import {Heading} from '../home/Heading';
 import Colors from '../Colors';
 import {TagInput} from '../memories/new_memory/TagInput';
+import {ErrorResponse} from '../http/Response';
 
 import {createTag} from './TagService';
-import {Tag} from './Tag';
+import {Tag, TagDescription} from './Tag';
 import {TagButton} from './TagButton';
 import {TagColors} from './TagColors';
 
@@ -22,22 +23,32 @@ type NewTagScreenProps = {
 };
 
 export const NewTagScreen = ({navigation, route}: NewTagScreenProps) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [name, setName] = useState<string | null>(null);
   const [color, setColor] = useState<string>();
+  const [error, setError] = useState<string | null>(null);
 
   const {onSubmit} = route.params;
 
   const createNewTag = () => {
     if (name != null && color != null) {
-      createTag(name, color).then((tag: Tag) => {
-        onSubmit(tag);
-        navigation.goBack();
-      });
+      const tag: TagDescription = {name, color};
+      setLoading(true);
+      createTag(tag)
+        .then((createdTag: Tag) => {
+          onSubmit(createdTag);
+          navigation.goBack();
+        })
+        .catch((e: ErrorResponse) => {
+          console.log(e.reason);
+          setError(e.reason);
+        })
+        .finally(() => setLoading(false));
     }
   };
 
   return (
-    <ScrollContainer>
+    <ScrollContainer isLoading={loading}>
       <Heading>Create a new Tag</Heading>
       <Text style={s.paragraph}>Tags are used to group memories.</Text>
 
@@ -45,6 +56,13 @@ export const NewTagScreen = ({navigation, route}: NewTagScreenProps) => {
       <Text style={s.subtitle}>Tag Name</Text>
       <Text style={s.paragraph}>Pick a short and concise name.</Text>
       <TagInput setTag={setName} />
+      {error && (
+        <Text
+          style={s.error}
+          accessibilityHint="The error encountered when creating a tag">
+          {error}
+        </Text>
+      )}
 
       {/* Colour Input */}
       <Text style={s.subtitle}>Tag Color</Text>
@@ -55,18 +73,21 @@ export const NewTagScreen = ({navigation, route}: NewTagScreenProps) => {
       <ColorList onSelected={setColor} />
 
       {/* Display a 'Preview' widget if the name & color is present */}
-      {name != null && color != null && (
-        <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-          <Text style={{...s.subtitle, marginRight: 10}}>Preview</Text>
-          <TagButton tag={{tid: -1, name, color}} />
-          <TagButton tag={{tid: -1, name, color}} focused={true} />
-        </View>
-      )}
+      <View style={{alignItems: 'center', marginTop: 20}}>
+        {name != null && color != null && (
+          <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
+            <TagButton tag={{tid: -1, name, color}} />
+            <TagButton tag={{tid: -1, name, color}} focused={true} />
+          </View>
+        )}
+      </View>
 
       <SubmitButton
         onSubmit={createNewTag}
         text="Create Tag"
         disabled={name == null}
+        accessibilityHint="Creates a new tag with the given name and color."
+        accessibilityLabel="Create Tag"
       />
     </ScrollContainer>
   );
@@ -110,7 +131,7 @@ type ColorButtonProps = {
 };
 
 const ColorButton = ({color, isSelected, onClick}: ColorButtonProps) => (
-  <TouchableOpacity
+  <TouchableWithoutFeedback
     style={{
       backgroundColor: color,
       width: 40,
@@ -120,7 +141,9 @@ const ColorButton = ({color, isSelected, onClick}: ColorButtonProps) => (
       borderColor: 'white',
     }}
     onPress={() => onClick(color)}
-    activeOpacity={1}
+    accessibilityHint={`Set the tag color to ${color}`}
+    accessibilityLabel={color}
+    testID={isSelected ? 'selected-color' : undefined}
   />
 );
 
@@ -136,5 +159,11 @@ const s = StyleSheet.create({
     marginTop: 10,
     color: Colors.DARK,
     fontSize: 15,
+  },
+  error: {
+    fontFamily: 'Montserrat-Medium',
+    marginTop: 20,
+    color: Colors.DARK_SALMON,
+    fontSize: 13,
   },
 });

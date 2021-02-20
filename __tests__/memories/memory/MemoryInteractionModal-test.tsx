@@ -6,7 +6,7 @@ import {
   fireEvent,
   cleanup,
   waitFor,
-} from 'react-native-testing-library';
+} from '@testing-library/react-native';
 import moment from 'moment';
 
 import * as ContentService from '../../../src/content/ContentService';
