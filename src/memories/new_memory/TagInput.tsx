@@ -20,6 +20,7 @@ const TagInput = ({setTag}: {setTag: Function}) => {
           />
         </View>
         <TextInput
+          accessibilityLabel="Set Tag Name"
           placeholder="Tag, e.g Anniversary or Birthday..."
           placeholderTextColor={Colors.REGULAR}
           style={{color: Colors.DARK, flex: 1, paddingVertical: 0}}
