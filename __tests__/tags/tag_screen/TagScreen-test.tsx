@@ -43,11 +43,32 @@ describe('TagScreen', () => {
         ),
       );
     });
+
+    it('should display the resolved tag names', async () => {
+      const names = ['Anniversary', 'Birthday', 'Wedding'];
+      const tags: Tag[] = names.map((name, tid) => ({
+        name,
+        color: '#1a1a1a',
+        tid,
+      }));
+      tb.onGetTagsResolve(tags);
+
+      tb.build();
+      await waitFor(() =>
+        tb.render.getAllByA11yLabel('A tag owned by the couple'),
+      );
+
+      for (const name of names) {
+        tb.render.getByText(name);
+      }
+    });
   });
 
-  it('should navigate to the NewTagScreen', () => {
-    tb.build().pressCreateTagButton();
-    expect(tb.navigateFn).toHaveBeenCalled();
+  describe('Clicking the tag input button', () => {
+    it('should navigate to the NewTagScreen', () => {
+      tb.build().pressCreateTagButton();
+      expect(tb.navigateFn).toHaveBeenCalled();
+    });
   });
 });
 

@@ -116,7 +116,7 @@ type TagItemProps = {
 
 const TagItem = ({tag}: TagItemProps) => {
   return (
-    <View style={s.item}>
+    <View style={s.item} accessibilityLabel="A tag owned by the couple">
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Text style={s.subheading}>{tag.name}</Text>
         <View style={[s.circle, {backgroundColor: tag.color}]} />
