@@ -18,6 +18,7 @@ import ProfileScreen from './src/user/ProfileScreen';
 import EditMemoryScreen from './src/memories/memory/EditMemoryScreen';
 import ContentUploadScreen from './src/content/ContentUploadScreen';
 import {PickedContent} from './src/content/ContentPicker';
+import {TagScreen} from './src/tags/tag_screen/TagScreen';
 
 export type RootStackParamList = {
   LoadingScreen: undefined;
@@ -34,6 +35,7 @@ export type RootStackParamList = {
   ProfileScreen: undefined;
   EditMemoryScreen: {mid: number};
   ContentUploadScreen: {mid: number; content: PickedContent[]};
+  TagScreen: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -75,6 +77,11 @@ const AppStack = () => (
     />
     <Stack.Screen name="EditMemoryScreen" component={EditMemoryScreen} />
     <Stack.Screen name="ContentUploadScreen" component={ContentUploadScreen} />
+    <Stack.Screen
+      name="TagScreen"
+      component={TagScreen}
+      options={{animationEnabled: false}}
+    />
   </Stack.Navigator>
 );
 
