@@ -31,25 +31,24 @@ export const TagScreen = ({}: TagScreenProps) => {
   });
 
   const refreshTags = async (refreshing = false) => {
-    setLoadingStatus({refreshing, loading: true, loadingError: false});
+    setLoadingStatus({loading: true, refreshing, loadingError: false});
 
-    try {
-      const tags: Tag[] = await TagService.getTags();
-
-      setLoadingStatus({
-        loading: false,
-        refreshing: false,
-        loadingError: false,
+    TagService.getTags()
+      .then((tags: Tag[]) => {
+        setLoadingStatus({
+          loading: false,
+          refreshing: false,
+          loadingError: false,
+        });
+        setTags(tags);
+      })
+      .catch((_) => {
+        setLoadingStatus({
+          loading: false,
+          refreshing: false,
+          loadingError: true,
+        });
       });
-
-      setTags(tags);
-    } catch (_) {
-      setLoadingStatus({
-        loading: false,
-        refreshing: false,
-        loadingError: true,
-      });
-    }
   };
 
   useEffect(() => {

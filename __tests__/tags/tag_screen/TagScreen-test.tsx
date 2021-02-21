@@ -1,14 +1,16 @@
 import {
   cleanup,
   fireEvent,
+  QueryReturn,
   render,
   RenderAPI,
+  waitFor,
 } from '@testing-library/react-native';
 import React from 'react';
 import {Text} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {ReactTestInstance} from 'react-test-renderer';
 
-import {ErrorResponse} from '../../../src/http/Response';
 import {Tag} from '../../../src/tags/Tag';
 import {TagScreen} from '../../../src/tags/tag_screen/TagScreen';
 import * as TagService from '../../../src/tags/TagService';
@@ -24,6 +26,22 @@ describe('TagScreen', () => {
   describe('On creation', () => {
     it('should request all tags', () => {
       expect(tb.build().getTagsFn).toHaveBeenCalledTimes(1);
+    });
+
+    it('should display a loading screen', () => {
+      tb.onGetTagsWait();
+      tb.build();
+      tb.render.getByText('Loading your tags...');
+    });
+
+    it('should display retrieval errors', async () => {
+      tb.onGetTagsReject();
+      tb.build();
+      await waitFor(() =>
+        tb.render.getByText(
+          'Sorry, we were unable to load your tags.\nPlease try again soon.',
+        ),
+      );
     });
   });
 
@@ -53,8 +71,8 @@ class TagScreenTestBed {
     this.getTagsFn.mockResolvedValue(tags);
   };
 
-  onGetTagsReject = (error: ErrorResponse) => {
-    this.getTagsFn.mockRejectedValue(error);
+  onGetTagsReject = () => {
+    this.getTagsFn.mockRejectedValue({});
   };
 
   onGetTagsWait = () => {
