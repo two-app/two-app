@@ -1,7 +1,6 @@
 import {
   cleanup,
   fireEvent,
-  QueryReturn,
   render,
   RenderAPI,
   waitFor,
@@ -9,7 +8,6 @@ import {
 import React from 'react';
 import {Text} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {ReactTestInstance} from 'react-test-renderer';
 
 import {Tag} from '../../../src/tags/Tag';
 import {TagScreen} from '../../../src/tags/tag_screen/TagScreen';
@@ -85,6 +83,7 @@ class TagScreenTestBed {
     jest // spy on getNavigation custom hook
       .spyOn(RootNavigation, 'getNavigation')
       .mockReturnValue({navigate: this.navigateFn} as any);
+
     this.onGetTagsResolve([]);
   }
 
