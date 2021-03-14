@@ -17,7 +17,11 @@ export const createTag = (tagDescription: TagDescription): Promise<Tag> => {
 
   return Gateway.post('/tag', tagDescription).then(
     (res: AxiosResponse<PostTagResponse>) => {
-      return {...tagDescription, tid: res.data.tid};
+      return {...tagDescription, tid: res.data.tid, memoryCount: 0};
     },
   );
+};
+
+export const deleteTag = (tid: number): Promise<void> => {
+  return Gateway.delete(`/tag/${tid}`);
 };

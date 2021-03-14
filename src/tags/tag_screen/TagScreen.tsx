@@ -3,7 +3,6 @@ import {View, Text, StyleSheet, RefreshControl} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {FlatList} from 'react-native-gesture-handler';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
-import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import moment from 'moment';
 
 import Colors from '../../Colors';
@@ -14,6 +13,8 @@ import {Heading} from '../../home/Heading';
 import * as TagService from '../TagService';
 import {Tag} from '../Tag';
 import {NewTagButton} from '../NewTagButton';
+
+import {DeleteTagIcon} from './DeleteTag';
 
 type TagScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'TagScreen'>;
@@ -70,7 +71,9 @@ export const TagScreen = ({}: TagScreenProps) => {
               isEmpty={tags.length === 0}
             />
           )}
-          renderItem={({item}) => <TagItem tag={item} />}
+          renderItem={({item}) => (
+            <TagItem tag={item} onDelete={() => refreshTags()} />
+          )}
           ItemSeparatorComponent={() => (
             <View style={{flex: 1, height: 2, backgroundColor: Colors.LIGHT}} />
           )}
@@ -115,9 +118,10 @@ const TagHeader = ({onCreateTag, isEmpty}: TagHeaderProps) => (
 
 type TagItemProps = {
   tag: Tag;
+  onDelete: () => void;
 };
 
-const TagItem = ({tag}: TagItemProps) => {
+const TagItem = ({tag, onDelete}: TagItemProps) => {
   return (
     <View style={s.item} accessibilityLabel="A tag owned by the couple">
       <View
@@ -142,10 +146,7 @@ const TagItem = ({tag}: TagItemProps) => {
               marginLeft: 20,
             }}
           />
-          <EvilIcon
-            name="trash"
-            style={{fontSize: 32, color: Colors.DARK_SALMON}}
-          />
+          <DeleteTagIcon tag={tag} onDeleted={onDelete} />
         </View>
       </View>
       {tag.startDate != null && <DateRender tag={tag} />}
