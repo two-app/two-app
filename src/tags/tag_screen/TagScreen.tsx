@@ -4,6 +4,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {FlatList} from 'react-native-gesture-handler';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
+import moment from 'moment';
 
 import Colors from '../../Colors';
 import {RootStackParamList} from '../../../Router';
@@ -126,28 +127,50 @@ const TagItem = ({tag}: TagItemProps) => {
           alignItems: 'center',
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={s.subheading}>{tag.name}</Text>
           <View style={[s.circle, {backgroundColor: tag.color}]} />
+          <Text style={s.subheading}>{tag.name}</Text>
+          <Text style={s.memoryCount}>{tag.memoryCount || ''}</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <SimpleLineIcon
             name="pencil"
             style={{
-              fontSize: 16,
+              fontSize: 18,
               fontWeight: 'bold',
-              color: Colors.VERY_DARK,
+              color: Colors.DARK,
               marginRight: 20,
               marginLeft: 20,
             }}
           />
           <EvilIcon
             name="trash"
-            style={{fontSize: 30, color: Colors.DARK_SALMON}}
+            style={{fontSize: 32, color: Colors.DARK_SALMON}}
           />
         </View>
       </View>
+      {tag.startDate != null && <DateRender tag={tag} />}
     </View>
   );
+};
+
+const DateRender = ({tag}: {tag: Tag}) => {
+  const fmt = (d?: string) =>
+    d == null ? '' : moment(d).format('MMMM Do YYYY');
+
+  let text = 'This tag has no memories.';
+
+  if (tag.startDate != null) {
+    const startDate = fmt(tag.startDate);
+    const endDate = fmt(tag.endDate);
+
+    if (startDate === endDate) {
+      text = startDate;
+    } else {
+      text = `${startDate} - ${endDate}`;
+    }
+  }
+
+  return <Text style={s.date}>{text}</Text>;
 };
 
 const EmptyTagsComponent = ({
@@ -183,10 +206,21 @@ const s = StyleSheet.create({
     fontSize: 25,
     fontFamily: 'Montserrat-Bold',
   },
+  memoryCount: {
+    color: Colors.FADED,
+    fontSize: 25,
+    fontFamily: 'Montserrat-Bold',
+    marginLeft: 8,
+  },
   circle: {
     width: 18,
     height: 18,
     borderRadius: 10,
-    marginLeft: 10,
+    marginRight: 10,
+  },
+  date: {
+    color: Colors.REGULAR,
+    fontSize: 14,
+    marginTop: 10,
   },
 });

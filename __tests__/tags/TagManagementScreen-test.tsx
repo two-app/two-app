@@ -82,7 +82,7 @@ describe('TagManagementScreen', () => {
     });
 
     test('it should navigate to the previous screen', async () => {
-      const tag: Tag = {...tagDescription, tid: 3};
+      const tag: Tag = {...tagDescription, tid: 3, memoryCount: 0};
       tb.onCreateTagResolve(tag);
       tb.pressSubmitButton();
 
