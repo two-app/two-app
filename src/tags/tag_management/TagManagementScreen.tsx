@@ -1,34 +1,35 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {Text, StyleSheet, View} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-import {ScrollContainer} from '../views/View';
-import {RootStackParamList} from '../../Router';
-import SubmitButton from '../forms/SubmitButton';
-import {Heading} from '../home/Heading';
-import Colors from '../Colors';
-import {TagInput} from '../memories/new_memory/TagInput';
-import {ErrorResponse} from '../http/Response';
+import {RootStackParamList} from '../../../Router';
+import SubmitButton from '../../forms/SubmitButton';
+import {Heading} from '../../home/Heading';
+import {ErrorResponse} from '../../http/Response';
+import {TagInput} from '../../memories/new_memory/TagInput';
+import {ScrollContainer} from '../../views/View';
+import {TagDescription, Tag} from '../Tag';
+import {TagButton} from '../TagButton';
+import {createTag} from '../TagService';
 
-import {createTag} from './TagService';
-import {Tag, TagDescription} from './Tag';
-import {TagButton} from './TagButton';
-import {TagColors} from './TagColors';
+import {ColorList} from './ColorSelection';
 
-type NewTagScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'NewTagScreen'>;
-  route: RouteProp<RootStackParamList, 'NewTagScreen'>;
+type TagManagementScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'TagManagementScreen'>;
+  route: RouteProp<RootStackParamList, 'TagManagementScreen'>;
 };
 
-export const NewTagScreen = ({navigation, route}: NewTagScreenProps) => {
+export const TagManagementScreen = ({
+  navigation,
+  route,
+}: TagManagementScreenProps) => {
+  const {onSubmit, initialTag, heading} = route.params;
   const [loading, setLoading] = useState<boolean>(false);
-  const [name, setName] = useState<string | null>(null);
-  const [color, setColor] = useState<string>();
-  const [error, setError] = useState<string | null>(null);
-
-  const {onSubmit} = route.params;
+  const [name, setName] = useState<string | undefined>(initialTag?.name);
+  const [color, setColor] = useState<string | undefined>(initialTag?.color);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const createNewTag = () => {
     if (name != null && color != null) {
@@ -49,7 +50,7 @@ export const NewTagScreen = ({navigation, route}: NewTagScreenProps) => {
 
   return (
     <ScrollContainer isLoading={loading}>
-      <Heading>Create a new Tag</Heading>
+      <Heading>{heading}</Heading>
       <Text style={s.paragraph}>Tags are used to group memories.</Text>
 
       {/* Name Input */}
@@ -92,60 +93,6 @@ export const NewTagScreen = ({navigation, route}: NewTagScreenProps) => {
     </ScrollContainer>
   );
 };
-
-const ColorList = ({onSelected}: {onSelected: (color: string) => void}) => {
-  const colors = TagColors;
-  const randomIndex = Math.floor(Math.random() * colors.length);
-  const [selected, setSelected] = useState<string>(colors[randomIndex]);
-  useEffect(() => onSelected(selected), [onSelected, selected]);
-
-  const selectColor = (color: string) => {
-    setSelected(color);
-    onSelected(color);
-  };
-
-  return (
-    <View
-      style={{
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        marginTop: 5,
-        margin: -10,
-      }}>
-      {colors.map((color) => (
-        <ColorButton
-          color={color}
-          isSelected={color === selected}
-          onClick={selectColor}
-          key={color}
-        />
-      ))}
-    </View>
-  );
-};
-
-type ColorButtonProps = {
-  color: string;
-  isSelected: boolean;
-  onClick: (color: string) => void;
-};
-
-const ColorButton = ({color, isSelected, onClick}: ColorButtonProps) => (
-  <TouchableWithoutFeedback
-    style={{
-      backgroundColor: color,
-      width: 40,
-      height: 40,
-      margin: 10,
-      borderRadius: isSelected ? 30 : 3,
-      borderColor: 'white',
-    }}
-    onPress={() => onClick(color)}
-    accessibilityHint={`Set the tag color to ${color}`}
-    accessibilityLabel={color}
-    testID={isSelected ? 'selected-color' : undefined}
-  />
-);
 
 const s = StyleSheet.create({
   subtitle: {

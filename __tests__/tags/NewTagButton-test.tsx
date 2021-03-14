@@ -19,7 +19,7 @@ describe('NewTagButton', () => {
   afterEach(cleanup);
 
   describe('tapping the button', () => {
-    test('it should navigate to the NewTagScreen', () => {
+    test('it should navigate to the TagManagementScreen', () => {
       const newTagButton = tb.render.getByText(
         'Optional tag, e.g Anniversary or Birthday...',
       );
@@ -27,7 +27,8 @@ describe('NewTagButton', () => {
       fireEvent.press(newTagButton);
 
       expect(navigateFn).toHaveBeenCalledTimes(1);
-      expect(navigateFn).toHaveBeenCalledWith('NewTagScreen', {
+      expect(navigateFn).toHaveBeenCalledWith('TagManagementScreen', {
+        heading: 'Create new Tag',
         onSubmit: tb.onCreated,
       });
     });

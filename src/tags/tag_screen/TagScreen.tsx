@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, RefreshControl} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {FlatList} from 'react-native-gesture-handler';
+import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
+import EvilIcon from 'react-native-vector-icons/EvilIcons';
 
 import Colors from '../../Colors';
 import {RootStackParamList} from '../../../Router';
@@ -117,9 +119,32 @@ type TagItemProps = {
 const TagItem = ({tag}: TagItemProps) => {
   return (
     <View style={s.item} accessibilityLabel="A tag owned by the couple">
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Text style={s.subheading}>{tag.name}</Text>
-        <View style={[s.circle, {backgroundColor: tag.color}]} />
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={s.subheading}>{tag.name}</Text>
+          <View style={[s.circle, {backgroundColor: tag.color}]} />
+        </View>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <SimpleLineIcon
+            name="pencil"
+            style={{
+              fontSize: 16,
+              fontWeight: 'bold',
+              color: Colors.VERY_DARK,
+              marginRight: 20,
+              marginLeft: 20,
+            }}
+          />
+          <EvilIcon
+            name="trash"
+            style={{fontSize: 30, color: Colors.DARK_SALMON}}
+          />
+        </View>
       </View>
     </View>
   );

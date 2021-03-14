@@ -12,13 +12,13 @@ import LogoutScreen from './src/LogoutScreen';
 import MemoryScreen from './src/memories/memory/MemoryScreen';
 import NewMemoryScreen from './src/memories/new_memory/NewMemoryScreen';
 import {SearchScreen} from './src/search/SearchScreen';
-import {NewTagScreen} from './src/tags/NewTagScreen';
 import {Tag} from './src/tags/Tag';
 import ProfileScreen from './src/user/ProfileScreen';
 import EditMemoryScreen from './src/memories/memory/EditMemoryScreen';
 import ContentUploadScreen from './src/content/ContentUploadScreen';
 import {PickedContent} from './src/content/ContentPicker';
 import {TagScreen} from './src/tags/tag_screen/TagScreen';
+import {TagManagementScreen} from './src/tags/tag_management/TagManagementScreen';
 
 export type RootStackParamList = {
   LoadingScreen: undefined;
@@ -30,7 +30,11 @@ export type RootStackParamList = {
   HomeScreen: undefined;
   NewMemoryScreen: undefined;
   MemoryScreen: {mid: number};
-  NewTagScreen: {onSubmit: (tag: Tag) => void};
+  TagManagementScreen: {
+    heading: string;
+    initialTag?: Tag;
+    onSubmit: (tag: Tag) => void;
+  };
   SearchScreen: undefined;
   ProfileScreen: undefined;
   EditMemoryScreen: {mid: number};
@@ -68,7 +72,7 @@ const AppStack = () => (
     />
     <Stack.Screen name="NewMemoryScreen" component={NewMemoryScreen} />
     <Stack.Screen name="MemoryScreen" component={MemoryScreen} />
-    <Stack.Screen name="NewTagScreen" component={NewTagScreen} />
+    <Stack.Screen name="TagManagementScreen" component={TagManagementScreen} />
     <Stack.Screen name="SearchScreen" component={SearchScreen} />
     <Stack.Screen
       name="ProfileScreen"

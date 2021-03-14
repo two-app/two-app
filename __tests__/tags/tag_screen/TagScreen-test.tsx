@@ -63,9 +63,12 @@ describe('TagScreen', () => {
   });
 
   describe('Clicking the tag input button', () => {
-    it('should navigate to the NewTagScreen', () => {
+    it('should navigate to the TagManagementScreen', () => {
       tb.build().pressCreateTagButton();
-      expect(tb.navigateFn).toHaveBeenCalled();
+      expect(tb.navigateFn).toHaveBeenCalledWith('TagManagementScreen', {
+        heading: 'Create new Tag',
+        onSubmit: expect.anything(),
+      });
     });
   });
 });

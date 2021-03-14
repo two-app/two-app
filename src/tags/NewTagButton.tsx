@@ -20,7 +20,10 @@ export const NewTagButton = ({onCreated, placeholder}: NewTagButtonProps) => (
   <TouchableCard
     style={FormStyle.card}
     onPress={() =>
-      getNavigation().navigate('NewTagScreen', {onSubmit: onCreated})
+      getNavigation().navigate('TagManagementScreen', {
+        heading: 'Create new Tag',
+        onSubmit: onCreated,
+      })
     }
     a11={{accessibilityLabel: 'Tap to create a new tag'}}>
     <View style={FormStyle.iconContainer}>

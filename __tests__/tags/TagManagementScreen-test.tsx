@@ -15,13 +15,13 @@ import {ReactTestInstance} from 'react-test-renderer';
 import * as TagService from '../../src/tags/TagService';
 import {Tag, TagDescription} from '../../src/tags/Tag';
 import {ErrorResponse} from '../../src/http/Response';
-import {NewTagScreen} from '../../src/tags/NewTagScreen';
-import {TagColors} from '../../src/tags/TagColors';
+import {TagManagementScreen} from '../../src/tags/tag_management/TagManagementScreen';
+import {TagColors} from '../../src/tags/tag_management/TagColors';
 
-describe('NewTagScreen', () => {
-  let tb: NewTagScreenTestBed;
+describe('TagManagementScreen', () => {
+  let tb: TagManagementScreenTestBed;
 
-  beforeEach(() => (tb = new NewTagScreenTestBed().build()));
+  beforeEach(() => (tb = new TagManagementScreenTestBed().build()));
   afterEach(cleanup);
   beforeAll(jest.useRealTimers); // required for the waitFor function to work
 
@@ -127,7 +127,7 @@ describe('NewTagScreen', () => {
   });
 });
 
-class NewTagScreenTestBed {
+class TagManagementScreenTestBed {
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 
   createTagFn: jest.SpyInstance<Promise<Tag>, [TagDescription]>;
@@ -147,7 +147,7 @@ class NewTagScreenTestBed {
     });
   }
 
-  onCreateTagResolve = (tag: Tag): NewTagScreenTestBed => {
+  onCreateTagResolve = (tag: Tag): TagManagementScreenTestBed => {
     this.createTagFn.mockResolvedValue(tag);
     return this;
   };
@@ -168,8 +168,7 @@ class NewTagScreenTestBed {
   };
 
   getSelectedColor = (): string => {
-    return this.render.getByTestId('selected-color').props.children.props
-      .accessibilityLabel;
+    return this.render.getByTestId('selected-color').props.accessibilityLabel;
   };
 
   pressSubmitButton = () => {
@@ -190,13 +189,20 @@ class NewTagScreenTestBed {
     return this.render.getByA11yHint('Waiting for an action to finish...');
   };
 
-  build = (): NewTagScreenTestBed => {
+  build = (): TagManagementScreenTestBed => {
     this.render = render(
       <SafeAreaProvider
         initialSafeAreaInsets={{top: 1, left: 2, right: 3, bottom: 4}}>
-        <NewTagScreen
+        <TagManagementScreen
           navigation={{goBack: this.goBackFn} as any}
-          route={{params: {onSubmit: this.createTagPropCallback}} as any}
+          route={
+            {
+              params: {
+                header: 'Some Header',
+                onSubmit: this.createTagPropCallback,
+              },
+            } as any
+          }
         />
       </SafeAreaProvider>,
     );
