@@ -48,6 +48,7 @@ describe('TagScreen', () => {
         name,
         color: '#1a1a1a',
         tid,
+        memoryCount: 0,
       }));
       tb.onGetTagsResolve(tags);
 

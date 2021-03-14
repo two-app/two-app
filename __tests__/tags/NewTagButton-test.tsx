@@ -78,7 +78,7 @@ describe('TagCard', () => {
 });
 
 class TagCardTestBed {
-  tag: Tag = {name: 'TestTag', tid: 5, color: '#1a1a1a'};
+  tag: Tag = {name: 'TestTag', tid: 5, color: '#1a1a1a', memoryCount: 0};
   onDeselect = jest.fn();
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 
