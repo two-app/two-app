@@ -21,7 +21,6 @@ export const NewTagButton = ({onCreated, placeholder}: NewTagButtonProps) => (
     style={FormStyle.card}
     onPress={() =>
       getNavigation().navigate('TagManagementScreen', {
-        heading: 'Create new Tag',
         onSubmit: onCreated,
       })
     }

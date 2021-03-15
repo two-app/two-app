@@ -118,7 +118,7 @@ describe('TagManagementScreen', () => {
       expect(tb.render.getByText(e.reason)).toBeTruthy();
 
       const a11yError = tb.render.getByA11yHint(
-        'The error encountered when creating a tag',
+        'The error encountered from processing a tag',
       );
       const errorText = tb.render.getByText(e.reason);
       expect(a11yError).toBeTruthy();
@@ -198,7 +198,6 @@ class TagManagementScreenTestBed {
           route={
             {
               params: {
-                header: 'Some Header',
                 onSubmit: this.createTagPropCallback,
               },
             } as any

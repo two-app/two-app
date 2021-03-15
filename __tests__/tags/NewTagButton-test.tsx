@@ -28,7 +28,6 @@ describe('NewTagButton', () => {
 
       expect(navigateFn).toHaveBeenCalledTimes(1);
       expect(navigateFn).toHaveBeenCalledWith('TagManagementScreen', {
-        heading: 'Create new Tag',
         onSubmit: tb.onCreated,
       });
     });

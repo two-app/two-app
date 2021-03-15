@@ -31,7 +31,6 @@ export type RootStackParamList = {
   NewMemoryScreen: undefined;
   MemoryScreen: {mid: number};
   TagManagementScreen: {
-    heading: string;
     initialTag?: Tag;
     onSubmit: (tag: Tag) => void;
   };

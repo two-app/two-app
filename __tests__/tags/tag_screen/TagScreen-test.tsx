@@ -67,7 +67,6 @@ describe('TagScreen', () => {
     it('should navigate to the TagManagementScreen', () => {
       tb.build().pressCreateTagButton();
       expect(tb.navigateFn).toHaveBeenCalledWith('TagManagementScreen', {
-        heading: 'Create new Tag',
         onSubmit: expect.anything(),
       });
     });

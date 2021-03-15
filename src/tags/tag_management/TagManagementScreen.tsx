@@ -21,21 +21,51 @@ type TagManagementScreenProps = {
   route: RouteProp<RootStackParamList, 'TagManagementScreen'>;
 };
 
+type Mode = {
+  heading: string;
+  submitText: string;
+  submitHint: string;
+  submitFn: (tag: TagDescription) => Promise<Tag>;
+};
+
+const getMode = (initialTag?: Tag): Mode => {
+  if (initialTag == null) {
+    return {
+      heading: 'Create new Tag',
+      submitText: 'Create Tag',
+      submitHint: 'Creates a new tag with the given name and color.',
+      submitFn: createTag,
+    };
+  } else {
+    return {
+      heading: 'Edit Tag',
+      submitText: 'Update Tag',
+      submitHint: 'Updates the tag with the given name and color.',
+      submitFn: createTag,
+    };
+  }
+};
+
 export const TagManagementScreen = ({
   navigation,
   route,
 }: TagManagementScreenProps) => {
-  const {onSubmit, initialTag, heading} = route.params;
+  const {onSubmit, initialTag} = route.params;
+  const mode: Mode = getMode(initialTag);
+
   const [loading, setLoading] = useState<boolean>(false);
   const [name, setName] = useState<string | undefined>(initialTag?.name);
   const [color, setColor] = useState<string | undefined>(initialTag?.color);
   const [error, setError] = useState<string | undefined>(undefined);
 
-  const createNewTag = () => {
+  const onSubmitPress = () => {
     if (name != null && color != null) {
       const tag: TagDescription = {name, color};
+      const {submitFn} = mode;
+
       setLoading(true);
-      createTag(tag)
+
+      submitFn(tag)
         .then((createdTag: Tag) => {
           onSubmit(createdTag);
           navigation.goBack();
@@ -50,7 +80,7 @@ export const TagManagementScreen = ({
 
   return (
     <ScrollContainer isLoading={loading}>
-      <Heading>{heading}</Heading>
+      <Heading>{mode.heading}</Heading>
       <Text style={s.paragraph}>Tags are used to group memories.</Text>
 
       {/* Name Input */}
@@ -60,7 +90,7 @@ export const TagManagementScreen = ({
       {error && (
         <Text
           style={s.error}
-          accessibilityHint="The error encountered when creating a tag">
+          accessibilityHint="The error encountered from processing a tag">
           {error}
         </Text>
       )}
@@ -87,11 +117,11 @@ export const TagManagementScreen = ({
       </View>
 
       <SubmitButton
-        onSubmit={createNewTag}
-        text="Create Tag"
+        onSubmit={onSubmitPress}
+        text={mode.submitText}
         disabled={name == null}
-        accessibilityHint="Creates a new tag with the given name and color."
-        accessibilityLabel="Create Tag"
+        accessibilityHint={mode.submitHint}
+        accessibilityLabel={mode.submitText}
       />
     </ScrollContainer>
   );
