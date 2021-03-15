@@ -39,7 +39,7 @@ const getMode = (initialTag?: Tag): Mode => {
   } else {
     return {
       type: 'edit',
-      heading: 'Edit Tag',
+      heading: `Edit '${initialTag.name}' Tag`,
       submitText: 'Update Tag',
       submitHint: 'Updates the tag with the given name and color.',
     };

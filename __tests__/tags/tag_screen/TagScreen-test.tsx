@@ -6,7 +6,7 @@ import {
   waitFor,
 } from '@testing-library/react-native';
 import React from 'react';
-import {Text} from 'react-native';
+import {Alert, Text} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 import {Tag} from '../../../src/tags/Tag';
@@ -95,6 +95,17 @@ describe('TagScreen', () => {
         });
       });
     });
+
+    describe('Clicking a tags delete button', () => {
+      it('should show an alert', () => {
+        tb.pressDeleteTagButton(tags[1].name);
+        expect(tb.alertFn).toHaveBeenCalledWith(
+          'Delete Tag',
+          `Deleting '${tags[1].name}' will remove it from ${tags[1].memoryCount} memories`,
+          expect.anything(),
+        );
+      });
+    });
   });
 });
 
@@ -102,10 +113,12 @@ class TagScreenTestBed {
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 
   getTagsFn: jest.SpyInstance<Promise<Tag[]>, []>;
+  alertFn: jest.SpyInstance;
   navigateFn: jest.Mock;
 
   constructor() {
     this.getTagsFn = jest.spyOn(TagService, 'getTags').mockClear();
+    this.alertFn = jest.spyOn(Alert, 'alert');
     this.navigateFn = jest.fn();
 
     jest // spy on getNavigation custom hook
@@ -134,6 +147,11 @@ class TagScreenTestBed {
 
   pressEditTagButton = (name: string) => {
     const btn = this.render.getByA11yHint(`Edit Tag '${name}'`);
+    fireEvent.press(btn);
+  };
+
+  pressDeleteTagButton = (name: string) => {
+    const btn = this.render.getByA11yHint(`Delete Tag '${name}'`);
     fireEvent.press(btn);
   };
 

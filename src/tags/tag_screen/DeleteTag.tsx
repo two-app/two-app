@@ -33,7 +33,10 @@ export const DeleteTagIcon = ({tag, onDeleted}: DeleteTagIconProps) => {
     Alert.alert('Delete Tag', message, [cancelBtn, deleteBtn]);
   };
   return (
-    <TouchableOpacity onPress={deleteMe}>
+    <TouchableOpacity
+      onPress={deleteMe}
+      accessibilityLabel="Delete Tag"
+      accessibilityHint={`Delete Tag '${tag.name}'`}>
       <EvilIcon
         name="trash"
         style={{fontSize: 32, color: Colors.DARK_SALMON}}
