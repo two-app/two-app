@@ -107,7 +107,7 @@ export const TagManagementScreen = ({
         Pick a nice color for your tag. This color will highlight the memories
         the tag belongs to.
       </Text>
-      <ColorList onSelected={setColor} />
+      <ColorList onSelected={setColor} initialColor={initialTag?.color} />
 
       {/* Display a 'Preview' widget if the name & color is present */}
       <View style={{alignItems: 'center', marginTop: 20}}>
