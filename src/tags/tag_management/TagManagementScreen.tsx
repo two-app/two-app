@@ -12,7 +12,7 @@ import {TagInput} from '../../memories/new_memory/TagInput';
 import {ScrollContainer} from '../../views/View';
 import {TagDescription, Tag} from '../Tag';
 import {TagButton} from '../TagButton';
-import {createTag} from '../TagService';
+import {createTag, updateTag} from '../TagService';
 
 import {ColorList} from './ColorSelection';
 
@@ -22,26 +22,26 @@ type TagManagementScreenProps = {
 };
 
 type Mode = {
+  type: 'create' | 'edit';
   heading: string;
   submitText: string;
   submitHint: string;
-  submitFn: (tag: TagDescription) => Promise<Tag>;
 };
 
 const getMode = (initialTag?: Tag): Mode => {
   if (initialTag == null) {
     return {
+      type: 'create',
       heading: 'Create new Tag',
       submitText: 'Create Tag',
       submitHint: 'Creates a new tag with the given name and color.',
-      submitFn: createTag,
     };
   } else {
     return {
+      type: 'edit',
       heading: 'Edit Tag',
       submitText: 'Update Tag',
       submitHint: 'Updates the tag with the given name and color.',
-      submitFn: createTag,
     };
   }
 };
@@ -61,20 +61,26 @@ export const TagManagementScreen = ({
   const onSubmitPress = () => {
     if (name != null && color != null) {
       const tag: TagDescription = {name, color};
-      const {submitFn} = mode;
-
       setLoading(true);
 
-      submitFn(tag)
-        .then((createdTag: Tag) => {
-          onSubmit(createdTag);
-          navigation.goBack();
-        })
-        .catch((e: ErrorResponse) => {
-          console.log(e.reason);
-          setError(e.reason);
-        })
-        .finally(() => setLoading(false));
+      const handleResponse = (promise: Promise<Tag>) => {
+        promise
+          .then((createdTag: Tag) => {
+            onSubmit(createdTag);
+            navigation.goBack();
+          })
+          .catch((e: ErrorResponse) => {
+            console.log(e.reason);
+            setError(e.reason);
+          })
+          .finally(() => setLoading(false));
+      };
+
+      if (initialTag != null) {
+        handleResponse(updateTag(initialTag.tid, tag));
+      } else {
+        handleResponse(createTag(tag));
+      }
     }
   };
 
@@ -86,7 +92,7 @@ export const TagManagementScreen = ({
       {/* Name Input */}
       <Text style={s.subtitle}>Tag Name</Text>
       <Text style={s.paragraph}>Pick a short and concise name.</Text>
-      <TagInput setTag={setName} />
+      <TagInput setTag={setName} initialName={name} />
       {error && (
         <Text
           style={s.error}

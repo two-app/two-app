@@ -15,6 +15,7 @@ import {Tag} from '../Tag';
 import {NewTagButton} from '../NewTagButton';
 
 import {DeleteTagIcon} from './DeleteTag';
+import {EditTagIcon} from './EditTag';
 
 type TagScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'TagScreen'>;
@@ -72,7 +73,11 @@ export const TagScreen = ({}: TagScreenProps) => {
             />
           )}
           renderItem={({item}) => (
-            <TagItem tag={item} onDelete={() => refreshTags()} />
+            <TagItem
+              tag={item}
+              onDelete={() => refreshTags()}
+              onUpdate={() => refreshTags()}
+            />
           )}
           ItemSeparatorComponent={() => (
             <View style={{flex: 1, height: 2, backgroundColor: Colors.LIGHT}} />
@@ -119,9 +124,10 @@ const TagHeader = ({onCreateTag, isEmpty}: TagHeaderProps) => (
 type TagItemProps = {
   tag: Tag;
   onDelete: () => void;
+  onUpdate: () => void;
 };
 
-const TagItem = ({tag, onDelete}: TagItemProps) => {
+const TagItem = ({tag, onDelete, onUpdate}: TagItemProps) => {
   return (
     <View style={s.item} accessibilityLabel="A tag owned by the couple">
       <View
@@ -136,16 +142,7 @@ const TagItem = ({tag, onDelete}: TagItemProps) => {
           <Text style={s.memoryCount}>{tag.memoryCount || ''}</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <SimpleLineIcon
-            name="pencil"
-            style={{
-              fontSize: 18,
-              fontWeight: 'bold',
-              color: Colors.DARK,
-              marginRight: 20,
-              marginLeft: 20,
-            }}
-          />
+          <EditTagIcon tag={tag} onUpdated={onUpdate} />
           <DeleteTagIcon tag={tag} onDeleted={onDelete} />
         </View>
       </View>
