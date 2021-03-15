@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, RefreshControl} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {FlatList} from 'react-native-gesture-handler';
-import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
 import moment from 'moment';
 
 import Colors from '../../Colors';

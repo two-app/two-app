@@ -20,7 +20,10 @@ export const EditTagIcon = ({tag, onUpdated}: EditTagIconProps) => {
   };
 
   return (
-    <TouchableOpacity onPress={edit}>
+    <TouchableOpacity
+      onPress={edit}
+      accessibilityLabel="Edit Tag"
+      accessibilityHint={`Edit Tag '${tag.name}'`}>
       <SimpleLineIcon
         name="pencil"
         style={{

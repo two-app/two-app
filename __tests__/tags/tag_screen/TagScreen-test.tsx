@@ -71,6 +71,31 @@ describe('TagScreen', () => {
       });
     });
   });
+
+  describe('Tag Management', () => {
+    const names = ['Birthday', 'Anniversary', 'Holiday'];
+    const tags: Tag[] = names.map((name, tid) => ({
+      name,
+      color: '#1985a1',
+      tid,
+      memoryCount: tid + 2, // to make it interesting
+    }));
+
+    beforeEach(() => {
+      tb.onGetTagsResolve(tags);
+      tb.build();
+    });
+
+    describe('Clicking a tags edit button', () => {
+      it('should navigate to the TagManagementScreen', () => {
+        tb.pressEditTagButton(tags[1].name);
+        expect(tb.navigateFn).toHaveBeenCalledWith('TagManagementScreen', {
+          initialTag: tags[1],
+          onSubmit: expect.anything(),
+        });
+      });
+    });
+  });
 });
 
 class TagScreenTestBed {
@@ -104,6 +129,11 @@ class TagScreenTestBed {
 
   pressCreateTagButton = () => {
     const btn = this.render.getByA11yLabel('Tap to create a new tag');
+    fireEvent.press(btn);
+  };
+
+  pressEditTagButton = (name: string) => {
+    const btn = this.render.getByA11yHint(`Edit Tag '${name}'`);
     fireEvent.press(btn);
   };
 
