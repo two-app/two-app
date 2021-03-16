@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, RefreshControl} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {FlatList} from 'react-native-gesture-handler';
-import moment from 'moment';
 
 import Colors from '../../Colors';
 import {RootStackParamList} from '../../../Router';
@@ -15,6 +14,7 @@ import {NewTagButton} from '../NewTagButton';
 
 import {DeleteTagIcon} from './DeleteTag';
 import {EditTagIcon} from './EditTag';
+import {TagDate} from './TagDate';
 
 type TagScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'TagScreen'>;
@@ -145,29 +145,9 @@ const TagItem = ({tag, onDelete, onUpdate}: TagItemProps) => {
           <DeleteTagIcon tag={tag} onDeleted={onDelete} />
         </View>
       </View>
-      {tag.startDate != null && <DateRender tag={tag} />}
+      <TagDate tag={tag} />
     </View>
   );
-};
-
-const DateRender = ({tag}: {tag: Tag}) => {
-  const fmt = (d?: string) =>
-    d == null ? '' : moment(d).format('MMMM Do YYYY');
-
-  let text = 'This tag has no memories.';
-
-  if (tag.startDate != null) {
-    const startDate = fmt(tag.startDate);
-    const endDate = fmt(tag.endDate);
-
-    if (startDate === endDate) {
-      text = startDate;
-    } else {
-      text = `${startDate} - ${endDate}`;
-    }
-  }
-
-  return <Text style={s.date}>{text}</Text>;
 };
 
 const EmptyTagsComponent = ({

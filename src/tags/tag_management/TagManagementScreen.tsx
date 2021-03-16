@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {Text, StyleSheet, View} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 import {RootStackParamList} from '../../../Router';
 import SubmitButton from '../../forms/SubmitButton';
@@ -13,6 +12,7 @@ import {ScrollContainer} from '../../views/View';
 import {TagDescription, Tag} from '../Tag';
 import {TagButton} from '../TagButton';
 import {createTag, updateTag} from '../TagService';
+import Colors from '../../Colors';
 
 import {ColorList} from './ColorSelection';
 
