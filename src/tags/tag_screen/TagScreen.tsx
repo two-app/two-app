@@ -11,6 +11,8 @@ import {Heading} from '../../home/Heading';
 import * as TagService from '../TagService';
 import {Tag} from '../Tag';
 import {NewTagButton} from '../NewTagButton';
+import {LoadingStatus} from '../../LoadingScreen';
+import {ErrorResponse} from '../../http/Response';
 
 import {DeleteTagIcon} from './DeleteTag';
 import {EditTagIcon} from './EditTag';
@@ -20,38 +22,23 @@ type TagScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'TagScreen'>;
 };
 
-type LoadingStatus = {
-  loading: boolean;
-  refreshing: boolean;
-  loadingError: boolean;
-};
-
 export const TagScreen = ({}: TagScreenProps) => {
   const [tags, setTags] = useState<Tag[]>([]);
-  const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>({
-    loading: false,
-    refreshing: false,
-    loadingError: false,
-  });
 
-  const refreshTags = async (refreshing = false) => {
-    setLoadingStatus({loading: true, refreshing, loadingError: false});
+  const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>(
+    new LoadingStatus(true, false),
+  );
+
+  const refreshTags = async (displayRefresh = false) => {
+    setLoadingStatus(loadingStatus.beginLoading(displayRefresh));
 
     TagService.getTags()
-      .then((tags: Tag[]) => {
-        setLoadingStatus({
-          loading: false,
-          refreshing: false,
-          loadingError: false,
-        });
+      .then(async (tags: Tag[]) => {
+        setLoadingStatus(loadingStatus.endLoading());
         setTags(tags);
       })
-      .catch((_) => {
-        setLoadingStatus({
-          loading: false,
-          refreshing: false,
-          loadingError: true,
-        });
+      .catch((e: ErrorResponse) => {
+        setLoadingStatus(loadingStatus.endLoading(e.reason));
       });
   };
 
@@ -68,28 +55,24 @@ export const TagScreen = ({}: TagScreenProps) => {
           ListHeaderComponent={() => (
             <TagHeader
               onCreateTag={() => refreshTags()}
-              isEmpty={tags.length === 0}
+              isEmpty={tags === []}
             />
           )}
           renderItem={({item}) => (
-            <TagItem
-              tag={item}
-              onDelete={() => refreshTags()}
-              onUpdate={() => refreshTags()}
-            />
+            <TagItem tag={item} onDelete={refreshTags} onUpdate={refreshTags} />
           )}
           ItemSeparatorComponent={() => (
             <View style={{flex: 1, height: 2, backgroundColor: Colors.LIGHT}} />
           )}
           testID="menu"
-          keyExtractor={(tag) => tag.name}
+          keyExtractor={(tag: Tag) => tag.name}
           ListEmptyComponent={() => (
             <EmptyTagsComponent loadingStatus={loadingStatus} />
           )}
           refreshControl={
             <RefreshControl
               colors={['#9Bd35A', '#689F38']}
-              refreshing={loadingStatus.refreshing}
+              refreshing={loadingStatus.displayRefresh}
               onRefresh={() => refreshTags(true)}
             />
           }
@@ -141,8 +124,8 @@ const TagItem = ({tag, onDelete, onUpdate}: TagItemProps) => {
           <Text style={s.memoryCount}>{tag.memoryCount || ''}</Text>
         </View>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <EditTagIcon tag={tag} onUpdated={onUpdate} />
-          <DeleteTagIcon tag={tag} onDeleted={onDelete} />
+          <EditTagIcon tag={tag} onUpdated={() => onUpdate()} />
+          <DeleteTagIcon tag={tag} onDeleted={() => onDelete()} />
         </View>
       </View>
       <TagDate tag={tag} />
@@ -155,14 +138,17 @@ const EmptyTagsComponent = ({
 }: {
   loadingStatus: LoadingStatus;
 }) => {
+  if (loadingStatus.loading) {
+    return null;
+  }
+
   return (
     <>
       <Text style={{textAlign: 'center', color: Colors.REGULAR, marginTop: 40}}>
-        {loadingStatus.loadingError
+        {loadingStatus.error != null
           ? 'Sorry, we were unable to load your tags.\nPlease try again soon.'
-          : loadingStatus.loading
-          ? 'Loading your tags...'
-          : 'Tags are used to group closely related memories together. Think "21st Birthday", or "Wedding". Try creating one now!'}
+          : // eslint-disable-next-line max-len
+            'Tags are used to group closely related memories together. Think "21st Birthday", or "Wedding". Try creating one now!'}
       </Text>
     </>
   );
@@ -194,10 +180,5 @@ const s = StyleSheet.create({
     height: 18,
     borderRadius: 10,
     marginRight: 10,
-  },
-  date: {
-    color: Colors.REGULAR,
-    fontSize: 14,
-    marginTop: 10,
   },
 });

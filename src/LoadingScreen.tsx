@@ -52,3 +52,23 @@ const LoadingScreen = ({
 
 export default connector(LoadingScreen);
 export {LoadingScreen};
+
+export class LoadingStatus {
+  loading: boolean;
+  displayRefresh: boolean;
+  error?: string;
+
+  constructor(loading: boolean, displayRefresh?: boolean, error?: string) {
+    this.loading = loading;
+    this.displayRefresh = displayRefresh || false;
+    this.error = error;
+  }
+
+  beginLoading = (displayRefresh?: boolean): LoadingStatus => {
+    return new LoadingStatus(true, displayRefresh, undefined);
+  };
+
+  endLoading = (error?: string): LoadingStatus => {
+    return new LoadingStatus(false, false, error);
+  };
+}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {TouchableWithoutFeedback, View} from 'react-native';
 
 import {TagColors} from './TagColors';
@@ -18,6 +18,13 @@ export const ColorList = ({initialColor, onSelected}: ColorListProps) => {
   const [selected, setSelected] = useState<string>(
     initialColor || selectRandomColor(colors),
   );
+
+  useEffect(() => {
+    if (!initialColor) {
+      // notify the parent if a random color was picked
+      onSelected(selected);
+    }
+  }, []);
 
   const selectColor = (color: string) => {
     setSelected(color);

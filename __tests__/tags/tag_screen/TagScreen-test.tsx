@@ -26,12 +26,6 @@ describe('TagScreen', () => {
       expect(tb.build().getTagsFn).toHaveBeenCalledTimes(1);
     });
 
-    it('should display a loading screen', () => {
-      tb.onGetTagsWait();
-      tb.build();
-      tb.render.getByText('Loading your tags...');
-    });
-
     it('should display retrieval errors', async () => {
       tb.onGetTagsReject();
       tb.build();
@@ -133,11 +127,7 @@ class TagScreenTestBed {
   };
 
   onGetTagsReject = () => {
-    this.getTagsFn.mockRejectedValue({});
-  };
-
-  onGetTagsWait = () => {
-    this.getTagsFn.mockReturnValue(new Promise(() => null));
+    this.getTagsFn.mockRejectedValue({reason: 'some reason'});
   };
 
   pressCreateTagButton = () => {
