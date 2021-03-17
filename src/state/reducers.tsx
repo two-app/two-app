@@ -7,11 +7,13 @@ import {Persistor} from 'redux-persist/es/types';
 import {userReducer, UserState} from '../user';
 import {authReducer, AuthState} from '../authentication/store';
 import {MemoryState, memoryReducer} from '../memories/store/reducers';
+import {tagReducer, TagState} from '../tags/store';
 
 export type TwoState = {
   user?: UserState;
   auth?: AuthState;
   memories: MemoryState;
+  tags: TagState;
 };
 
 const persistConfig = {
@@ -23,6 +25,7 @@ const reducer = combineReducers({
   user: userReducer,
   auth: authReducer,
   memories: memoryReducer,
+  tags: tagReducer,
 });
 
 const clearState = createAction('CLEAR_STATE')();

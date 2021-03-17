@@ -1,13 +1,13 @@
 import EmailValidator from '../../forms/EmailValidator';
 
 class UserRegistration {
-  firstName: string = '';
-  lastName: string = '';
-  email: string = '';
-  password: string = '';
-  acceptedTerms: boolean = false;
-  ofAge: boolean = false;
-  receivesEmails: boolean = false;
+  firstName = '';
+  lastName = '';
+  email = '';
+  password = '';
+  acceptedTerms = false;
+  ofAge = false;
+  receivesEmails = false;
 }
 
 const isFirstNameValid = (firstName: string) =>

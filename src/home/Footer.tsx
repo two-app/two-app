@@ -28,6 +28,14 @@ export const Footer = ({active}: FooterProps) => (
       />
 
       <Item
+        navigateTo="TagScreen"
+        icon={AntIcon}
+        iconName="tagso"
+        active={active === 'TagScreen'}
+        text="TAGS"
+      />
+
+      <Item
         navigateTo="ProfileScreen"
         icon={AntIcon}
         iconName="user"

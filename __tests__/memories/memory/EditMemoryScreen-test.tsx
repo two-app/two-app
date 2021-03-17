@@ -177,8 +177,18 @@ describe('EditMemoryScreen', () => {
 class EditMemoryScreenTestBed {
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 
-  selectedTag: Tag = {name: 'Test Tag', color: '#1a1a1a', tid: 5};
-  otherTag: Tag = {name: 'Other Tag', color: '#FFFFFF', tid: 10};
+  selectedTag: Tag = {
+    name: 'Test Tag',
+    color: '#1a1a1a',
+    tid: 5,
+    memoryCount: 0,
+  };
+  otherTag: Tag = {
+    name: 'Other Tag',
+    color: '#FFFFFF',
+    tid: 10,
+    memoryCount: 0,
+  };
   tags: Tag[] = [this.selectedTag, this.otherTag];
 
   memory: Memory = {

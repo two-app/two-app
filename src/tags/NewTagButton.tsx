@@ -13,22 +13,28 @@ import {Tag} from './Tag';
 
 type NewTagButtonProps = {
   onCreated: (tag: Tag) => void;
+  placeholder: string;
 };
 
-export const NewTagButton = ({onCreated}: NewTagButtonProps) => (
+export const NewTagButton = ({onCreated, placeholder}: NewTagButtonProps) => (
   <TouchableCard
     style={FormStyle.card}
     onPress={() =>
-      getNavigation().navigate('NewTagScreen', {onSubmit: onCreated})
-    }>
+      getNavigation().navigate('TagManagementScreen', {
+        onSubmit: onCreated,
+      })
+    }
+    a11={{accessibilityLabel: 'Tap to create a new tag'}}>
     <View style={FormStyle.iconContainer}>
       <AntIcon name="tago" style={{fontSize: 13, color: Colors.REGULAR}} />
     </View>
-    <Text style={{color: Colors.REGULAR}}>
-      Optional tag, e.g Anniversary or Birthday...
-    </Text>
+    <Text style={{color: Colors.REGULAR}}>{placeholder}</Text>
   </TouchableCard>
 );
+
+NewTagButton.defaultProps = {
+  placeholder: 'Optional tag, e.g Anniversary or Birthday...',
+};
 
 type TagCardProps = {
   tag: Tag;
@@ -78,6 +84,8 @@ const DeselectModal = ({
       onBackdropPress={onExit}
       onBackButtonPress={onExit}
       onModalHide={onModalHide}
+      accessibilityLabel="Tap to deselect tag"
+      accessibilityHint="Tap to deselect tag"
       swipeDirection={['up', 'down']}
       style={{justifyContent: 'center', margin: 0}}
       backdropOpacity={0.8}>

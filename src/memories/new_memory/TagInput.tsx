@@ -7,8 +7,13 @@ import Colors from '../../Colors';
 
 import {FormStyle} from './FormStyles';
 
-const TagInput = ({setTag}: {setTag: Function}) => {
-  const [tagValue, setTagValue] = useState<string>();
+type TagInputProps = {
+  setTag: (name: string | undefined) => void;
+  initialName?: string;
+};
+
+const TagInput = ({setTag, initialName}: TagInputProps) => {
+  const [tagValue, setTagValue] = useState<string | undefined>(initialName);
 
   return (
     <>
@@ -21,12 +26,15 @@ const TagInput = ({setTag}: {setTag: Function}) => {
         </View>
         <TextInput
           accessibilityLabel="Set Tag Name"
+          autoFocus={true}
           placeholder="Tag, e.g Anniversary or Birthday..."
           placeholderTextColor={Colors.REGULAR}
           style={{color: Colors.DARK, flex: 1, paddingVertical: 0}}
           onChangeText={setTagValue}
           value={tagValue}
-          onBlur={() => (tagValue === '' ? setTag(null) : setTag(tagValue))}
+          onBlur={() =>
+            tagValue === '' ? setTag(undefined) : setTag(tagValue)
+          }
         />
       </Card>
     </>

@@ -42,7 +42,7 @@ export const MemoryDisplayView = ({memory}: {memory: Memory}) => (
 );
 
 const MemoryDisplayPicture = ({content}: {content: Content}) => {
-  const uri: string = `${content.fileKey}-${content.display.suffix}.${content.display.extension}`;
+  const uri = `${content.fileKey}-${content.display.suffix}.${content.display.extension}`;
   return (
     <View style={s.image}>
       <Image style={{width: '100%', height: '100%'}} source={{uri}} />
