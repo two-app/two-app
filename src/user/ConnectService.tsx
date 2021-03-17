@@ -15,7 +15,7 @@ import {ErrorResponse} from '../http/Response';
 import {storeUser} from './actions';
 import PartnerService from './PartnerService';
 
-const connectToPartner = (connectCode: String): Promise<UserResponse> =>
+const connectToPartner = (connectCode: string): Promise<UserResponse> =>
   Gateway.post(`/partner/${connectCode}`).then(
     (r: AxiosResponse<Tokens>): UserResponse => ({
       user: userFromAccessToken(r.data.accessToken),

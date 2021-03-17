@@ -76,7 +76,7 @@ export const deleteContent = async (
 };
 
 export const buildContentURI = (
-  fileKey: String,
+  fileKey: string,
   content: ImageContent | VideoContent,
 ): string => {
   return `${fileKey}-${content.suffix}.${content.extension}`;

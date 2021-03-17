@@ -132,7 +132,7 @@ class PartnerScreenTestBed {
     firstName: 'XYZ',
     lastName: '789',
   };
-  privacyPolicyURL: string = 'test_privacy_policy_url';
+  privacyPolicyURL = 'test_privacy_policy_url';
 
   dispatchFn = jest.fn();
   wrapper: RenderAPI = render(<Text>Not Implemented</Text>);

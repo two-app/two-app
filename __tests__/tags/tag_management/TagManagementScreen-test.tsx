@@ -12,11 +12,11 @@ import {
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {ReactTestInstance} from 'react-test-renderer';
 
-import * as TagService from '../../src/tags/TagService';
-import {Tag, TagDescription} from '../../src/tags/Tag';
-import {ErrorResponse} from '../../src/http/Response';
-import {TagManagementScreen} from '../../src/tags/tag_management/TagManagementScreen';
-import {TagColors} from '../../src/tags/tag_management/TagColors';
+import * as TagService from '../../../src/tags/TagService';
+import {Tag, TagDescription} from '../../../src/tags/Tag';
+import {ErrorResponse} from '../../../src/http/Response';
+import {TagManagementScreen} from '../../../src/tags/tag_management/TagManagementScreen';
+import {TagColors} from '../../../src/tags/tag_management/TagColors';
 
 describe('TagManagementScreen - Create Mode', () => {
   let tb: TagManagementScreenTestBed;
