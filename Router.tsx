@@ -17,7 +17,7 @@ import ProfileScreen from './src/user/ProfileScreen';
 import EditMemoryScreen from './src/memories/memory/EditMemoryScreen';
 import ContentUploadScreen from './src/content/ContentUploadScreen';
 import {PickedContent} from './src/content/ContentPicker';
-import {TagScreen} from './src/tags/tag_screen/TagScreen';
+import TagScreen from './src/tags/tag_screen/TagScreen';
 import {TagManagementScreen} from './src/tags/tag_management/TagManagementScreen';
 
 export type RootStackParamList = {

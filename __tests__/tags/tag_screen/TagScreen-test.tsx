@@ -8,11 +8,13 @@ import {
 import React from 'react';
 import {Alert, Text} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {Provider} from 'react-redux';
 
 import {Tag} from '../../../src/tags/Tag';
-import {TagScreen} from '../../../src/tags/tag_screen/TagScreen';
+import TagScreen from '../../../src/tags/tag_screen/TagScreen';
 import * as TagService from '../../../src/tags/TagService';
 import * as RootNavigation from '../../../src/navigation/RootNavigation';
+import {store} from '../../../src/state/reducers';
 
 describe('TagScreen', () => {
   let tb: TagScreenTestBed;
@@ -147,10 +149,12 @@ class TagScreenTestBed {
 
   build = (): TagScreenTestBed => {
     this.render = render(
-      <SafeAreaProvider
-        initialSafeAreaInsets={{top: 1, left: 2, right: 3, bottom: 4}}>
-        <TagScreen navigation={{navigate: this.navigateFn} as any} />
-      </SafeAreaProvider>,
+      <Provider store={store}>
+        <SafeAreaProvider
+          initialSafeAreaInsets={{top: 1, left: 2, right: 3, bottom: 4}}>
+          <TagScreen navigation={{navigate: this.navigateFn} as any} />
+        </SafeAreaProvider>
+      </Provider>,
     );
     return this;
   };

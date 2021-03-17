@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, RefreshControl} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {FlatList} from 'react-native-gesture-handler';
+import {connect, ConnectedProps} from 'react-redux';
 
 import Colors from '../../Colors';
 import {RootStackParamList} from '../../../Router';
@@ -13,18 +14,26 @@ import {Tag} from '../Tag';
 import {NewTagButton} from '../NewTagButton';
 import {LoadingStatus} from '../../LoadingScreen';
 import {ErrorResponse} from '../../http/Response';
+import {persistor, TwoState} from '../../state/reducers';
+import {selectTags} from '../store/selectors';
+import {storeTags} from '../store';
 
 import {DeleteTagIcon} from './DeleteTag';
 import {EditTagIcon} from './EditTag';
 import {TagDate} from './TagDate';
 
-type TagScreenProps = {
+const mapStateToProps = (state: TwoState) => ({
+  tags: selectTags(state.tags),
+});
+
+const connector = connect(mapStateToProps);
+type ConnectorProps = ConnectedProps<typeof connector>;
+
+type TagScreenProps = ConnectorProps & {
   navigation: StackNavigationProp<RootStackParamList, 'TagScreen'>;
 };
 
-export const TagScreen = ({}: TagScreenProps) => {
-  const [tags, setTags] = useState<Tag[]>([]);
-
+export const TagScreen = ({tags, dispatch}: TagScreenProps) => {
   const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>(
     new LoadingStatus(true, false),
   );
@@ -34,8 +43,9 @@ export const TagScreen = ({}: TagScreenProps) => {
 
     TagService.getTags()
       .then(async (tags: Tag[]) => {
+        dispatch(storeTags(tags));
         setLoadingStatus(loadingStatus.endLoading());
-        setTags(tags);
+        persistor.persist();
       })
       .catch((e: ErrorResponse) => {
         setLoadingStatus(loadingStatus.endLoading(e.reason));
@@ -82,6 +92,8 @@ export const TagScreen = ({}: TagScreenProps) => {
     </Wrapper>
   );
 };
+
+export default connector(TagScreen);
 
 type TagHeaderProps = {
   onCreateTag: (tag: Tag) => void;
