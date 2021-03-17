@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert, AlertButton} from 'react-native';
+import {Alert, AlertButton, StyleProp, ViewStyle} from 'react-native';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import pluralize from 'pluralize';
@@ -11,9 +11,10 @@ import Colors from '../../Colors';
 type DeleteTagIconProps = {
   tag: Tag;
   onDeleted: () => void;
+  style?: StyleProp<ViewStyle>;
 };
 
-export const DeleteTagIcon = ({tag, onDeleted}: DeleteTagIconProps) => {
+export const DeleteTagIcon = ({tag, onDeleted, style}: DeleteTagIconProps) => {
   const deleteMe = () => {
     let message = `Delete '${tag.name}' tag`;
     if (tag.memoryCount > 0) {
@@ -34,6 +35,7 @@ export const DeleteTagIcon = ({tag, onDeleted}: DeleteTagIconProps) => {
   };
   return (
     <TouchableOpacity
+      style={style}
       onPress={deleteMe}
       accessibilityLabel="Delete Tag"
       accessibilityHint={`Delete Tag '${tag.name}'`}>

@@ -112,19 +112,18 @@ type TagItemProps = {
 const TagItem = ({tag, onDelete, onUpdate}: TagItemProps) => {
   return (
     <View style={s.item} accessibilityLabel="A tag owned by the couple">
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View style={s.headerContainer}>
+        <View style={s.nameContainer}>
           <View style={[s.circle, {backgroundColor: tag.color}]} />
           <Text style={s.subheading}>{tag.name}</Text>
           <Text style={s.memoryCount}>{tag.memoryCount || ''}</Text>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <EditTagIcon tag={tag} onUpdated={() => onUpdate()} />
+        <View style={s.iconsContainer}>
+          <EditTagIcon
+            tag={tag}
+            onUpdated={() => onUpdate()}
+            style={{marginRight: 15}}
+          />
           <DeleteTagIcon tag={tag} onDeleted={() => onDelete()} />
         </View>
       </View>
@@ -180,5 +179,24 @@ const s = StyleSheet.create({
     height: 18,
     borderRadius: 10,
     marginRight: 10,
+    marginTop: 7,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
+  nameContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    flex: 1,
+    flexGrow: 1,
+  },
+  iconsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 4,
+    marginLeft: 30,
   },
 });

@@ -1,4 +1,5 @@
 import React from 'react';
+import {StyleProp, ViewStyle} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
 
@@ -9,9 +10,10 @@ import {Tag} from '../Tag';
 type EditTagIconProps = {
   tag: Tag;
   onUpdated: () => void;
+  style?: StyleProp<ViewStyle>;
 };
 
-export const EditTagIcon = ({tag, onUpdated}: EditTagIconProps) => {
+export const EditTagIcon = ({tag, onUpdated, style}: EditTagIconProps) => {
   const edit = () => {
     getNavigation().navigate('TagManagementScreen', {
       initialTag: tag,
@@ -21,6 +23,7 @@ export const EditTagIcon = ({tag, onUpdated}: EditTagIconProps) => {
 
   return (
     <TouchableOpacity
+      style={style}
       onPress={edit}
       accessibilityLabel="Edit Tag"
       accessibilityHint={`Edit Tag '${tag.name}'`}>
@@ -30,8 +33,6 @@ export const EditTagIcon = ({tag, onUpdated}: EditTagIconProps) => {
           fontSize: 18,
           fontWeight: 'bold',
           color: Colors.DARK,
-          marginRight: 20,
-          marginLeft: 20,
         }}
       />
     </TouchableOpacity>
