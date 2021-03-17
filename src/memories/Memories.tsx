@@ -42,7 +42,6 @@ type LoadingStatus = {
 };
 
 const Memories = ({memories, dispatch}: MemoriesProps) => {
-  let memoryFlatListRef: FlatList<Memory> | null;
   const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>({
     loading: true,
     refreshing: false,
@@ -63,15 +62,6 @@ const Memories = ({memories, dispatch}: MemoriesProps) => {
       );
   };
 
-  const scrollToTop = (): void => {
-    if (memoryFlatListRef != null) {
-      memoryFlatListRef.scrollToOffset({
-        offset: 75,
-        animated: true,
-      });
-    }
-  };
-
   useEffect(() => {
     refreshMemories();
   }, []);
@@ -79,8 +69,6 @@ const Memories = ({memories, dispatch}: MemoriesProps) => {
   return (
     <FlatList
       data={memories}
-      ref={(ref) => (memoryFlatListRef = ref)}
-      onContentSizeChange={scrollToTop}
       renderItem={(item) => <MemoryItemNavigation item={item.item} />}
       keyExtractor={(i) => i.id.toString()}
       showsVerticalScrollIndicator={false}
