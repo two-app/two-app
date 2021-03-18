@@ -15,6 +15,7 @@ import {
   storeContent,
   insertMemory,
   deleteContent,
+  deleteMemory,
 } from './actions';
 
 export type MemoryState = {
@@ -51,6 +52,16 @@ const handleInsertMemory = (
 });
 
 const inAscending = (a: Memory, b: Memory) => b.date - a.date;
+
+const handleDeleteMemory = (
+  state: MemoryState,
+  action: PayloadAction<'DELETE_MEMORY', {mid: number}>,
+): MemoryState => ({
+  ...state,
+  allMemories: [...state.allMemories].filter(
+    (m: Memory) => m.id !== action.payload.mid,
+  ),
+});
 
 const handleStoreContent = (
   state: MemoryState,
@@ -92,6 +103,7 @@ export const memoryReducer: Reducer<MemoryState, MemoryActions> = createReducer<
   .handleAction(storeMemories, handleStoreMemories)
   .handleAction(updateMemory, handleUpdateMemory)
   .handleAction(insertMemory, handleInsertMemory)
+  .handleAction(deleteMemory, handleDeleteMemory)
   .handleAction(storeContent, handleStoreContent)
   .handleAction(deleteContent, handleDeleteContent)
   .handleAction(emptyMemories, handleEmptyMemories);

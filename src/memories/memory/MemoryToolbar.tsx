@@ -1,13 +1,18 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, AlertButton, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useDispatch} from 'react-redux';
+import {CommonActions} from '@react-navigation/native';
 
 import {MemoryDisplayView} from '../MemoryDisplayView';
 import {Memory} from '../MemoryModels';
 import {getNavigation} from '../../navigation/RootNavigation';
 import Colors from '../../Colors';
 import {ContentPicker, PickedContent} from '../../content/ContentPicker';
+import {deleteMemory} from '../MemoryService';
+import {deleteMemory as deleteMemoryFromState} from '../store';
 
 export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   <View>
@@ -16,6 +21,7 @@ export const MemoryToolbar = ({memory}: {memory: Memory}) => (
       <View style={styles.toolbarGroup}>
         <EditButton memory={memory} />
         <UploadContentButton memory={memory} />
+        <DeleteMemoryButton memory={memory} />
       </View>
     </View>
     <MemoryDisplayView memory={memory} />
@@ -63,6 +69,45 @@ export const UploadContentButton = ({memory}: {memory: Memory}) => (
     <Icon name="plussquareo" size={25} color={Colors.DARK} />
   </TouchableOpacity>
 );
+
+export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
+  const dispatch = useDispatch();
+  let message = `Delete '${memory.title}'`;
+  if (memory.imageCount + memory.videoCount > 0) {
+    message = `Deleting '${memory.title}' will permanently delete the enclosed pictures and videos.`;
+  }
+
+  const onPress = (): void => {
+    const cancelBtn: AlertButton = {text: 'Cancel', style: 'cancel'};
+    const deleteBtn: AlertButton = {
+      text: 'Delete',
+      style: 'destructive',
+      onPress: async () => {
+        await deleteMemory(memory.id);
+        getNavigation().dispatch(
+          // reset as state will no longer exist
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'HomeScreen'}],
+          }),
+        );
+        dispatch(deleteMemoryFromState({mid: memory.id}));
+      },
+    };
+
+    Alert.alert('Delete Memory', message, [cancelBtn, deleteBtn]);
+  };
+
+  return (
+    <TouchableOpacity
+      accessibilityLabel="Delete Memory"
+      // if only the icon was clipped correctly...
+      style={{marginLeft: 8, marginRight: -8}}
+      onPress={onPress}>
+      <EvilIcon name="trash" size={36} color={Colors.DARK_SALMON} />
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   toolbar: {
