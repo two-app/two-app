@@ -24,6 +24,12 @@ jobs:
       - uses: actions/checkout@v2
       - run: yarn install
       - run: gem install bundler
+      - uses: actions/cache@v2
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
       - name: iOS Build
         # xcbuild takes 20+ minutes, more than 2x
         # android, so we just install pods as a minor
@@ -52,4 +58,3 @@ jobs:
       - run: yarn install
       - run: yarn eslint
       - run: yarn tsc
-
