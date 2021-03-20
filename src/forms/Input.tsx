@@ -6,7 +6,7 @@ import Colors from '../Colors';
 import Label from './Label';
 
 type InputProps = {
-  attributes?: {};
+  attributes?: Record<string, unknown>;
   isValid?: (value: string) => boolean;
   onChange?: (value: string) => void;
   label?: string;

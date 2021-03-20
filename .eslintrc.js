@@ -18,10 +18,11 @@ module.exports = {
     '@typescript-eslint/indent': 0,
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/ban-ts-comment': 0,
+    '@typescript-eslint/no-empty-function': 0,
+    '@typescript-eslint/no-non-null-assertion': 0,
     'no-nested-ternary': 0,
     'react-hooks/exhaustive-deps': 0,
     'no-empty-function': 'off',
-    '@typescript-eslint/no-empty-function': ['off'],
     quotes: [2, 'single', 'avoid-escape'],
   },
 };

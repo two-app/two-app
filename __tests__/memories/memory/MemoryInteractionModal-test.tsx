@@ -8,14 +8,15 @@ import {
   waitFor,
 } from '@testing-library/react-native';
 import moment from 'moment';
+import {Provider} from 'react-redux';
 
 import * as ContentService from '../../../src/content/ContentService';
 import {MemoryInteractionModal} from '../../../src/memories/memory/MemoryInteractionModal';
 import {Memory} from '../../../src/memories/MemoryModels';
 import {ErrorResponse} from '../../../src/http/Response';
-import {updateMemory, deleteContent} from '../../../src/memories/store';
 import {Content} from '../../../src/content/ContentModels';
 import {DeleteContentResponse} from '../../../src/content/ContentService';
+import {store} from '../../../src/state/reducers';
 
 describe('MemoryInteractionModal', () => {
   let tb: MemoryInteractionModalTestBed;
@@ -49,14 +50,19 @@ describe('MemoryInteractionModal', () => {
         expect(tb.setMemoryDisplayPictureFn).toHaveBeenCalledTimes(1);
         expect(tb.setMemoryDisplayPictureFn).toHaveBeenCalledWith(
           tb.memory.id,
-          tb.content!.contentId,
+          testContent.contentId,
         );
       });
 
-      test('it should update the state in redux', async () => {
+      test('it should update the memory in the global state', async () => {
+        // GIVEN a memory has content in global
+        store.getState().memories.allMemories.push(testMemory);
+
+        // GIVEN the update succeeds
         const updatedMemory: Memory = {...tb.memory, title: 'another title'}; // any update will do
         tb.onSetMemoryDisplayPictureResolve(updatedMemory);
 
+        // WHEN the update display content button is pressed
         tb.pressUpdateDisplayContentButton();
         await waitFor(() => {
           if (tb.isModalVisible()) {
@@ -64,10 +70,9 @@ describe('MemoryInteractionModal', () => {
           }
         });
 
-        expect(tb.dispatchFn).toHaveBeenCalledTimes(1);
-        expect(tb.dispatchFn).toHaveBeenCalledWith(
-          updateMemory({mid: updatedMemory.id, memory: updatedMemory}),
-        );
+        // THEN the redux state should be updated to the latest memory
+
+        expect(store.getState().memories.allMemories).toEqual([updatedMemory]);
       });
 
       test('it should display an error if one occurs', async () => {
@@ -93,13 +98,17 @@ describe('MemoryInteractionModal', () => {
         expect(tb.deleteContentFn).toHaveBeenCalledTimes(1);
         expect(tb.deleteContentFn).toHaveBeenCalledWith(
           tb.memory.id,
-          tb.content!.contentId,
+          testContent.contentId,
         );
       });
 
       test('it should update the state in redux', async () => {
+        // GIVEN the a memory and its associated content
+        store.getState().memories.allMemories.push(testMemory);
+        store.getState().memories.content[testMemory.id] = [testContent];
         tb.onDeleteMemoryContentResolve();
 
+        // WHEN the delete button is pressed
         tb.pressDeleteContentButton();
         await waitFor(() => {
           if (tb.isModalVisible()) {
@@ -107,10 +116,7 @@ describe('MemoryInteractionModal', () => {
           }
         });
 
-        expect(tb.dispatchFn).toHaveBeenCalledTimes(1);
-        expect(tb.dispatchFn).toHaveBeenCalledWith(
-          deleteContent({mid: tb.memory.id, contentId: testContent.contentId}),
-        );
+        expect(store.getState().memories.content[testMemory.id]).toEqual([]);
       });
 
       test('it should display an error if one occurs', async () => {
@@ -134,9 +140,8 @@ describe('MemoryInteractionModal', () => {
 class MemoryInteractionModalTestBed {
   render: RenderAPI = render(<Text>Not Implemented</Text>);
   memory: Memory = testMemory;
-  content: Content | undefined;
+  content?: Content;
   onCloseFn: jest.Mock;
-  dispatchFn: jest.Mock;
   setMemoryDisplayPictureFn: jest.SpyInstance<
     Promise<Memory>,
     [number, number]
@@ -149,7 +154,6 @@ class MemoryInteractionModalTestBed {
   constructor() {
     this.content = undefined;
     this.onCloseFn = jest.fn();
-    this.dispatchFn = jest.fn();
 
     this.setMemoryDisplayPictureFn = jest.spyOn(
       ContentService,
@@ -212,12 +216,13 @@ class MemoryInteractionModalTestBed {
 
   build = (): MemoryInteractionModalTestBed => {
     this.render = render(
-      <MemoryInteractionModal
-        memory={this.memory}
-        content={this.content}
-        onClose={this.onCloseFn}
-        dispatch={this.dispatchFn}
-      />,
+      <Provider store={store}>
+        <MemoryInteractionModal
+          memory={this.memory}
+          content={this.content}
+          onClose={this.onCloseFn}
+        />
+      </Provider>,
     );
     return this;
   };

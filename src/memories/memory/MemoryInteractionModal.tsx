@@ -1,7 +1,7 @@
 import {Text, View, StyleSheet} from 'react-native';
 import React, {useState, useEffect} from 'react';
-import Modal from 'react-native-modal';
-import {connect, ConnectedProps} from 'react-redux';
+import NativeModal from 'react-native-modal';
+import {useDispatch} from 'react-redux';
 import {PayloadAction} from 'typesafe-actions';
 
 import {
@@ -17,9 +17,7 @@ import {Content} from '../../content/ContentModels';
 
 import {ImageCell} from './Grid';
 
-const connector = connect();
-
-type MemoryInteractionModalProps = ConnectedProps<typeof connector> & {
+type MemoryInteractionModalProps = {
   memory: Memory;
   onClose: () => void;
   content?: Content;
@@ -28,7 +26,7 @@ type MemoryInteractionModalProps = ConnectedProps<typeof connector> & {
 type ModalData = {
   content?: Content;
   isVisible: boolean;
-  afterCloseFn?: Function;
+  afterCloseFn?: () => void;
 };
 
 type ButtonLoading = {
@@ -45,8 +43,8 @@ export const MemoryInteractionModal = ({
   memory,
   content,
   onClose,
-  dispatch,
 }: MemoryInteractionModalProps) => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState<ButtonLoading>(noLoading);
   const [error, setError] = useState<string>('');
   const [modal, setModal] = useState<ModalData>({
@@ -92,7 +90,7 @@ export const MemoryInteractionModal = ({
   };
 
   return (
-    <Modal
+    <NativeModal
       accessibilityState={{expanded: modal.isVisible}}
       accessibilityHint="This modal provides options to modify or remove a piece of content."
       accessibilityLabel="Content options modal."
@@ -111,41 +109,67 @@ export const MemoryInteractionModal = ({
       }}
       testID="interaction-modal">
       {modal.content != null && (
-        <View style={styles.modal}>
-          <View style={{width: 100, height: 100, marginBottom: 20}}>
-            <ImageCell item={modal.content} />
-          </View>
-          <Button
-            text="Set as Display Picture"
-            onPress={() => updateDisplayPicture(modal.content!.contentId)}
-            accessibilityHint="Sets the display picture to this content"
-            accessibilityLabel="Set the Display Picture"
-            style={{marginBottom: 10, width: '100%'}}
-            loading={loading.setDisplayPicture}
-          />
-          <Button
-            text="Delete Content"
-            onPress={() => deleteContentThenUpdate(modal.content!.contentId)}
-            buttonStyle={ButtonStyles.red}
-            pressedButtonStyle={ButtonStyles.redPressed}
-            accessibilityHint="Deletes this content from the memory."
-            accessibilityLabel="Delete this content."
-            style={{width: '100%'}}
-            loading={loading.deleteContent}
-          />
-
-          <Text
-            style={styles.errorText}
-            accessibilityLabel="Resulting error from your action.">
-            {error}
-          </Text>
-        </View>
+        <Modal
+          content={modal.content}
+          onUpdateDisplayPicture={(id) => updateDisplayPicture(id)}
+          onDelete={(id) => deleteContentThenUpdate(id)}
+          loading={loading}
+          error={error}
+        />
       )}
-    </Modal>
+    </NativeModal>
   );
 };
 
-export default connector(MemoryInteractionModal);
+type ModalType = {
+  content: Content;
+  onUpdateDisplayPicture: (contentId: number) => void;
+  onDelete: (contentId: number) => void;
+  loading: ButtonLoading;
+  error?: string;
+};
+
+const Modal = ({
+  content,
+  onUpdateDisplayPicture,
+  onDelete,
+  loading,
+  error,
+}: ModalType) => {
+  return (
+    <View style={styles.modal}>
+      <View style={{width: 100, height: 100, marginBottom: 20}}>
+        <ImageCell item={content} />
+      </View>
+
+      <Button
+        text="Set as Display Picture"
+        onPress={() => onUpdateDisplayPicture(content.contentId)}
+        accessibilityHint="Sets the display picture to this content"
+        accessibilityLabel="Set the Display Picture"
+        style={{marginBottom: 10, width: '100%'}}
+        loading={loading.setDisplayPicture}
+      />
+
+      <Button
+        text="Delete Content"
+        onPress={() => onDelete(content.contentId)}
+        buttonStyle={ButtonStyles.red}
+        pressedButtonStyle={ButtonStyles.redPressed}
+        accessibilityHint="Deletes this content from the memory."
+        accessibilityLabel="Delete this content."
+        style={{width: '100%'}}
+        loading={loading.deleteContent}
+      />
+
+      <Text
+        style={styles.errorText}
+        accessibilityLabel="Resulting error from your action.">
+        {error}
+      </Text>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   modal: {
