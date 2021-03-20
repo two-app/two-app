@@ -1,7 +1,8 @@
 import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useState} from 'react';
 import {Text, View} from 'react-native';
-import {connect, ConnectedProps} from 'react-redux';
+import {useDispatch} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 
 import {RootStackParamList} from '../../../Router';
 import SubmitButton from '../../forms/SubmitButton';
@@ -25,13 +26,9 @@ type NavigationProps = {
   navigation: StackNavigationProp<RootStackParamList, 'NewMemoryScreen'>;
 };
 
-const connector = connect();
-type NewMemoryScreenProps = ConnectedProps<typeof connector> & NavigationProps;
-
-export const NewMemoryScreen = ({
-  navigation,
-  dispatch,
-}: NewMemoryScreenProps) => {
+export const NewMemoryScreen = ({}: NavigationProps) => {
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [loading, setLoading] = useState<boolean>(false);
   const [uploadError, setUploadError] = useState<string>();
   const [formState, setFormState] = useState<MemoryDescription>({
@@ -91,5 +88,3 @@ export const NewMemoryScreen = ({
     </ScrollContainer>
   );
 };
-
-export default connector(NewMemoryScreen);

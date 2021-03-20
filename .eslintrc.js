@@ -18,6 +18,7 @@ module.exports = {
     '@typescript-eslint/indent': 0,
     '@typescript-eslint/no-explicit-any': 0,
     '@typescript-eslint/ban-ts-comment': 0,
+    '@typescript-eslint/no-empty-function': 0,
     'no-nested-ternary': 0,
     'react-hooks/exhaustive-deps': 0,
     'no-empty-function': ['error', {allow: ['arrowFunctions']}],

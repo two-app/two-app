@@ -27,7 +27,7 @@ import {
 } from './Grid';
 import {ContentGallery} from './ContentGallery';
 import {MemoryToolbar} from './MemoryToolbar';
-import MemoryInteractionModal from './MemoryInteractionModal';
+import {MemoryInteractionModal} from './MemoryInteractionModal';
 
 type NavigationProps = {
   navigation: StackNavigationProp<RootStackParamList, 'MemoryScreen'>;

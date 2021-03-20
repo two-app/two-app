@@ -10,7 +10,7 @@ import HomeScreen from './src/home/HomeScreen';
 import LoadingScreen from './src/LoadingScreen';
 import LogoutScreen from './src/LogoutScreen';
 import MemoryScreen from './src/memories/memory/MemoryScreen';
-import NewMemoryScreen from './src/memories/new_memory/NewMemoryScreen';
+import {NewMemoryScreen} from './src/memories/new_memory/NewMemoryScreen';
 import {SearchScreen} from './src/search/SearchScreen';
 import {Tag} from './src/tags/Tag';
 import ProfileScreen from './src/user/ProfileScreen';
