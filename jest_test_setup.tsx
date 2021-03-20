@@ -20,6 +20,7 @@ console.error = (message: string) => {
 
 // @ts-ignore
 import mockAsyncStorage from '@react-native-community/async-storage/jest/async-storage-mock';
+import {setupMockNavigation} from './__tests__/utils/NavigationMocking';
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
 
 jest.mock('redux-persist', () => {
@@ -43,5 +44,7 @@ jest.mock(
 jest.mock('./src/navigation/RootNavigation', () =>
   jest.requireActual('./src/navigation/__mocks__/RootNavigation'),
 );
+
+setupMockNavigation();
 
 jest.useFakeTimers();

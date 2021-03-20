@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
-import {CommonActions} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
 import {MemoryDisplayView} from '../MemoryDisplayView';
 import {Memory} from '../MemoryModels';
@@ -36,42 +36,49 @@ const BackButton = () => (
   </TouchableOpacity>
 );
 
-const EditButton = ({memory}: {memory: Memory}) => (
-  <TouchableOpacity
-    style={styles.icon}
-    onPress={() =>
-      getNavigation().navigate('EditMemoryScreen', {mid: memory.id})
-    }>
-    <Icon name="edit" size={25} color={Colors.DARK} />
-  </TouchableOpacity>
-);
+const EditButton = ({memory}: {memory: Memory}) => {
+  const {navigate} = useNavigation();
+  return (
+    <TouchableOpacity
+      accessibilityLabel="Edit Memory"
+      style={styles.icon}
+      onPress={() => navigate('EditMemoryScreen', {mid: memory.id})}>
+      <Icon name="edit" size={25} color={Colors.DARK} />
+    </TouchableOpacity>
+  );
+};
 
-export const UploadContentButton = ({memory}: {memory: Memory}) => (
-  <TouchableOpacity
-    accessibilityLabel="Upload Content"
-    style={styles.icon}
-    onPress={() => {
-      ContentPicker.open(
-        () => {},
-        (content: PickedContent[]) => {
-          if (memory.displayContent == null) {
-            // select first item as display picture
-            content[0].setDisplayPicture = true;
-          }
+export const UploadContentButton = ({memory}: {memory: Memory}) => {
+  const {navigate} = useNavigation();
+  return (
+    <TouchableOpacity
+      accessibilityLabel="Upload Content"
+      style={styles.icon}
+      onPress={() => {
+        ContentPicker.open(
+          () => {},
+          (content: PickedContent[]) => {
+            if (memory.displayContent == null) {
+              // select first item as display picture
+              content[0].setDisplayPicture = true;
+            }
 
-          getNavigation().navigate('ContentUploadScreen', {
-            mid: memory.id,
-            content,
-          });
-        },
-      );
-    }}>
-    <Icon name="plussquareo" size={25} color={Colors.DARK} />
-  </TouchableOpacity>
-);
+            navigate('ContentUploadScreen', {
+              mid: memory.id,
+              content,
+            });
+          },
+        );
+      }}>
+      <Icon name="plussquareo" size={25} color={Colors.DARK} />
+    </TouchableOpacity>
+  );
+};
 
 export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
   const dispatch = useDispatch();
+  const nav = useNavigation();
+
   let message = `Delete '${memory.title}'`;
   if (memory.imageCount + memory.videoCount > 0) {
     message = `Deleting '${memory.title}' will permanently delete the enclosed pictures and videos.`;
@@ -84,7 +91,8 @@ export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
       style: 'destructive',
       onPress: async () => {
         await deleteMemory(memory.id);
-        getNavigation().dispatch(
+
+        nav.dispatch(
           // reset as state will no longer exist
           CommonActions.reset({
             index: 0,
