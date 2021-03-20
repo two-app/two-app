@@ -113,7 +113,6 @@ export const ContentUploadScreen = ({
           renderItem={({item}) => (
             <GridRow content={item} renderCell={renderCell} />
           )}
-          keyExtractor={(i) => i.map((x) => x?.filename).join()}
         />
       </View>
     </Container>

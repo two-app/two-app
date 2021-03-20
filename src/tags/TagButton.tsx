@@ -10,7 +10,7 @@ export const TagButton = ({
   focused,
 }: {
   tag: Tag;
-  onClick?: Function;
+  onClick?: (tag: Tag) => void;
   focused?: boolean;
 }) => {
   let style: any = {...s.tag, borderColor: tag.color};

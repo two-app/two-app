@@ -54,7 +54,7 @@ type GridRowProps<T> = {
  * Render a row, replacing null elements with an Empty Cell.
  * Default margin of -5 on the row view.
  */
-export const GridRow = <T extends {}>({
+export const GridRow = <T extends unknown>({
   content,
   renderCell,
 }: GridRowProps<T>) => (
