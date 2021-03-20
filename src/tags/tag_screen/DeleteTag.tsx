@@ -15,7 +15,7 @@ type DeleteTagIconProps = {
 };
 
 export const DeleteTagIcon = ({tag, onDeleted, style}: DeleteTagIconProps) => {
-  const deleteMe = () => {
+  const onPress = () => {
     let message = `Delete '${tag.name}' tag`;
     if (tag.memoryCount > 0) {
       const pluralized = pluralize('memory', tag.memoryCount, true);
@@ -36,7 +36,7 @@ export const DeleteTagIcon = ({tag, onDeleted, style}: DeleteTagIconProps) => {
   return (
     <TouchableOpacity
       style={style}
-      onPress={deleteMe}
+      onPress={onPress}
       accessibilityLabel="Delete Tag"
       accessibilityHint={`Delete Tag '${tag.name}'`}>
       <EvilIcon

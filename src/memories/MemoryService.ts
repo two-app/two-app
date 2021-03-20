@@ -93,3 +93,9 @@ export const patchMemory = (
     },
   );
 };
+
+export const deleteMemory = async (mid: number): Promise<void> => {
+  const r = await Gateway.delete<any>(`/memory/${mid}`);
+  console.log(`Successfully deleted memory. Response: ${r}`);
+  return r.data;
+};
