@@ -20,7 +20,8 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 0,
     'no-nested-ternary': 0,
     'react-hooks/exhaustive-deps': 0,
-    'no-empty-function': ['error', {allow: ['arrowFunctions']}],
+    'no-empty-function': 'off',
+    '@typescript-eslint/no-empty-function': ['off'],
     quotes: [2, 'single', 'avoid-escape'],
   },
 };

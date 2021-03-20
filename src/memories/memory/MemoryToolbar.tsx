@@ -1,13 +1,17 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, AlertButton, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useDispatch} from 'react-redux';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
 import {MemoryDisplayView} from '../MemoryDisplayView';
 import {Memory} from '../MemoryModels';
-import {getNavigation} from '../../navigation/RootNavigation';
 import Colors from '../../Colors';
 import {ContentPicker, PickedContent} from '../../content/ContentPicker';
+import {deleteMemory} from '../MemoryService';
+import {deleteMemory as deleteMemoryFromState} from '../store';
 
 export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   <View>
@@ -16,53 +20,104 @@ export const MemoryToolbar = ({memory}: {memory: Memory}) => (
       <View style={styles.toolbarGroup}>
         <EditButton memory={memory} />
         <UploadContentButton memory={memory} />
+        <DeleteMemoryButton memory={memory} />
       </View>
     </View>
     <MemoryDisplayView memory={memory} />
   </View>
 );
 
-const BackButton = () => (
-  <TouchableOpacity
-    accessibilityLabel="Go Back"
-    onPress={() => getNavigation().navigate('HomeScreen')}>
-    <Icon name="arrowleft" size={25} color={Colors.DARK} />
-  </TouchableOpacity>
-);
+const BackButton = () => {
+  const {navigate} = useNavigation();
+  return (
+    <TouchableOpacity
+      accessibilityLabel="Go Back"
+      onPress={() => navigate('HomeScreen')}>
+      <Icon name="arrowleft" size={25} color={Colors.DARK} />
+    </TouchableOpacity>
+  );
+};
 
-const EditButton = ({memory}: {memory: Memory}) => (
-  <TouchableOpacity
-    style={styles.icon}
-    onPress={() =>
-      getNavigation().navigate('EditMemoryScreen', {mid: memory.id})
-    }>
-    <Icon name="edit" size={25} color={Colors.DARK} />
-  </TouchableOpacity>
-);
+const EditButton = ({memory}: {memory: Memory}) => {
+  const {navigate} = useNavigation();
+  return (
+    <TouchableOpacity
+      accessibilityLabel="Edit Memory"
+      style={styles.icon}
+      onPress={() => navigate('EditMemoryScreen', {mid: memory.id})}>
+      <Icon name="edit" size={25} color={Colors.DARK} />
+    </TouchableOpacity>
+  );
+};
 
-export const UploadContentButton = ({memory}: {memory: Memory}) => (
-  <TouchableOpacity
-    accessibilityLabel="Upload Content"
-    style={styles.icon}
-    onPress={() => {
-      ContentPicker.open(
-        () => {},
-        (content: PickedContent[]) => {
-          if (memory.displayContent == null) {
-            // select first item as display picture
-            content[0].setDisplayPicture = true;
-          }
+export const UploadContentButton = ({memory}: {memory: Memory}) => {
+  const {navigate} = useNavigation();
+  return (
+    <TouchableOpacity
+      accessibilityLabel="Upload Content"
+      style={styles.icon}
+      onPress={() => {
+        ContentPicker.open(
+          () => {},
+          (content: PickedContent[]) => {
+            if (memory.displayContent == null) {
+              // select first item as display picture
+              content[0].setDisplayPicture = true;
+            }
 
-          getNavigation().navigate('ContentUploadScreen', {
-            mid: memory.id,
-            content,
-          });
-        },
-      );
-    }}>
-    <Icon name="plussquareo" size={25} color={Colors.DARK} />
-  </TouchableOpacity>
-);
+            navigate('ContentUploadScreen', {
+              mid: memory.id,
+              content,
+            });
+          },
+        );
+      }}>
+      <Icon name="plussquareo" size={25} color={Colors.DARK} />
+    </TouchableOpacity>
+  );
+};
+
+export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
+  const dispatch = useDispatch();
+  const nav = useNavigation();
+
+  let message = `Delete '${memory.title}'`;
+  if (memory.imageCount + memory.videoCount > 0) {
+    message = `Deleting '${memory.title}' will permanently delete the enclosed pictures and videos.`;
+  }
+
+  const onPress = (): void => {
+    const cancelBtn: AlertButton = {text: 'Cancel', style: 'cancel'};
+    const deleteBtn: AlertButton = {
+      text: 'Delete',
+      style: 'destructive',
+      onPress: async () => {
+        await deleteMemory(memory.id);
+
+        nav.dispatch(
+          // reset as state will no longer exist
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'HomeScreen'}],
+          }),
+        );
+        dispatch(deleteMemoryFromState({mid: memory.id}));
+      },
+    };
+
+    Alert.alert('Delete Memory', message, [cancelBtn, deleteBtn]);
+  };
+
+  return (
+    <TouchableOpacity
+      accessibilityLabel="Delete Memory"
+      // if only the icon was clipped correctly...
+      style={{marginLeft: 8, marginRight: -8}}
+      onPress={onPress}>
+      <EvilIcon name="trash" size={36} color={Colors.DARK_SALMON} />
+    </TouchableOpacity>
+  );
+};
 
 const styles = StyleSheet.create({
   toolbar: {

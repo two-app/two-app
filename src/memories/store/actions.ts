@@ -10,6 +10,10 @@ export const updateMemory = createAction('UPDATE_MEMORY')<{
   memory: Memory;
 }>();
 
+export const deleteMemory = createAction('DELETE_MEMORY')<{
+  mid: number;
+}>();
+
 export const storeContent = createAction('STORE_CONTENT')<{
   mid: number;
   content: Content[];
@@ -27,6 +31,7 @@ export const emptyMemories = createAction('EMPTY_MEMORIES')();
 export default {
   storeMemories,
   updateMemory,
+  deleteMemory,
   insertMemory,
   storeContent,
   deleteContent,

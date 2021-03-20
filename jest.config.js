@@ -7,4 +7,5 @@ module.exports = {
   transformIgnorePatterns: [
     'node_modules/(?!(jest-)?react-native|@react-native-community|@react-navigation)',
   ],
+  modulePathIgnorePatterns: ['<rootDir>/__tests__/utils/'],
 };
