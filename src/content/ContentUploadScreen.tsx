@@ -113,6 +113,9 @@ export const ContentUploadScreen = ({
           renderItem={({item}) => (
             <GridRow content={item} renderCell={renderCell} />
           )}
+          keyExtractor={(row: PickedContent[]) =>
+            row.map((pc: PickedContent) => pc?.filename).join()
+          }
         />
       </View>
     </Container>
