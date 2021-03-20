@@ -8,7 +8,6 @@ import {CommonActions, useNavigation} from '@react-navigation/native';
 
 import {MemoryDisplayView} from '../MemoryDisplayView';
 import {Memory} from '../MemoryModels';
-import {getNavigation} from '../../navigation/RootNavigation';
 import Colors from '../../Colors';
 import {ContentPicker, PickedContent} from '../../content/ContentPicker';
 import {deleteMemory} from '../MemoryService';
@@ -28,13 +27,16 @@ export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   </View>
 );
 
-const BackButton = () => (
-  <TouchableOpacity
-    accessibilityLabel="Go Back"
-    onPress={() => getNavigation().navigate('HomeScreen')}>
-    <Icon name="arrowleft" size={25} color={Colors.DARK} />
-  </TouchableOpacity>
-);
+const BackButton = () => {
+  const {navigate} = useNavigation();
+  return (
+    <TouchableOpacity
+      accessibilityLabel="Go Back"
+      onPress={() => navigate('HomeScreen')}>
+      <Icon name="arrowleft" size={25} color={Colors.DARK} />
+    </TouchableOpacity>
+  );
+};
 
 const EditButton = ({memory}: {memory: Memory}) => {
   const {navigate} = useNavigation();

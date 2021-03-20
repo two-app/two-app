@@ -28,6 +28,16 @@ describe('MemoryToolbar', () => {
   afterEach(cleanup);
   beforeAll(jest.useRealTimers); // required for the waitFor function to work
 
+  describe('The Back Button', () => {
+    it('should navigate home', () => {
+      const backBtn = tb.render.getByA11yLabel('Go Back');
+
+      fireEvent.press(backBtn);
+
+      expect(mockNavigation.navigate).toHaveBeenCalledWith('HomeScreen');
+    });
+  });
+
   describe('Edit Memory Button', () => {
     it('should navigate', () => {
       const editBtn = tb.render.getByA11yLabel('Edit Memory');
