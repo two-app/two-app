@@ -3472,14 +3472,14 @@ eslint-config-prettier@^6.10.1:
   dependencies:
     get-stdin "^6.0.0"
 
-eslint-config-react-native-wcandillon@^3.3.4:
-  version "3.3.4"
-  resolved "https://registry.yarnpkg.com/eslint-config-react-native-wcandillon/-/eslint-config-react-native-wcandillon-3.3.4.tgz#1afa0be84d8edcf428be3a57a56c70fd0cfcbe04"
-  integrity sha512-BfLZnLc1FC9Kfogyk4IESlEwyc0FwYvVOYDt4j76TqHpDTsBBK3lVi3YaaRdVG8F5cGaXZ0i1D/0XQzIhJ1LPw==
+eslint-config-react-native-wcandillon@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-react-native-wcandillon/-/eslint-config-react-native-wcandillon-3.5.0.tgz#232758f2fe1cf2d836f3c1ad936bfe740e0e253b"
+  integrity sha512-pZaVvNHwQLv9p9C9SyEp1IXma1q2mko67ZY8hjkNvfG+3Njtnp5rppyeDMULY+UIxKhaAGTCoWBpLyPiBVOv+w==
   dependencies:
     "@react-native-community/eslint-config" "2.0.0"
     eslint-plugin-import "^2.22.1"
-    typescript "^4.0.5"
+    typescript "^4.2.3"
 
 eslint-import-resolver-node@^0.3.4:
   version "0.3.4"
@@ -8848,7 +8848,7 @@ typesafe-actions@^5.1.0:
   resolved "https://registry.yarnpkg.com/typesafe-actions/-/typesafe-actions-5.1.0.tgz#9afe8b1e6a323af1fd59e6a57b11b7dd6623d2f1"
   integrity sha512-bna6Yi1pRznoo6Bz1cE6btB/Yy8Xywytyfrzu/wc+NFW3ZF0I+2iCGImhBsoYYCOWuICtRO4yHcnDlzgo1AdNg==
 
-typescript@^4.0.5, typescript@^4.2.3:
+typescript@^4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.3.tgz#39062d8019912d43726298f09493d598048c1ce3"
   integrity sha512-qOcYwxaByStAWrBf4x0fibwZvMRG+r4cQoTjbPtUlrWjBHbmCAww1i448U0GJ+3cNNEtebDteo/cHOR3xJ4wEw==
