@@ -19,7 +19,7 @@
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
-    "@reduxjs/toolkit": "^1.5.0",
+    "@reduxjs/toolkit": "^1.5.1",
     "@testing-library/react-native": "^7.2.0",
     "@types/jest": "^26.0.22",
     "@types/lodash": "^4.14.168",
