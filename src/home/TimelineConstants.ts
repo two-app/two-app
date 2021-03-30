@@ -1,5 +1,5 @@
 import {ReactElement} from 'react';
-import Animated, {Easing} from 'react-native-reanimated';
+import Animated, {Easing, EasingNode} from 'react-native-reanimated';
 import {PayloadActionCreator} from 'typesafe-actions';
 
 import {MemoryTimelineComponent} from '../memories/MemoryTimeline';
@@ -33,7 +33,7 @@ export const setOpacityFn = (ref: Animated.Node<number>): SetOpacity => {
     return Animated.timing(ref, {
       toValue,
       duration: 100,
-      easing: Easing.ease,
+      easing: EasingNode.ease,
     });
   };
 };
