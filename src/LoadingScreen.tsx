@@ -72,3 +72,5 @@ export class LoadingStatus {
     return new LoadingStatus(false, false, error);
   };
 }
+
+export const loading = new LoadingStatus(true);
