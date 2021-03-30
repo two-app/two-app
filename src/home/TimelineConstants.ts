@@ -1,1 +1,1 @@
-export type SelectedTimeline = 'timeline' | 'grouped' | 'grid';
+export type TimelineType = 'timeline' | 'grouped' | 'grid';

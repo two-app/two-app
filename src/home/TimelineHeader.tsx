@@ -14,11 +14,11 @@ import {
 import {TwoNav} from '../navigation/NavigationUtilities';
 
 import {Heading} from './Heading';
-import {SelectedTimeline} from './TimelineConstants';
+import {TimelineType} from './TimelineConstants';
 
 export type TimelineHeaderProps = {
-  selected: SelectedTimeline;
-  onSelected: (selected: SelectedTimeline) => void;
+  selected: TimelineType;
+  onSelected: (selected: TimelineType) => void;
 };
 
 export const TimelineHeader = ({selected, onSelected}: TimelineHeaderProps) => {

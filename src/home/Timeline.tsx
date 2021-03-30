@@ -16,12 +16,12 @@ import {Memory} from '../memories/MemoryModels';
 import {getMemories} from '../memories/MemoryService';
 import {selectAllMemories, storeMemories} from '../memories/store';
 
-import {SelectedTimeline} from './TimelineConstants';
+import {TimelineType} from './TimelineConstants';
 import {TimelineHeader} from './TimelineHeader';
 
 export const Timeline = () => {
   const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>(loading);
-  const [selectedTimeline, setSelectedTimeline] = useState<SelectedTimeline>(
+  const [selectedTimeline, setSelectedTimeline] = useState<TimelineType>(
     'timeline',
   );
 
@@ -127,7 +127,7 @@ const TagItem = ({tag}: {tag: Tag}) => (
   </TouchableOpacity>
 );
 
-const Timelines: Record<SelectedTimeline, TimelineComponent<any>> = {
+const Timelines: Record<TimelineType, TimelineComponent<any>> = {
   timeline: MemoryTimelineComponent,
   grouped: GroupedTimelineComponent,
   grid: MemoryTimelineComponent,
