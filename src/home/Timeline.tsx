@@ -1,22 +1,13 @@
-import React, {ReactElement, useEffect, useState} from 'react';
-import {FlatList, RefreshControl, Text, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {FlatList, RefreshControl} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {PayloadActionCreator} from 'typesafe-actions';
-import Animated, {Easing} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 
 import {ErrorResponse} from '../http/Response';
 import {loading, LoadingStatus} from '../LoadingScreen';
-import {getNavigation} from '../navigation/RootNavigation';
-import {persistor, TwoState} from '../state/reducers';
-import {selectAllTags, storeTags} from '../tags/store';
-import {Tag} from '../tags/Tag';
-import {getTags} from '../tags/TagService';
-import {MemoryDisplayView} from '../memories/MemoryDisplayView';
-import {Memory} from '../memories/MemoryModels';
-import {getMemories} from '../memories/MemoryService';
-import {selectAllMemories, storeMemories} from '../memories/store';
+import {persistor} from '../state/reducers';
 
-import {TimelineType} from './TimelineConstants';
+import {setOpacityFn, Timelines, TimelineType} from './TimelineConstants';
 import {TimelineHeader} from './TimelineHeader';
 
 export const Timeline = () => {
@@ -26,6 +17,7 @@ export const Timeline = () => {
   );
 
   const [opacity] = useState(new Animated.Value(0));
+  const setOpacity = setOpacityFn(opacity);
   const dispatch = useDispatch();
   const timeline = Timelines[selectedTimeline];
 
@@ -42,13 +34,6 @@ export const Timeline = () => {
         setLoadingStatus(loadingStatus.endLoading(e.reason));
       });
   };
-
-  const setOpacity = (toValue: number) =>
-    Animated.timing(opacity, {
-      toValue,
-      duration: 100,
-      easing: Easing.ease,
-    });
 
   useEffect(() => {
     refreshData();
@@ -87,48 +72,4 @@ export const Timeline = () => {
       showsVerticalScrollIndicator={false}
     />
   );
-};
-
-type TimelineComponent<T> = {
-  fetch: () => Promise<Array<T>>;
-  select: (s: TwoState) => Array<T>;
-  dispatcher: PayloadActionCreator<string, Array<T>>;
-  render: (item: T) => ReactElement;
-  key: (item: T) => string;
-};
-
-const MemoryTimelineComponent: TimelineComponent<Memory> = {
-  fetch: getMemories,
-  select: selectAllMemories,
-  dispatcher: storeMemories,
-  render: (memory) => <MemoryItem memory={memory} />,
-  key: (memory) => `memory-${memory.id}`,
-};
-
-const MemoryItem = ({memory}: {memory: Memory}) => (
-  <TouchableOpacity
-    style={{marginTop: 10, marginBottom: 20}}
-    onPress={() => getNavigation().navigate('MemoryScreen', {mid: memory.id})}>
-    <MemoryDisplayView memory={memory} />
-  </TouchableOpacity>
-);
-
-const GroupedTimelineComponent: TimelineComponent<Tag> = {
-  fetch: getTags,
-  select: selectAllTags,
-  dispatcher: storeTags,
-  render: (tag) => <TagItem tag={tag} />,
-  key: (tag) => `tag-${tag.tid}`,
-};
-
-const TagItem = ({tag}: {tag: Tag}) => (
-  <TouchableOpacity style={{marginVertical: 20}}>
-    <Text>{tag.name}</Text>
-  </TouchableOpacity>
-);
-
-const Timelines: Record<TimelineType, TimelineComponent<any>> = {
-  timeline: MemoryTimelineComponent,
-  grouped: GroupedTimelineComponent,
-  grid: MemoryTimelineComponent,
 };
