@@ -1,5 +1,5 @@
 import {ReactElement} from 'react';
-import Animated, {Easing, EasingNode} from 'react-native-reanimated';
+import Animated, {EasingNode} from 'react-native-reanimated';
 import {PayloadActionCreator} from 'typesafe-actions';
 
 import {MemoryTimelineComponent} from '../memories/MemoryTimeline';
