@@ -1,20 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import Memories from '../memories/Memories';
 import {NoWrapContainer, Wrapper} from '../views/View';
 
+import {Timeline} from './Timeline';
 import {Footer} from './Footer';
-
-// type HomeScreenProps = {
-//   navigation: StackNavigationProp<RootStackParamList, 'HomeScreen'>;
-//   user: User;
-// };
 
 const HomeScreen = () => (
   <Wrapper>
     <NoWrapContainer>
-      <Memories />
+      <Timeline />
     </NoWrapContainer>
     <Footer active="HomeScreen" />
   </Wrapper>
