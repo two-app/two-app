@@ -44,7 +44,7 @@ platform :ios do
       export_method: "ad-hoc",
       export_options: {
         provisioningProfiles: { 
-            CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier) => CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier) + " AppStore" # Value of this parameter is the name of the Provisioning Profile. By default, it will be "{bundleId} AppStore"
+            CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier) => CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier) + " AdHoc" # Value of this parameter is the name of the Provisioning Profile. By default, it will be "{bundleId} AppStore"
         }
       },
       build_path: "./builds",
