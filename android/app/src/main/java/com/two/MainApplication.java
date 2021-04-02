@@ -38,6 +38,11 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
         protected String getJSMainModuleName() {
           return "index";
         }
+
+        @Override
+        protected JSIModulePackage getJSIModulePackage() {
+          return new ReanimatedJSIModulePackage();
+        }
       };
 
   @Override
@@ -50,11 +55,6 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
-  }
-
-  @Override
-  protected JSIModulePackage getJSIModulePackage() {
-    return new ReanimatedJSIModulePackage();
   }
 
   /**
