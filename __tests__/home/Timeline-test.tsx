@@ -18,6 +18,8 @@ import {Memory} from '../../src/memories/MemoryModels';
 import {store} from '../../src/state/reducers';
 import {Tag} from '../../src/tags/Tag';
 import {mockNavigation, resetMockNavigation} from '../utils/NavigationMocking';
+import {TimelineType} from '../../src/home/TimelineConstants';
+import {TagButton} from '../../src/tags/TagButton';
 
 describe('Timeline', () => {
   let tb: TimelineTestBed;
@@ -51,7 +53,11 @@ describe('Timeline', () => {
     beforeEach(() => tb.build());
 
     it('should load the default memory timeline', () => {
-      tb.render.getByA11yLabel('Selected timeline: timeline');
+      expect(tb.currentTimeline()).toEqual('timeline');
+    });
+
+    it('should retrieve the memories', () => {
+      expect(tb.getMemoriesFn).toHaveBeenCalledTimes(1);
     });
 
     it('pressing the title input should navigate to CreateMemoryScreen', () => {
@@ -75,12 +81,34 @@ describe('Timeline', () => {
       });
     });
 
-    it('tapping the "grouped" icon should navigate swap to the grouped timeline', async () => {
-      const btn = tb.render.getByA11yLabel('Open Grouped Timeline');
-      fireEvent.press(btn);
-      await waitFor(() => {
-        tb.render.getByA11yLabel('Selected timeline: grouped');
-      });
+    it('tapping the "grouped" icon should swap to the grouped timeline', async () => {
+      tb.selectTimeline('grouped');
+    });
+  });
+
+  describe('Grouped Timeline', () => {
+    beforeEach(async () => {
+      tb.onGetTagsResolve([testTag]);
+      tb.build();
+      await tb.selectTimeline('grouped');
+      await tb.waitForTimelineToLoad('grouped');
+    });
+
+    it('should load the grouped timeline', () => {
+      expect(tb.currentTimeline()).toEqual('grouped');
+    });
+
+    it('should retrieve the tags', () => {
+      expect(tb.getTagsFn).toHaveBeenCalledTimes(1);
+    });
+
+    it('should display the tag name', () => {
+      // This test will no exist when we implement a UI for the tags
+      tb.render.getByA11yLabel(`Open tag '${testTag.name}'`);
+    });
+
+    it('tapping the "timeline" icon should swap to the default timeline', async () => {
+      tb.selectTimeline('timeline');
     });
   });
 });
@@ -88,8 +116,8 @@ describe('Timeline', () => {
 class TimelineTestBed {
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 
-  getMemoriesFn = jest.spyOn(MemoryService, 'getMemories');
-  getTagsFn = jest.spyOn(TagService, 'getTags');
+  getMemoriesFn = jest.spyOn(MemoryService, 'getMemories').mockClear();
+  getTagsFn = jest.spyOn(TagService, 'getTags').mockClear();
 
   constructor() {
     this.onGetMemoriesResolve([]);
@@ -102,6 +130,30 @@ class TimelineTestBed {
 
   onGetTagsResolve = (tags: Tag[]) => {
     this.getTagsFn.mockResolvedValue(tags);
+  };
+
+  waitForTimelineToLoad = async (timeline: TimelineType) => {
+    await waitFor(() => {
+      this.render.getByA11yHint(`Timeline ${timeline} with 1 items`);
+    });
+  };
+
+  currentTimeline = (): TimelineType => {
+    if (this.render.queryByA11yLabel('Selected timeline: timeline')) {
+      return 'timeline';
+    } else if (this.render.queryByA11yLabel('Selected timeline: grouped')) {
+      return 'grouped';
+    } else {
+      throw Error('Could not determine selected timeline');
+    }
+  };
+
+  selectTimeline = async (timeline: TimelineType) => {
+    const btn = this.render.getByA11yLabel(`Open ${timeline} Timeline`);
+    fireEvent.press(btn);
+    return await waitFor(() => {
+      this.render.getByA11yLabel(`Selected timeline: ${timeline}`);
+    });
   };
 
   build = (): TimelineTestBed => {

@@ -38,10 +38,9 @@ export const Timeline = () => {
   useEffect(() => {
     refreshData();
     setOpacity(1).start();
-  }, []);
+  }, [selectedTimeline]);
 
   const data = useSelector(timeline.select);
-
   return (
     <FlatList
       data={data}

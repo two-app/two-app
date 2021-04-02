@@ -15,8 +15,12 @@ export const GroupedTimelineComponent = (): TimelineComponent<Tag> => ({
   key: (tag) => `tag-${tag.tid}`,
 });
 
-const TagItem = ({tag}: {tag: Tag}) => (
-  <TouchableOpacity style={{marginVertical: 20}}>
-    <Text>{tag.name}</Text>
-  </TouchableOpacity>
-);
+const TagItem = ({tag}: {tag: Tag}) => {
+  return (
+    <TouchableOpacity
+      style={{marginVertical: 20}}
+      accessibilityLabel={`Open tag '${tag.name}'`}>
+      <Text>{tag.name}</Text>
+    </TouchableOpacity>
+  );
+};
