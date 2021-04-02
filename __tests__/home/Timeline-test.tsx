@@ -19,7 +19,6 @@ import {store} from '../../src/state/reducers';
 import {Tag} from '../../src/tags/Tag';
 import {mockNavigation, resetMockNavigation} from '../utils/NavigationMocking';
 import {TimelineType} from '../../src/home/TimelineConstants';
-import {TagButton} from '../../src/tags/TagButton';
 
 describe('Timeline', () => {
   let tb: TimelineTestBed;
