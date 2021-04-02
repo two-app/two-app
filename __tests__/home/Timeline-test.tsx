@@ -3,6 +3,7 @@ import {
   fireEvent,
   render,
   RenderAPI,
+  waitFor,
 } from '@testing-library/react-native';
 import React from 'react';
 import {Text} from 'react-native';
@@ -28,6 +29,24 @@ describe('Timeline', () => {
   });
   afterEach(cleanup);
 
+  const testTag: Tag = {
+    tid: 3,
+    color: '#1a1a1a',
+    memoryCount: 1,
+    name: 'Birthday 2021',
+  };
+
+  const testMemory: Memory = {
+    id: 5,
+    title: 'Birthday Cake',
+    location: 'London',
+    date: moment().valueOf(),
+    tag: testTag,
+    imageCount: 3,
+    videoCount: 5,
+    displayContent: undefined,
+  };
+
   describe('By default', () => {
     beforeEach(() => tb.build());
 
@@ -43,17 +62,6 @@ describe('Timeline', () => {
   });
 
   describe('Memory Timeline', () => {
-    const testMemory: Memory = {
-      id: 5,
-      title: 'Birthday',
-      location: 'Birthday Location',
-      date: moment().valueOf(),
-      tag: undefined,
-      imageCount: 3,
-      videoCount: 5,
-      displayContent: undefined,
-    };
-
     beforeEach(() => {
       tb.onGetMemoriesResolve([testMemory]);
       tb.build();
@@ -64,6 +72,14 @@ describe('Timeline', () => {
       fireEvent.press(btn);
       expect(mockNavigation.navigate).toHaveBeenCalledWith('MemoryScreen', {
         mid: testMemory.id,
+      });
+    });
+
+    it('tapping the "grouped" icon should navigate swap to the grouped timeline', async () => {
+      const btn = tb.render.getByA11yLabel('Open Grouped Timeline');
+      fireEvent.press(btn);
+      await waitFor(() => {
+        tb.render.getByA11yLabel('Selected timeline: grouped');
       });
     });
   });
