@@ -16,11 +16,11 @@ export type TimelineComponent<T> = {
   key: (item: T) => string;
 };
 
-export const Timelines: Record<TimelineType, TimelineComponent<any>> = {
-  timeline: MemoryTimelineComponent,
-  grouped: GroupedTimelineComponent,
-  grid: MemoryTimelineComponent,
-};
+export const Timelines = (): Record<TimelineType, TimelineComponent<any>> => ({
+  timeline: MemoryTimelineComponent(),
+  grouped: GroupedTimelineComponent(),
+  grid: MemoryTimelineComponent(),
+});
 
 type SetOpacity = (toValue: number) => Animated.BackwardCompatibleWrapper;
 

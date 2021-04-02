@@ -19,7 +19,7 @@ export const Timeline = () => {
   const [opacity] = useState(new Animated.Value(0));
   const setOpacity = setOpacityFn(opacity);
   const dispatch = useDispatch();
-  const timeline = Timelines[selectedTimeline];
+  const timeline = Timelines()[selectedTimeline];
 
   const refreshData = (displayRefresh?: boolean) => {
     setLoadingStatus(loadingStatus.beginLoading(displayRefresh));
@@ -40,9 +40,13 @@ export const Timeline = () => {
     setOpacity(1).start();
   }, []);
 
+  const data = useSelector(timeline.select);
+
   return (
     <FlatList
-      data={useSelector(timeline.select)}
+      data={data}
+      accessibilityLabel={`Selected timeline: ${selectedTimeline}`}
+      accessibilityHint={`Timeline ${selectedTimeline} with ${data.length} items`}
       ListHeaderComponent={() => (
         <TimelineHeader
           selected={selectedTimeline}

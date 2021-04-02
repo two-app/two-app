@@ -10,6 +10,8 @@ import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
+import com.facebook.react.bridge.JSIModulePackage;
+import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -48,6 +50,11 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
     initializeFlipper(this); // Remove this line if you don't want Flipper enabled
+  }
+
+  @Override
+  protected JSIModulePackage getJSIModulePackage() {
+    return new ReanimatedJSIModulePackage();
   }
 
   /**
