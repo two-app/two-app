@@ -1,4 +1,4 @@
 Device ID	Device Name	Device Platform
-00008030-000620980e63802E	mrrobfletcher@outlook.com - iPhone SE 2nd Gen	ios
+00008030-000620980E63802E	mrrobfletcher@outlook.com - iPhone SE 2nd Gen	ios
 00008101-001224690c40001e	gerry@gerryfletcher.me - iPhone 12	ios
 00008101-001c185c3652001e	iuliiachoporova@gmail.com - iPhone 12	ios
