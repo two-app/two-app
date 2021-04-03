@@ -1,0 +1,5 @@
+scheme("two")
+
+output_directory("./build")
+silent(true)
+suppress_xcode_output(true)
