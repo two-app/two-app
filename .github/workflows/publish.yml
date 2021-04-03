@@ -31,7 +31,7 @@ jobs:
         run: |
           cd ios
           bundle install
-          bundle exec fastlane alpha --env beta
+          bundle exec fastlane alpha --env beta env:firebase
           cd ../
         env:
           ENVFILE: .env.prod
