@@ -21,7 +21,23 @@ platform :ios do
     setup_circle_ci
   end
 
-  lane :alpha do
+  lane :alpha do |options|
+    match(
+      type: "adhoc",
+      readonly: is_ci,
+      app_identifier: "date.two"
+    )
+
+    build(profile: options[:env])
+
+    firebase_app_distribution(
+      app: ENV['APP_ID'],
+      groups: ENV["GROUPS"] || options[:groups],
+      release_notes: options[:notes] || "",
+    )
+  end
+
+  private_lane :build do |options|
     increment_build_number(xcodeproj: "two.xcodeproj")
     
     commit_version_bump(
@@ -30,26 +46,24 @@ platform :ios do
       xcodeproj: "two.xcodeproj"
     )
 
-    match(
-      type: "adhoc",
-      readonly: is_ci,
-      app_identifier: "date.two"
-    )
-
+    scheme = ENV['SCHEME_NAME']
+    method = (options[:profile] == 'distribution' ? "app-store" : "ad-hoc")
+    profile = (options[:profile] == 'distribution' ? 
+      ENV['DISTRIBUTION_PROFILE_APPSTORE'] : ENV['DISTRIBUTION_PROFILE_FIREBASE'])
+ 
     build_app(
-      workspace: "two.xcworkspace",
-      scheme: "two",
+      scheme: scheme,
+      export_method: method,
+      export_options: {
+        method: method,
+        provisioningProfiles: {
+          ENV['BUNDLE_ID'] => profile
+        }
+      },
+      include_bitcode: true,
       clean: true,
       silent: true,
-      export_method: "ad-hoc",
-      build_path: "./builds",
-      output_directory: "./builds"
-    )
-
-    firebase_app_distribution(
-        app: "1:585621126829:ios:fc193f28d8a69ee327d024",
-        groups: "ios-family",
-        release_notes: ""
+      suppress_xcode_output: true
     )
   end
 
