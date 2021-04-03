@@ -42,7 +42,7 @@ jobs:
         env:
           ENVFILE: .env.prod
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          MATCH_TOKEN: ${{ secrets.CLONE_TOKEN }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
       - name: Merge Version Changes
         run: |
