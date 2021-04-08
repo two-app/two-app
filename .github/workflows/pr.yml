@@ -12,33 +12,44 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - uses: actions/setup-node@v1
         with:
           node-version: '12'
-      - run: yarn install --network-timeout 100000
+
+      - uses: c-hive/gha-yarn-cache@v1
+
+      - run: yarn install --non-interactive --frozen-lockfile --network-timeout 100000
+
       - run: yarn test
   build:
     name: build
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - run: yarn install
+
+      - uses: c-hive/gha-yarn-cache@v1
+
+      - run: yarn install --non-interactive --frozen-lockfile --network-timeout 100000
+
       - run: gem install bundler
+
       - uses: actions/cache@v2
         with:
           path: Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-pods-
+
       - name: iOS Build
         # xcbuild takes 20+ minutes, more than 2x
         # android, so we just install pods as a minor
         # sanity check
         run: |
           cd ios
-          pod deintegrate
           pod install
           cd ../
+
       - name: Android Build
         run: |
           cd android
@@ -51,10 +62,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
           node-version: '12'
-      - run: yarn install
+
+      - uses: c-hive/gha-yarn-cache@v1
+
+      - run: yarn install --non-interactive --frozen-lockfile --network-timeout 100000
+
       - run: yarn eslint
+
       - run: yarn tsc
