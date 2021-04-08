@@ -15,8 +15,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - uses: c-hive/gha-yarn-cache@v1
+
       - name: Install Packages
-        run: yarn install --non-interactive --frozen-lockfile
+      - run: yarn install --non-interactive --frozen-lockfile --network-timeout 100000
 
       - name: Cache pods
         uses: actions/cache@v1
