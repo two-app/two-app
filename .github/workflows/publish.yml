@@ -14,25 +14,44 @@ jobs:
         uses: actions/checkout@v2.1.0
         with:
           ref: 'master'
+
       - name: Configure Git
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "Release Bot"
+
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
           node-version: '12'
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
       - run: yarn install
+
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
+
       - uses: actions/cache@v2
         with:
           path: Pods
           key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-pods-
+
       - name: Install Pods
         run: cd ios; pod install; cd ../
+
       - name: Fastlane Alpha
         run: |
           cd ios
@@ -43,16 +62,20 @@ jobs:
           ENVFILE: .env.prod
           FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
           FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
-          FASTLANE_SESSION: ${{ secrets.FASTLANE_SESSION }}
+          APPLE_APP_STORE_CONNECT_API_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_API_KEY }}
+          APPLE_APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APPLE_APP_STORE_CONNECT_API_KEY_ID }}
+          APPLE_APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APPLE_APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APPLICATION_SPECIFIC_PASSWORD }}
           MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
       - name: Merge Version Changes
         run: |
           git reset --hard
           git clean -f -d
           git pull --rebase
+
       - name: Push Changes
         uses: ad-m/github-push-action@master
         with:
@@ -66,29 +89,51 @@ jobs:
         uses: actions/checkout@v2.1.0
         with:
           ref: 'master'
+
       - name: Configure Git
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "Release Bot"
+
       - name: Set up Ruby v2.6
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 2.6
+
       - name: Setup Node v12
         uses: actions/setup-node@v1
         with:
           node-version: '12'
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v2
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
       - run: yarn install
+
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
+
       - name: Write Secret Key
         run: cd android; echo '${{ secrets.ANDROID_PUBLISH_KEY }}' > key.json; cd ../
+
       - name: Write Publish Keystore
         run: cd android; echo ${{ secrets.ANDROID_RELEASE_KEYSTORE }} | base64 --decode > my-release-key.keystore; cd ../
+
       - name: Install Fastlane
         run: sudo gem install fastlane -NV
+
       - name: Install Bundler
         run: gem install bundler
+
       - name: Fastlane Alpha
         run: |
           cd android
@@ -99,11 +144,13 @@ jobs:
           ENVFILE: .env.prod
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
       - name: Merge Version Changes
         run: |
           git reset --hard
           git clean -f -d
           git pull --rebase
+
       - name: Push Changes
         uses: ad-m/github-push-action@master
         with:

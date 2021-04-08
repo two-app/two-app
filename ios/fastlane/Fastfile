@@ -7,9 +7,18 @@ platform :ios do
   end
 
   lane :alpha do |options|
+    File.write('AppStoreConnectApiKey.p8', ENV["APPLE_APP_STORE_CONNECT_API_KEY"])
+
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APPLE_APP_STORE_CONNECT_API_KEY_ID"],
+      issuer_id: ENV["APPLE_APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
+      key_filepath: "./AppStoreConnectApiKey.p8",
+      in_house: false
+    )
+
     register_devices(devices_file: "./devices.txt")
 
-    match(type: "adhoc", readonly: is_ci)
+    match(type: "adhoc", readonly: is_ci, api_key_path: "./AppStoreConnectApiKey.p8")
 
     increment_build_number(xcodeproj: "two.xcodeproj")
     gym(export_method: "ad-hoc")
