@@ -3,6 +3,8 @@ name: Firebase App Distribution
 on:
   workflow_run:
     branches: [master]
+    types:
+      - requested
 
 jobs:
   ios:
