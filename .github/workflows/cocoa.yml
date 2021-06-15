@@ -7,7 +7,6 @@ on:
   pull_request:
     branches:
       - dependabot/npm_and_yarn/**
-  workflow_dispatch:
 
 jobs:
   run:
