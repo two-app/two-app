@@ -69,7 +69,7 @@
     "@babel/core": "^7.14.6",
     "@babel/preset-typescript": "^7.13.0",
     "@babel/runtime": "^7.14.6",
-    "@react-native-community/eslint-config": "^2.0.0",
+    "@react-native-community/eslint-config": "^3.0.0",
     "@types/enzyme": "^3.10.8",
     "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jwt-decode": "^3.1.0",
