@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          token: '{{ secrets.WRITE_ACCESS_COMMIT_TOKEN }}'
+          token: ${{ secrets.WRITE_ACCESS_COMMIT_TOKEN }}
 
       - uses: c-hive/gha-yarn-cache@v1
 
