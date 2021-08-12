@@ -2,7 +2,7 @@
 /* eslint-disable import/order */
 import 'react-native';
 import 'jest-enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import Enzyme from 'enzyme';
 
 Enzyme.configure({adapter: new Adapter()});
@@ -49,6 +49,11 @@ jest.mock('./src/navigation/RootNavigation', () =>
 jest.mock('react-native-reanimated', () =>
   jest.requireActual('./node_modules/react-native-reanimated/mock'),
 );
+
+jest.mock('react-native-keyboard-aware-scroll-view', () => {
+    const KeyboardAwareScrollView = ({ children }) => children;
+    return { KeyboardAwareScrollView };
+});
 
 setupMockNavigation();
 
