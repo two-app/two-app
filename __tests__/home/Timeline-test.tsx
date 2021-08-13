@@ -1,10 +1,5 @@
-import {
-  cleanup,
-  fireEvent,
-  render,
-  RenderAPI,
-  waitFor,
-} from '@testing-library/react-native';
+import type {RenderAPI} from '@testing-library/react-native';
+import {fireEvent, render, waitFor} from '@testing-library/react-native';
 import React from 'react';
 import {Text} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -14,21 +9,19 @@ import moment from 'moment';
 import * as MemoryService from '../../src/memories/MemoryService';
 import * as TagService from '../../src/tags/TagService';
 import {Timeline} from '../../src/home/Timeline';
-import {Memory} from '../../src/memories/MemoryModels';
+import type {Memory} from '../../src/memories/MemoryModels';
 import {store} from '../../src/state/reducers';
-import {Tag} from '../../src/tags/Tag';
+import type {Tag} from '../../src/tags/Tag';
 import {mockNavigation, resetMockNavigation} from '../utils/NavigationMocking';
-import {TimelineType} from '../../src/home/TimelineConstants';
+import type {TimelineType} from '../../src/home/TimelineConstants';
 
 describe('Timeline', () => {
   let tb: TimelineTestBed;
 
-  beforeAll(jest.useRealTimers); // required for the waitFor function to work
   beforeEach(() => {
     tb = new TimelineTestBed();
     resetMockNavigation();
   });
-  afterEach(cleanup);
 
   const testTag: Tag = {
     tid: 3,

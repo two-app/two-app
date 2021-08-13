@@ -1,16 +1,11 @@
-import {
-  cleanup,
-  fireEvent,
-  render,
-  RenderAPI,
-  waitFor,
-} from '@testing-library/react-native';
+import type {RenderAPI} from '@testing-library/react-native';
+import {fireEvent, render, waitFor} from '@testing-library/react-native';
 import React from 'react';
 import {Alert, Text} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 
-import {Tag} from '../../../src/tags/Tag';
+import type {Tag} from '../../../src/tags/Tag';
 import TagScreen from '../../../src/tags/tag_screen/TagScreen';
 import * as TagService from '../../../src/tags/TagService';
 import * as RootNavigation from '../../../src/navigation/RootNavigation';
@@ -20,8 +15,6 @@ describe('TagScreen', () => {
   let tb: TagScreenTestBed;
 
   beforeEach(() => (tb = new TagScreenTestBed()));
-  afterEach(cleanup);
-  beforeAll(jest.useRealTimers); // required for the waitFor function to work
 
   describe('On creation', () => {
     it('should request all tags', () => {

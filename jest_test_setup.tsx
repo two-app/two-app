@@ -51,10 +51,9 @@ jest.mock('react-native-reanimated', () =>
 );
 
 jest.mock('react-native-keyboard-aware-scroll-view', () => {
-    const KeyboardAwareScrollView = ({ children }) => children;
-    return { KeyboardAwareScrollView };
+  // @ts-ignore
+  const KeyboardAwareScrollView = ({children}) => children;
+  return {KeyboardAwareScrollView};
 });
 
 setupMockNavigation();
-
-jest.useFakeTimers();

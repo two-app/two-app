@@ -8,9 +8,15 @@ type AcceptBoxProps = {
   children?: any;
   onEmit: any;
   required?: boolean;
+  accessibilityHint: string;
 };
 
-const AcceptBox = ({children, onEmit, required}: AcceptBoxProps) => {
+const AcceptBox = ({
+  children,
+  onEmit,
+  required,
+  accessibilityHint,
+}: AcceptBoxProps) => {
   const [accepted, setAccepted] = useState(false);
 
   return (
@@ -29,10 +35,11 @@ const AcceptBox = ({children, onEmit, required}: AcceptBoxProps) => {
         <Switch
           style={styles.switch}
           value={accepted}
-          onValueChange={(v) => {
+          onValueChange={v => {
             setAccepted(v);
             onEmit(v);
           }}
+          accessibilityHint={accessibilityHint}
         />
       </View>
     </View>

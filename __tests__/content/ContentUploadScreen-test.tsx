@@ -1,32 +1,28 @@
 import {Text} from 'react-native';
 import React from 'react';
+import type {RenderAPI, QueryReturn} from '@testing-library/react-native';
 import {
   render,
-  RenderAPI,
   fireEvent,
-  cleanup,
   waitFor,
   waitForElementToBeRemoved,
-  QueryReturn,
 } from '@testing-library/react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-view';
 import moment from 'moment';
-import {ReactTestInstance} from 'react-test-renderer';
+import type {ReactTestInstance} from 'react-test-renderer';
 
 import {ContentUploadScreen} from '../../src/content/ContentUploadScreen';
-import {PickedContent} from '../../src/content/ContentPicker';
-import {Memory} from '../../src/memories/MemoryModels';
+import type {PickedContent} from '../../src/content/ContentPicker';
+import type {Memory} from '../../src/memories/MemoryModels';
 import * as MemoryService from '../../src/memories/MemoryService';
-import {ErrorResponse} from '../../src/http/Response';
+import type {ErrorResponse} from '../../src/http/Response';
 import {updateMemory, storeContent} from '../../src/memories/store';
-import {Content} from '../../src/content/ContentModels';
+import type {Content} from '../../src/content/ContentModels';
 
 describe('ContentUploadScreen', () => {
   let tb: ContentUploadScreenTestBed;
 
   beforeEach(() => (tb = new ContentUploadScreenTestBed().build()));
-  afterEach(cleanup);
-  beforeAll(jest.useRealTimers); // required for the waitFor function to work
 
   test('it should display content previews', () => {
     expect(

@@ -1,20 +1,18 @@
 import {Text} from 'react-native';
 import React from 'react';
+import type {RenderAPI, QueryReturn} from '@testing-library/react-native';
 import {
   render,
-  RenderAPI,
   fireEvent,
-  cleanup,
   waitFor,
   waitForElementToBeRemoved,
-  QueryReturn,
 } from '@testing-library/react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {ReactTestInstance} from 'react-test-renderer';
+import type {ReactTestInstance} from 'react-test-renderer';
 
 import * as TagService from '../../../src/tags/TagService';
-import {Tag, TagDescription} from '../../../src/tags/Tag';
-import {ErrorResponse} from '../../../src/http/Response';
+import type {Tag, TagDescription} from '../../../src/tags/Tag';
+import type {ErrorResponse} from '../../../src/http/Response';
 import {TagManagementScreen} from '../../../src/tags/tag_management/TagManagementScreen';
 import {TagColors} from '../../../src/tags/tag_management/TagColors';
 
@@ -22,8 +20,6 @@ describe('TagManagementScreen - Create Mode', () => {
   let tb: TagManagementScreenTestBed;
 
   beforeEach(() => (tb = new TagManagementScreenTestBed().build()));
-  afterEach(cleanup);
-  beforeAll(jest.useRealTimers); // required for the waitFor function to work
 
   test('the submit button should be disabled by default', () => {
     expect(tb.isSubmitButtonEnabled()).toEqual(false);
@@ -137,8 +133,6 @@ describe('TagManagementScreen - Edit Mode', () => {
   };
 
   beforeEach(() => (tb = new TagManagementScreenTestBed(tag).build()));
-  afterEach(cleanup);
-  beforeAll(jest.useRealTimers); // required for the waitFor function to work
 
   test('the color should be set', () => {
     expect(tb.getSelectedColor()).toEqual(tag.color);

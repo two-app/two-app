@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, StyleSheet, AlertButton, Alert} from 'react-native';
+import type {AlertButton} from 'react-native';
+import {View, StyleSheet, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -7,9 +8,10 @@ import {useDispatch} from 'react-redux';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 
 import {MemoryDisplayView} from '../MemoryDisplayView';
-import {Memory} from '../MemoryModels';
+import type {Memory} from '../MemoryModels';
 import Colors from '../../Colors';
-import {ContentPicker, PickedContent} from '../../content/ContentPicker';
+import type {PickedContent} from '../../content/ContentPicker';
+import {ContentPicker} from '../../content/ContentPicker';
 import {deleteMemory} from '../MemoryService';
 import {deleteMemory as deleteMemoryFromState} from '../store';
 

@@ -3,6 +3,14 @@ export type MockNavigation = {
   dispatch: jest.Mock;
 };
 
+export type MockRoute = {
+  params: Record<string, any>;
+};
+
+export const mockRoute: MockRoute = {
+  params: {},
+};
+
 export const mockNavigation: MockNavigation = {
   navigate: jest.fn().mockName('navigation function'),
   dispatch: jest.fn().mockName('dispatch function'),
@@ -21,6 +29,7 @@ export const setupMockNavigation = () => {
         navigate: mockNavigation.navigate,
         dispatch: mockNavigation.dispatch,
       }),
+      useRoute: () => ({...mockRoute}),
     };
   });
 };

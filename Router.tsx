@@ -5,18 +5,18 @@ import LoginScreen from './src/authentication/LoginScreen';
 import RegisterScreen from './src/authentication/RegisterScreen';
 import AcceptTermsScreen from './src/authentication/register_workflow/AcceptTermsScreen';
 import ConnectCodeScreen from './src/authentication/register_workflow/ConnectCodeScreen';
-import {UserRegistration} from './src/authentication/register_workflow/UserRegistrationModel';
+import type {UserRegistration} from './src/authentication/register_workflow/UserRegistrationModel';
 import HomeScreen from './src/home/HomeScreen';
 import LoadingScreen from './src/LoadingScreen';
 import LogoutScreen from './src/LogoutScreen';
 import MemoryScreen from './src/memories/memory/MemoryScreen';
 import {NewMemoryScreen} from './src/memories/new_memory/NewMemoryScreen';
 import {SearchScreen} from './src/search/SearchScreen';
-import {Tag} from './src/tags/Tag';
+import type {Tag} from './src/tags/Tag';
 import ProfileScreen from './src/user/ProfileScreen';
 import EditMemoryScreen from './src/memories/memory/EditMemoryScreen';
 import ContentUploadScreen from './src/content/ContentUploadScreen';
-import {PickedContent} from './src/content/ContentPicker';
+import type {PickedContent} from './src/content/ContentPicker';
 import TagScreen from './src/tags/tag_screen/TagScreen';
 import {TagManagementScreen} from './src/tags/tag_management/TagManagementScreen';
 
@@ -46,7 +46,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 const AppStack = () => (
   <Stack.Navigator
     initialRouteName="LoadingScreen"
-    headerMode={'none'}
+    headerShown={false}
     screenOptions={{
       cardStyle: {
         backgroundColor: 'white',
