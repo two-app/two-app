@@ -38,7 +38,7 @@ const BackButton = () => {
   return (
     <TouchableOpacity
       accessibilityLabel="Go Back"
-      onPress={() => navigate({key: 'HomeScreen'})}>
+      onPress={() => navigate('HomeScreen')}>
       <Icon name="arrowleft" size={25} color={Colors.DARK} />
     </TouchableOpacity>
   );
