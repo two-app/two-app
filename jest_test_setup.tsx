@@ -1,5 +1,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable import/order */
+// @ts-nocheck
+
 import 'react-native';
 import 'jest-enzyme';
 import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
@@ -18,7 +20,6 @@ console.error = (message: string) => {
   originalConsoleError(message);
 };
 
-// @ts-ignore
 import mockAsyncStorage from '@react-native-community/async-storage/jest/async-storage-mock';
 import {setupMockNavigation} from './__tests__/utils/NavigationMocking';
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
@@ -51,7 +52,6 @@ jest.mock('react-native-reanimated', () =>
 );
 
 jest.mock('react-native-keyboard-aware-scroll-view', () => {
-  // @ts-ignore
   const KeyboardAwareScrollView = ({children}) => children;
   return {KeyboardAwareScrollView};
 });
