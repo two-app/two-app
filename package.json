@@ -21,7 +21,7 @@
     "@react-navigation/stack": "^6.0.6",
     "@reduxjs/toolkit": "^1.6.0",
     "@testing-library/react-native": "^7.2.0",
-    "@types/jest": "^27.0.0",
+    "@types/jest": "^27.0.1",
     "@types/lodash": "^4.14.170",
     "@types/pluralize": "^0.0.29",
     "@types/react": "^17.0.11",
