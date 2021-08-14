@@ -56,10 +56,8 @@ type ItemProps = {
 };
 
 const Item = (props: ItemProps) => {
-  const nav: NavigationProp<
-    RootStackParamList,
-    keyof RootStackParamList
-  > = getNavigation();
+  const nav: NavigationProp<RootStackParamList, keyof RootStackParamList> =
+    getNavigation();
 
   return (
     <TouchableOpacity

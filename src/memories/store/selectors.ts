@@ -9,7 +9,7 @@ export const selectAllMemories = (state: TwoState): Memory[] => {
 };
 
 export const selectMemory = (memoryState: MemoryState, mid: number): Memory => {
-  return memoryState.allMemories.find((m) => m.id === mid)!;
+  return memoryState.allMemories.find(m => m.id === mid)!;
 };
 
 export const selectMemoryContent = (

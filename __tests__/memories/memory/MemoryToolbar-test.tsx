@@ -1,17 +1,13 @@
-import {
-  cleanup,
-  fireEvent,
-  render,
-  RenderAPI,
-  waitFor,
-} from '@testing-library/react-native';
-import {Alert, AlertButton, Text} from 'react-native';
+import type {RenderAPI} from '@testing-library/react-native';
+import {fireEvent, render, waitFor} from '@testing-library/react-native';
+import type {AlertButton} from 'react-native';
+import {Alert, Text} from 'react-native';
 import React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import {CommonActions} from '@react-navigation/native';
 
-import {Memory} from '../../../src/memories/MemoryModels';
+import type {Memory} from '../../../src/memories/MemoryModels';
 import * as MemoryService from '../../../src/memories/MemoryService';
 import {MemoryToolbar} from '../../../src/memories/memory/MemoryToolbar';
 import {
@@ -19,14 +15,13 @@ import {
   resetMockNavigation,
 } from '../../utils/NavigationMocking';
 import {persistor, store} from '../../../src/state/reducers';
-import {ContentPicker, PickedContent} from '../../../src/content/ContentPicker';
+import type {PickedContent} from '../../../src/content/ContentPicker';
+import {ContentPicker} from '../../../src/content/ContentPicker';
 
 describe('MemoryToolbar', () => {
   let tb: MemoryToolbarTestBed;
 
   beforeEach(() => (tb = new MemoryToolbarTestBed().build()));
-  afterEach(cleanup);
-  beforeAll(jest.useRealTimers); // required for the waitFor function to work
 
   describe('The Back Button', () => {
     it('should navigate home', () => {

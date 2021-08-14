@@ -25,9 +25,9 @@ export const getMemories = (): Promise<Memory[]> =>
  * @param mid the memory ID to retrieve.
  */
 export const getMemory = (mid: number): Promise<Memory> =>
-  Gateway.get(
-    '/memory/' + mid.toString(),
-  ).then((response: AxiosResponse<Memory>) => formatMemory(response.data));
+  Gateway.get('/memory/' + mid.toString()).then(
+    (response: AxiosResponse<Memory>) => formatMemory(response.data),
+  );
 
 const formatMemory = (memory: Memory): Memory => {
   if (memory.displayContent != null) {

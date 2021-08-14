@@ -26,7 +26,7 @@ const Input = ({
     <TextInput
       {...attributes}
       value={value}
-      onChangeText={(v) => {
+      onChangeText={v => {
         setValue(v);
         onChange(v);
       }}

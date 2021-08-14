@@ -1,22 +1,16 @@
 import {Text} from 'react-native';
 import React from 'react';
-import {
-  render,
-  RenderAPI,
-  fireEvent,
-  cleanup,
-  waitFor,
-} from '@testing-library/react-native';
+import type {RenderAPI} from '@testing-library/react-native';
+import {render, fireEvent, waitFor} from '@testing-library/react-native';
 
 import {NewTagButton, TagCard} from '../../src/tags/NewTagButton';
-import {Tag} from '../../src/tags/Tag';
+import type {Tag} from '../../src/tags/Tag';
 import {navigateFn} from '../../src/navigation/__mocks__/RootNavigation';
 
 describe('NewTagButton', () => {
   let tb: NewTagButtonTestBed;
 
   beforeEach(() => (tb = new NewTagButtonTestBed().build()));
-  afterEach(cleanup);
 
   describe('tapping the button', () => {
     test('it should navigate to the TagManagementScreen', () => {
@@ -47,12 +41,7 @@ class NewTagButtonTestBed {
 describe('TagCard', () => {
   let tb: TagCardTestBed;
 
-  // required for the waitFor function to work
-  beforeAll(jest.useRealTimers);
-  afterAll(() => jest.useFakeTimers());
-
   beforeEach(() => (tb = new TagCardTestBed().build()));
-  afterEach(cleanup);
 
   describe('tapping the card', () => {
     test('should open the deselect modal', () => {

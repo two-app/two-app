@@ -9,7 +9,7 @@ import {TouchableCard} from '../forms/Card';
 import {Button, ButtonStyles} from '../forms/Button';
 import {getNavigation} from '../navigation/RootNavigation';
 
-import {Tag} from './Tag';
+import type {Tag} from './Tag';
 
 type NewTagButtonProps = {
   onCreated: (tag: Tag) => void;

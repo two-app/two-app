@@ -45,7 +45,7 @@ const LoginScreen = ({
   const login = () => {
     setSubmitted(true);
     AuthenticationService.login(loginCredentials)
-      .then((response) => {
+      .then(response => {
         storeTokens(response.tokens);
         if (isUnconnectedUser(response.user)) {
           storeUnconnectedUser(response.user);
@@ -72,7 +72,7 @@ const LoginScreen = ({
         }}
         isValid={UserRegistrationModel.isEmailValid}
         label={'Email'}
-        onChange={(email) => setLoginCredentials({...loginCredentials, email})}
+        onChange={email => setLoginCredentials({...loginCredentials, email})}
       />
 
       <Input
@@ -83,7 +83,7 @@ const LoginScreen = ({
         }}
         isValid={UserRegistrationModel.isPasswordValid}
         label={'Password'}
-        onChange={(password) =>
+        onChange={password =>
           setLoginCredentials({...loginCredentials, rawPassword: password})
         }
       />

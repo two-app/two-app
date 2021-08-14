@@ -21,7 +21,7 @@ export class ContentPicker {
           ? onPickedContent(value)
           : onPickedContent([value]),
       )
-      .catch((e) => {
+      .catch(e => {
         console.log('Failed to select media.', e);
         onClose();
       });

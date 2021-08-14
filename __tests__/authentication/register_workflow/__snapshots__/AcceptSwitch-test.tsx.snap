@@ -45,6 +45,7 @@ exports[`should maintain snapshot 1`] = `
     }
   >
     <RCTSwitch
+      accessibilityHint="test hint"
       accessibilityRole="switch"
       onChange={[Function]}
       onResponderTerminationRequest={[Function]}

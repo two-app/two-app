@@ -111,8 +111,8 @@ export const MemoryInteractionModal = ({
       {modal.content != null && (
         <Modal
           content={modal.content}
-          onUpdateDisplayPicture={(id) => updateDisplayPicture(id)}
-          onDelete={(id) => deleteContentThenUpdate(id)}
+          onUpdateDisplayPicture={id => updateDisplayPicture(id)}
+          onDelete={id => deleteContentThenUpdate(id)}
           loading={loading}
           error={error}
         />

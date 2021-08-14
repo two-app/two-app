@@ -1,20 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, RefreshControl} from 'react-native';
-import {StackNavigationProp} from '@react-navigation/stack';
+import type {StackNavigationProp} from '@react-navigation/stack';
 import {FlatList} from 'react-native-gesture-handler';
-import {connect, ConnectedProps} from 'react-redux';
+import type {ConnectedProps} from 'react-redux';
+import {connect} from 'react-redux';
 
 import Colors from '../../Colors';
-import {RootStackParamList} from '../../../Router';
+import type {RootStackParamList} from '../../../Router';
 import {Footer} from '../../home/Footer';
 import {Wrapper, NoWrapContainer} from '../../views/View';
 import {Heading} from '../../home/Heading';
 import * as TagService from '../TagService';
-import {Tag} from '../Tag';
+import type {Tag} from '../Tag';
 import {NewTagButton} from '../NewTagButton';
 import {LoadingStatus} from '../../LoadingScreen';
-import {ErrorResponse} from '../../http/Response';
-import {persistor, TwoState} from '../../state/reducers';
+import type {ErrorResponse} from '../../http/Response';
+import type {TwoState} from '../../state/reducers';
+import {persistor} from '../../state/reducers';
 import {selectTags} from '../store/selectors';
 import {storeTags} from '../store';
 

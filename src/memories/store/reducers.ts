@@ -38,7 +38,7 @@ const handleUpdateMemory = (
   return {
     ...state,
     allMemories: state.allMemories
-      .map((m) => (m.id === mid ? memory : m))
+      .map(m => (m.id === mid ? memory : m))
       .sort(inAscending),
   };
 };
@@ -85,7 +85,7 @@ const handleDeleteContent = (
   } // noop
   const memoryContent: Content[] = content[mid];
 
-  content[mid] = memoryContent.filter((c) => c.contentId !== contentId);
+  content[mid] = memoryContent.filter(c => c.contentId !== contentId);
   return {...state, content};
 };
 

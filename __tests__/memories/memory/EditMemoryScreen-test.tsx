@@ -1,32 +1,28 @@
 import {Text} from 'react-native';
 import React from 'react';
+import type {RenderAPI, QueryReturn} from '@testing-library/react-native';
 import {
   render,
-  RenderAPI,
   fireEvent,
-  cleanup,
   waitFor,
   waitForElementToBeRemoved,
-  QueryReturn,
 } from '@testing-library/react-native';
 import moment from 'moment';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {ReactTestInstance} from 'react-test-renderer';
+import type {ReactTestInstance} from 'react-test-renderer';
 
 import {EditMemoryScreen} from '../../../src/memories/memory/EditMemoryScreen';
-import {Memory, MemoryPatch} from '../../../src/memories/MemoryModels';
+import type {Memory, MemoryPatch} from '../../../src/memories/MemoryModels';
 import * as TagService from '../../../src/tags/TagService';
-import {Tag} from '../../../src/tags/Tag';
+import type {Tag} from '../../../src/tags/Tag';
 import * as MemoryService from '../../../src/memories/MemoryService';
-import {ErrorResponse} from '../../../src/http/Response';
+import type {ErrorResponse} from '../../../src/http/Response';
 import {updateMemory} from '../../../src/memories/store';
 
 describe('EditMemoryScreen', () => {
   let tb: EditMemoryScreenTestBed;
 
   beforeEach(() => (tb = new EditMemoryScreenTestBed().build()));
-  afterEach(cleanup);
-  beforeAll(jest.useRealTimers); // required for the waitFor function to work
 
   test('the submit button should be disabled by default', () => {
     const submit = tb.render.getByA11yLabel('Update Memory');

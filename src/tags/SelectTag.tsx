@@ -51,7 +51,7 @@ export const SelectTag = ({onTagChange, initialValue}: SelectTagProps) => {
             style={{marginTop: 10}}
             horizontal={true}
             data={availableTags}
-            keyExtractor={(tag) => tag.name}
+            keyExtractor={tag => tag.name}
             renderItem={({item}) => (
               <TagButton
                 tag={item}

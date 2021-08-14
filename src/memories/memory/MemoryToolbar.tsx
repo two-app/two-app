@@ -1,17 +1,21 @@
 import React from 'react';
-import {View, StyleSheet, AlertButton, Alert} from 'react-native';
+import type {AlertButton} from 'react-native';
+import {View, StyleSheet, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
+import type {NavigationProp} from '@react-navigation/native';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 
 import {MemoryDisplayView} from '../MemoryDisplayView';
-import {Memory} from '../MemoryModels';
+import type {Memory} from '../MemoryModels';
 import Colors from '../../Colors';
-import {ContentPicker, PickedContent} from '../../content/ContentPicker';
+import type {PickedContent} from '../../content/ContentPicker';
+import {ContentPicker} from '../../content/ContentPicker';
 import {deleteMemory} from '../MemoryService';
 import {deleteMemory as deleteMemoryFromState} from '../store';
+import type {RootStackParamList} from '../../../Router';
 
 export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   <View>
@@ -27,8 +31,10 @@ export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   </View>
 );
 
+type NavProp = NavigationProp<RootStackParamList, 'MemoryScreen'>;
+
 const BackButton = () => {
-  const {navigate} = useNavigation();
+  const {navigate} = useNavigation<NavProp>();
   return (
     <TouchableOpacity
       accessibilityLabel="Go Back"
@@ -39,7 +45,7 @@ const BackButton = () => {
 };
 
 const EditButton = ({memory}: {memory: Memory}) => {
-  const {navigate} = useNavigation();
+  const {navigate} = useNavigation<NavProp>();
   return (
     <TouchableOpacity
       accessibilityLabel="Edit Memory"
@@ -51,7 +57,7 @@ const EditButton = ({memory}: {memory: Memory}) => {
 };
 
 export const UploadContentButton = ({memory}: {memory: Memory}) => {
-  const {navigate} = useNavigation();
+  const {navigate} = useNavigation<NavProp>();
   return (
     <TouchableOpacity
       accessibilityLabel="Upload Content"

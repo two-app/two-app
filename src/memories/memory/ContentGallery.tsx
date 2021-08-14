@@ -71,7 +71,7 @@ export const ContentGallery = ({
         onCancel={closeGallery}
         // @ts-ignore
         index={index}
-        onChange={(newIndex) => setCurrentIndex(newIndex || 0)}
+        onChange={newIndex => setCurrentIndex(newIndex || 0)}
         imageUrls={urls}
         renderImage={({index: idx}: {index: number}) => {
           const renderContent = content[idx];

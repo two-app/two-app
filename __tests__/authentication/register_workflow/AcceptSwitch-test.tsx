@@ -2,7 +2,8 @@ import 'react-native';
 import React from 'react';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
-import {shallow, ShallowWrapper} from 'enzyme';
+import type {ShallowWrapper} from 'enzyme';
+import {shallow} from 'enzyme';
 
 import AcceptSwitch from '../../../src/authentication/register_workflow/AcceptSwitch';
 import Colors from '../../../src/Colors';
@@ -14,7 +15,9 @@ beforeEach(() => (tb = new AcceptSwitchTestBed()));
 test('should maintain snapshot', () =>
   expect(
     renderer.create(
-      <AcceptSwitch onEmit={tb.onEmitFn}>Some Condition</AcceptSwitch>,
+      <AcceptSwitch accessibilityHint="test hint" onEmit={tb.onEmitFn}>
+        Some Condition
+      </AcceptSwitch>,
     ),
   ).toMatchSnapshot());
 
@@ -68,7 +71,9 @@ describe('Required', () => {
 class AcceptSwitchTestBed {
   onEmitFn = jest.fn();
   wrapper = shallow(
-    <AcceptSwitch onEmit={this.onEmitFn}>Some Condition</AcceptSwitch>,
+    <AcceptSwitch accessibilityHint="test hint" onEmit={this.onEmitFn}>
+      Some Condition
+    </AcceptSwitch>,
   );
 
   getSwitch = (): ShallowWrapper => this.wrapper.find('Switch');
@@ -82,6 +87,6 @@ class AcceptSwitchTestBed {
     this.wrapper
       .find("View[data-testid='container']")
       .prop<[any]>('style')
-      .filter((f) => f !== undefined)
-      .some((f) => f[key] === value);
+      .filter(f => f !== undefined)
+      .some(f => f[key] === value);
 }

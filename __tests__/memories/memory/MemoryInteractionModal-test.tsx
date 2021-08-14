@@ -1,28 +1,20 @@
 import {Text} from 'react-native';
 import React from 'react';
-import {
-  render,
-  RenderAPI,
-  fireEvent,
-  cleanup,
-  waitFor,
-} from '@testing-library/react-native';
+import type {RenderAPI} from '@testing-library/react-native';
+import {render, fireEvent, waitFor} from '@testing-library/react-native';
 import moment from 'moment';
 import {Provider} from 'react-redux';
 
 import * as ContentService from '../../../src/content/ContentService';
 import {MemoryInteractionModal} from '../../../src/memories/memory/MemoryInteractionModal';
-import {Memory} from '../../../src/memories/MemoryModels';
-import {ErrorResponse} from '../../../src/http/Response';
-import {Content} from '../../../src/content/ContentModels';
-import {DeleteContentResponse} from '../../../src/content/ContentService';
+import type {Memory} from '../../../src/memories/MemoryModels';
+import type {ErrorResponse} from '../../../src/http/Response';
+import type {Content} from '../../../src/content/ContentModels';
+import type {DeleteContentResponse} from '../../../src/content/ContentService';
 import {store} from '../../../src/state/reducers';
 
 describe('MemoryInteractionModal', () => {
   let tb: MemoryInteractionModalTestBed;
-
-  afterEach(cleanup);
-  beforeAll(jest.useRealTimers); // required for the waitFor function to work
 
   describe('With no content selected', () => {
     beforeEach(() => (tb = new MemoryInteractionModalTestBed().build()));

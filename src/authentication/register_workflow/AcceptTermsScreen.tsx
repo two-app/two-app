@@ -1,39 +1,34 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View, Linking} from 'react-native';
-import {connect, ConnectedProps} from 'react-redux';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {CommonActions, RouteProp} from '@react-navigation/native';
+import type {NavigationProp, RouteProp} from '@react-navigation/native';
+import {useNavigation, CommonActions, useRoute} from '@react-navigation/native';
 import Config from 'react-native-config';
+import {useDispatch} from 'react-redux';
 
 import LogoHeader from '../LogoHeader';
 import SubmitButton from '../../forms/SubmitButton';
 import {ScrollContainer} from '../../views/View';
 import Colors from '../../Colors';
-import AuthenticationService, {UserResponse} from '../AuthenticationService';
+import type {UserResponse} from '../AuthenticationService';
+import AuthenticationService from '../AuthenticationService';
 import {storeUnconnectedUser} from '../../user';
-import {UnconnectedUser} from '../UserModel';
+import type {UnconnectedUser} from '../UserModel';
 import {storeTokens} from '../store';
-import {RootStackParamList} from '../../../Router';
-import {ErrorResponse} from '../../http/Response';
+import type {RootStackParamList} from '../../../Router';
+import type {ErrorResponse} from '../../http/Response';
 
-import {UserRegistration} from './UserRegistrationModel';
+import type {UserRegistration} from './UserRegistrationModel';
 import AcceptBox from './AcceptSwitch';
 
-const mapState = null;
-const mapDispatch = {storeUnconnectedUser, storeTokens};
-const connector = connect(mapState, mapDispatch);
-type ConnectorProps = ConnectedProps<typeof connector>;
-type AcceptTermsScreenProps = ConnectorProps & {
-  navigation: StackNavigationProp<RootStackParamList, 'AcceptTermsScreen'>;
-  route: RouteProp<RootStackParamList, 'AcceptTermsScreen'>;
-};
+type ScreenRouteProp = RouteProp<RootStackParamList, 'AcceptTermsScreen'>;
 
-const AcceptTermsScreen = ({
-  navigation,
-  route,
-  storeUnconnectedUser,
-  storeTokens,
-}: AcceptTermsScreenProps) => {
+type ScreenNavProp = NavigationProp<RootStackParamList, 'AcceptTermsScreen'>;
+
+const AcceptTermsScreen = () => {
+  const route = useRoute<ScreenRouteProp>();
+  const navigation = useNavigation<ScreenNavProp>();
+  const dispatch = useDispatch();
+
   const [userRegistration, setUserRegistration] = useState<UserRegistration>(
     route.params.userRegistration,
   );
@@ -44,6 +39,7 @@ const AcceptTermsScreen = ({
   const [registrationError, setRegistrationError] = useState<string | null>(
     null,
   );
+
   const navigateToConnectCodeScreen = () =>
     navigation.dispatch(
       CommonActions.reset({
@@ -55,8 +51,8 @@ const AcceptTermsScreen = ({
   if (submitted) {
     AuthenticationService.registerUser(userRegistration)
       .then((response: UserResponse) => {
-        storeUnconnectedUser(response.user as UnconnectedUser);
-        storeTokens(response.tokens);
+        dispatch(storeUnconnectedUser(response.user as UnconnectedUser));
+        dispatch(storeTokens(response.tokens));
         navigateToConnectCodeScreen();
       })
       .catch((e: ErrorResponse) => {
@@ -70,7 +66,8 @@ const AcceptTermsScreen = ({
       <View>
         <LogoHeader heading="Terms & Conditions" />
         <AcceptBox
-          onEmit={(acceptedTerms) =>
+          accessibilityHint="I agree to the privacy policy."
+          onEmit={acceptedTerms =>
             setUserRegistration({...userRegistration, acceptedTerms})
           }
           data-testid="terms"
@@ -83,13 +80,15 @@ const AcceptTermsScreen = ({
           </Text>
         </AcceptBox>
         <AcceptBox
-          onEmit={(ofAge) => setUserRegistration({...userRegistration, ofAge})}
+          accessibilityHint="I am over the age of 16."
+          onEmit={ofAge => setUserRegistration({...userRegistration, ofAge})}
           data-testid="age"
           required>
           I am over the age of 16.
         </AcceptBox>
         <AcceptBox
-          onEmit={(receivesEmails) =>
+          accessibilityHint="I agree to occasionally receive emails from Two."
+          onEmit={receivesEmails =>
             setUserRegistration({...userRegistration, receivesEmails})
           }>
           I agree to occasionally receive emails from Two.
@@ -99,9 +98,13 @@ const AcceptTermsScreen = ({
           onSubmit={() => setSubmitted(true)}
           text="Accept"
           disabled={!validAgreedState}
+          accessibilityLabel="Press to submit terms and conditions"
         />
         {registrationError && (
-          <Text style={styles.error} data-testid="error-message">
+          <Text
+            style={styles.error}
+            accessibilityHint={registrationError}
+            accessibilityLabel="Something went wrong with your registration.">
             {registrationError}
           </Text>
         )}
@@ -116,5 +119,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default connector(AcceptTermsScreen);
 export {AcceptTermsScreen};

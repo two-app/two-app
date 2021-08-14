@@ -1,13 +1,13 @@
-import {StackNavigationProp} from '@react-navigation/stack';
 import React, {useState} from 'react';
 import {Text, View} from 'react-native';
 import {useDispatch} from 'react-redux';
+import type {NavigationProp} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
 
-import {RootStackParamList} from '../../../Router';
+import type {RootStackParamList} from '../../../Router';
 import SubmitButton from '../../forms/SubmitButton';
 import {Heading} from '../../home/Heading';
-import {ErrorResponse} from '../../http/Response';
+import type {ErrorResponse} from '../../http/Response';
 import {SelectTag} from '../../tags/SelectTag';
 import {ScrollContainer} from '../../views/View';
 import {
@@ -15,20 +15,18 @@ import {
   createMemory,
   getMemory,
 } from '../MemoryService';
-import {MemoryDescription, Memory} from '../MemoryModels';
+import type {MemoryDescription, Memory} from '../MemoryModels';
 import {insertMemory} from '../store';
 
 import {DateTimePicker} from './DateInput';
 import {LocationInput} from './LocationInput';
 import TitleInput from './TitleInput';
 
-type NavigationProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'NewMemoryScreen'>;
-};
+type NavProp = NavigationProp<RootStackParamList, 'NewMemoryScreen'>;
 
-export const NewMemoryScreen = ({}: NavigationProps) => {
+export const NewMemoryScreen = () => {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavProp>();
   const [loading, setLoading] = useState<boolean>(false);
   const [uploadError, setUploadError] = useState<string>();
   const [formState, setFormState] = useState<MemoryDescription>({
@@ -66,15 +64,15 @@ export const NewMemoryScreen = ({}: NavigationProps) => {
       <View>
         <Heading>New Memory</Heading>
 
-        <TitleInput setTitle={(title) => setFormState({...formState, title})} />
+        <TitleInput setTitle={title => setFormState({...formState, title})} />
         <LocationInput
-          setLocation={(location) => setFormState({...formState, location})}
+          setLocation={location => setFormState({...formState, location})}
         />
         <DateTimePicker
-          setDateTime={(date) => setFormState({...formState, date})}
+          setDateTime={date => setFormState({...formState, date})}
         />
         <SelectTag
-          onTagChange={(tag) => setFormState({...formState, tag: tag?.tid})}
+          onTagChange={tag => setFormState({...formState, tag: tag?.tid})}
         />
 
         <SubmitButton

@@ -104,7 +104,7 @@ export const ProfileScreen = ({navigation, user}: ProfileScreenProps) => {
           ItemSeparatorComponent={() => (
             <View style={{flex: 1, height: 2, backgroundColor: Colors.LIGHT}} />
           )}
-          keyExtractor={(item) => item.text}
+          keyExtractor={item => item.text}
           testID="menu"
         />
       </NoWrapContainer>
