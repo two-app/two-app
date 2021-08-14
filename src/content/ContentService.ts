@@ -55,7 +55,7 @@ export const uploadContent = (
 export const getContent = (mid: number): Promise<Content[]> =>
   Gateway.get<Content[]>(`/memory/${mid}/content`).then(
     (v: AxiosResponse<Content[]>) => {
-      return v.data.map((content) => {
+      return v.data.map(content => {
         content.fileKey = formatFileKey(content.fileKey);
         return content;
       });

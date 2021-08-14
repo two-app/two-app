@@ -53,7 +53,7 @@ export const ContentUploadScreen = ({
   });
   const [uploadError, setUploadError] = useState<string>('');
 
-  const content: PickedContent[] = route.params.content.map((c) => {
+  const content: PickedContent[] = route.params.content.map(c => {
     if (c.filename == null) {
       const ext = c.path.split('.').pop();
       return {...c, filename: `${uuidv4()}.${ext}`};
@@ -62,8 +62,8 @@ export const ContentUploadScreen = ({
     }
   });
 
-  const images = content.filter((c) => c.mime.startsWith('image'));
-  const videos = content.filter((c) => c.mime.startsWith('video'));
+  const images = content.filter(c => c.mime.startsWith('image'));
+  const videos = content.filter(c => c.mime.startsWith('video'));
 
   const setLoadingPercentage = (percentage: number) => {
     setLoading({isLoading: true, percentage});

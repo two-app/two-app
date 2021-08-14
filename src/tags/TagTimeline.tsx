@@ -11,8 +11,8 @@ export const GroupedTimelineComponent = (): TimelineComponent<Tag> => ({
   fetch: getTags,
   select: selectAllTags,
   dispatcher: storeTags,
-  render: (tag) => <TagItem tag={tag} />,
-  key: (tag) => `tag-${tag.tid}`,
+  render: tag => <TagItem tag={tag} />,
+  key: tag => `tag-${tag.tid}`,
 });
 
 const TagItem = ({tag}: {tag: Tag}) => {

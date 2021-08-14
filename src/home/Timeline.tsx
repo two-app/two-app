@@ -14,9 +14,8 @@ import {TimelineHeader} from './TimelineHeader';
 
 export const Timeline = () => {
   const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>(loading);
-  const [selectedTimeline, setSelectedTimeline] = useState<TimelineType>(
-    'timeline',
-  );
+  const [selectedTimeline, setSelectedTimeline] =
+    useState<TimelineType>('timeline');
 
   const [opacity] = useState(new Animated.Value(0));
   const setOpacity = setOpacityFn(opacity);

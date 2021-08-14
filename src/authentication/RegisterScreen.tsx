@@ -32,7 +32,7 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
         attributes={{placeholder: 'First Name', autoCompleteType: 'name'}}
         isValid={UserRegistrationModel.isFirstNameValid}
         label={'First Name'}
-        onChange={(firstName) =>
+        onChange={firstName =>
           setUserRegistration({...userRegistration, firstName})
         }
       />
@@ -41,7 +41,7 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
         attributes={{placeholder: 'Last Name'}}
         isValid={UserRegistrationModel.isLastNameValid}
         label={'Last Name'}
-        onChange={(lastName) =>
+        onChange={lastName =>
           setUserRegistration({...userRegistration, lastName})
         }
       />
@@ -54,7 +54,7 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
         }}
         isValid={UserRegistrationModel.isEmailValid}
         label={'Email'}
-        onChange={(email) => setUserRegistration({...userRegistration, email})}
+        onChange={email => setUserRegistration({...userRegistration, email})}
       />
 
       <Input
@@ -65,7 +65,7 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
         }}
         isValid={UserRegistrationModel.isPasswordValid}
         label={'Password'}
-        onChange={(password) =>
+        onChange={password =>
           setUserRegistration({...userRegistration, password})
         }
       />

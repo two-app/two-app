@@ -66,7 +66,7 @@ const MemoryScreen = ({memory, dispatch, content}: MemoryScreenProps) => {
   };
 
   useEffect(() => {
-    getContent(memory.id).then((newContent) => {
+    getContent(memory.id).then(newContent => {
       dispatch(storeContent({mid: memory.id, content: newContent}));
     });
   }, []);
@@ -160,8 +160,8 @@ const ContentGrid = ({
             key={rowIndex}
           />
         )}
-        keyExtractor={(i) =>
-          i.map((c) => (c == null ? 'empty' : c.fileKey)).join('-')
+        keyExtractor={i =>
+          i.map(c => (c == null ? 'empty' : c.fileKey)).join('-')
         }
         refreshControl={
           <RefreshControl

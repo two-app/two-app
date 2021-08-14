@@ -39,7 +39,7 @@ export const ColorList = ({initialColor, onSelected}: ColorListProps) => {
         marginTop: 5,
         margin: -10,
       }}>
-      {colors.map((color) => (
+      {colors.map(color => (
         <ColorButton
           color={color}
           isSelected={color === selected}

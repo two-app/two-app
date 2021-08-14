@@ -169,7 +169,7 @@ const ShareConnectCodeButton = ({code}: {code: string}) => {
     Share.share({
       message: code,
     })
-      .then((result) => {
+      .then(result => {
         if (result.action === Share.sharedAction) {
           setShared(true);
         }
