@@ -3,7 +3,7 @@ import React from 'react';
 
 import LoginScreen from './src/authentication/LoginScreen';
 import RegisterScreen from './src/authentication/RegisterScreen';
-import AcceptTermsScreen from './src/authentication/register_workflow/AcceptTermsScreen';
+import {AcceptTermsScreen} from './src/authentication/register_workflow/AcceptTermsScreen';
 import ConnectCodeScreen from './src/authentication/register_workflow/ConnectCodeScreen';
 import type {UserRegistration} from './src/authentication/register_workflow/UserRegistrationModel';
 import HomeScreen from './src/home/HomeScreen';
@@ -46,15 +46,12 @@ const Stack = createStackNavigator<RootStackParamList>();
 const AppStack = () => (
   <Stack.Navigator
     initialRouteName="LoadingScreen"
-    headerShown={false}
     screenOptions={{
       cardStyle: {
         backgroundColor: 'white',
       },
       headerShown: false,
-      gestureResponseDistance: {
-        vertical: 50,
-      },
+      gestureResponseDistance: 50,
       cardOverlayEnabled: false,
       cardShadowEnabled: false,
     }}>

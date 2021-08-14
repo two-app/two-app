@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
+import type {NavigationProp} from '@react-navigation/native';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 
 import {MemoryDisplayView} from '../MemoryDisplayView';
@@ -14,6 +15,7 @@ import type {PickedContent} from '../../content/ContentPicker';
 import {ContentPicker} from '../../content/ContentPicker';
 import {deleteMemory} from '../MemoryService';
 import {deleteMemory as deleteMemoryFromState} from '../store';
+import type {RootStackParamList} from '../../../Router';
 
 export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   <View>
@@ -29,19 +31,21 @@ export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   </View>
 );
 
+type NavProp = NavigationProp<RootStackParamList, 'MemoryScreen'>;
+
 const BackButton = () => {
-  const {navigate} = useNavigation();
+  const {navigate} = useNavigation<NavProp>();
   return (
     <TouchableOpacity
       accessibilityLabel="Go Back"
-      onPress={() => navigate('HomeScreen')}>
+      onPress={() => navigate({key: 'HomeScreen'})}>
       <Icon name="arrowleft" size={25} color={Colors.DARK} />
     </TouchableOpacity>
   );
 };
 
 const EditButton = ({memory}: {memory: Memory}) => {
-  const {navigate} = useNavigation();
+  const {navigate} = useNavigation<NavProp>();
   return (
     <TouchableOpacity
       accessibilityLabel="Edit Memory"
@@ -53,7 +57,7 @@ const EditButton = ({memory}: {memory: Memory}) => {
 };
 
 export const UploadContentButton = ({memory}: {memory: Memory}) => {
-  const {navigate} = useNavigation();
+  const {navigate} = useNavigation<NavProp>();
   return (
     <TouchableOpacity
       accessibilityLabel="Upload Content"
