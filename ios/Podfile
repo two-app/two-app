@@ -28,12 +28,3 @@ target 'two' do
   end
 end
 
-target 'two-tvOS' do
-  # Pods for RnDiffApp-tvOS
-
-  target 'two-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-end
-
