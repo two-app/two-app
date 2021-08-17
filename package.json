@@ -47,7 +47,7 @@
     "react-native-image-crop-picker": "^0.36.2",
     "react-native-image-zoom-viewer": "^3.0.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.1",
-    "react-native-modal": "^12.0.3",
+    "react-native-modal": "^12.1.0",
     "react-native-modal-datetime-picker": "^10.2.0",
     "react-native-progress": "^5.0.0",
     "react-native-reanimated": "^2.2.0",
