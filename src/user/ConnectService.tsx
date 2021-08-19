@@ -1,41 +1,62 @@
-import {AxiosResponse} from 'axios';
+import 'react-native-get-random-values';
+import uuid from 'uuidv4';
 
-import {User, userFromAccessToken} from '../authentication/UserModel';
+import type {User} from '../authentication/UserModel';
+import {userFromAccessToken} from '../authentication/UserModel';
 import {storeTokens} from '../authentication/store';
 import {resetNavigate} from '../navigation/NavigationUtilities';
 import {getNavigation} from '../navigation/RootNavigation';
 import {store} from '../state/reducers';
-import AuthenticationService, {
-  UserResponse,
-} from '../authentication/AuthenticationService';
+import type {UserResponse} from '../authentication/AuthenticationService';
+import AuthenticationService from '../authentication/AuthenticationService';
 import Gateway from '../http/Gateway';
-import {Tokens} from '../authentication/AuthenticationModel';
-import {ErrorResponse} from '../http/Response';
+import type {Tokens} from '../authentication/AuthenticationModel';
+import type {ErrorResponse} from '../http/Response';
+import type {Couple} from '../couple/CoupleService';
+import CoupleService from '../couple/CoupleService';
 
 import {storeUser} from './actions';
-import PartnerService from './PartnerService';
 
-const connectToPartner = (connectCode: string): Promise<UserResponse> =>
-  Gateway.post(`/partner/${connectCode}`).then(
-    (r: AxiosResponse<Tokens>): UserResponse => ({
-      user: userFromAccessToken(r.data.accessToken),
-      tokens: {
-        accessToken: r.data.accessToken,
-        refreshToken: r.data.refreshToken,
-      },
-    }),
-  );
+type PostCoupleReq = {
+  toUser: string;
+  cid: string;
+};
+
+const connectToPartner = async (connectCode: string): Promise<UserResponse> => {
+  const req: PostCoupleReq = {
+    toUser: connectCode,
+    cid: uuid(),
+  };
+
+  const r = await Gateway.post<Tokens>('/couple', req);
+  return {
+    user: userFromAccessToken(r.data.accessToken),
+    tokens: {
+      accessToken: r.data.accessToken,
+      refreshToken: r.data.refreshToken,
+    },
+  };
+};
 
 /**
- * Checks if the user has a partner.
- * If the user does, the tokens are
- * refreshed.
+ * Retrieves the couple the user belongs to. If the partner is present,
+ * the users authentication tokens are refreshed.
  */
-const checkConnection = async (): Promise<void> =>
-  PartnerService.getPartnerPreConnect().then(() =>
-    AuthenticationService.refreshTokens().then(() => {}),
-  );
+const checkConnection = async (): Promise<void> => {
+  return CoupleService.getCouple().then((couple: Couple) => {
+    if (couple.partner != null) {
+      return AuthenticationService.refreshTokens().then(() => {});
+    } else {
+      return Promise.resolve();
+    }
+  });
+};
 
+/**
+ * Connects the two users.
+ * @param code the new partners uid
+ * @returns an empty promise
+ */
 const performConnection = (code: string): Promise<void> => {
   return (
     connectToPartner(code)

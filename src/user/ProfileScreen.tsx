@@ -1,22 +1,24 @@
-import React, {useEffect, useState, ComponentClass} from 'react';
+import type {ComponentClass} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Linking} from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import Feather from 'react-native-vector-icons/Feather';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {connect, ConnectedProps} from 'react-redux';
+import type {StackNavigationProp} from '@react-navigation/stack';
+import type {ConnectedProps} from 'react-redux';
+import {connect} from 'react-redux';
 import {TouchableOpacity, FlatList} from 'react-native-gesture-handler';
 import Config from 'react-native-config';
 
 import Colors from '../Colors';
 import {resetNavigate} from '../navigation/NavigationUtilities';
-import {TwoState} from '../state/reducers';
-import {RootStackParamList} from '../../Router';
+import type {TwoState} from '../state/reducers';
+import type {RootStackParamList} from '../../Router';
 import {Footer} from '../home/Footer';
 import {Wrapper, NoWrapContainer} from '../views/View';
 
-import PartnerService from './PartnerService';
-import UserService, {UserProfile} from './UserService';
+import type {UserProfile} from './UserService';
+import UserService from './UserService';
 
 import {selectUser} from '.';
 
@@ -36,8 +38,9 @@ export const ProfileScreen = ({navigation, user}: ProfileScreenProps) => {
   const [partnerProfile, setPartnerProfile] = useState<UserProfile>();
 
   useEffect(() => {
+    // TODO use GET /couple
     UserService.getSelf().then(setUserProfile);
-    PartnerService.getPartner().then(setPartnerProfile);
+    setPartnerProfile(undefined);
   }, []);
 
   const data: MenuItemProps[] = [

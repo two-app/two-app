@@ -26,16 +26,8 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>localhost</key>
-			<dict>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-			</dict>
-		</dict>
+			<key>NSAllowsArbitraryLoads</key>
+			<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Permission required so you can take photos for your memories.</string>

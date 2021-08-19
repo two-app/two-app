@@ -1,3 +1,5 @@
+import 'react-native-get-random-values';
+import uuid from 'uuidv4';
 import React, {useState} from 'react';
 import {
   StyleSheet,
@@ -8,8 +10,9 @@ import {
   RefreshControl,
 } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
-import {connect, ConnectedProps} from 'react-redux';
-import {StackNavigationProp} from '@react-navigation/stack';
+import type {ConnectedProps} from 'react-redux';
+import {connect} from 'react-redux';
+import type {StackNavigationProp} from '@react-navigation/stack';
 import HapticFeedback from 'react-native-haptic-feedback';
 
 import {ScrollContainer} from '../../views/View';
@@ -17,13 +20,13 @@ import LogoHeader from '../LogoHeader';
 import Colors from '../../Colors';
 import Input from '../../forms/Input';
 import SubmitButton from '../../forms/SubmitButton';
-import {TwoState} from '../../state/reducers';
+import type {TwoState} from '../../state/reducers';
 import {selectUnconnectedUser} from '../../user';
-import {RootStackParamList} from '../../../Router';
+import type {RootStackParamList} from '../../../Router';
 import {Button, ButtonStyles} from '../../forms/Button';
 import {resetNavigate} from '../../navigation/NavigationUtilities';
 import ConnectService from '../../user/ConnectService';
-import {ErrorResponse} from '../../http/Response';
+import type {ErrorResponse} from '../../http/Response';
 
 const mapState = (state: TwoState) => ({
   user: selectUnconnectedUser(state.user),
@@ -36,8 +39,7 @@ type ConnectCodeScreenProps = ConnectorProps & {
 
 const ConnectCodeScreen = ({navigation, user}: ConnectCodeScreenProps) => {
   const [partnerConnectCode, setPartnerConnectCode] = useState('');
-  const isPartnerCodeValid = (partnerCode: string) =>
-    partnerCode.length === 6 && partnerCode !== user.connectCode;
+  const isPartnerCodeValid = (code: string): boolean => uuid.is(code);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
@@ -80,9 +82,9 @@ const ConnectCodeScreen = ({navigation, user}: ConnectCodeScreenProps) => {
         registered, send them your code!
       </Text>
 
-      <CopyConnectCodeButton code={user.connectCode} />
+      <CopyConnectCodeButton code={user.uid} />
 
-      <ShareConnectCodeButton code={user.connectCode} />
+      <ShareConnectCodeButton code={user.uid} />
 
       <Text style={{...styles.subheading, marginTop: 20}}>
         Or, enter your partners code...
@@ -93,7 +95,7 @@ const ConnectCodeScreen = ({navigation, user}: ConnectCodeScreenProps) => {
           isValid={() => isPartnerCodeValid(partnerConnectCode)}
           onChange={setPartnerConnectCode}
         />
-        {partnerConnectCode === user.connectCode && (
+        {partnerConnectCode === user.uid && (
           <Text style={styles.error} data-testid="error">
             You can't connect with yourself!
           </Text>
@@ -224,7 +226,7 @@ const styles = StyleSheet.create({
   },
   code: {
     fontWeight: 'bold',
-    fontSize: 30,
+    fontSize: 25,
     textAlign: 'center',
   },
   codeInputContainer: {
