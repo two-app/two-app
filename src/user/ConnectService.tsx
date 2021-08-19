@@ -22,9 +22,9 @@ type PostCoupleReq = {
   cid: string;
 };
 
-const connectToPartner = async (connectCode: string): Promise<UserResponse> => {
+const connectToPartner = async (uid: string): Promise<UserResponse> => {
   const req: PostCoupleReq = {
-    toUser: connectCode,
+    toUser: uid,
     cid: uuid(),
   };
 

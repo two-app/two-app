@@ -44,10 +44,10 @@ const ConnectCodeScreen = ({navigation, user}: ConnectCodeScreenProps) => {
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
 
-  const connectToPartner = (connectCode: string) => {
+  const connectToPartner = (uid: string) => {
     setError(null);
     setSubmitted(true);
-    ConnectService.performConnection(connectCode)
+    ConnectService.performConnection(uid)
       .catch((e: ErrorResponse) => {
         setError(e.reason);
       })

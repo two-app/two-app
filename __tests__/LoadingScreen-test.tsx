@@ -3,10 +3,11 @@ import React from 'react';
 // Note: test renderer must be required after react-native.
 import {act, create} from 'react-test-renderer';
 import {CommonActions} from '@react-navigation/native';
+import uuidv4 from 'uuidv4';
 
 import {LoadingScreen} from '../src/LoadingScreen';
-import {UnconnectedUser, User} from '../src/authentication/UserModel';
-import {Tokens} from '../src/authentication/AuthenticationModel';
+import type {UnconnectedUser, User} from '../src/authentication/UserModel';
+import type {Tokens} from '../src/authentication/AuthenticationModel';
 import {persistor} from '../src/state/reducers';
 
 describe('LoadingScreen', () => {
@@ -33,7 +34,9 @@ describe('LoadingScreen', () => {
   });
 
   describe('With Unconnected Auth', () => {
-    const stubUser: UnconnectedUser = {uid: 1, connectCode: 'testConnectCode'};
+    const stubUser: UnconnectedUser = {
+      uid: uuidv4(),
+    };
     const stubTokens: Tokens = {
       accessToken: 'unconnectedAccess',
       refreshToken: 'unconnectedRefresh',
@@ -50,7 +53,7 @@ describe('LoadingScreen', () => {
   });
 
   describe('With Connected Auth', () => {
-    const stubUser: User = {uid: 1, pid: 2, cid: 3};
+    const stubUser: User = {uid: uuidv4(), pid: uuidv4(), cid: uuidv4()};
     const stubTokens: Tokens = {
       accessToken: 'connectedAccess',
       refreshToken: 'connectedRefresh',

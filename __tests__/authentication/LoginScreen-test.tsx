@@ -4,15 +4,15 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import {shallow} from 'enzyme';
 import {CommonActions} from '@react-navigation/native';
+import uuidv4 from 'uuidv4';
 
 import {LoginScreen} from '../../src/authentication/LoginScreen';
 import EmailValidator from '../../src/forms/EmailValidator';
-import AuthenticationService, {
-  UserResponse,
-} from '../../src/authentication/AuthenticationService';
-import {User, UnconnectedUser} from '../../src/authentication/UserModel';
-import {Tokens} from '../../src/authentication/AuthenticationModel';
-import {ErrorResponse} from '../../src/http/Response';
+import type {UserResponse} from '../../src/authentication/AuthenticationService';
+import AuthenticationService from '../../src/authentication/AuthenticationService';
+import type {User, UnconnectedUser} from '../../src/authentication/UserModel';
+import type {Tokens} from '../../src/authentication/AuthenticationModel';
+import type {ErrorResponse} from '../../src/http/Response';
 
 describe('LoginScreen', () => {
   test('should maintain snapshot', () =>
@@ -90,7 +90,7 @@ describe('LoginScreen', () => {
     };
 
     test('it should call the Authentication Service', () => {
-      const user: User = {uid: 1, pid: 2, cid: 3};
+      const user: User = {uid: uuidv4(), pid: uuidv4(), cid: uuidv4()};
       tb.onLoginReturn({user, tokens});
 
       tb.performLogin('user@two.com', 'testPassword');
@@ -109,8 +109,8 @@ describe('LoginScreen', () => {
     });
 
     describe('With Valid Response', () => {
-      test('it should store the user', (done) => {
-        const user: User = {uid: 1, pid: 2, cid: 3};
+      test('it should store the user', done => {
+        const user: User = {uid: uuidv4(), pid: uuidv4(), cid: uuidv4()};
         tb.onLoginReturn({user, tokens});
         tb.performLogin('user@two.com', 'testPassword');
 
@@ -121,8 +121,8 @@ describe('LoginScreen', () => {
         });
       });
 
-      test('it should store the unconnected user', (done) => {
-        const user: UnconnectedUser = {uid: 1, connectCode: 'aBcDeF'};
+      test('it should store the unconnected user', done => {
+        const user: UnconnectedUser = {uid: uuidv4()};
         tb.onLoginReturn({user, tokens});
         tb.performLogin('user@two.com', 'testPassword');
 
@@ -133,8 +133,8 @@ describe('LoginScreen', () => {
         });
       });
 
-      test('it should store the tokens', (done) => {
-        const user: User = {uid: 1, pid: 2, cid: 3};
+      test('it should store the tokens', done => {
+        const user: User = {uid: uuidv4(), pid: uuidv4(), cid: uuidv4()};
         tb.onLoginReturn({user, tokens});
         tb.performLogin('user@two.com', 'testPassword');
 
@@ -145,8 +145,8 @@ describe('LoginScreen', () => {
         });
       });
 
-      test('it should navigate to the Loading Screen', (done) => {
-        const user: User = {uid: 1, pid: 2, cid: 3};
+      test('it should navigate to the Loading Screen', done => {
+        const user: User = {uid: uuidv4(), pid: uuidv4(), cid: uuidv4()};
         tb.onLoginReturn({user, tokens});
         tb.performLogin('user@two.com', 'testPassword');
 
@@ -164,7 +164,7 @@ describe('LoginScreen', () => {
     });
 
     describe('With Error Response', () => {
-      test('it should display the error', (done) => {
+      test('it should display the error', done => {
         const error: ErrorResponse = {
           code: 400,
           status: '400 Bad Request',
