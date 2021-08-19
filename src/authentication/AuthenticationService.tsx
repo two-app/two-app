@@ -1,22 +1,19 @@
-import {AxiosResponse} from 'axios';
+import type {AxiosResponse} from 'axios';
 
 import Gateway from '../http/Gateway';
 import {store} from '../state/reducers';
 import {getNavigation} from '../navigation/RootNavigation';
 import {resetNavigate} from '../navigation/NavigationUtilities';
 import {storeUser, storeUnconnectedUser} from '../user';
-import {ErrorResponse} from '../http/Response';
+import type {ErrorResponse} from '../http/Response';
 
 import {storeTokens} from './store';
-import {Tokens} from './AuthenticationModel';
-import UserRegistrationModel, {
-  UserRegistration,
-} from './register_workflow/UserRegistrationModel';
+import type {Tokens} from './AuthenticationModel';
+import type {UserRegistration} from './register_workflow/UserRegistrationModel';
+import UserRegistrationModel from './register_workflow/UserRegistrationModel';
+import type {UnconnectedUser, User} from './UserModel';
 import {
-  UnconnectedUser,
   unconnectedUserFromAccessToken,
-  User,
-  userFromAccessToken,
   detectUserFromAccessToken,
   isUnconnectedUser,
 } from './UserModel';
@@ -51,17 +48,6 @@ const registerUser = (
   Gateway.post('/self', userRegistration).then(
     (r: AxiosResponse<Tokens>): UserResponse => ({
       user: unconnectedUserFromAccessToken(r.data.accessToken),
-      tokens: {
-        accessToken: r.data.accessToken,
-        refreshToken: r.data.refreshToken,
-      },
-    }),
-  );
-
-const connectToPartner = (connectCode: string): Promise<UserResponse> =>
-  Gateway.post(`/partner/${connectCode}`).then(
-    (r: AxiosResponse<Tokens>): UserResponse => ({
-      user: userFromAccessToken(r.data.accessToken),
       tokens: {
         accessToken: r.data.accessToken,
         refreshToken: r.data.refreshToken,
@@ -122,4 +108,4 @@ const getTokensFromStore = (): {accessToken: string; refreshToken: string} => {
   return {accessToken, refreshToken};
 };
 
-export default {login, registerUser, connectToPartner, refreshTokens};
+export default {login, registerUser, refreshTokens};

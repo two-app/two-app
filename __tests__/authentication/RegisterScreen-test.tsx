@@ -31,7 +31,10 @@ describe('RegisterScreen', () => {
       tb.clickSubmitButton();
 
       expect(tb.navigateFn).toHaveBeenCalledWith('AcceptTermsScreen', {
-        userRegistration: new UserRegistration(),
+        userRegistration: {
+          ...new UserRegistration(),
+          uid: expect.any(String),
+        },
       });
     });
   });

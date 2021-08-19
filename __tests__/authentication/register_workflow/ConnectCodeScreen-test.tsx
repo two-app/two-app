@@ -3,11 +3,12 @@ import React from 'react';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
 import {shallow} from 'enzyme';
+import uuidv4 from 'uuidv4';
 
-import {UnconnectedUser} from '../../../src/authentication/UserModel';
+import type {UnconnectedUser} from '../../../src/authentication/UserModel';
 import {ConnectCodeScreen} from '../../../src/authentication/register_workflow/ConnectCodeScreen';
 import ConnectService from '../../../src/user/ConnectService';
-import {ErrorResponse} from '../../../src/http/Response';
+import type {ErrorResponse} from '../../../src/http/Response';
 
 describe('ConnectCodeScreen', () => {
   let tb: ConnectCodeScreenTestBed;
@@ -38,7 +39,7 @@ describe('ConnectCodeScreen', () => {
   });
 
   describe('When entered partner code is identical to users code', () => {
-    beforeEach(() => tb.setPartnerCodeInput(tb.user.connectCode));
+    beforeEach(() => tb.setPartnerCodeInput(tb.user.uid));
 
     test('displays error', () =>
       expect(tb.getErrorText()).toEqual("You can't connect with yourself!"));
@@ -57,7 +58,7 @@ describe('ConnectCodeScreen', () => {
   });
 
   describe('When entered code is valid', () => {
-    beforeEach(() => tb.setPartnerCodeInput('ghijkl'));
+    beforeEach(() => tb.setPartnerCodeInput(uuidv4()));
 
     test('enables submit', () =>
       expect(tb.isSubmitButtonDisabled()).toBe(false));
@@ -111,7 +112,7 @@ describe('ConnectCodeScreen', () => {
 });
 
 class ConnectCodeScreenTestBed {
-  user: UnconnectedUser = {uid: 12, connectCode: 'abcdef'};
+  user: UnconnectedUser = {uid: uuidv4()};
   dispatchFn = jest.fn();
 
   wrapper = shallow(

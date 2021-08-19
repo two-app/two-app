@@ -1,4 +1,4 @@
-import {AxiosError} from 'axios';
+import type {AxiosError} from 'axios';
 import Config from 'react-native-config';
 
 type ErrorResponseServer = {
@@ -20,9 +20,9 @@ const isErrorResponse = (
 
 export const mapErrorResponse = (error: AxiosError<any>): ErrorResponse => {
   console.log('Encountered an error with a HTTP response.');
-  console.log('--- The Request ---');
-  console.log(error.request);
-  console.log('---             ---');
+  console.log('--- The Request  ---');
+  console.log(JSON.stringify(error.request));
+  console.log('--- The Response ---');
   if (!error.response) {
     console.log(
       `Failed to connect to server. Using API ${Config.API_URL}.`,
@@ -39,7 +39,10 @@ export const mapErrorResponse = (error: AxiosError<any>): ErrorResponse => {
       console.log('Server returned ErrorResponse.', response);
       return {...response, code: error.response.status};
     } else {
-      console.log('Server returned a malformed error.', error.response);
+      console.log(
+        'Server returned a malformed error.',
+        JSON.stringify(error.response),
+      );
       return {
         status: `Error ${error.response.status}`,
         reason: 'Something went wrong.',

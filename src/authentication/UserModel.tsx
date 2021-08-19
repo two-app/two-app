@@ -4,21 +4,19 @@ import jwtDecode from 'jwt-decode';
 const decode = (token: string): any => jwtDecode(token);
 
 export type UnconnectedUser = {
-  uid: number;
-  connectCode: string;
+  uid: string;
 };
 
 export const unconnectedUserFromAccessToken = (
   accessToken: string,
 ): UnconnectedUser => ({
   uid: decode(accessToken).uid,
-  connectCode: decode(accessToken).connectCode,
 });
 
 export type User = {
-  uid: number;
-  pid: number;
-  cid: number;
+  uid: string;
+  pid: string;
+  cid: string;
 };
 
 export const userFromAccessToken = (accessToken: string): User => ({
@@ -44,5 +42,5 @@ export const detectUserFromAccessToken = (
 export const isUnconnectedUser = (
   user: User | UnconnectedUser,
 ): user is UnconnectedUser => {
-  return (user as UnconnectedUser).connectCode !== undefined;
+  return (user as User).pid == null;
 };

@@ -1,13 +1,13 @@
-import {ActionType, createReducer} from 'typesafe-actions';
-import {Reducer} from 'redux';
+import type {ActionType} from 'typesafe-actions';
+import {createReducer} from 'typesafe-actions';
+import type {Reducer} from 'redux';
 
 import {storeUnconnectedUser, storeUser} from './actions';
 
 export type UserState = {
-  readonly uid: number;
-  readonly pid?: number;
-  readonly cid?: number;
-  readonly connectCode?: string;
+  readonly uid: string;
+  readonly pid?: string;
+  readonly cid?: string;
 } | null;
 
 type UserActions = ActionType<typeof import('./actions').default>;

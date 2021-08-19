@@ -1,19 +1,16 @@
 import {Text} from 'react-native';
 import React from 'react';
-import {
-  render,
-  RenderAPI,
-  fireEvent,
-  cleanup,
-} from '@testing-library/react-native';
+import type {RenderAPI} from '@testing-library/react-native';
+import {render, fireEvent, cleanup} from '@testing-library/react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {CommonActions} from '@react-navigation/native';
 import Config from 'react-native-config';
+import uuidv4 from 'uuidv4';
 
 import {ProfileScreen} from '../../src/user/ProfileScreen';
-import UserService, {UserProfile} from '../../src/user/UserService';
-import PartnerService from '../../src/user/PartnerService';
-import {User} from '../../src/authentication/UserModel';
+import type {UserProfile} from '../../src/user/UserService';
+import UserService from '../../src/user/UserService';
+import type {User} from '../../src/authentication/UserModel';
 
 const mockOpenURLFn = jest.fn().mockResolvedValue({});
 
@@ -34,13 +31,6 @@ describe('PartnerScreen', () => {
     expect(
       tb.wrapper.getByText(
         `${tb.userProfile.firstName} ${tb.userProfile.lastName}`,
-      ),
-    ).toBeTruthy());
-
-  test('should display the partners first and last name', () =>
-    expect(
-      tb.wrapper.getByText(
-        `${tb.partnerProfile.firstName} ${tb.partnerProfile.lastName}`,
       ),
     ).toBeTruthy());
 
@@ -123,12 +113,12 @@ describe('PartnerScreen', () => {
 });
 
 class PartnerScreenTestBed {
-  user: User = {uid: 1, pid: 2, cid: 3};
+  user: User = {uid: uuidv4(), pid: uuidv4(), cid: uuidv4()};
   userProfile: UserProfile = {...this.user, firstName: 'ABC', lastName: '123'};
   partnerProfile: UserProfile = {
-    uid: 2,
-    pid: 1,
-    cid: 3,
+    uid: this.user.pid,
+    pid: this.user.uid,
+    cid: this.user.cid,
     firstName: 'XYZ',
     lastName: '789',
   };
@@ -139,9 +129,6 @@ class PartnerScreenTestBed {
 
   constructor() {
     UserService.getSelf = jest.fn().mockResolvedValue(this.userProfile);
-    PartnerService.getPartner = jest
-      .fn()
-      .mockResolvedValue(this.partnerProfile);
     Config.PRIVACY_POLICY_URL = this.privacyPolicyURL;
   }
 
@@ -152,7 +139,7 @@ class PartnerScreenTestBed {
         <ProfileScreen
           dispatch={{} as any}
           navigation={{dispatch: this.dispatchFn} as any}
-          user={{uid: 1, pid: 2, cid: 3}}
+          user={this.user}
         />
       </SafeAreaProvider>,
     );

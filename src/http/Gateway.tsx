@@ -1,21 +1,29 @@
-import Axios, {
+import type {
   AxiosInstance,
   AxiosRequestConfig,
   AxiosError,
   AxiosResponse,
 } from 'axios';
+import Axios from 'axios';
 import Config from 'react-native-config';
 
 import {store} from '../state/reducers';
 
-import {mapErrorResponse, ErrorResponse} from './Response';
+import type {ErrorResponse} from './Response';
+import {mapErrorResponse} from './Response';
 
 const Gateway: AxiosInstance = Axios.create({
   baseURL: Config.API_URL,
   timeout: 5000,
 });
 
+const showReq = (config: AxiosRequestConfig): string =>
+  `${config.method?.toUpperCase()} /${config.url}`;
+
 Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
+  console.log(
+    `Performing request ${showReq(config)}:\n${JSON.stringify(config)}`,
+  );
   if (config.url === '/self' && config.method === 'post') {
     return config;
   }
@@ -34,8 +42,11 @@ Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
 });
 
 Gateway.interceptors.response.use(
-  (response: AxiosResponse<any>): Promise<AxiosResponse<any>> =>
-    Promise.resolve(response),
+  (response: AxiosResponse<any>): Promise<AxiosResponse<any>> => {
+    const json = JSON.stringify(response);
+    console.log(`Received response from ${showReq(response.config)}:\n${json}`);
+    return Promise.resolve(response);
+  },
   (error: AxiosError<any>): Promise<ErrorResponse> =>
     Promise.reject(mapErrorResponse(error)),
 );

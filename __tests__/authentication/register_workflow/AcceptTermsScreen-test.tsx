@@ -5,6 +5,7 @@ import {Text} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import {CommonActions} from '@react-navigation/native';
+import uuidv4 from 'uuidv4';
 
 import {AcceptTermsScreen} from '../../../src/authentication/register_workflow/AcceptTermsScreen';
 import {clearState, store} from '../../../src/state/reducers';
@@ -50,7 +51,7 @@ describe('AcceptTermsScreen2', () => {
 
   describe('on successful submit', () => {
     const registerUserResponse: UserResponse = {
-      user: {uid: 24, connectCode: 'testConnectCode'},
+      user: {uid: uuidv4()},
       tokens: {accessToken: 'access', refreshToken: 'refresh'},
     };
 
@@ -66,6 +67,7 @@ describe('AcceptTermsScreen2', () => {
 
     test('it should make a register user request', () => {
       expect(AuthenticationService.registerUser).toHaveBeenCalledWith({
+        uid: tb.userRegistration.uid,
         firstName: 'Gerry',
         lastName: 'Fletcher',
         email: 'admin@two.com',
@@ -126,6 +128,7 @@ class AcceptTermsScreenTestBed {
   // models
 
   userRegistration: UserRegistration = {
+    uid: uuidv4(),
     firstName: 'Gerry',
     lastName: 'Fletcher',
     email: 'admin@two.com',

@@ -1,6 +1,10 @@
+import 'react-native-get-random-values';
+import uuid from 'uuidv4';
+
 import EmailValidator from '../../forms/EmailValidator';
 
 class UserRegistration {
+  uid = uuid();
   firstName = '';
   lastName = '';
   email = '';

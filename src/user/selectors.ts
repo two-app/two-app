@@ -1,6 +1,6 @@
-import {UnconnectedUser, User} from '../authentication/UserModel';
+import type {UnconnectedUser, User} from '../authentication/UserModel';
 
-import {UserState} from './reducers';
+import type {UserState} from './reducers';
 
 /**
  * It is an implicit agreement that the existence of the user within the redux store has been checked before
