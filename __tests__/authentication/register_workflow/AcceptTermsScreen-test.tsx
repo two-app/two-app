@@ -67,6 +67,7 @@ describe('AcceptTermsScreen2', () => {
 
     test('it should make a register user request', () => {
       expect(AuthenticationService.registerUser).toHaveBeenCalledWith({
+        uid: tb.userRegistration.uid,
         firstName: 'Gerry',
         lastName: 'Fletcher',
         email: 'admin@two.com',

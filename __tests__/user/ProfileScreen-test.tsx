@@ -34,13 +34,6 @@ describe('PartnerScreen', () => {
       ),
     ).toBeTruthy());
 
-  test('should display the partners first and last name', () =>
-    expect(
-      tb.wrapper.getByText(
-        `${tb.partnerProfile.firstName} ${tb.partnerProfile.lastName}`,
-      ),
-    ).toBeTruthy());
-
   // test('should have a Manage Tags link', () => expect(
   //   tb.wrapper.getByA11yLabel('Manage Tags')
   // ).toBeTruthy());

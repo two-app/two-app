@@ -39,7 +39,8 @@ type ConnectCodeScreenProps = ConnectorProps & {
 
 const ConnectCodeScreen = ({navigation, user}: ConnectCodeScreenProps) => {
   const [partnerConnectCode, setPartnerConnectCode] = useState('');
-  const isPartnerCodeValid = (code: string): boolean => uuid.is(code);
+  const isPartnerCodeValid = (code: string): boolean =>
+    uuid.is(code) && code !== user.uid;
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);

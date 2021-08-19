@@ -58,7 +58,7 @@ describe('ConnectCodeScreen', () => {
   });
 
   describe('When entered code is valid', () => {
-    beforeEach(() => tb.setPartnerCodeInput('ghijkl'));
+    beforeEach(() => tb.setPartnerCodeInput(uuidv4()));
 
     test('enables submit', () =>
       expect(tb.isSubmitButtonDisabled()).toBe(false));
