@@ -80,7 +80,7 @@
     "enzyme-to-json": "^3.6.2",
     "eslint": "^7.14.0",
     "eslint-config-react-native-wcandillon": "^3.6.1",
-    "jest": "^27.0.6",
+    "jest": "^27.1.0",
     "jest-enzyme": "^7.1.2",
     "metro-react-native-babel-preset": "^0.66.2",
     "react-test-renderer": "17.0.2"
