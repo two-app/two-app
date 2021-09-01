@@ -1,7 +1,10 @@
 name: Update Cocoapods Dependencies
 
 on:
-  pull_request_target:
+  push:
+    branches:
+      - dependabot/npm_and_yarn/**
+  pull_request:
     branches:
       - dependabot/npm_and_yarn/**
 
