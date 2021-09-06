@@ -1,21 +1,22 @@
-name: Update Cocoapods Dependencies
-
+name: Update and Commit Cocoapods
 on:
-  push:
+  pull_request_target:
     branches:
       - dependabot/npm_and_yarn/**
-  pull_request:
-    branches:
-      - dependabot/npm_and_yarn/**
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   run:
-    name: Run pod install
+    name: Run Pod Update
     runs-on: macos-latest
+    if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
       - uses: actions/checkout@v2
         with:
-          token: ${{ secrets.WRITE_ACCESS_COMMIT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: c-hive/gha-yarn-cache@v1
 
@@ -30,7 +31,7 @@ jobs:
             ${{ runner.os }}-pods-
 
       - name: Install Cocoapods Packages
-        run: pushd ios && pod install --verbose && popd
+        run: pushd ios && pod update --verbose && popd
 
       - uses: stefanzweifel/git-auto-commit-action@v4.11.0
         with:
