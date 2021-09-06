@@ -1,21 +1,23 @@
 name: Update Cocoapods Dependencies
-
 on:
-  push:
-    branches:
-      - dependabot/npm_and_yarn/**
-  pull_request:
-    branches:
-      - dependabot/npm_and_yarn/**
+  workflow_run:
+    workflows: ["Dependabot PR Check"]
+    types: 
+      - completed
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
   run:
     name: Run pod install
     runs-on: macos-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v2
         with:
-          token: ${{ secrets.WRITE_ACCESS_COMMIT_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: c-hive/gha-yarn-cache@v1
 
