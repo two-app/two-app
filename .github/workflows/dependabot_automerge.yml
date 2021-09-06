@@ -1,9 +1,8 @@
 name: Dependabot auto-merge
 on:
-  workflow_run:
-    workflows: ["Dependabot PR Check"]
-    types: 
-      - completed
+  pull_request_target:
+    branches:
+      - dependabot/npm_and_yarn/**
 
 permissions:
   pull-requests: write
@@ -12,7 +11,7 @@ permissions:
 jobs:
   dependabot:
     runs-on: ubuntu-latest
-    if: ${{ github.actor == 'dependabot[bot]' }} || ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
       - name: Dependabot metadata
         id: metadata

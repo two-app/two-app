@@ -1,9 +1,8 @@
-name: Update Cocoapods Dependencies
+name: Update and Commit Cocoapods
 on:
-  workflow_run:
-    workflows: ["Dependabot PR Check"]
-    types: 
-      - completed
+  pull_request_target:
+    branches:
+      - dependabot/npm_and_yarn/**
 
 permissions:
   contents: write
@@ -11,9 +10,9 @@ permissions:
 
 jobs:
   run:
-    name: Run pod install
+    name: Run Pod Update
     runs-on: macos-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
       - uses: actions/checkout@v2
         with:
