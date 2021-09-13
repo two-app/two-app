@@ -3363,10 +3363,10 @@ eslint-config-prettier@^6.10.1:
   dependencies:
     get-stdin "^6.0.0"
 
-eslint-config-react-native-wcandillon@^3.6.4:
-  version "3.6.4"
-  resolved "https://registry.yarnpkg.com/eslint-config-react-native-wcandillon/-/eslint-config-react-native-wcandillon-3.6.4.tgz#c25e126d8fe482eb67edcf4b05f325a84c2eca5d"
-  integrity sha512-fGaGVL+O3TC22zQ6mIp7c2j0u/cTbKP2kfIGFXQav3qwFJSu9BdrUTUg4a0WwQoy6n9C6i1y8THip4GHREK7DQ==
+eslint-config-react-native-wcandillon@^3.6.5:
+  version "3.6.5"
+  resolved "https://registry.yarnpkg.com/eslint-config-react-native-wcandillon/-/eslint-config-react-native-wcandillon-3.6.5.tgz#904fa92901ca6f167653ffd96fa8aea3f97677a3"
+  integrity sha512-c4xbhsS6fnkKSM/4LyBakRmvxkN4LQDsiYVlgL4iEDBHliZECxDyT8g/FhqpVU63v9jVQCHVYoIGMqy5od9zdw==
   dependencies:
     "@react-native-community/eslint-config" "3.0.0"
     eslint-plugin-import "2.24.0"
