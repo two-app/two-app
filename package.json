@@ -24,7 +24,7 @@
     "@types/jest": "^27.0.1",
     "@types/lodash": "^4.14.170",
     "@types/pluralize": "^0.0.29",
-    "@types/react": "^17.0.19",
+    "@types/react": "^17.0.20",
     "@types/react-native": "^0.64.10",
     "@types/react-native-vector-icons": "^6.4.7",
     "@types/react-native-video": "^5.0.9",
