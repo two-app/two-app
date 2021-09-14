@@ -54,7 +54,7 @@
     "react-native-reanimated": "^2.2.0",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-safe-area-view": "^1.1.1",
-    "react-native-screens": "^3.7.0",
+    "react-native-screens": "^3.7.2",
     "react-native-vector-icons": "^8.1.0",
     "react-native-video": "^5.1.1",
     "react-navigation-transitions": "^1.0.12",
@@ -68,7 +68,7 @@
     "uuidv4": "^5.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9",
+    "@babel/core": "^7.15.5",
     "@babel/preset-typescript": "^7.14.5",
     "@babel/runtime": "^7.15.4",
     "@react-native-community/eslint-config": "^3.0.0",
