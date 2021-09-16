@@ -27,11 +27,13 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: 'gradle'
       - uses: c-hive/gha-yarn-cache@v1
-
       - run: yarn install --non-interactive --frozen-lockfile --network-timeout 100000
-
       - run: gem install bundler
 
       - uses: actions/cache@v2
