@@ -22,7 +22,7 @@
     "@reduxjs/toolkit": "^1.6.0",
     "@testing-library/react-native": "^7.2.0",
     "@types/jest": "^27.0.1",
-    "@types/lodash": "^4.14.170",
+    "@types/lodash": "^4.14.173",
     "@types/pluralize": "^0.0.29",
     "@types/react": "^17.0.21",
     "@types/react-native": "^0.65.0",
