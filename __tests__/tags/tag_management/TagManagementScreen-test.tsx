@@ -229,20 +229,17 @@ class TagManagementScreenTestBed {
 
   build = (): TagManagementScreenTestBed => {
     this.render = render(
-      <SafeAreaProvider
-        initialSafeAreaInsets={{top: 1, left: 2, right: 3, bottom: 4}}>
-        <TagManagementScreen
-          navigation={{goBack: this.goBackFn} as any}
-          route={{
-            params: {
-              onSubmit: this.onSubmitPropCallback,
-              initialTag: this.initialTag,
-            },
-            key: '',
-            name: 'TagManagementScreen',
-          }}
-        />
-      </SafeAreaProvider>,
+      <TagManagementScreen
+        navigation={{goBack: this.goBackFn} as any}
+        route={{
+          params: {
+            onSubmit: this.onSubmitPropCallback,
+            initialTag: this.initialTag,
+          },
+          key: '',
+          name: 'TagManagementScreen',
+        }}
+      />,
     );
     return this;
   };

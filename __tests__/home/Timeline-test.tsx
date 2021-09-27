@@ -151,10 +151,7 @@ class TimelineTestBed {
   build = (): TimelineTestBed => {
     this.render = render(
       <Provider store={store}>
-        <SafeAreaProvider
-          initialSafeAreaInsets={{top: 1, left: 2, right: 3, bottom: 4}}>
-          <Timeline />
-        </SafeAreaProvider>
+        <Timeline />
       </Provider>,
     );
     return this;

@@ -1,9 +1,9 @@
 import {
   ActivityIndicator,
-  Dimensions,
   StyleSheet,
   View,
   Text,
+  useWindowDimensions,
 } from 'react-native';
 import React from 'react';
 
@@ -15,7 +15,7 @@ type LoadingViewProps = {
 
 const LoadingView = ({loadingPercentage}: LoadingViewProps) => (
   <View
-    style={styles.overlay}
+    style={{...styles.overlay, ...useWindowDimensions()}}
     accessibilityState={{busy: true}}
     accessibilityHint="Waiting for an action to finish...">
     {loadingPercentage != null && (
@@ -35,8 +35,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     opacity: 0.5,
     backgroundColor: 'white',
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
     zIndex: 2,
     alignItems: 'center',
     justifyContent: 'center',

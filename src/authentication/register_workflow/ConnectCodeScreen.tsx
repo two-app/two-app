@@ -27,6 +27,7 @@ import {Button, ButtonStyles} from '../../forms/Button';
 import {resetNavigate} from '../../navigation/NavigationUtilities';
 import ConnectService from '../../user/ConnectService';
 import type {ErrorResponse} from '../../http/Response';
+import AuthenticationService from '../AuthenticationService';
 
 const mapState = (state: TwoState) => ({
   user: selectUnconnectedUser(state.user),
@@ -48,20 +49,23 @@ const ConnectCodeScreen = ({navigation, user}: ConnectCodeScreenProps) => {
   const connectToPartner = (uid: string) => {
     setError(null);
     setSubmitted(true);
-    ConnectService.performConnection(uid)
-      .catch((e: ErrorResponse) => {
+    AuthenticationService.connectUser(uid).catch((e: ErrorResponse) => {
+      if (e.reason === 'User already has a partner.') {
+        refresh();
+      } else {
         setError(e.reason);
-      })
-      .finally(() => setSubmitted(false));
+      }
+    });
   };
 
   const refresh = () => {
     setError(null);
     setRefreshing(true);
     ConnectService.checkConnection()
-      .catch((e: ErrorResponse) => {
-        setError(e.reason);
+      .then((isConnected: boolean) => {
+        if (isConnected) resetNavigate('HomeScreen', navigation);
       })
+      .catch((e: ErrorResponse) => setError(e.reason))
       .finally(() => setRefreshing(false));
   };
 

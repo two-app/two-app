@@ -9,6 +9,7 @@ import type {UnconnectedUser} from '../../../src/authentication/UserModel';
 import {ConnectCodeScreen} from '../../../src/authentication/register_workflow/ConnectCodeScreen';
 import ConnectService from '../../../src/user/ConnectService';
 import type {ErrorResponse} from '../../../src/http/Response';
+import AuthenticationService from '../../../src/authentication/AuthenticationService';
 
 describe('ConnectCodeScreen', () => {
   let tb: ConnectCodeScreenTestBed;
@@ -73,12 +74,12 @@ describe('ConnectCodeScreen', () => {
       ).toBe(true);
     });
 
-    test('it delegates to the ConnectService', () => {
+    test('it delegates to the AuthenticationService', () => {
       tb.whenConnectResolve();
 
       tb.clickSubmit();
 
-      expect(ConnectService.performConnection).toHaveBeenCalledTimes(1);
+      expect(AuthenticationService.connectUser).toHaveBeenCalledTimes(1);
     });
 
     describe('On successful connect', () => {
@@ -125,7 +126,7 @@ class ConnectCodeScreenTestBed {
 
   constructor() {
     ConnectService.checkConnection = jest.fn();
-    ConnectService.performConnection = jest.fn();
+    AuthenticationService.connectUser = jest.fn();
   }
 
   clickCopyToClipboard = () =>
@@ -146,10 +147,10 @@ class ConnectCodeScreenTestBed {
       .prop<() => void>('onPress')();
 
   whenConnectResolve = () => {
-    ConnectService.performConnection = jest.fn().mockResolvedValue({});
+    AuthenticationService.connectUser = jest.fn().mockResolvedValue({});
   };
 
   whenConnectReject = (error: ErrorResponse) => {
-    ConnectService.performConnection = jest.fn().mockRejectedValue(error);
+    AuthenticationService.connectUser = jest.fn().mockRejectedValue(error);
   };
 }

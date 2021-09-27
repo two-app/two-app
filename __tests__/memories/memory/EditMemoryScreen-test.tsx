@@ -257,15 +257,12 @@ class EditMemoryScreenTestBed {
 
   build = (): EditMemoryScreenTestBed => {
     this.render = render(
-      <SafeAreaProvider
-        initialSafeAreaInsets={{top: 1, left: 2, right: 3, bottom: 4}}>
-        <EditMemoryScreen
-          navigation={{goBack: this.goBackFn} as any}
-          route={{params: {mid: this.memory.id}} as any}
-          memory={this.memory}
-          dispatch={this.dispatchFn}
-        />
-      </SafeAreaProvider>,
+      <EditMemoryScreen
+        navigation={{goBack: this.goBackFn} as any}
+        route={{params: {mid: this.memory.id}} as any}
+        memory={this.memory}
+        dispatch={this.dispatchFn}
+      />,
     );
     return this;
   };

@@ -11,7 +11,7 @@ import Image from 'react-native-fast-image';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Video from 'react-native-video';
 
-import {Content, ImageContent} from '../../content/ContentModels';
+import type {Content, ImageContent} from '../../content/ContentModels';
 import {buildContentURI} from '../../content/ContentService';
 
 type ContentGalleryProps = {
@@ -43,8 +43,8 @@ export const ContentGallery = ({
       return {
         url,
         props: {index: idx},
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
+        width: 5,
+        height: 5,
       };
     }
   });

@@ -2,7 +2,6 @@ import {fireEvent, render} from '@testing-library/react-native';
 import type {RenderAPI} from '@testing-library/react-native';
 import React from 'react';
 import {Text} from 'react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import {CommonActions} from '@react-navigation/native';
 import uuidv4 from 'uuidv4';
@@ -15,7 +14,6 @@ import {
   resetMockNavigation,
 } from '../../utils/NavigationMocking';
 import type {UserRegistration} from '../../../src/authentication/register_workflow/UserRegistrationModel';
-import type {UserResponse} from '../../../src/authentication/AuthenticationService';
 import AuthenticationService from '../../../src/authentication/AuthenticationService';
 import type {ErrorResponse} from '../../../src/http/Response';
 
@@ -50,14 +48,9 @@ describe('AcceptTermsScreen2', () => {
   });
 
   describe('on successful submit', () => {
-    const registerUserResponse: UserResponse = {
-      user: {uid: uuidv4()},
-      tokens: {accessToken: 'access', refreshToken: 'refresh'},
-    };
-
     beforeEach(() => {
       // GIVEN
-      tb.onRegisterUserResolve(registerUserResponse);
+      tb.onRegisterUserResolve();
       tb.tickPrivacyPolicy();
       tb.tickAge();
 
@@ -76,13 +69,6 @@ describe('AcceptTermsScreen2', () => {
         ofAge: true,
         receivesEmails: false,
       });
-    });
-
-    test('it should update the redux store', () => {
-      const {auth, user} = store.getState();
-
-      expect(auth).toEqual(registerUserResponse.tokens);
-      expect(user).toEqual(registerUserResponse.user);
     });
 
     test('it should navigate to the connect code screen', () => {
@@ -166,8 +152,8 @@ class AcceptTermsScreenTestBed {
 
   private registerUserSpy = jest.spyOn(AuthenticationService, 'registerUser');
 
-  onRegisterUserResolve = (response: UserResponse) => {
-    this.registerUserSpy.mockResolvedValue(response);
+  onRegisterUserResolve = () => {
+    this.registerUserSpy.mockResolvedValue({} as any); // calling code doesn't care
   };
 
   onRegisterUserReject = (response: ErrorResponse) => {
@@ -182,10 +168,7 @@ class AcceptTermsScreenTestBed {
 
     this.render = render(
       <Provider store={store}>
-        <SafeAreaProvider
-          initialSafeAreaInsets={{top: 1, left: 2, right: 3, bottom: 4}}>
-          <AcceptTermsScreen />
-        </SafeAreaProvider>
+        <AcceptTermsScreen />
       </Provider>,
     );
 

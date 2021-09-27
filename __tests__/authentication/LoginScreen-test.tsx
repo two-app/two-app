@@ -1,234 +1,148 @@
-import 'react-native';
+import {Text} from 'react-native';
 import React from 'react';
 // Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
-import {shallow} from 'enzyme';
-import {CommonActions} from '@react-navigation/native';
-import uuidv4 from 'uuidv4';
+import type {ReactTestInstance} from 'react-test-renderer';
+import type {QueryReturn, RenderAPI} from '@testing-library/react-native';
+import {
+  waitForElementToBeRemoved,
+  fireEvent,
+  render,
+} from '@testing-library/react-native';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 import {LoginScreen} from '../../src/authentication/LoginScreen';
-import EmailValidator from '../../src/forms/EmailValidator';
-import type {UserResponse} from '../../src/authentication/AuthenticationService';
 import AuthenticationService from '../../src/authentication/AuthenticationService';
-import type {User, UnconnectedUser} from '../../src/authentication/UserModel';
-import type {Tokens} from '../../src/authentication/AuthenticationModel';
 import type {ErrorResponse} from '../../src/http/Response';
+import {mockNavigation, resetMockNavigation} from '../utils/NavigationMocking';
 
 describe('LoginScreen', () => {
-  test('should maintain snapshot', () =>
-    expect(
-      renderer
-        .create(
-          <LoginScreen
-            navigation={{} as any}
-            storeUser={jest.fn()}
-            storeUnconnectedUser={jest.fn()}
-            storeTokens={jest.fn()}
-          />,
-        )
-        .toJSON(),
-    ).toMatchSnapshot());
-
   let tb: LoginScreenTestBed;
 
-  beforeEach(() => (tb = new LoginScreenTestBed()));
+  beforeEach(() => (tb = new LoginScreenTestBed().build()));
 
-  test('Create Account Button should navigate to RegisterScreen.', () => {
-    const btn: any = tb.wrapper
-      .find("TouchableOpacity[data-testid='register-screen-button']")
-      .first();
+  test('Pressing create account button should navigate to RegisterScreen', () => {
+    tb.pressRegister();
 
-    btn.prop('onPress')();
+    expect(mockNavigation.reset).toHaveBeenCalledWith({
+      index: 0,
+      routes: [{name: 'RegisterScreen'}],
+    });
+  });
 
-    expect(tb.dispatchFn).toHaveBeenCalledTimes(1);
-    expect(tb.dispatchFn).toHaveBeenCalledWith(
-      CommonActions.reset({
+  describe('Form Validation', () => {
+    test('the submit button should be disabled by default', () => {
+      expect(tb.isSubmitEnabled()).toEqual(false);
+    });
+
+    test('the submit button should be disabled with a valid email but no password', () => {
+      tb.setEmailInput('user@two.date');
+
+      expect(tb.isSubmitEnabled()).toEqual(false);
+    });
+
+    test('the submit button should be disabled with a valid password but no email', () => {
+      tb.setPasswordInput('SoMePassWord');
+
+      expect(tb.isSubmitEnabled()).toEqual(false);
+    });
+
+    test('password < 6 in length disables the submit', () => {
+      tb.setEmailInput('user@two.date');
+      tb.setPasswordInput('hi');
+
+      expect(tb.isSubmitEnabled()).toEqual(false);
+    });
+
+    test('invalid email disables the submit', () => {
+      tb.setPasswordInput('soMePassWord');
+      tb.setEmailInput('invalid email');
+
+      expect(tb.isSubmitEnabled()).toEqual(false);
+    });
+
+    test('the submit should be enabled', () => {
+      tb.setEmailInput('user@two.date');
+      tb.setPasswordInput('SoMePassWord');
+
+      expect(tb.isSubmitEnabled()).toEqual(true);
+    });
+  });
+
+  describe('On Valid Login', () => {
+    test('it should navigate to the home screen', async () => {
+      tb.setEmailInput('user@two.date');
+      tb.setPasswordInput('SoMePassWord');
+
+      await tb.pressSubmit();
+
+      expect(mockNavigation.reset).toHaveBeenCalledWith({
         index: 0,
-        routes: [{name: 'RegisterScreen'}],
-      }),
-    );
-  });
-
-  describe('Form Validation Tests', () => {
-    describe('Email', () => {
-      test('delegates to validEmail fn', () => {
-        EmailValidator.validateEmail = jest.fn().mockReturnValue(true);
-        tb.expectInput('Email', 'admin@two.com');
-        expect(EmailValidator.validateEmail).toHaveBeenCalledTimes(1);
-        expect(EmailValidator.validateEmail).toHaveBeenCalledWith(
-          'admin@two.com',
-        );
-      });
-    });
-
-    describe('Password', () => {
-      test('invalid with < 6 characters', () =>
-        tb.expectInput('Password', 'pass').toBe(false));
-      test('valid with > 6 characters', () =>
-        tb.expectInput('Password', 'password').toBe(true));
-      test('valid with secure password', () =>
-        tb.expectInput('Password', 'P?4Ot2ONz:IJO&%U').toBe(true));
-    });
-
-    describe('Valid Form', () => {
-      test('should enable the submit button', () => {
-        expect(tb.wrapper.find('SubmitButton').prop('disabled')).toBe(true);
-
-        EmailValidator.validateEmail = jest.fn().mockReturnValue(true);
-        tb.changeInput('Email', 'admin@two.com');
-        tb.changeInput('Password', 'P?4Ot2ONz:IJO&%U');
-
-        expect(tb.wrapper.find('SubmitButton').prop('disabled')).toBe(false);
+        routes: [{name: 'LoadingScreen'}],
       });
     });
   });
 
-  describe('Logging In', () => {
-    const tokens: Tokens = {
-      accessToken: 'testAccess',
-      refreshToken: 'testRefresh',
-    };
-
-    test('it should call the Authentication Service', () => {
-      const user: User = {uid: uuidv4(), pid: uuidv4(), cid: uuidv4()};
-      tb.onLoginReturn({user, tokens});
-
-      tb.performLogin('user@two.com', 'testPassword');
-
-      expect(AuthenticationService.login).toHaveBeenCalledTimes(1);
-    });
-
-    test('it should display a loading overlay', () => {
-      tb.onLoginReturn({} as any); // async, result wont be used
-
-      tb.performLogin('user@two.com', 'testPassword');
-
-      expect(
-        tb.wrapper.find('ScrollContainer').prop<boolean>('isLoading'),
-      ).toBe(true);
-    });
-
-    describe('With Valid Response', () => {
-      test('it should store the user', done => {
-        const user: User = {uid: uuidv4(), pid: uuidv4(), cid: uuidv4()};
-        tb.onLoginReturn({user, tokens});
-        tb.performLogin('user@two.com', 'testPassword');
-
-        setImmediate(() => {
-          expect(tb.storeUserFn).toHaveBeenCalledTimes(1);
-          expect(tb.storeUserFn).toHaveBeenCalledWith(user);
-          done();
-        });
+  describe('On Failed Login', () => {
+    test('it should display the error', async () => {
+      tb.setEmailInput('user@two.date');
+      tb.setPasswordInput('SoMePassWord');
+      tb.onLoginReject({
+        reason: 'Invalid login combination',
+        code: 400,
+        status: 'Bad Request',
       });
 
-      test('it should store the unconnected user', done => {
-        const user: UnconnectedUser = {uid: uuidv4()};
-        tb.onLoginReturn({user, tokens});
-        tb.performLogin('user@two.com', 'testPassword');
+      await tb.pressSubmit();
 
-        setImmediate(() => {
-          expect(tb.storeUnconnectedUserFn).toHaveBeenCalledTimes(1);
-          expect(tb.storeUnconnectedUserFn).toHaveBeenCalledWith(user);
-          done();
-        });
-      });
-
-      test('it should store the tokens', done => {
-        const user: User = {uid: uuidv4(), pid: uuidv4(), cid: uuidv4()};
-        tb.onLoginReturn({user, tokens});
-        tb.performLogin('user@two.com', 'testPassword');
-
-        setImmediate(() => {
-          expect(tb.storeTokensFn).toHaveBeenCalledTimes(1);
-          expect(tb.storeTokensFn).toHaveBeenCalledWith(tokens);
-          done();
-        });
-      });
-
-      test('it should navigate to the Loading Screen', done => {
-        const user: User = {uid: uuidv4(), pid: uuidv4(), cid: uuidv4()};
-        tb.onLoginReturn({user, tokens});
-        tb.performLogin('user@two.com', 'testPassword');
-
-        setImmediate(() => {
-          expect(tb.dispatchFn).toHaveBeenCalledTimes(1);
-          expect(tb.dispatchFn).toHaveBeenCalledWith(
-            CommonActions.reset({
-              index: 0,
-              routes: [{name: 'LoadingScreen'}],
-            }),
-          );
-          done();
-        });
-      });
-    });
-
-    describe('With Error Response', () => {
-      test('it should display the error', done => {
-        const error: ErrorResponse = {
-          code: 400,
-          status: '400 Bad Request',
-          reason: 'Some API Error Message',
-        };
-        tb.onLoginFail(error);
-
-        tb.performLogin('user@two.com', 'testPassword');
-
-        setImmediate(() => {
-          const errorMessage = tb.wrapper
-            .find("Text[data-testid='error-message']")
-            .first();
-          expect(errorMessage.render().text()).toEqual(error.reason);
-          done();
-        });
-      });
+      expect(tb.render.queryByText('Invalid login combination')).toBeTruthy();
     });
   });
 });
 
 class LoginScreenTestBed {
-  dispatchFn = jest.fn();
-  storeUserFn = jest.fn();
-  storeUnconnectedUserFn = jest.fn();
-  storeTokensFn = jest.fn();
+  render: RenderAPI = render(<Text>Not Implemented</Text>);
 
-  wrapper = shallow(
-    <LoginScreen
-      navigation={{dispatch: this.dispatchFn} as any}
-      storeUser={this.storeUserFn}
-      storeUnconnectedUser={this.storeUnconnectedUserFn}
-      storeTokens={this.storeTokensFn}
-    />,
-  );
+  constructor() {
+    this.onLoginResolve();
+  }
 
-  onLoginReturn = (response: UserResponse) => {
-    AuthenticationService.login = jest.fn().mockResolvedValue(response);
+  // elements
+  submitButton = () => this.render.getByA11yLabel('Press to login');
+  emailInput = () => this.render.getByA11yLabel('Enter your email');
+  passwordInput = () => this.render.getByA11yLabel('Enter your password');
+  registerButton = () => this.render.getByA11yLabel('Register a new account');
+
+  // queries
+  isSubmitEnabled = (): boolean =>
+    !this.submitButton().props.accessibilityState.disabled;
+
+  queryLoadingScreen = (): QueryReturn => {
+    return this.render.queryByA11yHint('Waiting for an action to finish...');
   };
 
-  onLoginFail = (error: ErrorResponse) => {
-    AuthenticationService.login = jest.fn().mockRejectedValue(error);
+  // events
+  pressSubmit = async () => {
+    fireEvent.press(this.submitButton());
+    await waitForElementToBeRemoved(this.queryLoadingScreen);
+  };
+  setEmailInput = (e: string) => this.setInput(this.emailInput(), e);
+  setPasswordInput = (p: string) => this.setInput(this.passwordInput(), p);
+  pressRegister = () => fireEvent.press(this.registerButton());
+
+  private setInput = (input: ReactTestInstance, text: string) => {
+    fireEvent.changeText(input, text);
+    fireEvent(input, 'blur');
   };
 
-  performLogin = (email: string, password: string) => {
-    this.changeInput('Email', email);
-    this.changeInput('Password', password);
-    const onClickFn = this.wrapper
-      .find('SubmitButton')
-      .first()
-      .prop('onSubmit');
-    // @ts-ignore
-    onClickFn();
-  };
+  // request/response mocks
+  private loginSpy = jest.spyOn(AuthenticationService, 'login');
 
-  expectInput = (label: string, value: string) => {
-    const input = this.wrapper.find(`Input[label='${label}']`).first();
-    const isValidFunction = input.prop<(v: string) => boolean>('isValid');
-    return expect(isValidFunction(value));
-  };
+  onLoginResolve = () => this.loginSpy.mockResolvedValue({} as any);
+  onLoginReject = (e: ErrorResponse) => this.loginSpy.mockRejectedValue(e);
 
-  changeInput = (label: string, value: string) => {
-    const input = this.wrapper.find(`Input[label='${label}']`).first();
-    const onChangeFn = input.prop<(v: string) => void>('onChange');
-    onChangeFn(value);
+  build = (): LoginScreenTestBed => {
+    resetMockNavigation();
+    this.render = render(<LoginScreen />);
+    return this;
   };
 }

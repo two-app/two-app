@@ -203,15 +203,7 @@ class MemoryToolbarTestBed {
     resetMockNavigation();
     this.render = render(
       <Provider store={store}>
-        <SafeAreaProvider
-          initialSafeAreaInsets={{
-            top: 1,
-            left: 2,
-            right: 3,
-            bottom: 4,
-          }}>
-          <MemoryToolbar memory={this.memory} />
-        </SafeAreaProvider>
+        <MemoryToolbar memory={this.memory} />
       </Provider>,
     );
 

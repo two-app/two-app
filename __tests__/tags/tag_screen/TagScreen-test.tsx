@@ -143,10 +143,7 @@ class TagScreenTestBed {
   build = (): TagScreenTestBed => {
     this.render = render(
       <Provider store={store}>
-        <SafeAreaProvider
-          initialSafeAreaInsets={{top: 1, left: 2, right: 3, bottom: 4}}>
-          <TagScreen navigation={{navigate: this.navigateFn} as any} />
-        </SafeAreaProvider>
+        <TagScreen navigation={{navigate: this.navigateFn} as any} />
       </Provider>,
     );
     return this;

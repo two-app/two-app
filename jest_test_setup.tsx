@@ -24,6 +24,9 @@ import mockAsyncStorage from '@react-native-community/async-storage/jest/async-s
 import {setupMockNavigation} from './__tests__/utils/NavigationMocking';
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
 
+import mockSafeAreaContext from 'react-native-safe-area-context/jest/mock';
+jest.mock('react-native-safe-area-context', () => mockSafeAreaContext);
+
 jest.mock('redux-persist', () => {
   const real = jest.requireActual('redux-persist');
   return {

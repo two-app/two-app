@@ -126,19 +126,16 @@ class ContentUploadScreenTestBed {
 
   build = (): ContentUploadScreenTestBed => {
     this.render = render(
-      <SafeAreaProvider
-        initialSafeAreaInsets={{top: 1, left: 2, right: 3, bottom: 4}}>
-        <ContentUploadScreen
-          navigation={{goBack: this.goBackFn} as any}
-          route={{
-            params: {content: this.uploadContent, mid: this.memory.id},
-            name: 'ContentUploadScreen',
-            key: 'test-key',
-          }}
-          dispatch={this.dispatchFn}
-          memory={this.memory}
-        />
-      </SafeAreaProvider>,
+      <ContentUploadScreen
+        navigation={{goBack: this.goBackFn} as any}
+        route={{
+          params: {content: this.uploadContent, mid: this.memory.id},
+          name: 'ContentUploadScreen',
+          key: 'test-key',
+        }}
+        dispatch={this.dispatchFn}
+        memory={this.memory}
+      />,
     );
     return this;
   };
