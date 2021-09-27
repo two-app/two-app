@@ -8,7 +8,6 @@ import {
   waitForElementToBeRemoved,
 } from '@testing-library/react-native';
 import moment from 'moment';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 import type {ReactTestInstance} from 'react-test-renderer';
 
 import {EditMemoryScreen} from '../../../src/memories/memory/EditMemoryScreen';

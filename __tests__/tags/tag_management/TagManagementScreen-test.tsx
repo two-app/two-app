@@ -7,7 +7,6 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 import type {ReactTestInstance} from 'react-test-renderer';
 
 import * as TagService from '../../../src/tags/TagService';

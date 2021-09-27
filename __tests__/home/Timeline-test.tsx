@@ -2,7 +2,6 @@ import type {RenderAPI} from '@testing-library/react-native';
 import {fireEvent, render, waitFor} from '@testing-library/react-native';
 import React from 'react';
 import {Text} from 'react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import moment from 'moment';
 

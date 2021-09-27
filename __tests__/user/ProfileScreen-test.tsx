@@ -2,7 +2,6 @@ import {Text} from 'react-native';
 import React from 'react';
 import type {RenderAPI} from '@testing-library/react-native';
 import {render, fireEvent, cleanup} from '@testing-library/react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {CommonActions} from '@react-navigation/native';
 import Config from 'react-native-config';
 import uuidv4 from 'uuidv4';

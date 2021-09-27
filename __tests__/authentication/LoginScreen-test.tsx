@@ -8,7 +8,6 @@ import {
   fireEvent,
   render,
 } from '@testing-library/react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 import {LoginScreen} from '../../src/authentication/LoginScreen';
 import AuthenticationService from '../../src/authentication/AuthenticationService';
