@@ -1,13 +1,15 @@
 import React, {useEffect} from 'react';
 import {Text} from 'react-native';
-import {connect, ConnectedProps} from 'react-redux';
-import {StackNavigationProp} from '@react-navigation/stack';
+import type {ConnectedProps} from 'react-redux';
+import {connect} from 'react-redux';
+import type {StackNavigationProp} from '@react-navigation/stack';
 import {CommonActions} from '@react-navigation/native';
 
-import {RootStackParamList} from '../Router';
+import type {RootStackParamList} from '../Router';
 
 import {ScrollContainer} from './views/View';
-import {clearState, persistor, TwoState} from './state/reducers';
+import type {TwoState} from './state/reducers';
+import {clearState, persistor} from './state/reducers';
 
 const mapState = (state: TwoState) => ({user: state.user, auth: state.auth});
 const mapDispatch = {clearState};

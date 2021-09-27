@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {
   Animated,
-  Dimensions,
   Modal,
   View,
   ActivityIndicator,
   StatusBar,
+  useWindowDimensions,
 } from 'react-native';
 import Image from 'react-native-fast-image';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -33,6 +33,7 @@ export const ContentGallery = ({
     onClose();
   };
 
+  const {width, height} = useWindowDimensions();
   const urls = content.map((c, idx) => {
     const url = buildContentURI(c.fileKey, c.gallery);
 
@@ -43,8 +44,8 @@ export const ContentGallery = ({
       return {
         url,
         props: {index: idx},
-        width: 5,
-        height: 5,
+        width,
+        height,
       };
     }
   });

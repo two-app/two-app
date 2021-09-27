@@ -7,7 +7,6 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-view';
 import moment from 'moment';
 import type {ReactTestInstance} from 'react-test-renderer';
 
