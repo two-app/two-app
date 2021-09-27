@@ -46,6 +46,7 @@ const Input = ({
       ]}
       accessibilityHint={accessibilityHint}
       accessibilityLabel={accessibilityLabel}
+      accessibilityValue={{text: valid ? 'Valid entry' : 'Invalid entry'}}
     />
   );
 

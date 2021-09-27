@@ -15,7 +15,11 @@ type LoadingViewProps = {
 
 const LoadingView = ({loadingPercentage}: LoadingViewProps) => (
   <View
-    style={{...styles.overlay, ...useWindowDimensions()}}
+    style={{
+      ...styles.overlay,
+      height: useWindowDimensions().height,
+      width: useWindowDimensions().width,
+    }}
     accessibilityState={{busy: true}}
     accessibilityHint="Waiting for an action to finish...">
     {loadingPercentage != null && (
