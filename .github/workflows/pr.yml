@@ -16,14 +16,14 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12'
-        env:
-          NODE_OPTIONS: '--max_old_space_size=4096'
 
       - uses: c-hive/gha-yarn-cache@v1
 
       - run: yarn install --non-interactive --frozen-lockfile --network-timeout 100000
 
       - run: yarn test
+        env:
+          NODE_OPTIONS: '--max_old_space_size=4096'
   build:
     name: build
     runs-on: macos-latest
