@@ -350,9 +350,9 @@ PODS:
     - React-RCTImage
   - RNVectorIcons (8.1.0):
     - React-Core
-  - SDWebImage (5.9.2):
-    - SDWebImage/Core (= 5.9.2)
-  - SDWebImage/Core (5.9.2)
+  - SDWebImage (5.11.1):
+    - SDWebImage/Core (= 5.11.1)
+  - SDWebImage/Core (5.11.1)
   - SDWebImageWebPCoder (0.6.1):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.7)
@@ -551,7 +551,7 @@ SPEC CHECKSUMS:
   RNReanimated: 241c586663f44f19a53883c63375fdd041253960
   RNScreens: 0591543e343c7444ea1756b6265d81a4295922c9
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
-  SDWebImage: 0b42b8719ab0c5257177d5894306e8a336b21cbb
+  SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
   TOCropViewController: da59f531f8ac8a94ef6d6c0fc34009350f9e8bfe
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
