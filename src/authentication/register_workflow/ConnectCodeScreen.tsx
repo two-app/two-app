@@ -27,6 +27,7 @@ import ConnectService from '../../user/ConnectService';
 import type {ErrorResponse} from '../../http/Response';
 import AuthenticationService from '../AuthenticationService';
 import type {Routes} from '../../navigation/RootNavigation';
+import type {User} from '../UserModel';
 
 export const ConnectCodeScreen = () => {
   const user = useSelector((state: TwoState) =>
@@ -46,8 +47,17 @@ export const ConnectCodeScreen = () => {
     setError(null);
     setSubmitted(true);
     AuthenticationService.connectUser(uid)
+      .then((updatedUser: User) => {
+        console.log(
+          `Successfully connected, updated to: ${updatedUser}. Navigating to HomeScreen.`,
+        );
+        resetNavigate('HomeScreen', navigation);
+      })
       .catch((e: ErrorResponse) => {
-        if (e.reason === 'User already has a partner.') {
+        if (
+          e.reason === 'User already has a partner.' ||
+          e.reason === 'Invalid JSON Web Token'
+        ) {
           refresh();
         } else {
           setError(e.reason);
