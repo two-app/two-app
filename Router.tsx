@@ -4,7 +4,7 @@ import React from 'react';
 import {LoginScreen} from './src/authentication/LoginScreen';
 import RegisterScreen from './src/authentication/RegisterScreen';
 import {AcceptTermsScreen} from './src/authentication/register_workflow/AcceptTermsScreen';
-import ConnectCodeScreen from './src/authentication/register_workflow/ConnectCodeScreen';
+import {ConnectCodeScreen} from './src/authentication/register_workflow/ConnectCodeScreen';
 import type {UserRegistration} from './src/authentication/register_workflow/UserRegistrationModel';
 import HomeScreen from './src/home/HomeScreen';
 import LoadingScreen from './src/LoadingScreen';

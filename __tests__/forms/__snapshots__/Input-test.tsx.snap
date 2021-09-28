@@ -2,6 +2,11 @@
 
 exports[`Input should maintain snapshot 1`] = `
 <TextInput
+  accessibilityValue={
+    Object {
+      "text": "Valid entry",
+    }
+  }
   onBlur={[Function]}
   onChangeText={[Function]}
   onFocus={[Function]}
