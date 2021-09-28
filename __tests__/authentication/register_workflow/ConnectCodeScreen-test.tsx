@@ -4,6 +4,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import {shallow} from 'enzyme';
 import uuidv4 from 'uuidv4';
+import {SafeAreaProvider} from 'react-native-safe-area-view';
 
 import type {UnconnectedUser} from '../../../src/authentication/UserModel';
 import {ConnectCodeScreen} from '../../../src/authentication/register_workflow/ConnectCodeScreen';
@@ -117,11 +118,14 @@ class ConnectCodeScreenTestBed {
   dispatchFn = jest.fn();
 
   wrapper = shallow(
-    <ConnectCodeScreen
-      dispatch={{} as any}
-      user={this.user}
-      navigation={{dispatch: this.dispatchFn} as any}
-    />,
+    <SafeAreaProvider
+      initialSafeAreaInsets={{top: 1, left: 2, right: 3, bottom: 4}}>
+      <ConnectCodeScreen
+        dispatch={{} as any}
+        user={this.user}
+        navigation={{dispatch: this.dispatchFn} as any}
+      />
+    </SafeAreaProvider>,
   );
 
   constructor() {
