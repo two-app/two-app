@@ -1,6 +1,6 @@
 import {createAction} from 'typesafe-actions';
 
-import {UnconnectedUser, User} from '../authentication/UserModel';
+import type {UnconnectedUser, User} from '../authentication/UserModel';
 
 export const storeUser = createAction(
   'STORE_USER',

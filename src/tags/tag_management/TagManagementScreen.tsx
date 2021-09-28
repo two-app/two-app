@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
 import {Text, StyleSheet, View} from 'react-native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RouteProp} from '@react-navigation/native';
+import type {StackNavigationProp} from '@react-navigation/stack';
+import type {RouteProp} from '@react-navigation/native';
 
-import {RootStackParamList} from '../../../Router';
+import type {RootStackParamList} from '../../../Router';
 import SubmitButton from '../../forms/SubmitButton';
 import {Heading} from '../../home/Heading';
-import {ErrorResponse} from '../../http/Response';
+import type {ErrorResponse} from '../../http/Response';
 import {TagInput} from '../../memories/new_memory/TagInput';
 import {ScrollContainer} from '../../views/View';
-import {TagDescription, Tag} from '../Tag';
+import type {TagDescription, Tag} from '../Tag';
 import {TagButton} from '../TagButton';
 import {createTag, updateTag} from '../TagService';
 import Colors from '../../Colors';

@@ -2,7 +2,6 @@ import type {RenderAPI} from '@testing-library/react-native';
 import {fireEvent, render, waitFor} from '@testing-library/react-native';
 import React from 'react';
 import {Alert, Text} from 'react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 
 import type {Tag} from '../../../src/tags/Tag';
@@ -143,10 +142,7 @@ class TagScreenTestBed {
   build = (): TagScreenTestBed => {
     this.render = render(
       <Provider store={store}>
-        <SafeAreaProvider
-          initialSafeAreaInsets={{top: 1, left: 2, right: 3, bottom: 4}}>
-          <TagScreen navigation={{navigate: this.navigateFn} as any} />
-        </SafeAreaProvider>
+        <TagScreen navigation={{navigate: this.navigateFn} as any} />
       </Provider>,
     );
     return this;

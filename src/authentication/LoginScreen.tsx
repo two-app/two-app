@@ -1,40 +1,22 @@
 import React, {useState} from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {connect, ConnectedProps} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
 
 import {ScrollContainer} from '../views/View';
-import {RootStackParamList} from '../../Router';
 import Colors from '../Colors';
 import Input from '../forms/Input';
 import SubmitButton from '../forms/SubmitButton';
-import {storeUser, storeUnconnectedUser} from '../user';
-import {resetNavigate} from '../navigation/NavigationUtilities';
-import {ErrorResponse} from '../http/Response';
+import type {ErrorResponse} from '../http/Response';
+import type {Routes} from '../navigation/RootNavigation';
 
 import LogoHeader from './LogoHeader';
 import UserRegistrationModel from './register_workflow/UserRegistrationModel';
+import type {LoginCredentials} from './AuthenticationService';
 import AuthenticationService, {
-  LoginCredentials,
   areCredentialsValid,
 } from './AuthenticationService';
-import {storeTokens} from './store';
-import {isUnconnectedUser} from './UserModel';
 
-const mapState = null;
-const mapDispatch = {storeUser, storeUnconnectedUser, storeTokens};
-const connector = connect(mapState, mapDispatch);
-type ConnectorProps = ConnectedProps<typeof connector>;
-type LoginScreenProps = ConnectorProps & {
-  navigation: StackNavigationProp<RootStackParamList, 'LoginScreen'>;
-};
-
-const LoginScreen = ({
-  navigation,
-  storeUser,
-  storeUnconnectedUser,
-  storeTokens,
-}: LoginScreenProps) => {
+const LoginScreen = () => {
   const [loginCredentials, setLoginCredentials] = useState<LoginCredentials>({
     email: '',
     rawPassword: '',
@@ -42,22 +24,22 @@ const LoginScreen = ({
   const [submitted, setSubmitted] = useState(false);
   const [loginError, setLoginError] = useState<string>();
 
+  const navigation = useNavigation<Routes>();
+
   const login = () => {
     setSubmitted(true);
     AuthenticationService.login(loginCredentials)
-      .then(response => {
-        storeTokens(response.tokens);
-        if (isUnconnectedUser(response.user)) {
-          storeUnconnectedUser(response.user);
-        } else {
-          storeUser(response.user);
-        }
-        resetNavigate('LoadingScreen', navigation);
-      })
+      .then(() =>
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'LoadingScreen'}],
+        }),
+      )
       .catch((e: ErrorResponse) => {
         setSubmitted(false);
         setLoginError(e.reason);
-      });
+      })
+      .finally(() => setSubmitted(false));
   };
 
   return (
@@ -73,6 +55,7 @@ const LoginScreen = ({
         isValid={UserRegistrationModel.isEmailValid}
         label={'Email'}
         onChange={email => setLoginCredentials({...loginCredentials, email})}
+        accessibilityLabel="Enter your email"
       />
 
       <Input
@@ -86,16 +69,20 @@ const LoginScreen = ({
         onChange={password =>
           setLoginCredentials({...loginCredentials, rawPassword: password})
         }
+        accessibilityLabel="Enter your password"
       />
 
       <SubmitButton
         text="Sign In"
         onSubmit={login}
         disabled={!areCredentialsValid(loginCredentials)}
+        accessibilityLabel="Press to login"
       />
 
       {loginError && (
-        <Text style={{color: Colors.DARK_SALMON}} data-testid="error-message">
+        <Text
+          style={{color: Colors.DARK_SALMON}}
+          accessibilityHint="Login error">
           {loginError}
         </Text>
       )}
@@ -104,8 +91,13 @@ const LoginScreen = ({
         <Text style={{color: Colors.REGULAR}}>Here to join?</Text>
         <TouchableOpacity
           style={{marginLeft: 5}}
-          onPress={() => resetNavigate('RegisterScreen', navigation)}
-          data-testid={'register-screen-button'}>
+          onPress={() =>
+            navigation.reset({
+              index: 0,
+              routes: [{name: 'RegisterScreen'}],
+            })
+          }
+          accessibilityLabel="Register a new account">
           <Text style={{fontWeight: 'bold', color: Colors.DARK}}>
             Create Account
           </Text>
@@ -115,5 +107,4 @@ const LoginScreen = ({
   );
 };
 
-export default connector(LoginScreen);
 export {LoginScreen};

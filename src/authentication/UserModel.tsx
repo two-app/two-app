@@ -19,6 +19,8 @@ export type User = {
   cid: string;
 };
 
+export type MixedUser = User | UnconnectedUser;
+
 export const userFromAccessToken = (accessToken: string): User => ({
   uid: decode(accessToken).uid,
   pid: decode(accessToken).pid,

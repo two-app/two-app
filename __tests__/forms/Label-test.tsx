@@ -2,7 +2,8 @@ import 'react-native';
 import React from 'react';
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';
-import {shallow, ShallowWrapper} from 'enzyme';
+import type {ShallowWrapper} from 'enzyme';
+import {shallow} from 'enzyme';
 
 import Label from '../../src/forms/Label';
 

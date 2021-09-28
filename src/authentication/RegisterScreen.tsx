@@ -1,25 +1,22 @@
 import React, {useState} from 'react';
-import {StackNavigationProp} from '@react-navigation/stack';
 import {Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useNavigation} from '@react-navigation/native';
 
-import {RootStackParamList} from '../../Router';
 import SubmitButton from '../forms/SubmitButton';
 import {ScrollContainer} from '../views/View';
 import Input from '../forms/Input';
 import Colors from '../Colors';
 import {resetNavigate} from '../navigation/NavigationUtilities';
+import type {Routes} from '../navigation/RootNavigation';
 
 import UserRegistrationModel, {
   UserRegistration,
 } from './register_workflow/UserRegistrationModel';
 import LogoHeader from './LogoHeader';
 
-type RegisterScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'RegisterScreen'>;
-};
-
-const RegisterScreen = ({navigation}: RegisterScreenProps) => {
+const RegisterScreen = () => {
+  const navigation = useNavigation<Routes>();
   const [userRegistration, setUserRegistration] = useState(
     new UserRegistration(),
   );
@@ -32,6 +29,7 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
         attributes={{placeholder: 'First Name', autoCompleteType: 'name'}}
         isValid={UserRegistrationModel.isFirstNameValid}
         label={'First Name'}
+        accessibilityLabel="First Name"
         onChange={firstName =>
           setUserRegistration({...userRegistration, firstName})
         }
@@ -41,6 +39,7 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
         attributes={{placeholder: 'Last Name'}}
         isValid={UserRegistrationModel.isLastNameValid}
         label={'Last Name'}
+        accessibilityLabel="Last Name"
         onChange={lastName =>
           setUserRegistration({...userRegistration, lastName})
         }
@@ -54,6 +53,7 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
         }}
         isValid={UserRegistrationModel.isEmailValid}
         label={'Email'}
+        accessibilityLabel="Email"
         onChange={email => setUserRegistration({...userRegistration, email})}
       />
 
@@ -65,6 +65,7 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
         }}
         isValid={UserRegistrationModel.isPasswordValid}
         label={'Password'}
+        accessibilityLabel="Password"
         onChange={password =>
           setUserRegistration({...userRegistration, password})
         }
@@ -78,6 +79,7 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
         disabled={
           !UserRegistrationModel.isUserRegistrationValid(userRegistration)
         }
+        accessibilityLabel="Press to Register"
       />
 
       <View style={{flexDirection: 'row', marginTop: 10}}>
@@ -85,7 +87,7 @@ const RegisterScreen = ({navigation}: RegisterScreenProps) => {
         <TouchableOpacity
           style={{marginLeft: 5}}
           onPress={() => resetNavigate('LoginScreen', navigation)}
-          data-testid={'login-screen-button'}>
+          accessibilityLabel="Press to login">
           <Text style={{fontWeight: 'bold', color: Colors.DARK}}>Sign In</Text>
         </TouchableOpacity>
       </View>

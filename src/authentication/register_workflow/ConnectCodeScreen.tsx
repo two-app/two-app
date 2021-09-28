@@ -10,10 +10,9 @@ import {
   RefreshControl,
 } from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
-import type {ConnectedProps} from 'react-redux';
-import {connect} from 'react-redux';
-import type {StackNavigationProp} from '@react-navigation/stack';
+import {useSelector} from 'react-redux';
 import HapticFeedback from 'react-native-haptic-feedback';
+import {useNavigation} from '@react-navigation/native';
 
 import {ScrollContainer} from '../../views/View';
 import LogoHeader from '../LogoHeader';
@@ -22,22 +21,19 @@ import Input from '../../forms/Input';
 import SubmitButton from '../../forms/SubmitButton';
 import type {TwoState} from '../../state/reducers';
 import {selectUnconnectedUser} from '../../user';
-import type {RootStackParamList} from '../../../Router';
 import {Button, ButtonStyles} from '../../forms/Button';
 import {resetNavigate} from '../../navigation/NavigationUtilities';
 import ConnectService from '../../user/ConnectService';
 import type {ErrorResponse} from '../../http/Response';
+import AuthenticationService from '../AuthenticationService';
+import type {Routes} from '../../navigation/RootNavigation';
+import type {User} from '../UserModel';
 
-const mapState = (state: TwoState) => ({
-  user: selectUnconnectedUser(state.user),
-});
-const connector = connect(mapState);
-type ConnectorProps = ConnectedProps<typeof connector>;
-type ConnectCodeScreenProps = ConnectorProps & {
-  navigation: StackNavigationProp<RootStackParamList, 'ConnectCodeScreen'>;
-};
+export const ConnectCodeScreen = () => {
+  const user = useSelector((state: TwoState) =>
+    selectUnconnectedUser(state.user),
+  );
 
-const ConnectCodeScreen = ({navigation, user}: ConnectCodeScreenProps) => {
   const [partnerConnectCode, setPartnerConnectCode] = useState('');
   const isPartnerCodeValid = (code: string): boolean =>
     uuid.is(code) && code !== user.uid;
@@ -45,12 +41,27 @@ const ConnectCodeScreen = ({navigation, user}: ConnectCodeScreenProps) => {
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
 
+  const navigation = useNavigation<Routes>();
+
   const connectToPartner = (uid: string) => {
     setError(null);
     setSubmitted(true);
-    ConnectService.performConnection(uid)
+    AuthenticationService.connectUser(uid)
+      .then((updatedUser: User) => {
+        console.log(
+          `Successfully connected, updated to: ${updatedUser}. Navigating to HomeScreen.`,
+        );
+        resetNavigate('HomeScreen', navigation);
+      })
       .catch((e: ErrorResponse) => {
-        setError(e.reason);
+        if (
+          e.reason === 'User already has a partner.' ||
+          e.reason === 'Invalid JSON Web Token'
+        ) {
+          refresh();
+        } else {
+          setError(e.reason);
+        }
       })
       .finally(() => setSubmitted(false));
   };
@@ -59,9 +70,10 @@ const ConnectCodeScreen = ({navigation, user}: ConnectCodeScreenProps) => {
     setError(null);
     setRefreshing(true);
     ConnectService.checkConnection()
-      .catch((e: ErrorResponse) => {
-        setError(e.reason);
+      .then((isConnected: boolean) => {
+        if (isConnected) resetNavigate('HomeScreen', navigation);
       })
+      .catch((e: ErrorResponse) => setError(e.reason))
       .finally(() => setRefreshing(false));
   };
 
@@ -95,6 +107,7 @@ const ConnectCodeScreen = ({navigation, user}: ConnectCodeScreenProps) => {
           attributes={{placeholder: 'e.g bWzGl2'}}
           isValid={() => isPartnerCodeValid(partnerConnectCode)}
           onChange={setPartnerConnectCode}
+          accessibilityLabel="Enter partner code"
         />
         {partnerConnectCode === user.uid && (
           <Text style={styles.error} data-testid="error">
@@ -110,6 +123,7 @@ const ConnectCodeScreen = ({navigation, user}: ConnectCodeScreenProps) => {
           onSubmit={() => connectToPartner(partnerConnectCode)}
           text="Connect"
           disabled={!isPartnerCodeValid(partnerConnectCode)}
+          accessibilityLabel="Press to connect"
         />
       </View>
 
@@ -117,7 +131,7 @@ const ConnectCodeScreen = ({navigation, user}: ConnectCodeScreenProps) => {
         <Button
           text="logout"
           onPress={() => resetNavigate('LogoutScreen', navigation)}
-          data-testid="logout-button"
+          accessibilityLabel="Tap to logout"
         />
       </View>
 
@@ -151,7 +165,11 @@ const CopyConnectCodeButton = ({code}: {code: string}) => {
   };
 
   return (
-    <TouchableOpacity onPress={onCopy} style={buttonStyle}>
+    <TouchableOpacity
+      onPress={onCopy}
+      style={buttonStyle}
+      accessibilityHint="Copy connect code to clipboard"
+      accessibilityState={{checked: copied}}>
       <Text style={{...textStyle, marginBottom: 10}}>Your Code</Text>
 
       <Text style={codeStyle}>{code}</Text>
@@ -245,6 +263,3 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
 });
-
-export default connector(ConnectCodeScreen);
-export {ConnectCodeScreen};

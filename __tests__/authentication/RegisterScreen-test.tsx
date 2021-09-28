@@ -1,117 +1,141 @@
-import 'react-native';
+import {Text} from 'react-native';
 import React from 'react';
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
-import {shallow} from 'enzyme';
+import type {QueryReturn, RenderAPI} from '@testing-library/react-native';
+import {
+  waitForElementToBeRemoved,
+  fireEvent,
+  render,
+} from '@testing-library/react-native';
 
 import RegisterScreen from '../../src/authentication/RegisterScreen';
 import EmailValidator from '../../src/forms/EmailValidator';
 import {UserRegistration} from '../../src/authentication/register_workflow/UserRegistrationModel';
+import {mockNavigation, resetMockNavigation} from '../utils/NavigationMocking';
 
 describe('RegisterScreen', () => {
-  test('should maintain snapshot', () =>
-    expect(
-      renderer.create(<RegisterScreen navigation={{} as any} />),
-    ).toMatchSnapshot());
-
   let tb: RegisterScreenTestBed;
 
-  beforeEach(() => (tb = new RegisterScreenTestBed()));
+  beforeEach(() => (tb = new RegisterScreenTestBed().build()));
 
-  test('Login Button should navigate to LoginScreen', () => {
-    const btn: any = tb.wrapper
-      .find("TouchableOpacity[data-testid='login-screen-button']")
-      .first();
+  describe('Form Validation', () => {
+    const cases: Array<[string, string, boolean]> = [
+      ['First Name', 'a', false],
+      ['First Name', 'abc', true],
+      ['Last Name', 'x', false],
+      ['Last Name', 'xyz', true],
+      ['Password', 'pass', false],
+      ['Password', 'password', true],
+      ['Password', 'P?4Ot2ONz:IJO&%U', true],
+    ];
 
-    btn.prop('onPress')();
+    test.each(cases)(
+      'Input %s with value %s should be valid: %s',
+      (label: string, text: string, expectedToBeValid: boolean) => {
+        // GIVEN
+        const input = tb.render.getByA11yLabel(label);
+
+        // WHEN
+        fireEvent.changeText(input, text);
+        fireEvent(input, 'blur');
+
+        // THEN the input should be invalid
+        expect(input.props.accessibilityValue).toEqual({
+          text: expectedToBeValid ? 'Valid entry' : 'Invalid entry',
+        });
+
+        // THEN the submit button should be disabled
+      },
+    );
+
+    const emailCases: Array<[string, boolean]> = [
+      ['abc', false],
+      ['abc@gmail.com', true],
+    ];
+
+    test.each(emailCases)(
+      'Input Email with value %s should be valid: %s',
+      (email: string, expectedToBeValid: boolean) => {
+        // GIVEN
+        tb.mockEmailValid(expectedToBeValid);
+        const input = tb.render.getByA11yLabel('Email');
+
+        // WHEN
+        fireEvent.changeText(input, email);
+        fireEvent(input, 'blur');
+
+        // THEN
+        expect(input.props.accessibilityValue).toEqual({
+          text: expectedToBeValid ? 'Valid entry' : 'Invalid entry',
+        });
+      },
+    );
   });
 
-  describe('Navigation Tests', () => {
-    test('it should navigate when submit button is clicked', () => {
-      tb.clickSubmitButton();
+  describe('Valid form', () => {
+    test('Pressing submit should navigate to AcceptTermsScreen', () => {
+      // GIVEN
+      const inputs = [
+        ['First Name', 'Paul'],
+        ['Last Name', 'Atreides'],
+        ['Email', 'paul@arrakis.com'],
+        ['Password', 'P?4Ot2ONz:IJO&%U'],
+      ];
+      tb.mockEmailValid(true);
 
-      expect(tb.navigateFn).toHaveBeenCalledWith('AcceptTermsScreen', {
-        userRegistration: {
-          ...new UserRegistration(),
-          uid: expect.any(String),
+      // WHEN
+      inputs.forEach(([label, text]) => {
+        const input = tb.render.getByA11yLabel(label);
+        fireEvent.changeText(input, text);
+        fireEvent(input, 'blur');
+      });
+
+      tb.pressSubmit();
+
+      expect(mockNavigation.navigate).toHaveBeenCalledWith(
+        'AcceptTermsScreen',
+        {
+          userRegistration: {
+            ...new UserRegistration(),
+            email: 'paul@arrakis.com',
+            firstName: 'Paul',
+            lastName: 'Atreides',
+            password: 'P?4Ot2ONz:IJO&%U',
+            uid: expect.any(String),
+          },
         },
-      });
-    });
-  });
-
-  describe('Form Validation Tests', () => {
-    describe('First Name', () => {
-      test('invalid with one character', () =>
-        tb.expectInput('First Name', 'a').toBe(false));
-      test('valid with three characters', () =>
-        tb.expectInput('First Name', 'abc').toBe(true));
-    });
-
-    describe('Last Name', () => {
-      test('invalid with 1 character', () =>
-        tb.expectInput('Last Name', 'a').toBe(false));
-      test('valid with 3 characters', () =>
-        tb.expectInput('Last Name', 'abc').toBe(true));
-    });
-
-    describe('Email', () => {
-      test('delegates to validEmail fn', () => {
-        EmailValidator.validateEmail = jest.fn().mockReturnValue(true);
-        tb.expectInput('Email', 'admin@two.com');
-        expect(EmailValidator.validateEmail).toHaveBeenCalledTimes(1);
-        expect(EmailValidator.validateEmail).toHaveBeenCalledWith(
-          'admin@two.com',
-        );
-      });
-    });
-
-    describe('Password', () => {
-      test('invalid with < 6 characters', () =>
-        tb.expectInput('Password', 'pass').toBe(false));
-      test('valid with > 6 characters', () =>
-        tb.expectInput('Password', 'password').toBe(true));
-      test('valid with secure password', () =>
-        tb.expectInput('Password', 'P?4Ot2ONz:IJO&%U').toBe(true));
-    });
-
-    describe('Fully Valid Form', () => {
-      test('should enable the submit button', () => {
-        expect(tb.wrapper.find('SubmitButton').prop('disabled')).toBe(true);
-
-        tb.changeInput('First Name', 'Gerry');
-        tb.changeInput('Last Name', 'Fletcher');
-        EmailValidator.validateEmail = jest.fn().mockReturnValue(true);
-        tb.changeInput('Email', 'admin@two.com');
-        tb.changeInput('Password', 'P?4Ot2ONz:IJO&%U');
-
-        expect(tb.wrapper.find('SubmitButton').prop('disabled')).toBe(false);
-      });
+      );
     });
   });
 });
 
 class RegisterScreenTestBed {
-  navigateFn = jest.fn();
-  dispatchFn = jest.fn();
-  wrapper = shallow(
-    <RegisterScreen
-      navigation={{navigate: this.navigateFn, dispatch: this.dispatchFn} as any}
-    />,
-  );
+  render: RenderAPI = render(<Text>Not Implemented</Text>);
 
-  expectInput = (label: string, value: string) => {
-    const input = this.wrapper.find(`Input[label='${label}']`).first();
-    const isValidFunction = input.prop<(v: string) => boolean>('isValid');
-    return expect(isValidFunction(value));
+  // elements
+  submitButton = () => this.render.getByA11yLabel('Press to Register');
+
+  // queries
+  isSubmitEnabled = (): boolean =>
+    !this.submitButton().props.accessibilityState.disabled;
+
+  queryLoadingScreen = (): QueryReturn => {
+    return this.render.queryByA11yHint('Waiting for an action to finish...');
   };
 
-  clickSubmitButton = () => {
-    this.wrapper.find('SubmitButton').prop<() => void>('onSubmit')();
+  // events
+  pressSubmit = async () => {
+    fireEvent.press(this.submitButton());
+    await waitForElementToBeRemoved(this.queryLoadingScreen);
   };
 
-  changeInput = (label: string, value: string) => {
-    const input = this.wrapper.find(`Input[label='${label}']`).first();
-    const onChangeFn = input.prop<(v: string) => void>('onChange');
-    onChangeFn(value);
+  // mocks
+  mockEmailValid = (valid: boolean) => {
+    EmailValidator.validateEmail = jest.fn().mockReturnValue(valid);
+  };
+
+  build = (): RegisterScreenTestBed => {
+    resetMockNavigation();
+    this.render = render(<RegisterScreen />);
+    return this;
   };
 }

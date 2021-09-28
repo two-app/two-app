@@ -7,7 +7,6 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 import type {ReactTestInstance} from 'react-test-renderer';
 
 import * as TagService from '../../../src/tags/TagService';
@@ -229,20 +228,17 @@ class TagManagementScreenTestBed {
 
   build = (): TagManagementScreenTestBed => {
     this.render = render(
-      <SafeAreaProvider
-        initialSafeAreaInsets={{top: 1, left: 2, right: 3, bottom: 4}}>
-        <TagManagementScreen
-          navigation={{goBack: this.goBackFn} as any}
-          route={{
-            params: {
-              onSubmit: this.onSubmitPropCallback,
-              initialTag: this.initialTag,
-            },
-            key: '',
-            name: 'TagManagementScreen',
-          }}
-        />
-      </SafeAreaProvider>,
+      <TagManagementScreen
+        navigation={{goBack: this.goBackFn} as any}
+        route={{
+          params: {
+            onSubmit: this.onSubmitPropCallback,
+            initialTag: this.initialTag,
+          },
+          key: '',
+          name: 'TagManagementScreen',
+        }}
+      />,
     );
     return this;
   };

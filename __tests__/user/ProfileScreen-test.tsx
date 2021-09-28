@@ -2,7 +2,6 @@ import {Text} from 'react-native';
 import React from 'react';
 import type {RenderAPI} from '@testing-library/react-native';
 import {render, fireEvent, cleanup} from '@testing-library/react-native';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {CommonActions} from '@react-navigation/native';
 import Config from 'react-native-config';
 import uuidv4 from 'uuidv4';
@@ -134,14 +133,11 @@ class PartnerScreenTestBed {
 
   build = (): PartnerScreenTestBed => {
     this.wrapper = render(
-      <SafeAreaProvider
-        initialSafeAreaInsets={{top: 1, left: 2, right: 3, bottom: 4}}>
-        <ProfileScreen
-          dispatch={{} as any}
-          navigation={{dispatch: this.dispatchFn} as any}
-          user={this.user}
-        />
-      </SafeAreaProvider>,
+      <ProfileScreen
+        dispatch={{} as any}
+        navigation={{dispatch: this.dispatchFn} as any}
+        user={this.user}
+      />,
     );
     return this;
   };

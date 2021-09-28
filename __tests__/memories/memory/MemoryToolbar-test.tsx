@@ -3,7 +3,6 @@ import {fireEvent, render, waitFor} from '@testing-library/react-native';
 import type {AlertButton} from 'react-native';
 import {Alert, Text} from 'react-native';
 import React from 'react';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
 import {CommonActions} from '@react-navigation/native';
 
@@ -203,15 +202,7 @@ class MemoryToolbarTestBed {
     resetMockNavigation();
     this.render = render(
       <Provider store={store}>
-        <SafeAreaProvider
-          initialSafeAreaInsets={{
-            top: 1,
-            left: 2,
-            right: 3,
-            bottom: 4,
-          }}>
-          <MemoryToolbar memory={this.memory} />
-        </SafeAreaProvider>
+        <MemoryToolbar memory={this.memory} />
       </Provider>,
     );
 

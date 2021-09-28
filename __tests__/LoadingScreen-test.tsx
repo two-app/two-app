@@ -1,14 +1,16 @@
-import 'react-native';
+import {Text} from 'react-native';
 import React from 'react';
-// Note: test renderer must be required after react-native.
-import {act, create} from 'react-test-renderer';
 import {CommonActions} from '@react-navigation/native';
 import uuidv4 from 'uuidv4';
+import type {RenderAPI} from '@testing-library/react-native';
+import {render} from '@testing-library/react-native';
 
 import {LoadingScreen} from '../src/LoadingScreen';
 import type {UnconnectedUser, User} from '../src/authentication/UserModel';
 import type {Tokens} from '../src/authentication/AuthenticationModel';
 import {persistor} from '../src/state/reducers';
+
+import {resetMockNavigation} from './utils/NavigationMocking';
 
 describe('LoadingScreen', () => {
   let tb: LoadingScreenTestBed;
@@ -77,6 +79,8 @@ class LoadingScreenTestBed {
   authProp: Tokens | null = null;
   persistFn = jest.spyOn(persistor, 'persist');
 
+  render: RenderAPI = render(<Text>Not Implemented</Text>);
+
   setUserProp = (user: User | UnconnectedUser) => {
     this.userProp = user;
     return this;
@@ -87,15 +91,16 @@ class LoadingScreenTestBed {
     return this;
   };
 
-  build = () =>
-    act(() => {
-      create(
-        <LoadingScreen
-          navigation={{dispatch: this.dispatchFn} as any}
-          clearState={this.clearStateFn as any}
-          user={this.userProp as any}
-          auth={this.authProp as any}
-        />,
-      );
-    });
+  build = (): LoadingScreenTestBed => {
+    resetMockNavigation();
+    this.render = render(
+      <LoadingScreen
+        navigation={{dispatch: this.dispatchFn} as any}
+        clearState={this.clearStateFn as any}
+        user={this.userProp as any}
+        auth={this.authProp as any}
+      />,
+    );
+    return this;
+  };
 }

@@ -1,27 +1,28 @@
 import React, {useState} from 'react';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RouteProp} from '@react-navigation/native';
+import type {StackNavigationProp} from '@react-navigation/stack';
+import type {RouteProp} from '@react-navigation/native';
 import {View, Text, StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import Image from 'react-native-fast-image';
 import Video from 'react-native-video';
-import {connect, ConnectedProps} from 'react-redux';
+import type {ConnectedProps} from 'react-redux';
+import {connect} from 'react-redux';
 
 import {Container} from '../views/View';
-import {RootStackParamList} from '../../Router';
+import type {RootStackParamList} from '../../Router';
 import Colors from '../Colors';
 import {Heading} from '../home/Heading';
 import {chunkToRows, GridRow, Cell} from '../memories/memory/Grid';
 import SubmitButton from '../forms/SubmitButton';
 import {MemoryImageCount, MemoryVideoCount} from '../memories/MemoryIcons';
 import {uploadToMemory} from '../memories/MemoryService';
-import {ErrorResponse} from '../http/Response';
+import type {ErrorResponse} from '../http/Response';
 import {updateMemory, selectMemory, storeContent} from '../memories/store';
-import {TwoState} from '../state/reducers';
-import {Memory} from '../memories/MemoryModels';
+import type {TwoState} from '../state/reducers';
+import type {Memory} from '../memories/MemoryModels';
 
-import {PickedContent} from './ContentPicker';
-import {Content} from './ContentModels';
+import type {PickedContent} from './ContentPicker';
+import type {Content} from './ContentModels';
 
 type NavigationProps = {
   navigation: StackNavigationProp<RootStackParamList, 'ContentUploadScreen'>;

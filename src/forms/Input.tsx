@@ -10,6 +10,8 @@ type InputProps = {
   isValid?: (value: string) => boolean;
   onChange?: (value: string) => void;
   label?: string;
+  accessibilityHint?: string;
+  accessibilityLabel?: string;
 };
 
 const Input = ({
@@ -17,6 +19,8 @@ const Input = ({
   isValid = () => true,
   onChange = () => null,
   label,
+  accessibilityHint,
+  accessibilityLabel,
 }: InputProps) => {
   const [value, setValue] = useState('');
   const [valid, setValid] = useState(true);
@@ -40,6 +44,9 @@ const Input = ({
         focused ? styles.focusedInput : undefined,
         valid ? undefined : styles.invalidInput,
       ]}
+      accessibilityHint={accessibilityHint}
+      accessibilityLabel={accessibilityLabel}
+      accessibilityValue={{text: valid ? 'Valid entry' : 'Invalid entry'}}
     />
   );
 

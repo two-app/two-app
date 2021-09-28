@@ -3,17 +3,12 @@ import {StyleSheet, Text, View, Linking} from 'react-native';
 import type {NavigationProp, RouteProp} from '@react-navigation/native';
 import {useNavigation, CommonActions, useRoute} from '@react-navigation/native';
 import Config from 'react-native-config';
-import {useDispatch} from 'react-redux';
 
 import LogoHeader from '../LogoHeader';
 import SubmitButton from '../../forms/SubmitButton';
 import {ScrollContainer} from '../../views/View';
 import Colors from '../../Colors';
-import type {UserResponse} from '../AuthenticationService';
 import AuthenticationService from '../AuthenticationService';
-import {storeUnconnectedUser} from '../../user';
-import type {UnconnectedUser} from '../UserModel';
-import {storeTokens} from '../store';
 import type {RootStackParamList} from '../../../Router';
 import type {ErrorResponse} from '../../http/Response';
 
@@ -27,7 +22,6 @@ type ScreenNavProp = NavigationProp<RootStackParamList, 'AcceptTermsScreen'>;
 const AcceptTermsScreen = () => {
   const route = useRoute<ScreenRouteProp>();
   const navigation = useNavigation<ScreenNavProp>();
-  const dispatch = useDispatch();
 
   const [userRegistration, setUserRegistration] = useState<UserRegistration>(
     route.params.userRegistration,
@@ -50,11 +44,7 @@ const AcceptTermsScreen = () => {
 
   if (submitted) {
     AuthenticationService.registerUser(userRegistration)
-      .then((response: UserResponse) => {
-        dispatch(storeUnconnectedUser(response.user as UnconnectedUser));
-        dispatch(storeTokens(response.tokens));
-        navigateToConnectCodeScreen();
-      })
+      .then(() => navigateToConnectCodeScreen())
       .catch((e: ErrorResponse) => {
         setSubmitted(false);
         setRegistrationError(e.reason);
