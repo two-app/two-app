@@ -218,7 +218,7 @@ PODS:
     - React-Core
   - react-native-get-random-values (1.7.0):
     - React-Core
-  - react-native-safe-area-context (3.3.1):
+  - react-native-safe-area-context (3.3.2):
     - React-Core
   - react-native-video (5.1.1):
     - React-Core
@@ -299,7 +299,7 @@ PODS:
     - React
   - RNDateTimePicker (3.5.2):
     - React-Core
-  - RNFastImage (8.3.7):
+  - RNFastImage (8.5.0):
     - React-Core
     - SDWebImage (~> 5.8)
     - SDWebImageWebPCoder (~> 0.6.1)
@@ -316,7 +316,7 @@ PODS:
     - TOCropViewController
   - RNReactNativeHapticFeedback (1.11.0):
     - React-Core
-  - RNReanimated (2.2.0):
+  - RNReanimated (2.2.2):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -345,7 +345,7 @@ PODS:
     - React-RCTVibration
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.6.0):
+  - RNScreens (3.7.2):
     - React-Core
     - React-RCTImage
   - RNVectorIcons (8.1.0):
@@ -510,9 +510,9 @@ SPEC CHECKSUMS:
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
   FBReactNativeSpec: ea646b6cdb614a8e8892abe5dee9ed0a6b70e7c1
-  glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
+  glog: 7a8788d88d2a384c05df45e95c5e763e4d81f3ad
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
-  RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
+  RCT-Folly: 1af344185a2506dec1e584dd5edaaa8fb6bcda5e
   RCTRequired: 6d3e854f0e7260a648badd0d44fc364bc9da9728
   RCTTypeSafety: c1f31d19349c6b53085766359caac425926fafaa
   React: bda6b6d7ae912de97d7a61aa5c160db24aa2ad69
@@ -525,7 +525,7 @@ SPEC CHECKSUMS:
   React-jsinspector: cc614ec18a9ca96fd275100c16d74d62ee11f0ae
   react-native-config: 72d948053a442779b3178fddd571e37f118ef606
   react-native-get-random-values: 237bffb1c7e05fb142092681531810a29ba53015
-  react-native-safe-area-context: ca9f3b49266e56b1d841ccdde7cfe2e076f529b6
+  react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-video: 0bb76b6d6b77da3009611586c7dbf817b947f30e
   React-perflogger: 25373e382fed75ce768a443822f07098a15ab737
   React-RCTActionSheet: af7796ba49ffe4ca92e7277a5d992d37203f7da5
@@ -544,12 +544,12 @@ SPEC CHECKSUMS:
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNDateTimePicker: 7658208086d86d09e1627b5c34ba0cf237c60140
-  RNFastImage: a7384db75df352500261e8e8f1ac2026def26102
+  RNFastImage: 7f2a04b6761e78a6e418d3b4b29b645bc36fa2bc
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNImageCropPicker: 35a3ceb837446fa11547704709bb22b5fac6d584
   RNReactNativeHapticFeedback: 653a8c126a0f5e88ce15ffe280b3ff37e1fbb285
-  RNReanimated: 9c13c86454bfd54dab7505c1a054470bfecd2563
-  RNScreens: eb0dfb2d6b21d2d7f980ad46b14eb306d2f1062e
+  RNReanimated: 241c586663f44f19a53883c63375fdd041253960
+  RNScreens: 0591543e343c7444ea1756b6265d81a4295922c9
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   SDWebImage: 0b42b8719ab0c5257177d5894306e8a336b21cbb
   SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
