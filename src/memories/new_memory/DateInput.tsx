@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { Keyboard, Text, View, Platform } from "react-native";
-import AntIcon from "react-native-vector-icons/AntDesign";
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import moment from "moment";
+import React, {useState} from 'react';
+import {Keyboard, Text, View, Platform} from 'react-native';
+import AntIcon from 'react-native-vector-icons/AntDesign';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import moment from 'moment';
 
-import Colors from "../../Colors";
-import { TouchableCard } from "../../forms/Card";
+import Colors from '../../Colors';
+import {TouchableCard} from '../../forms/Card';
 
-import { FormStyle } from "./FormStyles";
+import {FormStyle} from './FormStyles';
 
 type DateTimePickerProps = {
   setDateTime: (datetime: number) => void;
@@ -28,7 +28,7 @@ export const DateTimePicker = ({
   const [isVisible, setVisibility] = useState(false);
   const [pickerValue, setPickerValue] = useState<number>();
   const [date, setDate] = useState<number>(initialValue);
-  const [selecting, setSelecting] = useState<"date" | "time">("date");
+  const [selecting, setSelecting] = useState<'date' | 'time'>('date');
 
   const openPicker = () => {
     Keyboard.dismiss();
@@ -37,7 +37,7 @@ export const DateTimePicker = ({
 
   const reset = () => {
     setVisibility(false);
-    setSelecting("date");
+    setSelecting('date');
     setPickerValue(undefined);
   };
 
@@ -50,26 +50,24 @@ export const DateTimePicker = ({
   return (
     <>
       <TouchableCard
-        a11={{ accessibilityLabel: "Set the Date and Time" }}
+        a11={{accessibilityLabel: 'Set the Date and Time'}}
         style={FormStyle.card}
         onPress={openPicker}
       >
         <View style={FormStyle.iconContainer}>
           <AntIcon
-            name={"calendar"}
-            style={{ fontSize: 13, color: Colors.REGULAR }}
+            name={'calendar'}
+            style={{fontSize: 13, color: Colors.REGULAR}}
           />
         </View>
         {date == null && (
-          <Text style={{ color: Colors.REGULAR }}>{placeholder}</Text>
+          <Text style={{color: Colors.REGULAR}}>{placeholder}</Text>
         )}
         {date != null && (
-          <Text style={{ color: Colors.DARK }}>
-            {moment(date).format("LLL")}
-          </Text>
+          <Text style={{color: Colors.DARK}}>{moment(date).format('LLL')}</Text>
         )}
       </TouchableCard>
-      {Platform.OS === "android" ? (
+      {Platform.OS === 'android' ? (
         <DateTimePickerModal
           accessibilityLabel="Pick the Date"
           isVisible={isVisible}
@@ -81,21 +79,21 @@ export const DateTimePicker = ({
       ) : (
         <DateTimePickerModal
           accessibilityLabel={
-            selecting === "date" ? "Pick the Date" : "Pick the Time"
+            selecting === 'date' ? 'Pick the Date' : 'Pick the Time'
           }
           isVisible={isVisible}
           maximumDate={new Date()}
           mode={selecting}
           headerTextIOS={
-            selecting === "date" ? "Pick the date" : "Pick the time"
+            selecting === 'date' ? 'Pick the date' : 'Pick the time'
           }
           onConfirm={(selectedDate: Date) => {
-            if (selecting === "date") {
+            if (selecting === 'date') {
               setPickerValue(selectedDate.getTime());
-              setSelecting("time");
+              setSelecting('time');
             } else {
-              const onlyDate = moment(pickerValue).format("YYYY-MM-DD");
-              const onlyTime = moment(selectedDate).format("HH:mm:00");
+              const onlyDate = moment(pickerValue).format('YYYY-MM-DD');
+              const onlyTime = moment(selectedDate).format('HH:mm:00');
               const datetime = moment(`${onlyDate} ${onlyTime}`);
               updateDate(datetime.valueOf());
             }
@@ -109,5 +107,5 @@ export const DateTimePicker = ({
 
 DateTimePicker.defaultProps = {
   initialValue: undefined,
-  placeholder: "When it took place...",
+  placeholder: 'When it took place...',
 };

@@ -1,4 +1,4 @@
-import { Content } from "../content/ContentModels";
+import {Content} from '../content/ContentModels';
 
 export type Tag = {
   tid: number;

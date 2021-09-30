@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   Text,
   StyleSheet,
@@ -8,10 +8,10 @@ import {
   AccessibilityState,
   ViewStyle,
   ActivityIndicator,
-} from "react-native";
-import HapticFeedback from "react-native-haptic-feedback";
+} from 'react-native';
+import HapticFeedback from 'react-native-haptic-feedback';
 
-import Colors from "../Colors";
+import Colors from '../Colors';
 
 type ButtonStyle = {
   backgroundColor: string;
@@ -21,27 +21,27 @@ type ButtonStyle = {
 export const ButtonStyles = {
   dark: {
     backgroundColor: Colors.DARK,
-    textColor: "white",
+    textColor: 'white',
   },
   darkPressed: {
     backgroundColor: Colors.DARK,
-    textColor: "white",
+    textColor: 'white',
   },
   light: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     textColor: Colors.DARK,
   },
   lightPressed: {
-    backgroundColor: "#fafafa",
+    backgroundColor: '#fafafa',
     textColor: Colors.VERY_DARK,
   },
   red: {
     backgroundColor: Colors.SALMON,
-    textColor: "white",
+    textColor: 'white',
   },
   redPressed: {
     backgroundColor: Colors.DARK_SALMON,
-    textColor: "white",
+    textColor: 'white',
   },
 };
 
@@ -83,7 +83,7 @@ export const Button = ({
     backgroundColor: pressedButtonStyle.backgroundColor,
   };
 
-  const combinedTextStyle = { ...styles.text, color: buttonStyle.textColor };
+  const combinedTextStyle = {...styles.text, color: buttonStyle.textColor};
   const combinedPressedTextStyle = {
     ...styles.text,
     color: pressedButtonStyle.textColor,
@@ -101,7 +101,7 @@ export const Button = ({
       accessibilityState={accessibilityState}
       onPressIn={() => {
         setPressed(true);
-        HapticFeedback.trigger("selection", { enableVibrateFallback: false });
+        HapticFeedback.trigger('selection', {enableVibrateFallback: false});
       }}
       onPressOut={() => setPressed(false)}
       onPress={onPress}
@@ -111,7 +111,7 @@ export const Button = ({
         {loading && (
           <ActivityIndicator
             color={textStyle.color}
-            style={{ marginLeft: 5 }}
+            style={{marginLeft: 5}}
             size="small"
           />
         )}
@@ -127,9 +127,9 @@ Button.defaultProps = {
 
 const styles = StyleSheet.create({
   button: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 12,
     borderColor: Colors.FADED,
     borderWidth: 0.5,
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         shadowColor: Colors.DARK,
-        shadowOffset: { width: 0, height: 2 },
+        shadowOffset: {width: 0, height: 2},
         shadowOpacity: 0.3,
         shadowRadius: 3,
       },
@@ -148,6 +148,6 @@ const styles = StyleSheet.create({
     }),
   },
   text: {
-    fontFamily: "Montserrat-SemiBold",
+    fontFamily: 'Montserrat-SemiBold',
   },
 });

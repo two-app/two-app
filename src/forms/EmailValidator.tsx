@@ -7,4 +7,4 @@ function validateEmail(email: string) {
   return re.test(email);
 }
 
-export default { validateEmail };
+export default {validateEmail};

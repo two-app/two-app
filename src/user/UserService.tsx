@@ -1,7 +1,7 @@
-import { AxiosResponse } from "axios";
+import {AxiosResponse} from 'axios';
 
-import Gateway from "../http/Gateway";
-import { User } from "../authentication/UserModel";
+import Gateway from '../http/Gateway';
+import {User} from '../authentication/UserModel';
 
 export type UserProfile = User & {
   firstName: string;
@@ -9,8 +9,8 @@ export type UserProfile = User & {
 };
 
 const getSelf = (): Promise<UserProfile> =>
-  Gateway.get("/self").then((response: AxiosResponse<UserProfile>) => {
+  Gateway.get('/self').then((response: AxiosResponse<UserProfile>) => {
     return response.data;
   });
 
-export default { getSelf };
+export default {getSelf};

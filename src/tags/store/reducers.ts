@@ -3,13 +3,13 @@ import {
   createReducer,
   Reducer,
   PayloadAction,
-} from "typesafe-actions";
+} from 'typesafe-actions';
 
-import { Tag } from "../Tag";
+import {Tag} from '../Tag';
 
-import { storeTags } from "./actions";
+import {storeTags} from './actions';
 
-type TagActions = ActionType<typeof import("./actions").default>;
+type TagActions = ActionType<typeof import('./actions').default>;
 
 export type TagState = {
   readonly allTags: Tag[];
@@ -17,7 +17,7 @@ export type TagState = {
 
 const handleStoreTags = (
   state: TagState,
-  action: PayloadAction<"STORE_TAGS", Tag[]>
+  action: PayloadAction<'STORE_TAGS', Tag[]>,
 ): TagState => ({
   ...state,
   allTags: action.payload,

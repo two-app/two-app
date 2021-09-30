@@ -1,10 +1,10 @@
-import React from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import {connect} from 'react-redux';
 
-import { NoWrapContainer, Wrapper } from "../views/View";
+import {NoWrapContainer, Wrapper} from '../views/View';
 
-import { Timeline } from "./Timeline";
-import { Footer } from "./Footer";
+import {Timeline} from './Timeline';
+import {Footer} from './Footer';
 
 const HomeScreen = () => (
   <Wrapper>
@@ -15,7 +15,7 @@ const HomeScreen = () => (
   </Wrapper>
 );
 
-const mapStateToProps = (state: any) => ({ user: state.user });
+const mapStateToProps = (state: any) => ({user: state.user});
 
 export default connect(mapStateToProps)(HomeScreen);
-export { HomeScreen };
+export {HomeScreen};

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from 'react';
 import {
   Animated,
   Modal,
@@ -6,13 +6,13 @@ import {
   ActivityIndicator,
   StatusBar,
   useWindowDimensions,
-} from "react-native";
-import Image from "react-native-fast-image";
-import ImageViewer from "react-native-image-zoom-viewer";
-import Video from "react-native-video";
+} from 'react-native';
+import Image from 'react-native-fast-image';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import Video from 'react-native-video';
 
-import type { Content, ImageContent } from "../../content/ContentModels";
-import { buildContentURI } from "../../content/ContentService";
+import type {Content, ImageContent} from '../../content/ContentModels';
+import {buildContentURI} from '../../content/ContentService';
 
 type ContentGalleryProps = {
   content: Content[];
@@ -33,17 +33,17 @@ export const ContentGallery = ({
     onClose();
   };
 
-  const { width, height } = useWindowDimensions();
+  const {width, height} = useWindowDimensions();
   const urls = content.map((c, idx) => {
     const url = buildContentURI(c.fileKey, c.gallery);
 
-    if (c.contentType === "image") {
+    if (c.contentType === 'image') {
       const g = c.gallery as ImageContent;
-      return { url, props: { index: idx }, width: g.width, height: g.height };
+      return {url, props: {index: idx}, width: g.width, height: g.height};
     } else {
       return {
         url,
-        props: { index: idx },
+        props: {index: idx},
         width,
         height,
       };
@@ -61,7 +61,7 @@ export const ContentGallery = ({
     >
       <StatusBar
         barStyle="light-content"
-        backgroundColor={"black"}
+        backgroundColor={'black'}
         animated={true}
       />
       <ImageViewer
@@ -73,12 +73,12 @@ export const ContentGallery = ({
         onCancel={closeGallery}
         // @ts-ignore
         index={index}
-        onChange={(newIndex) => setCurrentIndex(newIndex || 0)}
+        onChange={newIndex => setCurrentIndex(newIndex || 0)}
         imageUrls={urls}
-        renderImage={({ index: idx }: { index: number }) => {
+        renderImage={({index: idx}: {index: number}) => {
           const renderContent = content[idx];
 
-          return renderContent.contentType === "video" ? (
+          return renderContent.contentType === 'video' ? (
             <ProgressiveVideo
               content={renderContent}
               isActive={currentIndex === idx}
@@ -96,7 +96,7 @@ type ProgressiveImage = {
   content: Content;
 };
 
-const ProgressiveImage = ({ content }: ProgressiveImage) => {
+const ProgressiveImage = ({content}: ProgressiveImage) => {
   const thumbnail = buildContentURI(content.fileKey, content.thumbnail);
   const gallery = buildContentURI(content.fileKey, content.gallery);
 
@@ -104,18 +104,18 @@ const ProgressiveImage = ({ content }: ProgressiveImage) => {
   const AnimatedFastImage = Animated.createAnimatedComponent(Image);
 
   return (
-    <View style={{ flex: 1 }} key={gallery}>
+    <View style={{flex: 1}} key={gallery}>
       <Image
-        source={{ uri: thumbnail, priority: "high" }}
-        style={{ width: "100%", height: "100%" }}
+        source={{uri: thumbnail, priority: 'high'}}
+        style={{width: '100%', height: '100%'}}
       />
       <AnimatedFastImage
-        source={{ uri: gallery }}
+        source={{uri: gallery}}
         style={{
           opacity: animatedOpacity,
-          width: "100%",
-          height: "100%",
-          position: "absolute",
+          width: '100%',
+          height: '100%',
+          position: 'absolute',
         }}
         onLoadEnd={() =>
           Animated.timing(animatedOpacity, {
@@ -134,7 +134,7 @@ type ProgressiveVideo = {
   isActive: boolean;
 };
 
-const ProgressiveVideo = ({ content, isActive }: ProgressiveVideo) => {
+const ProgressiveVideo = ({content, isActive}: ProgressiveVideo) => {
   const [isBuffering, setBuffering] = useState(true);
   const uri = buildContentURI(content.fileKey, content.gallery);
   const player = React.createRef<Video>();
@@ -146,11 +146,9 @@ const ProgressiveVideo = ({ content, isActive }: ProgressiveVideo) => {
   }, [isActive]);
 
   return (
-    <View style={{ flex: 1 }} key={uri}>
+    <View style={{flex: 1}} key={uri}>
       {isBuffering && (
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
           <ActivityIndicator color="white" size="large" />
         </View>
       )}
@@ -160,11 +158,11 @@ const ProgressiveVideo = ({ content, isActive }: ProgressiveVideo) => {
         paused={!isActive}
         muted={!isActive}
         repeat={true}
-        source={{ uri }}
+        source={{uri}}
         onError={console.log}
         resizeMode="contain"
         onLoad={() => setBuffering(false)}
-        style={{ flex: isBuffering ? 0 : 1 }}
+        style={{flex: isBuffering ? 0 : 1}}
       />
     </View>
   );

@@ -1,76 +1,76 @@
-import { Text } from "react-native";
-import React from "react";
-import type { RenderAPI, QueryReturn } from "@testing-library/react-native";
+import {Text} from 'react-native';
+import React from 'react';
+import type {RenderAPI, QueryReturn} from '@testing-library/react-native';
 import {
   render,
   fireEvent,
   waitFor,
   waitForElementToBeRemoved,
-} from "@testing-library/react-native";
-import moment from "moment";
-import type { ReactTestInstance } from "react-test-renderer";
+} from '@testing-library/react-native';
+import moment from 'moment';
+import type {ReactTestInstance} from 'react-test-renderer';
 
-import { EditMemoryScreen } from "../../../src/memories/memory/EditMemoryScreen";
-import type { Memory, MemoryPatch } from "../../../src/memories/MemoryModels";
-import * as TagService from "../../../src/tags/TagService";
-import type { Tag } from "../../../src/tags/Tag";
-import * as MemoryService from "../../../src/memories/MemoryService";
-import type { ErrorResponse } from "../../../src/http/Response";
-import { updateMemory } from "../../../src/memories/store";
+import {EditMemoryScreen} from '../../../src/memories/memory/EditMemoryScreen';
+import type {Memory, MemoryPatch} from '../../../src/memories/MemoryModels';
+import * as TagService from '../../../src/tags/TagService';
+import type {Tag} from '../../../src/tags/Tag';
+import * as MemoryService from '../../../src/memories/MemoryService';
+import type {ErrorResponse} from '../../../src/http/Response';
+import {updateMemory} from '../../../src/memories/store';
 
-describe("EditMemoryScreen", () => {
+describe('EditMemoryScreen', () => {
   let tb: EditMemoryScreenTestBed;
 
   beforeEach(() => (tb = new EditMemoryScreenTestBed().build()));
 
-  test("the submit button should be disabled by default", () => {
-    const submit = tb.render.getByA11yLabel("Update Memory");
-    expect(submit.props.accessibilityState).toEqual({ disabled: true });
+  test('the submit button should be disabled by default', () => {
+    const submit = tb.render.getByA11yLabel('Update Memory');
+    expect(submit.props.accessibilityState).toEqual({disabled: true});
   });
 
-  describe("Modifying the Title", () => {
-    test("it should enable the submit button", () => {
-      tb.setTitleInput("New Title");
+  describe('Modifying the Title', () => {
+    test('it should enable the submit button', () => {
+      tb.setTitleInput('New Title');
 
       expect(tb.isSubmitButtonEnabled()).toEqual(true);
     });
 
-    test("it should disable the submit button for length 0", () => {
-      tb.setTitleInput("");
+    test('it should disable the submit button for length 0', () => {
+      tb.setTitleInput('');
       expect(tb.isSubmitButtonEnabled()).toEqual(false);
     });
   });
 
-  describe("Modifying the Location", () => {
-    test("it should enable the submit button", () => {
-      tb.setLocationInput("New Location");
+  describe('Modifying the Location', () => {
+    test('it should enable the submit button', () => {
+      tb.setLocationInput('New Location');
       expect(tb.isSubmitButtonEnabled()).toBe(true);
     });
 
-    it("it should disable the submit button for length 0", () => {
-      tb.setLocationInput("");
+    it('it should disable the submit button for length 0', () => {
+      tb.setLocationInput('');
       expect(tb.isSubmitButtonEnabled()).toBe(false);
     });
   });
 
-  describe("Modifying the Tag", () => {
-    test("removing the tag should enable the submit button", () => {
+  describe('Modifying the Tag', () => {
+    test('removing the tag should enable the submit button', () => {
       tb.selectTag(tb.selectedTag.name); // deselect tag
       expect(tb.isSubmitButtonEnabled()).toBe(true);
     });
 
-    test("changing the tag should enable the submit button", () => {
+    test('changing the tag should enable the submit button', () => {
       tb.selectTag(tb.otherTag.name); // select other tag
       expect(tb.isSubmitButtonEnabled()).toBe(true);
     });
 
-    test("removing and readding the tag should disable the button", () => {
+    test('removing and readding the tag should disable the button', () => {
       tb.selectTag(tb.selectedTag.name); // deselect
       tb.selectTag(tb.selectedTag.name); // reselect
       expect(tb.isSubmitButtonEnabled()).toBe(false);
     });
 
-    test("submitting a deselected tag should pass value -1 for tag id", () => {
+    test('submitting a deselected tag should pass value -1 for tag id', () => {
       tb.selectTag(tb.selectedTag.name); // deselect tag
 
       tb.pressSubmitButton();
@@ -82,44 +82,44 @@ describe("EditMemoryScreen", () => {
     });
   });
 
-  describe("Submitting an Edit", () => {
+  describe('Submitting an Edit', () => {
     beforeEach(() => {
-      tb.setTitleInput("New Title");
-      tb.setLocationInput("New Location");
+      tb.setTitleInput('New Title');
+      tb.setLocationInput('New Location');
       tb.selectTag(tb.otherTag.name);
     });
 
-    test("it should calculate the correct patch", () => {
+    test('it should calculate the correct patch', () => {
       tb.pressSubmitButton();
 
       expect(tb.patchMemoryFn).toHaveBeenCalledTimes(1);
       expect(tb.patchMemoryFn).toHaveBeenCalledWith(tb.memory.id, {
-        title: "New Title",
-        location: "New Location",
+        title: 'New Title',
+        location: 'New Location',
         tagId: tb.otherTag.tid,
       });
     });
 
-    test("it should show a loading indicator", () => {
+    test('it should show a loading indicator', () => {
       tb.patchMemoryFn.mockReturnValue(new Promise(() => {}));
       tb.pressSubmitButton();
 
       expect(tb.getLoadingScreen()).toBeTruthy();
     });
 
-    test("it should navigate to the previous screen", async () => {
+    test('it should navigate to the previous screen', async () => {
       tb.pressSubmitButton();
 
       await waitFor(() => {
         if (tb.goBackFn.mock.calls.length === 0) {
-          throw new Error("Zero calls");
+          throw new Error('Zero calls');
         }
       });
 
       expect(tb.goBackFn).toHaveBeenCalledTimes(1);
     });
 
-    test("it should hide the loading indicator when complete", async () => {
+    test('it should hide the loading indicator when complete', async () => {
       tb.pressSubmitButton();
 
       await waitForElementToBeRemoved(() => tb.queryLoadingScreen());
@@ -127,11 +127,11 @@ describe("EditMemoryScreen", () => {
       expect(tb.queryLoadingScreen()).toBeFalsy();
     });
 
-    test("it should display an error for a rejected patch", async () => {
+    test('it should display an error for a rejected patch', async () => {
       const e: ErrorResponse = {
-        status: "Bad Request",
+        status: 'Bad Request',
         code: 400,
-        reason: "Something went wrong.",
+        reason: 'Something went wrong.',
       };
 
       tb.onPatchError(e);
@@ -141,20 +141,20 @@ describe("EditMemoryScreen", () => {
       expect(tb.render.getByText(e.reason)).toBeTruthy();
 
       const a11yError = tb.render.getByA11yHint(
-        "The error encountered with the edit."
+        'The error encountered with the edit.',
       );
       const errorText = tb.render.getByText(e.reason);
       expect(a11yError).toBeTruthy();
       expect(errorText).toBeTruthy();
     });
 
-    test("it should dispatch the updated memory to redux", async () => {
-      const updatedMemory: Memory = { ...tb.memory, title: "brand new title" };
+    test('it should dispatch the updated memory to redux', async () => {
+      const updatedMemory: Memory = {...tb.memory, title: 'brand new title'};
       tb.onPatchResolve(updatedMemory).pressSubmitButton();
 
       await waitFor(() => {
         if (tb.dispatchFn.mock.calls.length === 0) {
-          throw new Error("Zero calls");
+          throw new Error('Zero calls');
         }
       });
 
@@ -163,7 +163,7 @@ describe("EditMemoryScreen", () => {
         updateMemory({
           mid: updatedMemory.id,
           memory: updatedMemory,
-        })
+        }),
       );
     });
   });
@@ -173,14 +173,14 @@ class EditMemoryScreenTestBed {
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 
   selectedTag: Tag = {
-    name: "Test Tag",
-    color: "#1a1a1a",
+    name: 'Test Tag',
+    color: '#1a1a1a',
     tid: 5,
     memoryCount: 0,
   };
   otherTag: Tag = {
-    name: "Other Tag",
-    color: "#FFFFFF",
+    name: 'Other Tag',
+    color: '#FFFFFF',
     tid: 10,
     memoryCount: 0,
   };
@@ -188,8 +188,8 @@ class EditMemoryScreenTestBed {
 
   memory: Memory = {
     id: 5,
-    title: "Test Memory",
-    location: "Test Location",
+    title: 'Test Memory',
+    location: 'Test Location',
     date: moment().valueOf(),
     tag: this.selectedTag,
     imageCount: 3,
@@ -202,8 +202,8 @@ class EditMemoryScreenTestBed {
   dispatchFn: jest.Mock;
 
   constructor() {
-    this.patchMemoryFn = jest.spyOn(MemoryService, "patchMemory").mockClear();
-    jest.spyOn(TagService, "getTags").mockResolvedValue(this.tags);
+    this.patchMemoryFn = jest.spyOn(MemoryService, 'patchMemory').mockClear();
+    jest.spyOn(TagService, 'getTags').mockResolvedValue(this.tags);
     this.goBackFn = jest.fn();
     this.dispatchFn = jest.fn();
     this.onPatchResolve(this.memory);
@@ -219,15 +219,15 @@ class EditMemoryScreenTestBed {
   };
 
   setTitleInput = (title: string) => {
-    const input = this.render.getByA11yLabel("Set Title");
+    const input = this.render.getByA11yLabel('Set Title');
     fireEvent.changeText(input, title);
-    fireEvent(input, "blur");
+    fireEvent(input, 'blur');
   };
 
   setLocationInput = (location: string): EditMemoryScreenTestBed => {
-    const input = this.render.getByA11yLabel("Set Location");
+    const input = this.render.getByA11yLabel('Set Location');
     fireEvent.changeText(input, location);
-    fireEvent(input, "blur");
+    fireEvent(input, 'blur');
     return this;
   };
 
@@ -237,31 +237,31 @@ class EditMemoryScreenTestBed {
   };
 
   pressSubmitButton = () => {
-    const button = this.render.getByA11yLabel("Update Memory");
+    const button = this.render.getByA11yLabel('Update Memory');
     fireEvent.press(button);
   };
 
   isSubmitButtonEnabled = (): boolean => {
-    const submit = this.render.getByA11yLabel("Update Memory");
+    const submit = this.render.getByA11yLabel('Update Memory');
     return submit.props.accessibilityState.disabled === false;
   };
 
   queryLoadingScreen = (): QueryReturn => {
-    return this.render.queryByA11yHint("Waiting for an action to finish...");
+    return this.render.queryByA11yHint('Waiting for an action to finish...');
   };
 
   getLoadingScreen = (): ReactTestInstance => {
-    return this.render.getByA11yHint("Waiting for an action to finish...");
+    return this.render.getByA11yHint('Waiting for an action to finish...');
   };
 
   build = (): EditMemoryScreenTestBed => {
     this.render = render(
       <EditMemoryScreen
-        navigation={{ goBack: this.goBackFn } as any}
-        route={{ params: { mid: this.memory.id } } as any}
+        navigation={{goBack: this.goBackFn} as any}
+        route={{params: {mid: this.memory.id}} as any}
         memory={this.memory}
         dispatch={this.dispatchFn}
-      />
+      />,
     );
     return this;
   };

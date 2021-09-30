@@ -1,10 +1,10 @@
-import React from "react";
-import { StyleSheet, Text } from "react-native";
-import PropTypes from "prop-types";
+import React from 'react';
+import {StyleSheet, Text} from 'react-native';
+import PropTypes from 'prop-types';
 
-import Colors from "../Colors";
+import Colors from '../Colors';
 
-const Label = ({ text }: { text: string }) => (
+const Label = ({text}: {text: string}) => (
   <Text style={styles.label}>{text}</Text>
 );
 
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 12,
     color: Colors.DARK,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 });
 

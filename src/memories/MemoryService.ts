@@ -1,13 +1,11 @@
-import { AxiosResponse } from "axios";
+import {AxiosResponse} from 'axios';
 
-import Gateway from "../http/Gateway";
-import { PickedContent } from "../content/ContentPicker";
-import ContentService, {
-  ContentUploadResponse,
-} from "../content/ContentService";
-import { Content } from "../content/ContentModels";
+import Gateway from '../http/Gateway';
+import {PickedContent} from '../content/ContentPicker';
+import ContentService, {ContentUploadResponse} from '../content/ContentService';
+import {Content} from '../content/ContentModels';
 
-import { Memory, MemoryDescription, MemoryPatch } from "./MemoryModels";
+import {Memory, MemoryDescription, MemoryPatch} from './MemoryModels';
 
 export const isMemoryDescriptionValid = (upload: MemoryDescription) =>
   upload.title.length > 0 && upload.location.length > 0;
@@ -17,8 +15,8 @@ export const isMemoryDescriptionValid = (upload: MemoryDescription) =>
  * Display images are updated to localised AWS.
  */
 export const getMemories = (): Promise<Memory[]> =>
-  Gateway.get("/memory").then((v: AxiosResponse<Memory[]>) =>
-    v.data.map(formatMemory)
+  Gateway.get('/memory').then((v: AxiosResponse<Memory[]>) =>
+    v.data.map(formatMemory),
   );
 
 /**
@@ -27,14 +25,14 @@ export const getMemories = (): Promise<Memory[]> =>
  * @param mid the memory ID to retrieve.
  */
 export const getMemory = (mid: number): Promise<Memory> =>
-  Gateway.get("/memory/" + mid.toString()).then(
-    (response: AxiosResponse<Memory>) => formatMemory(response.data)
+  Gateway.get('/memory/' + mid.toString()).then(
+    (response: AxiosResponse<Memory>) => formatMemory(response.data),
   );
 
 const formatMemory = (memory: Memory): Memory => {
   if (memory.displayContent != null) {
     memory.displayContent.fileKey = ContentService.formatFileKey(
-      memory.displayContent.fileKey
+      memory.displayContent.fileKey,
     );
   }
 
@@ -48,19 +46,19 @@ type PostMemoryResponse = {
 };
 
 export const createMemory = (
-  description: MemoryDescription
+  description: MemoryDescription,
 ): Promise<number> => {
   description.date = description.date.toString() as any;
 
-  return Gateway.post("/memory", description).then(
-    (v: AxiosResponse<PostMemoryResponse>) => v.data.memoryId
+  return Gateway.post('/memory', description).then(
+    (v: AxiosResponse<PostMemoryResponse>) => v.data.memoryId,
   );
 };
 
 export const uploadToMemory = (
   mid: number,
   contentToUpload: PickedContent[],
-  setProgress: (percentage: number) => void
+  setProgress: (percentage: number) => void,
 ): Promise<[Memory, Content[]]> => {
   setProgress(0);
   const doneTotal = contentToUpload.length + 1;
@@ -71,28 +69,28 @@ export const uploadToMemory = (
       ContentService.uploadContent(
         mid,
         content,
-        !!content.setDisplayPicture
+        !!content.setDisplayPicture,
       ).finally(() => {
         doneCount++;
         setProgress(Math.round((doneCount / doneTotal) * 100));
-      })
+      }),
   );
 
   // upload content, then retrieve latest memory + content data
   return Promise.all(uploadPromises).then(() =>
-    Promise.all([getMemory(mid), ContentService.getContent(mid)])
+    Promise.all([getMemory(mid), ContentService.getContent(mid)]),
   );
 };
 
 export const patchMemory = (
   mid: number,
-  patch: MemoryPatch
+  patch: MemoryPatch,
 ): Promise<Memory> => {
   return Gateway.patch<any>(`/memory/${mid}`, patch).then(
     (r: AxiosResponse<any>) => {
       console.log(`Successfully patched memory. Response status: ${r.status}`);
       return getMemory(mid);
-    }
+    },
   );
 };
 

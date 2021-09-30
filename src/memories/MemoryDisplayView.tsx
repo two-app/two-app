@@ -1,9 +1,9 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import Image from "react-native-fast-image";
-import { Colors } from "react-native/Libraries/NewAppScreen";
+import React from 'react';
+import {StyleSheet, Text, View} from 'react-native';
+import Image from 'react-native-fast-image';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-import { Content } from "../content/ContentModels";
+import {Content} from '../content/ContentModels';
 
 import {
   MemoryDate,
@@ -11,10 +11,10 @@ import {
   MemoryLocation,
   MemoryTag,
   MemoryVideoCount,
-} from "./MemoryIcons";
-import { Memory } from "./MemoryModels";
+} from './MemoryIcons';
+import {Memory} from './MemoryModels';
 
-export const MemoryDisplayView = ({ memory }: { memory: Memory }) => (
+export const MemoryDisplayView = ({memory}: {memory: Memory}) => (
   <View>
     <Text style={s.heading}>{memory.title}</Text>
     <View style={s.spacedRow}>
@@ -22,7 +22,7 @@ export const MemoryDisplayView = ({ memory }: { memory: Memory }) => (
       <MemoryDate date={memory.date} />
     </View>
     <View style={s.spacedRow}>
-      <View style={{ flexDirection: "row" }}>
+      <View style={{flexDirection: 'row'}}>
         {memory.imageCount > 0 && (
           <MemoryImageCount pictureCount={memory.imageCount} />
         )}
@@ -41,11 +41,11 @@ export const MemoryDisplayView = ({ memory }: { memory: Memory }) => (
   </View>
 );
 
-const MemoryDisplayPicture = ({ content }: { content: Content }) => {
+const MemoryDisplayPicture = ({content}: {content: Content}) => {
   const uri = `${content.fileKey}-${content.display.suffix}.${content.display.extension}`;
   return (
     <View style={s.image}>
-      <Image style={{ width: "100%", height: "100%" }} source={{ uri }} />
+      <Image style={{width: '100%', height: '100%'}} source={{uri}} />
     </View>
   );
 };
@@ -54,16 +54,16 @@ const s = StyleSheet.create({
   heading: {
     color: Colors.DARK,
     fontSize: 25,
-    fontFamily: "Montserrat-Bold",
+    fontFamily: 'Montserrat-Bold',
   },
   spacedRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginTop: 10,
   },
   image: {
-    flexDirection: "row",
+    flexDirection: 'row',
     height: 200,
     marginTop: 10,
   },

@@ -1,34 +1,30 @@
-import React from "react";
-import FoundationIcon from "react-native-vector-icons/Foundation";
-import { StyleSheet, Text, View } from "react-native";
-import AntIcon from "react-native-vector-icons/AntDesign";
-import IonIcon from "react-native-vector-icons/Ionicons";
-import MaterialIcon from "react-native-vector-icons/MaterialIcons";
-import moment from "moment";
+import React from 'react';
+import FoundationIcon from 'react-native-vector-icons/Foundation';
+import {StyleSheet, Text, View} from 'react-native';
+import AntIcon from 'react-native-vector-icons/AntDesign';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import moment from 'moment';
 
-import Colors from "../Colors";
-import { DisplayTag } from "../tags/TagButton";
-import { Tag } from "../tags/Tag";
+import Colors from '../Colors';
+import {DisplayTag} from '../tags/TagButton';
+import {Tag} from '../tags/Tag';
 
-export const MemoryLocation = ({ location }: { location: string }) => (
+export const MemoryLocation = ({location}: {location: string}) => (
   <View style={c.icon}>
     <FoundationIcon name="marker" {...iconArguments} style={s.iconLeft} />
     <Text style={s.text}>{location}</Text>
   </View>
 );
 
-export const MemoryDate = ({ date }: { date: number }) => (
+export const MemoryDate = ({date}: {date: number}) => (
   <View style={c.icon}>
     <Text style={s.text}>{moment(date).fromNow()}</Text>
     <AntIcon name="calendar" {...iconArguments} style={s.iconRight} />
   </View>
 );
 
-export const MemoryImageCount = ({
-  pictureCount,
-}: {
-  pictureCount: number;
-}) => (
+export const MemoryImageCount = ({pictureCount}: {pictureCount: number}) => (
   <View style={c.icon}>
     <IonIcon name="md-images" {...iconArguments} style={s.iconLeft} />
     <Text style={s.text}>{pictureCount}</Text>
@@ -46,13 +42,13 @@ export const MemoryVideoCount = ({
     <MaterialIcon
       name="ondemand-video"
       {...iconArguments}
-      style={{ ...s.iconLeft, marginLeft: pad === true ? 10 : 0 }}
+      style={{...s.iconLeft, marginLeft: pad === true ? 10 : 0}}
     />
     <Text style={s.text}>{videoCount}</Text>
   </View>
 );
 
-export const MemoryTag = ({ tag }: { tag: Tag }) => (
+export const MemoryTag = ({tag}: {tag: Tag}) => (
   <View style={c.icon}>
     <DisplayTag tag={tag} />
     <AntIcon name="tagso" {...iconArguments} style={s.iconRight} />
@@ -66,15 +62,15 @@ const iconArguments = {
 
 const c = StyleSheet.create({
   icon: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 
 const s = StyleSheet.create({
   text: {
     color: Colors.REGULAR,
-    fontFamily: "Montserrat-SemiBold",
+    fontFamily: 'Montserrat-SemiBold',
   },
   iconRight: {
     marginLeft: 5,

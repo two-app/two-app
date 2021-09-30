@@ -4,23 +4,23 @@ import {
   View,
   Text,
   useWindowDimensions,
-} from "react-native";
-import React from "react";
+} from 'react-native';
+import React from 'react';
 
-import Colors from "../Colors";
+import Colors from '../Colors';
 
 type LoadingViewProps = {
   loadingPercentage?: number;
 };
 
-const LoadingView = ({ loadingPercentage }: LoadingViewProps) => (
+const LoadingView = ({loadingPercentage}: LoadingViewProps) => (
   <View
     style={{
       ...styles.overlay,
       height: useWindowDimensions().height,
       width: useWindowDimensions().width,
     }}
-    accessibilityState={{ busy: true }}
+    accessibilityState={{busy: true}}
     accessibilityHint="Waiting for an action to finish..."
   >
     {loadingPercentage != null && (
@@ -37,19 +37,19 @@ const LoadingView = ({ loadingPercentage }: LoadingViewProps) => (
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    position: "absolute",
+    position: 'absolute',
     opacity: 0.5,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     zIndex: 2,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   overlayIndicator: {
     zIndex: 3,
   },
   percentage: {
     color: Colors.DARK,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 5,
   },
 });

@@ -1,6 +1,6 @@
-import { Tokens } from "../AuthenticationModel";
+import {Tokens} from '../AuthenticationModel';
 
-import { AuthState } from "./reducers";
+import {AuthState} from './reducers';
 
 /**
  * It is an implicit agreement that the existence of tokens within the redux store has been checked before

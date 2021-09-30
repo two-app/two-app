@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, RefreshControl } from "react-native";
-import type { StackNavigationProp } from "@react-navigation/stack";
-import { FlatList } from "react-native-gesture-handler";
-import type { ConnectedProps } from "react-redux";
-import { connect } from "react-redux";
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, RefreshControl} from 'react-native';
+import type {StackNavigationProp} from '@react-navigation/stack';
+import {FlatList} from 'react-native-gesture-handler';
+import type {ConnectedProps} from 'react-redux';
+import {connect} from 'react-redux';
 
-import Colors from "../../Colors";
-import type { RootStackParamList } from "../../../Router";
-import { Footer } from "../../home/Footer";
-import { Wrapper, NoWrapContainer } from "../../views/View";
-import { Heading } from "../../home/Heading";
-import * as TagService from "../TagService";
-import type { Tag } from "../Tag";
-import { NewTagButton } from "../NewTagButton";
-import { LoadingStatus } from "../../LoadingScreen";
-import type { ErrorResponse } from "../../http/Response";
-import type { TwoState } from "../../state/reducers";
-import { persistor } from "../../state/reducers";
-import { selectTags } from "../store/selectors";
-import { storeTags } from "../store";
+import Colors from '../../Colors';
+import type {RootStackParamList} from '../../../Router';
+import {Footer} from '../../home/Footer';
+import {Wrapper, NoWrapContainer} from '../../views/View';
+import {Heading} from '../../home/Heading';
+import * as TagService from '../TagService';
+import type {Tag} from '../Tag';
+import {NewTagButton} from '../NewTagButton';
+import {LoadingStatus} from '../../LoadingScreen';
+import type {ErrorResponse} from '../../http/Response';
+import type {TwoState} from '../../state/reducers';
+import {persistor} from '../../state/reducers';
+import {selectTags} from '../store/selectors';
+import {storeTags} from '../store';
 
-import { DeleteTagIcon } from "./DeleteTag";
-import { EditTagIcon } from "./EditTag";
-import { TagDate } from "./TagDate";
+import {DeleteTagIcon} from './DeleteTag';
+import {EditTagIcon} from './EditTag';
+import {TagDate} from './TagDate';
 
 const mapStateToProps = (state: TwoState) => ({
   tags: selectTags(state.tags),
@@ -32,12 +32,12 @@ const connector = connect(mapStateToProps);
 type ConnectorProps = ConnectedProps<typeof connector>;
 
 type TagScreenProps = ConnectorProps & {
-  navigation: StackNavigationProp<RootStackParamList, "TagScreen">;
+  navigation: StackNavigationProp<RootStackParamList, 'TagScreen'>;
 };
 
-export const TagScreen = ({ tags, dispatch }: TagScreenProps) => {
+export const TagScreen = ({tags, dispatch}: TagScreenProps) => {
   const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>(
-    new LoadingStatus(true, false)
+    new LoadingStatus(true, false),
   );
 
   const refreshTags = async (displayRefresh = false) => {
@@ -63,20 +63,18 @@ export const TagScreen = ({ tags, dispatch }: TagScreenProps) => {
       <NoWrapContainer>
         <FlatList
           data={tags}
-          contentContainerStyle={{ paddingBottom: 100 }}
+          contentContainerStyle={{paddingBottom: 100}}
           ListHeaderComponent={() => (
             <TagHeader
               onCreateTag={() => refreshTags()}
               isEmpty={tags === []}
             />
           )}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <TagItem tag={item} onDelete={refreshTags} onUpdate={refreshTags} />
           )}
           ItemSeparatorComponent={() => (
-            <View
-              style={{ flex: 1, height: 2, backgroundColor: Colors.LIGHT }}
-            />
+            <View style={{flex: 1, height: 2, backgroundColor: Colors.LIGHT}} />
           )}
           testID="menu"
           keyExtractor={(tag: Tag) => tag.name}
@@ -85,7 +83,7 @@ export const TagScreen = ({ tags, dispatch }: TagScreenProps) => {
           )}
           refreshControl={
             <RefreshControl
-              colors={["#9Bd35A", "#689F38"]}
+              colors={['#9Bd35A', '#689F38']}
               refreshing={loadingStatus.displayRefresh}
               onRefresh={() => refreshTags(true)}
             />
@@ -104,7 +102,7 @@ type TagHeaderProps = {
   isEmpty: boolean;
 };
 
-const TagHeader = ({ onCreateTag, isEmpty }: TagHeaderProps) => (
+const TagHeader = ({onCreateTag, isEmpty}: TagHeaderProps) => (
   <>
     <Heading>Tags</Heading>
     <NewTagButton
@@ -125,20 +123,20 @@ type TagItemProps = {
   onUpdate: () => void;
 };
 
-const TagItem = ({ tag, onDelete, onUpdate }: TagItemProps) => {
+const TagItem = ({tag, onDelete, onUpdate}: TagItemProps) => {
   return (
     <View style={s.item} accessibilityLabel="A tag owned by the couple">
       <View style={s.headerContainer}>
         <View style={s.nameContainer}>
-          <View style={[s.circle, { backgroundColor: tag.color }]} />
+          <View style={[s.circle, {backgroundColor: tag.color}]} />
           <Text style={s.subheading}>{tag.name}</Text>
-          <Text style={s.memoryCount}>{tag.memoryCount || ""}</Text>
+          <Text style={s.memoryCount}>{tag.memoryCount || ''}</Text>
         </View>
         <View style={s.iconsContainer}>
           <EditTagIcon
             tag={tag}
             onUpdated={() => onUpdate()}
-            style={{ marginRight: 15 }}
+            style={{marginRight: 15}}
           />
           <DeleteTagIcon tag={tag} onDeleted={() => onDelete()} />
         </View>
@@ -159,11 +157,9 @@ const EmptyTagsComponent = ({
 
   return (
     <>
-      <Text
-        style={{ textAlign: "center", color: Colors.REGULAR, marginTop: 40 }}
-      >
+      <Text style={{textAlign: 'center', color: Colors.REGULAR, marginTop: 40}}>
         {loadingStatus.error != null
-          ? "Sorry, we were unable to load your tags.\nPlease try again soon."
+          ? 'Sorry, we were unable to load your tags.\nPlease try again soon.'
           : // eslint-disable-next-line max-len
             'Tags are used to group closely related memories together. Think "21st Birthday", or "Wedding". Try creating one now!'}
       </Text>
@@ -184,12 +180,12 @@ const s = StyleSheet.create({
   subheading: {
     color: Colors.DARK,
     fontSize: 25,
-    fontFamily: "Montserrat-Bold",
+    fontFamily: 'Montserrat-Bold',
   },
   memoryCount: {
     color: Colors.FADED,
     fontSize: 25,
-    fontFamily: "Montserrat-Bold",
+    fontFamily: 'Montserrat-Bold',
     marginLeft: 8,
   },
   circle: {
@@ -200,20 +196,20 @@ const s = StyleSheet.create({
     marginTop: 7,
   },
   headerContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
   },
   nameContainer: {
-    flexDirection: "row",
-    alignItems: "flex-start",
+    flexDirection: 'row',
+    alignItems: 'flex-start',
     flex: 1,
     flexGrow: 1,
   },
   iconsContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginTop: 4,
     marginLeft: 30,
   },

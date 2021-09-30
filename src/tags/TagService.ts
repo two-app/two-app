@@ -1,11 +1,11 @@
-import { AxiosResponse } from "axios";
+import {AxiosResponse} from 'axios';
 
-import Gateway from "../http/Gateway";
+import Gateway from '../http/Gateway';
 
-import { Tag, TagDescription } from "./Tag";
+import {Tag, TagDescription} from './Tag';
 
 export const getTags = (): Promise<Tag[]> => {
-  return Gateway.get("/tag").then((res: AxiosResponse<Tag[]>) => res.data);
+  return Gateway.get('/tag').then((res: AxiosResponse<Tag[]>) => res.data);
 };
 
 export const createTag = (tagDescription: TagDescription): Promise<Tag> => {
@@ -15,10 +15,10 @@ export const createTag = (tagDescription: TagDescription): Promise<Tag> => {
     tid: number;
   };
 
-  return Gateway.post("/tag", tagDescription).then(
+  return Gateway.post('/tag', tagDescription).then(
     (res: AxiosResponse<PostTagResponse>) => {
-      return { ...tagDescription, tid: res.data.tid, memoryCount: 0 };
-    }
+      return {...tagDescription, tid: res.data.tid, memoryCount: 0};
+    },
   );
 };
 

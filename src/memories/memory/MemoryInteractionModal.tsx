@@ -1,21 +1,21 @@
-import { Text, View, StyleSheet } from "react-native";
-import React, { useState, useEffect } from "react";
-import NativeModal from "react-native-modal";
-import { useDispatch } from "react-redux";
-import { PayloadAction } from "typesafe-actions";
+import {Text, View, StyleSheet} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import NativeModal from 'react-native-modal';
+import {useDispatch} from 'react-redux';
+import {PayloadAction} from 'typesafe-actions';
 
 import {
   setMemoryDisplayPicture,
   deleteContent,
-} from "../../content/ContentService";
-import { ButtonStyles, Button } from "../../forms/Button";
-import Colors from "../../Colors";
-import { ErrorResponse } from "../../http/Response";
-import { updateMemory, deleteContent as deleteContentReducer } from "../store";
-import { Memory } from "../MemoryModels";
-import { Content } from "../../content/ContentModels";
+} from '../../content/ContentService';
+import {ButtonStyles, Button} from '../../forms/Button';
+import Colors from '../../Colors';
+import {ErrorResponse} from '../../http/Response';
+import {updateMemory, deleteContent as deleteContentReducer} from '../store';
+import {Memory} from '../MemoryModels';
+import {Content} from '../../content/ContentModels';
 
-import { ImageCell } from "./Grid";
+import {ImageCell} from './Grid';
 
 type MemoryInteractionModalProps = {
   memory: Memory;
@@ -46,16 +46,16 @@ export const MemoryInteractionModal = ({
 }: MemoryInteractionModalProps) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<ButtonLoading>(noLoading);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
   const [modal, setModal] = useState<ModalData>({
     content,
     isVisible: false,
   });
 
-  useEffect(() => setModal({ content, isVisible: content != null }), [content]);
+  useEffect(() => setModal({content, isVisible: content != null}), [content]);
 
   const closeModal = () => {
-    setModal({ ...modal, isVisible: false });
+    setModal({...modal, isVisible: false});
     setLoading(noLoading);
   };
 
@@ -68,22 +68,22 @@ export const MemoryInteractionModal = ({
   };
 
   const updateDisplayPicture = (contentId: number) => {
-    setLoading({ ...loading, setDisplayPicture: true });
+    setLoading({...loading, setDisplayPicture: true});
     setMemoryDisplayPicture(memory.id, contentId)
       .then((updatedMemory: Memory) =>
         dispatchAfterClosed(
-          updateMemory({ mid: memory.id, memory: updatedMemory })
-        )
+          updateMemory({mid: memory.id, memory: updatedMemory}),
+        ),
       )
       .catch((e: ErrorResponse) => setError(e.reason))
       .finally(() => setLoading(noLoading));
   };
 
   const deleteContentThenUpdate = (contentId: number) => {
-    setLoading({ ...loading, deleteContent: true });
+    setLoading({...loading, deleteContent: true});
     deleteContent(memory.id, contentId)
       .then(() =>
-        dispatchAfterClosed(deleteContentReducer({ mid: memory.id, contentId }))
+        dispatchAfterClosed(deleteContentReducer({mid: memory.id, contentId})),
       )
       .catch((e: ErrorResponse) => setError(e.reason))
       .finally(() => setLoading(noLoading));
@@ -91,7 +91,7 @@ export const MemoryInteractionModal = ({
 
   return (
     <NativeModal
-      accessibilityState={{ expanded: modal.isVisible }}
+      accessibilityState={{expanded: modal.isVisible}}
       accessibilityHint="This modal provides options to modify or remove a piece of content."
       accessibilityLabel="Content options modal."
       isVisible={modal.isVisible}
@@ -102,7 +102,7 @@ export const MemoryInteractionModal = ({
       onModalHide={() => {
         if (modal.afterCloseFn != null) {
           modal.afterCloseFn();
-          setModal({ ...modal, afterCloseFn: undefined });
+          setModal({...modal, afterCloseFn: undefined});
         }
 
         onClose();
@@ -112,8 +112,8 @@ export const MemoryInteractionModal = ({
       {modal.content != null && (
         <Modal
           content={modal.content}
-          onUpdateDisplayPicture={(id) => updateDisplayPicture(id)}
-          onDelete={(id) => deleteContentThenUpdate(id)}
+          onUpdateDisplayPicture={id => updateDisplayPicture(id)}
+          onDelete={id => deleteContentThenUpdate(id)}
           loading={loading}
           error={error}
         />
@@ -139,7 +139,7 @@ const Modal = ({
 }: ModalType) => {
   return (
     <View style={styles.modal}>
-      <View style={{ width: 100, height: 100, marginBottom: 20 }}>
+      <View style={{width: 100, height: 100, marginBottom: 20}}>
         <ImageCell item={content} />
       </View>
 
@@ -148,7 +148,7 @@ const Modal = ({
         onPress={() => onUpdateDisplayPicture(content.contentId)}
         accessibilityHint="Sets the display picture to this content"
         accessibilityLabel="Set the Display Picture"
-        style={{ marginBottom: 10, width: "100%" }}
+        style={{marginBottom: 10, width: '100%'}}
         loading={loading.setDisplayPicture}
       />
 
@@ -159,7 +159,7 @@ const Modal = ({
         pressedButtonStyle={ButtonStyles.redPressed}
         accessibilityHint="Deletes this content from the memory."
         accessibilityLabel="Delete this content."
-        style={{ width: "100%" }}
+        style={{width: '100%'}}
         loading={loading.deleteContent}
       />
 
@@ -175,12 +175,12 @@ const Modal = ({
 
 const styles = StyleSheet.create({
   modal: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 20,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 4,
-    borderColor: "rgba(0, 0, 0, 0.1)",
+    borderColor: 'rgba(0, 0, 0, 0.1)',
   },
   errorText: {
     color: Colors.DARK_SALMON,

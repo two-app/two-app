@@ -1,7 +1,7 @@
-import { TwoState } from "../../state/reducers";
-import { Tag } from "../Tag";
+import {TwoState} from '../../state/reducers';
+import {Tag} from '../Tag';
 
-import { TagState } from "./reducers";
+import {TagState} from './reducers';
 
 export const selectTags = (tagState: TagState): Tag[] => tagState.allTags;
 

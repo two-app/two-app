@@ -1,6 +1,6 @@
-import Gateway from "../http/Gateway";
+import Gateway from '../http/Gateway';
 
-import type { Profile } from "./Profile";
+import type {Profile} from './Profile';
 
 export type Couple = {
   user: Profile;
@@ -9,8 +9,8 @@ export type Couple = {
 };
 
 const getCouple = (): Promise<Couple> => {
-  console.log("Performing GET /couple");
-  return Gateway.get<Couple>("couple").then((r) => r.data);
+  console.log('Performing GET /couple');
+  return Gateway.get<Couple>('couple').then(r => r.data);
 };
 
-export default { getCouple };
+export default {getCouple};

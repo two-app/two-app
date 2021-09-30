@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { Text, StyleSheet } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import React, {useState, useEffect} from 'react';
+import {Text, StyleSheet} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
 
-import Colors from "../Colors";
+import Colors from '../Colors';
 
-import { NewTagButton, TagCard } from "./NewTagButton";
-import { Tag } from "./Tag";
-import { getTags } from "./TagService";
-import { TagButton } from "./TagButton";
+import {NewTagButton, TagCard} from './NewTagButton';
+import {Tag} from './Tag';
+import {getTags} from './TagService';
+import {TagButton} from './TagButton';
 
 type SelectTagProps = {
   onTagChange: (tag: undefined | Tag) => void;
   initialValue?: Tag;
 };
 
-export const SelectTag = ({ onTagChange, initialValue }: SelectTagProps) => {
+export const SelectTag = ({onTagChange, initialValue}: SelectTagProps) => {
   const [selected, setSelected] = useState<Tag | undefined>(initialValue);
   const [availableTags, setAvailableTags] = useState<Tag[]>([]);
 
@@ -48,11 +48,11 @@ export const SelectTag = ({ onTagChange, initialValue }: SelectTagProps) => {
           <Text style={s.label}>Or, select from an existing tag...</Text>
           <FlatList
             showsHorizontalScrollIndicator={false}
-            style={{ marginTop: 10 }}
+            style={{marginTop: 10}}
             horizontal={true}
             data={availableTags}
-            keyExtractor={(tag) => tag.name}
-            renderItem={({ item }) => (
+            keyExtractor={tag => tag.name}
+            renderItem={({item}) => (
               <TagButton
                 tag={item}
                 onClick={(tag: Tag) => {

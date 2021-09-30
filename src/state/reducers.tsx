@@ -1,13 +1,13 @@
-import AsyncStorage from "@react-native-community/async-storage";
-import { persistReducer, persistStore } from "redux-persist";
-import { combineReducers, createStore } from "redux";
-import { createAction, getType } from "typesafe-actions";
-import { Persistor } from "redux-persist/es/types";
+import AsyncStorage from '@react-native-community/async-storage';
+import {persistReducer, persistStore} from 'redux-persist';
+import {combineReducers, createStore} from 'redux';
+import {createAction, getType} from 'typesafe-actions';
+import {Persistor} from 'redux-persist/es/types';
 
-import { userReducer, UserState } from "../user";
-import { authReducer, AuthState } from "../authentication/store";
-import { MemoryState, memoryReducer } from "../memories/store/reducers";
-import { tagReducer, TagState } from "../tags/store";
+import {userReducer, UserState} from '../user';
+import {authReducer, AuthState} from '../authentication/store';
+import {MemoryState, memoryReducer} from '../memories/store/reducers';
+import {tagReducer, TagState} from '../tags/store';
 
 export type TwoState = {
   user?: UserState;
@@ -17,7 +17,7 @@ export type TwoState = {
 };
 
 const persistConfig = {
-  key: "root",
+  key: 'root',
   storage: AsyncStorage,
 };
 
@@ -28,7 +28,7 @@ const reducer = combineReducers({
   tags: tagReducer,
 });
 
-const clearState = createAction("CLEAR_STATE")();
+const clearState = createAction('CLEAR_STATE')();
 
 const rootReducer = (state: any, action: any) => {
   if (action.type === getType(clearState)) {
@@ -40,4 +40,4 @@ const rootReducer = (state: any, action: any) => {
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 const store = createStore(persistedReducer);
 const persistor: Persistor = persistStore(store);
-export { store, persistor, clearState };
+export {store, persistor, clearState};

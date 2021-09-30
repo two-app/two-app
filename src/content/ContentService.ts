@@ -1,17 +1,17 @@
-import FormData from "form-data";
-import { AxiosResponse } from "axios";
-import Config from "react-native-config";
+import FormData from 'form-data';
+import {AxiosResponse} from 'axios';
+import Config from 'react-native-config';
 
-import Gateway from "../http/Gateway";
-import { MemoryPatch, Memory } from "../memories/MemoryModels";
-import { getMemory } from "../memories/MemoryService";
+import Gateway from '../http/Gateway';
+import {MemoryPatch, Memory} from '../memories/MemoryModels';
+import {getMemory} from '../memories/MemoryService';
 
-import { PickedContent } from "./ContentPicker";
-import { Content, ImageContent, VideoContent } from "./ContentModels";
+import {PickedContent} from './ContentPicker';
+import {Content, ImageContent, VideoContent} from './ContentModels';
 
 export const setMemoryDisplayPicture = (
   mid: number,
-  displayId: number
+  displayId: number,
 ): Promise<Memory> => {
   const patch: MemoryPatch = {
     displayContentId: displayId,
@@ -20,7 +20,7 @@ export const setMemoryDisplayPicture = (
   return Gateway.patch(`/memory/${mid}`, patch).then(() => getMemory(mid));
 };
 
-export type ContentUploadResponse = { contentId: number };
+export type ContentUploadResponse = {contentId: number};
 
 /**
  * @param mid the memory id
@@ -30,11 +30,11 @@ export type ContentUploadResponse = { contentId: number };
 export const uploadContent = (
   mid: number,
   content: PickedContent,
-  setDisplayContent: boolean
+  setDisplayContent: boolean,
 ): Promise<ContentUploadResponse> => {
   const form = new FormData();
 
-  form.append("content", {
+  form.append('content', {
     name: content.filename,
     type: content.mime,
     uri: content.path,
@@ -46,7 +46,7 @@ export const uploadContent = (
 
   return Gateway.post<ContentUploadResponse>(uri, form, {
     headers: {
-      "Content-Type": "multipart/form-data",
+      'Content-Type': 'multipart/form-data',
     },
     timeout: 60 * 1000, // 1m
   }).then((r: AxiosResponse<ContentUploadResponse>) => r.data);
@@ -55,11 +55,11 @@ export const uploadContent = (
 export const getContent = (mid: number): Promise<Content[]> =>
   Gateway.get<Content[]>(`/memory/${mid}/content`).then(
     (v: AxiosResponse<Content[]>) => {
-      return v.data.map((content) => {
+      return v.data.map(content => {
         content.fileKey = formatFileKey(content.fileKey);
         return content;
       });
-    }
+    },
   );
 
 export type DeleteContentResponse = {
@@ -68,7 +68,7 @@ export type DeleteContentResponse = {
 
 export const deleteContent = async (
   mid: number,
-  contentId: number
+  contentId: number,
 ): Promise<DeleteContentResponse> => {
   const uri = `/memory/${mid}/content/${contentId}`;
   const response = await Gateway.delete<DeleteContentResponse>(uri);
@@ -77,7 +77,7 @@ export const deleteContent = async (
 
 export const buildContentURI = (
   fileKey: string,
-  content: ImageContent | VideoContent
+  content: ImageContent | VideoContent,
 ): string => {
   return `${fileKey}-${content.suffix}.${content.extension}`;
 };

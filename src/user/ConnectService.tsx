@@ -1,8 +1,8 @@
-import "react-native-get-random-values";
+import 'react-native-get-random-values';
 
-import AuthenticationService from "../authentication/AuthenticationService";
-import type { Couple } from "../couple/CoupleService";
-import CoupleService from "../couple/CoupleService";
+import AuthenticationService from '../authentication/AuthenticationService';
+import type {Couple} from '../couple/CoupleService';
+import CoupleService from '../couple/CoupleService';
 
 /**
  * Retrieves the couple the user belongs to. If the partner is present,
@@ -12,7 +12,7 @@ const checkConnection = async (): Promise<boolean> => {
   return CoupleService.getCouple().then((couple: Couple) => {
     if (couple.partner != null) {
       return AuthenticationService.refreshTokens().then(() =>
-        Promise.resolve(true)
+        Promise.resolve(true),
       );
     } else {
       return Promise.resolve(false);
@@ -20,4 +20,4 @@ const checkConnection = async (): Promise<boolean> => {
   });
 };
 
-export default { checkConnection };
+export default {checkConnection};

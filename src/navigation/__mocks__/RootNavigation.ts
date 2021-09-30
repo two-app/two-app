@@ -1,6 +1,6 @@
-import { NavigationProp } from "@react-navigation/native";
+import {NavigationProp} from '@react-navigation/native';
 
-import { RootStackParamList } from "../../../Router";
+import {RootStackParamList} from '../../../Router';
 
 export const navigateFn = jest.fn();
 export const dispatchFn = jest.fn();

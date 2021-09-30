@@ -1,22 +1,22 @@
-import "react-native";
+import 'react-native';
 import {
   MemoryState,
   memoryReducer,
   deleteContent,
-} from "../../../src/memories/store";
-import { Content } from "../../../src/content/ContentModels";
+} from '../../../src/memories/store';
+import {Content} from '../../../src/content/ContentModels';
 
-describe("MemoriesReducer", () => {
+describe('MemoriesReducer', () => {
   const baseState: MemoryState = {
     allMemories: [],
     content: {},
   };
 
-  describe("deleteMemoryContent", () => {
+  describe('deleteMemoryContent', () => {
     test("it should do nothing for memory that doesn't exist", () => {
       const newState = memoryReducer(
         baseState,
-        deleteContent({ mid: 1, contentId: 2 })
+        deleteContent({mid: 1, contentId: 2}),
       );
 
       expect(newState).toEqual(baseState);
@@ -26,29 +26,29 @@ describe("MemoriesReducer", () => {
       const state: MemoryState = {
         ...baseState,
         content: {
-          1: [{ ...testContent, contentId: 3 }],
+          1: [{...testContent, contentId: 3}],
         },
       };
 
       const newState = memoryReducer(
         state,
-        deleteContent({ mid: 1, contentId: 2 })
+        deleteContent({mid: 1, contentId: 2}),
       );
 
       expect(newState).toEqual(state);
     });
 
-    test("it should delete the content", () => {
+    test('it should delete the content', () => {
       const state: MemoryState = {
         ...baseState,
         content: {
-          1: [{ ...testContent, contentId: 3 }],
+          1: [{...testContent, contentId: 3}],
         },
       };
 
       const newState = memoryReducer(
         state,
-        deleteContent({ mid: 1, contentId: 3 })
+        deleteContent({mid: 1, contentId: 3}),
       );
 
       expect(newState).toEqual({
@@ -59,7 +59,7 @@ describe("MemoriesReducer", () => {
       });
     });
 
-    test("it should only delete one piece of content", () => {
+    test('it should only delete one piece of content', () => {
       const state: MemoryState = {
         ...baseState,
         content: {
@@ -82,7 +82,7 @@ describe("MemoriesReducer", () => {
 
       const newState = memoryReducer(
         state,
-        deleteContent({ mid: 1, contentId: 2 })
+        deleteContent({mid: 1, contentId: 2}),
       );
 
       expect(newState.content[1].length).toEqual(2);
@@ -92,28 +92,28 @@ describe("MemoriesReducer", () => {
 
 const testContent: Content = {
   contentId: 9,
-  contentType: "image",
+  contentType: 'image',
   thumbnail: {
-    contentType: "image",
-    extension: "png",
+    contentType: 'image',
+    extension: 'png',
     height: 100,
     width: 100,
-    suffix: "thumbnail",
+    suffix: 'thumbnail',
   },
   display: {
-    contentType: "image",
-    extension: "png",
+    contentType: 'image',
+    extension: 'png',
     height: 500,
     width: 500,
-    suffix: "display",
+    suffix: 'display',
   },
   gallery: {
-    contentType: "image",
-    extension: "png",
+    contentType: 'image',
+    extension: 'png',
     height: 1000,
     width: 1000,
-    suffix: "gallery",
+    suffix: 'gallery',
   },
-  extension: "png",
-  fileKey: "abcdefg",
+  extension: 'png',
+  fileKey: 'abcdefg',
 };
