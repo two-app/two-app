@@ -1,28 +1,28 @@
-import React, {useState} from 'react';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RouteProp} from '@react-navigation/native';
-import {View, Text} from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {connect, ConnectedProps} from 'react-redux';
+import React, { useState } from "react";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RouteProp } from "@react-navigation/native";
+import { View, Text } from "react-native";
+import { Colors } from "react-native/Libraries/NewAppScreen";
+import { connect, ConnectedProps } from "react-redux";
 
-import {MemoryPatch, Memory} from '../MemoryModels';
-import {ScrollContainer} from '../../views/View';
-import TitleInput from '../new_memory/TitleInput';
-import {RootStackParamList} from '../../../Router';
-import {Heading} from '../../home/Heading';
-import SubmitButton from '../../forms/SubmitButton';
-import {DateTimePicker} from '../new_memory/DateInput';
-import {LocationInput} from '../new_memory/LocationInput';
-import {SelectTag} from '../../tags/SelectTag';
-import {Tag} from '../../tags/Tag';
-import {patchMemory} from '../MemoryService';
-import {ErrorResponse} from '../../http/Response';
-import {TwoState} from '../../state/reducers';
-import {selectMemory, updateMemory} from '../store';
+import { MemoryPatch, Memory } from "../MemoryModels";
+import { ScrollContainer } from "../../views/View";
+import TitleInput from "../new_memory/TitleInput";
+import { RootStackParamList } from "../../../Router";
+import { Heading } from "../../home/Heading";
+import SubmitButton from "../../forms/SubmitButton";
+import { DateTimePicker } from "../new_memory/DateInput";
+import { LocationInput } from "../new_memory/LocationInput";
+import { SelectTag } from "../../tags/SelectTag";
+import { Tag } from "../../tags/Tag";
+import { patchMemory } from "../MemoryService";
+import { ErrorResponse } from "../../http/Response";
+import { TwoState } from "../../state/reducers";
+import { selectMemory, updateMemory } from "../store";
 
 type NavigationProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'EditMemoryScreen'>;
-  route: RouteProp<RootStackParamList, 'EditMemoryScreen'>;
+  navigation: StackNavigationProp<RootStackParamList, "EditMemoryScreen">;
+  route: RouteProp<RootStackParamList, "EditMemoryScreen">;
 };
 
 const mapStateToProps = (state: TwoState, ownProps: NavigationProps) => ({
@@ -85,7 +85,7 @@ export const EditMemoryScreen = ({
   dispatch,
 }: EditMemoryScreenProps) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
   const [formState, setFormState] = useState<FormState>({
     title: memory.title,
     location: memory.location,
@@ -101,7 +101,7 @@ export const EditMemoryScreen = ({
           updateMemory({
             mid: memory.id,
             memory: patchedMemory,
-          }),
+          })
         );
         navigation.goBack();
       })
@@ -115,26 +115,26 @@ export const EditMemoryScreen = ({
         <Heading>Edit Memory</Heading>
 
         <TitleInput
-          setTitle={(title: string) => setFormState({...formState, title})}
+          setTitle={(title: string) => setFormState({ ...formState, title })}
           initialValue={formState.title}
           placeholder="Memory title..."
         />
 
         <LocationInput
           setLocation={(location: string) =>
-            setFormState({...formState, location})
+            setFormState({ ...formState, location })
           }
           initialValue={formState.location}
         />
 
         <DateTimePicker
-          setDateTime={(date: number) => setFormState({...formState, date})}
+          setDateTime={(date: number) => setFormState({ ...formState, date })}
           initialValue={formState.date}
         />
 
         <SelectTag
           onTagChange={(tag: undefined | Tag) =>
-            setFormState({...formState, tagId: tag?.tid})
+            setFormState({ ...formState, tagId: tag?.tid })
           }
           initialValue={memory?.tag}
         />
@@ -148,8 +148,9 @@ export const EditMemoryScreen = ({
         />
 
         <Text
-          style={{color: Colors.DARK_SALMON}}
-          accessibilityHint="The error encountered with the edit.">
+          style={{ color: Colors.DARK_SALMON }}
+          accessibilityHint="The error encountered with the edit."
+        >
           {error}
         </Text>
       </View>

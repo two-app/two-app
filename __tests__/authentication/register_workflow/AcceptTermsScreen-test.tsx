@@ -1,45 +1,45 @@
-import {fireEvent, render} from '@testing-library/react-native';
-import type {RenderAPI} from '@testing-library/react-native';
-import React from 'react';
-import {Text} from 'react-native';
-import {Provider} from 'react-redux';
-import {CommonActions} from '@react-navigation/native';
-import uuidv4 from 'uuidv4';
+import { fireEvent, render } from "@testing-library/react-native";
+import type { RenderAPI } from "@testing-library/react-native";
+import React from "react";
+import { Text } from "react-native";
+import { Provider } from "react-redux";
+import { CommonActions } from "@react-navigation/native";
+import uuidv4 from "uuidv4";
 
-import {AcceptTermsScreen} from '../../../src/authentication/register_workflow/AcceptTermsScreen';
-import {clearState, store} from '../../../src/state/reducers';
+import { AcceptTermsScreen } from "../../../src/authentication/register_workflow/AcceptTermsScreen";
+import { clearState, store } from "../../../src/state/reducers";
 import {
   mockNavigation,
   mockRoute,
   resetMockNavigation,
-} from '../../utils/NavigationMocking';
-import type {UserRegistration} from '../../../src/authentication/register_workflow/UserRegistrationModel';
-import AuthenticationService from '../../../src/authentication/AuthenticationService';
-import type {ErrorResponse} from '../../../src/http/Response';
+} from "../../utils/NavigationMocking";
+import type { UserRegistration } from "../../../src/authentication/register_workflow/UserRegistrationModel";
+import AuthenticationService from "../../../src/authentication/AuthenticationService";
+import type { ErrorResponse } from "../../../src/http/Response";
 
-describe('AcceptTermsScreen2', () => {
+describe("AcceptTermsScreen2", () => {
   let tb: AcceptTermsScreenTestBed;
 
   beforeEach(() => (tb = new AcceptTermsScreenTestBed().build()));
 
-  describe('submit button enabled/disabled state', () => {
-    test('submit button should be disabled', () => {
+  describe("submit button enabled/disabled state", () => {
+    test("submit button should be disabled", () => {
       expect(tb.isSubmitEnabled()).toEqual(false);
     });
 
-    test('submit button should be disabled with privacy policy checked', () => {
+    test("submit button should be disabled with privacy policy checked", () => {
       tb.tickPrivacyPolicy();
 
       expect(tb.isSubmitEnabled()).toEqual(false);
     });
 
-    test('submit button should be disabled with age checked', () => {
+    test("submit button should be disabled with age checked", () => {
       tb.tickAge();
 
       expect(tb.isSubmitEnabled()).toEqual(false);
     });
 
-    test('submit button should be enabled with privacy + age checked', () => {
+    test("submit button should be enabled with privacy + age checked", () => {
       tb.tickPrivacyPolicy();
       tb.tickAge();
 
@@ -47,7 +47,7 @@ describe('AcceptTermsScreen2', () => {
     });
   });
 
-  describe('on successful submit', () => {
+  describe("on successful submit", () => {
     beforeEach(() => {
       // GIVEN
       tb.onRegisterUserResolve();
@@ -58,52 +58,52 @@ describe('AcceptTermsScreen2', () => {
       tb.pressSubmit();
     });
 
-    test('it should make a register user request', () => {
+    test("it should make a register user request", () => {
       expect(AuthenticationService.registerUser).toHaveBeenCalledWith({
         uid: tb.userRegistration.uid,
-        firstName: 'Gerry',
-        lastName: 'Fletcher',
-        email: 'admin@two.com',
-        password: 'P?4Ot2ONz:IJO&%U',
+        firstName: "Gerry",
+        lastName: "Fletcher",
+        email: "admin@two.com",
+        password: "P?4Ot2ONz:IJO&%U",
         acceptedTerms: true,
         ofAge: true,
         receivesEmails: false,
       });
     });
 
-    test('it should navigate to the connect code screen', () => {
+    test("it should navigate to the connect code screen", () => {
       expect(mockNavigation.dispatch).toHaveBeenCalledWith(
         CommonActions.reset({
           index: 0,
-          routes: [{name: 'ConnectCodeScreen'}],
-        }),
+          routes: [{ name: "ConnectCodeScreen" }],
+        })
       );
     });
   });
 
-  describe('on failed submit', () => {
+  describe("on failed submit", () => {
     const registerUserResponse: ErrorResponse = {
       code: 400,
-      status: '400 Bad Request',
-      reason: 'Some API Error Message',
+      status: "400 Bad Request",
+      reason: "Some API Error Message",
     };
 
     beforeEach(() => {
       tb.onRegisterUserReject(registerUserResponse);
     });
 
-    test('it should not update the redux store', () => {
-      const {auth, user} = store.getState();
+    test("it should not update the redux store", () => {
+      const { auth, user } = store.getState();
       expect(auth).toEqual(null);
       expect(user).toEqual(null);
     });
 
-    test('it should not navigate', () => {
+    test("it should not navigate", () => {
       expect(mockNavigation.navigate).not.toHaveBeenCalled();
     });
 
-    test('it should display the response error', () => {
-      tb.assertErrorPresent('Something went wrong with your registration.');
+    test("it should display the response error", () => {
+      tb.assertErrorPresent("Something went wrong with your registration.");
     });
   });
 });
@@ -115,10 +115,10 @@ class AcceptTermsScreenTestBed {
 
   userRegistration: UserRegistration = {
     uid: uuidv4(),
-    firstName: 'Gerry',
-    lastName: 'Fletcher',
-    email: 'admin@two.com',
-    password: 'P?4Ot2ONz:IJO&%U',
+    firstName: "Gerry",
+    lastName: "Fletcher",
+    email: "admin@two.com",
+    password: "P?4Ot2ONz:IJO&%U",
     acceptedTerms: false,
     ofAge: false,
     receivesEmails: false,
@@ -127,7 +127,7 @@ class AcceptTermsScreenTestBed {
   // elements
 
   submitButton = () =>
-    this.render.getByA11yLabel('Press to submit terms and conditions');
+    this.render.getByA11yLabel("Press to submit terms and conditions");
 
   // queries
 
@@ -143,14 +143,14 @@ class AcceptTermsScreenTestBed {
   pressSubmit = () => fireEvent.press(this.submitButton());
 
   private changeValue = (label: string, enabled = true) =>
-    fireEvent(this.render.getByA11yHint(label), 'valueChange', enabled);
+    fireEvent(this.render.getByA11yHint(label), "valueChange", enabled);
 
-  tickPrivacyPolicy = () => this.changeValue('I agree to the privacy policy.');
-  tickAge = () => this.changeValue('I am over the age of 16.');
+  tickPrivacyPolicy = () => this.changeValue("I agree to the privacy policy.");
+  tickAge = () => this.changeValue("I am over the age of 16.");
 
   // request/response mocks
 
-  private registerUserSpy = jest.spyOn(AuthenticationService, 'registerUser');
+  private registerUserSpy = jest.spyOn(AuthenticationService, "registerUser");
 
   onRegisterUserResolve = () => {
     this.registerUserSpy.mockResolvedValue({} as any); // calling code doesn't care
@@ -169,7 +169,7 @@ class AcceptTermsScreenTestBed {
     this.render = render(
       <Provider store={store}>
         <AcceptTermsScreen />
-      </Provider>,
+      </Provider>
     );
 
     return this;

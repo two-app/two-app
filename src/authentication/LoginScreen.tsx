@@ -1,25 +1,25 @@
-import React, {useState} from 'react';
-import {Text, View, TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import React, { useState } from "react";
+import { Text, View, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
-import {ScrollContainer} from '../views/View';
-import Colors from '../Colors';
-import Input from '../forms/Input';
-import SubmitButton from '../forms/SubmitButton';
-import type {ErrorResponse} from '../http/Response';
-import type {Routes} from '../navigation/RootNavigation';
+import { ScrollContainer } from "../views/View";
+import Colors from "../Colors";
+import Input from "../forms/Input";
+import SubmitButton from "../forms/SubmitButton";
+import type { ErrorResponse } from "../http/Response";
+import type { Routes } from "../navigation/RootNavigation";
 
-import LogoHeader from './LogoHeader';
-import UserRegistrationModel from './register_workflow/UserRegistrationModel';
-import type {LoginCredentials} from './AuthenticationService';
+import LogoHeader from "./LogoHeader";
+import UserRegistrationModel from "./register_workflow/UserRegistrationModel";
+import type { LoginCredentials } from "./AuthenticationService";
 import AuthenticationService, {
   areCredentialsValid,
-} from './AuthenticationService';
+} from "./AuthenticationService";
 
 const LoginScreen = () => {
   const [loginCredentials, setLoginCredentials] = useState<LoginCredentials>({
-    email: '',
-    rawPassword: '',
+    email: "",
+    rawPassword: "",
   });
   const [submitted, setSubmitted] = useState(false);
   const [loginError, setLoginError] = useState<string>();
@@ -32,8 +32,8 @@ const LoginScreen = () => {
       .then(() =>
         navigation.reset({
           index: 0,
-          routes: [{name: 'LoadingScreen'}],
-        }),
+          routes: [{ name: "LoadingScreen" }],
+        })
       )
       .catch((e: ErrorResponse) => {
         setSubmitted(false);
@@ -48,26 +48,28 @@ const LoginScreen = () => {
 
       <Input
         attributes={{
-          placeholder: 'you@email.com',
-          autoCompleteType: 'email',
-          autoCapitalize: 'none',
+          placeholder: "you@email.com",
+          autoCompleteType: "email",
+          autoCapitalize: "none",
         }}
         isValid={UserRegistrationModel.isEmailValid}
-        label={'Email'}
-        onChange={email => setLoginCredentials({...loginCredentials, email})}
+        label={"Email"}
+        onChange={(email) =>
+          setLoginCredentials({ ...loginCredentials, email })
+        }
         accessibilityLabel="Enter your email"
       />
 
       <Input
         attributes={{
-          placeholder: 'Secure Password',
-          autoCompleteType: 'password',
+          placeholder: "Secure Password",
+          autoCompleteType: "password",
           secureTextEntry: true,
         }}
         isValid={UserRegistrationModel.isPasswordValid}
-        label={'Password'}
-        onChange={password =>
-          setLoginCredentials({...loginCredentials, rawPassword: password})
+        label={"Password"}
+        onChange={(password) =>
+          setLoginCredentials({ ...loginCredentials, rawPassword: password })
         }
         accessibilityLabel="Enter your password"
       />
@@ -81,24 +83,26 @@ const LoginScreen = () => {
 
       {loginError && (
         <Text
-          style={{color: Colors.DARK_SALMON}}
-          accessibilityHint="Login error">
+          style={{ color: Colors.DARK_SALMON }}
+          accessibilityHint="Login error"
+        >
           {loginError}
         </Text>
       )}
 
-      <View style={{flexDirection: 'row', marginTop: 10}}>
-        <Text style={{color: Colors.REGULAR}}>Here to join?</Text>
+      <View style={{ flexDirection: "row", marginTop: 10 }}>
+        <Text style={{ color: Colors.REGULAR }}>Here to join?</Text>
         <TouchableOpacity
-          style={{marginLeft: 5}}
+          style={{ marginLeft: 5 }}
           onPress={() =>
             navigation.reset({
               index: 0,
-              routes: [{name: 'RegisterScreen'}],
+              routes: [{ name: "RegisterScreen" }],
             })
           }
-          accessibilityLabel="Register a new account">
-          <Text style={{fontWeight: 'bold', color: Colors.DARK}}>
+          accessibilityLabel="Register a new account"
+        >
+          <Text style={{ fontWeight: "bold", color: Colors.DARK }}>
             Create Account
           </Text>
         </TouchableOpacity>
@@ -107,4 +111,4 @@ const LoginScreen = () => {
   );
 };
 
-export {LoginScreen};
+export { LoginScreen };

@@ -1,8 +1,8 @@
-import React from 'react';
-import {Text, StyleSheet, View, StyleProp, TextStyle} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import React from "react";
+import { Text, StyleSheet, View, StyleProp, TextStyle } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-import {Tag} from './Tag';
+import { Tag } from "./Tag";
 
 export const TagButton = ({
   tag,
@@ -13,9 +13,9 @@ export const TagButton = ({
   onClick?: (tag: Tag) => void;
   focused?: boolean;
 }) => {
-  let style: any = {...s.tag, borderColor: tag.color};
+  let style: any = { ...s.tag, borderColor: tag.color };
   if (focused) {
-    style = {...style, backgroundColor: tag.color};
+    style = { ...style, backgroundColor: tag.color };
   }
 
   return (
@@ -23,22 +23,23 @@ export const TagButton = ({
       accessibilityHint={`Selects the tag ${tag.name}.`}
       accessibilityLabel={`Select the tag ${tag.name}`}
       style={style}
-      onPress={() => onClick != null && onClick(tag)}>
-      <Text style={{color: focused ? 'white' : tag.color}}>{tag.name}</Text>
+      onPress={() => onClick != null && onClick(tag)}
+    >
+      <Text style={{ color: focused ? "white" : tag.color }}>{tag.name}</Text>
     </TouchableOpacity>
   );
 };
 
-export const DisplayTag = ({tag, filled}: {tag: Tag; filled?: boolean}) => {
-  let viewStyle: any = {...s.displayTag, borderColor: tag.color};
+export const DisplayTag = ({ tag, filled }: { tag: Tag; filled?: boolean }) => {
+  let viewStyle: any = { ...s.displayTag, borderColor: tag.color };
   let textStyle: StyleProp<TextStyle> = {
     fontSize: 10,
-    fontWeight: 'normal',
+    fontWeight: "normal",
     color: tag.color,
   };
   if (filled) {
-    viewStyle = {...viewStyle, backgroundColor: tag.color};
-    textStyle = {...textStyle, color: 'white'};
+    viewStyle = { ...viewStyle, backgroundColor: tag.color };
+    textStyle = { ...textStyle, color: "white" };
   }
   return (
     <View style={viewStyle}>

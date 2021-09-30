@@ -3,14 +3,14 @@ import type {
   AxiosRequestConfig,
   AxiosError,
   AxiosResponse,
-} from 'axios';
-import Axios from 'axios';
-import Config from 'react-native-config';
+} from "axios";
+import Axios from "axios";
+import Config from "react-native-config";
 
-import {store} from '../state/reducers';
+import { store } from "../state/reducers";
 
-import type {ErrorResponse} from './Response';
-import {mapErrorResponse} from './Response';
+import type { ErrorResponse } from "./Response";
+import { mapErrorResponse } from "./Response";
 
 const Gateway: AxiosInstance = Axios.create({
   baseURL: Config.API_URL,
@@ -22,13 +22,13 @@ const showReq = (config: AxiosRequestConfig): string =>
 
 Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
   console.log(
-    `Performing request ${showReq(config)}:\n${JSON.stringify(config)}`,
+    `Performing request ${showReq(config)}:\n${JSON.stringify(config)}`
   );
-  if (config.url === '/self' && config.method === 'post') {
+  if (config.url === "/self" && config.method === "post") {
     return config;
   }
 
-  if (config.url === '/refresh' && config.method === 'post') {
+  if (config.url === "/refresh" && config.method === "post") {
     // apply Refresh JWT to outgoing request
     const token = store.getState().auth?.refreshToken;
     config.headers.Authorization = `Bearer ${token}`;
@@ -48,7 +48,7 @@ Gateway.interceptors.response.use(
     return Promise.resolve(response);
   },
   (error: AxiosError<any>): Promise<ErrorResponse> =>
-    Promise.reject(mapErrorResponse(error)),
+    Promise.reject(mapErrorResponse(error))
 );
 
 export default Gateway;

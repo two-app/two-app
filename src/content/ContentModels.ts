@@ -1,20 +1,20 @@
 export type ImageContent = {
-  contentType: 'image';
+  contentType: "image";
   extension: string;
-  suffix: 'thumbnail' | 'display' | 'gallery';
+  suffix: "thumbnail" | "display" | "gallery";
   height: number;
   width: number;
 };
 
 export type VideoContent = {
-  contentType: 'video';
+  contentType: "video";
   extension: string;
-  suffix: 'gallery';
+  suffix: "gallery";
 };
 
 export type Content = {
   contentId: number;
-  contentType: 'image' | 'video';
+  contentType: "image" | "video";
   fileKey: string;
   extension: string;
   thumbnail: ImageContent;

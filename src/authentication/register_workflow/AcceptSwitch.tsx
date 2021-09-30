@@ -1,8 +1,8 @@
-import {StyleSheet, Switch, Text, View} from 'react-native';
-import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import { StyleSheet, Switch, Text, View } from "react-native";
+import PropTypes from "prop-types";
+import React, { useState } from "react";
 
-import Colors from '../../Colors';
+import Colors from "../../Colors";
 
 type AcceptBoxProps = {
   children?: any;
@@ -26,16 +26,18 @@ const AcceptBox = ({
         required ? styles.required : undefined,
         accepted ? styles.accepted : undefined,
       ]}
-      data-testid="container">
+      data-testid="container"
+    >
       <Text
-        style={[styles.condition, accepted ? styles.acceptedText : undefined]}>
+        style={[styles.condition, accepted ? styles.acceptedText : undefined]}
+      >
         {children}
       </Text>
       <View style={styles.switchContainer}>
         <Switch
           style={styles.switch}
           value={accepted}
-          onValueChange={v => {
+          onValueChange={(v) => {
             setAccepted(v);
             onEmit(v);
           }}
@@ -57,10 +59,10 @@ AcceptBox.defaultProps = {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    flexDirection: "row",
     flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    justifyContent: "space-between",
+    alignItems: "center",
     borderRadius: 10,
     borderColor: Colors.LIGHT,
     borderWidth: 1,
@@ -75,20 +77,20 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.VALID_GREEN,
   },
   acceptedText: {
-    color: 'white',
+    color: "white",
   },
   condition: {
     color: Colors.DARK,
-    width: '80%',
+    width: "80%",
   },
   switchContainer: {
-    width: '20%',
+    width: "20%",
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   switch: {
-    transform: [{scaleX: 0.8}, {scaleY: 0.8}],
+    transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
   },
 });
 

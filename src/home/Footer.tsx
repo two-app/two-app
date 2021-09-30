@@ -1,20 +1,26 @@
-import {NavigationProp} from '@react-navigation/native';
-import {ComponentClass} from 'enzyme';
-import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View, Platform} from 'react-native';
-import AntIcon from 'react-native-vector-icons/AntDesign';
-import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { NavigationProp } from "@react-navigation/native";
+import { ComponentClass } from "enzyme";
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Platform,
+} from "react-native";
+import AntIcon from "react-native-vector-icons/AntDesign";
+import MaterialCommunityIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
-import {RootStackParamList} from '../../Router';
-import Colors from '../Colors';
-import {resetNavigate} from '../navigation/NavigationUtilities';
-import {getNavigation} from '../navigation/RootNavigation';
+import { RootStackParamList } from "../../Router";
+import Colors from "../Colors";
+import { resetNavigate } from "../navigation/NavigationUtilities";
+import { getNavigation } from "../navigation/RootNavigation";
 
 type FooterProps = {
   active: keyof RootStackParamList;
 };
 
-export const Footer = ({active}: FooterProps) => (
+export const Footer = ({ active }: FooterProps) => (
   <>
     <View style={styles.dynamicBorder} />
     <View style={styles.footer}>
@@ -22,7 +28,7 @@ export const Footer = ({active}: FooterProps) => (
         navigateTo="HomeScreen"
         icon={MaterialCommunityIcon}
         iconName="timeline-text-outline"
-        active={active === 'HomeScreen'}
+        active={active === "HomeScreen"}
         text="MEMORIES"
         rotateIcon
       />
@@ -31,7 +37,7 @@ export const Footer = ({active}: FooterProps) => (
         navigateTo="TagScreen"
         icon={AntIcon}
         iconName="tagso"
-        active={active === 'TagScreen'}
+        active={active === "TagScreen"}
         text="TAGS"
       />
 
@@ -39,7 +45,7 @@ export const Footer = ({active}: FooterProps) => (
         navigateTo="ProfileScreen"
         icon={AntIcon}
         iconName="user"
-        active={active === 'ProfileScreen'}
+        active={active === "ProfileScreen"}
         text="PROFILE"
       />
     </View>
@@ -62,7 +68,8 @@ const Item = (props: ItemProps) => {
   return (
     <TouchableOpacity
       style={styles.item}
-      onPress={() => resetNavigate(props.navigateTo, nav)}>
+      onPress={() => resetNavigate(props.navigateTo, nav)}
+    >
       <props.icon
         size={25}
         name={props.iconName}
@@ -73,7 +80,8 @@ const Item = (props: ItemProps) => {
         style={{
           ...styles.iconText,
           color: props.active ? Colors.DARK_SALMON : Colors.REGULAR,
-        }}>
+        }}
+      >
         {props.text}
       </Text>
     </TouchableOpacity>
@@ -85,40 +93,40 @@ const paddingSize = 7;
 const styles = StyleSheet.create({
   footer: {
     paddingBottom: paddingSize,
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
+    backgroundColor: "white",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
   },
   item: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   iconRotate: {
-    transform: [{rotate: '-90deg'}],
+    transform: [{ rotate: "-90deg" }],
   },
   iconText: {
-    fontFamily: 'Montserrat-SemiBold',
+    fontFamily: "Montserrat-SemiBold",
     fontSize: 10,
   },
   dynamicBorder: {
     height: paddingSize,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     ...Platform.select({
       ios: {
-        shadowColor: '#000',
+        shadowColor: "#000",
         shadowOffset: {
           width: 0,
           height: -1,
         },
         shadowOpacity: 0.1,
         shadowRadius: 3.84,
-        overflow: 'visible',
+        overflow: "visible",
       },
       android: {
         borderTopWidth: 1,
-        borderColor: 'rgba(0, 0, 0, 0.05)',
+        borderColor: "rgba(0, 0, 0, 0.05)",
       },
     }),
   },

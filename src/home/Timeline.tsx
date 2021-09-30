@@ -1,21 +1,21 @@
-import React, {useEffect, useState} from 'react';
-import {FlatList, RefreshControl} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import Animated from 'react-native-reanimated';
+import React, { useEffect, useState } from "react";
+import { FlatList, RefreshControl } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import Animated from "react-native-reanimated";
 
-import type {ErrorResponse} from '../http/Response';
-import type {LoadingStatus} from '../LoadingScreen';
-import {loading} from '../LoadingScreen';
-import {persistor} from '../state/reducers';
+import type { ErrorResponse } from "../http/Response";
+import type { LoadingStatus } from "../LoadingScreen";
+import { loading } from "../LoadingScreen";
+import { persistor } from "../state/reducers";
 
-import type {TimelineType} from './TimelineConstants';
-import {setOpacityFn, Timelines} from './TimelineConstants';
-import {TimelineHeader} from './TimelineHeader';
+import type { TimelineType } from "./TimelineConstants";
+import { setOpacityFn, Timelines } from "./TimelineConstants";
+import { TimelineHeader } from "./TimelineHeader";
 
 export const Timeline = () => {
   const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>(loading);
   const [selectedTimeline, setSelectedTimeline] =
-    useState<TimelineType>('timeline');
+    useState<TimelineType>("timeline");
 
   const [opacity] = useState(new Animated.Value(0));
   const setOpacity = setOpacityFn(opacity);
@@ -26,7 +26,7 @@ export const Timeline = () => {
     setLoadingStatus(loadingStatus.beginLoading(displayRefresh));
     timeline
       .fetch()
-      .then(data => {
+      .then((data) => {
         dispatch(timeline.dispatcher(data));
         persistor.persist();
         setLoadingStatus(loadingStatus.endLoading());
@@ -50,7 +50,7 @@ export const Timeline = () => {
       ListHeaderComponent={() => (
         <TimelineHeader
           selected={selectedTimeline}
-          onSelected={selected => {
+          onSelected={(selected) => {
             setOpacity(0).start(() => {
               setSelectedTimeline(selected);
               setOpacity(1).start();
@@ -58,15 +58,15 @@ export const Timeline = () => {
           }}
         />
       )}
-      renderItem={({item}) => (
-        <Animated.View style={{opacity: opacity}}>
+      renderItem={({ item }) => (
+        <Animated.View style={{ opacity: opacity }}>
           {timeline.render(item)}
         </Animated.View>
       )}
-      keyExtractor={item => timeline.key(item)}
+      keyExtractor={(item) => timeline.key(item)}
       refreshControl={
         <RefreshControl
-          colors={['#9Bd35A', '#689F38']}
+          colors={["#9Bd35A", "#689F38"]}
           refreshing={loadingStatus.displayRefresh}
           onRefresh={() => {
             refreshData(true);

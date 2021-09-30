@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from "react-native";
 
 const FormStyle = StyleSheet.create({
   card: {
@@ -8,9 +8,9 @@ const FormStyle = StyleSheet.create({
     height: 25,
     width: 25,
     paddingRight: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
-export {FormStyle};
+export { FormStyle };

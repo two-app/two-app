@@ -1,39 +1,39 @@
-import type {ComponentClass} from 'react';
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Linking} from 'react-native';
-import AntIcon from 'react-native-vector-icons/AntDesign';
-import EvilIcon from 'react-native-vector-icons/EvilIcons';
-import Feather from 'react-native-vector-icons/Feather';
-import type {StackNavigationProp} from '@react-navigation/stack';
-import type {ConnectedProps} from 'react-redux';
-import {connect} from 'react-redux';
-import {TouchableOpacity, FlatList} from 'react-native-gesture-handler';
-import Config from 'react-native-config';
+import type { ComponentClass } from "react";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Linking } from "react-native";
+import AntIcon from "react-native-vector-icons/AntDesign";
+import EvilIcon from "react-native-vector-icons/EvilIcons";
+import Feather from "react-native-vector-icons/Feather";
+import type { StackNavigationProp } from "@react-navigation/stack";
+import type { ConnectedProps } from "react-redux";
+import { connect } from "react-redux";
+import { TouchableOpacity, FlatList } from "react-native-gesture-handler";
+import Config from "react-native-config";
 
-import Colors from '../Colors';
-import {resetNavigate} from '../navigation/NavigationUtilities';
-import type {TwoState} from '../state/reducers';
-import type {RootStackParamList} from '../../Router';
-import {Footer} from '../home/Footer';
-import {Wrapper, NoWrapContainer} from '../views/View';
+import Colors from "../Colors";
+import { resetNavigate } from "../navigation/NavigationUtilities";
+import type { TwoState } from "../state/reducers";
+import type { RootStackParamList } from "../../Router";
+import { Footer } from "../home/Footer";
+import { Wrapper, NoWrapContainer } from "../views/View";
 
-import type {UserProfile} from './UserService';
-import UserService from './UserService';
+import type { UserProfile } from "./UserService";
+import UserService from "./UserService";
 
-import {selectUser} from '.';
+import { selectUser } from ".";
 
-const mapStateToProps = (state: TwoState) => ({user: selectUser(state.user)});
+const mapStateToProps = (state: TwoState) => ({ user: selectUser(state.user) });
 const connector = connect(mapStateToProps);
 type ConnectorProps = ConnectedProps<typeof connector>;
 type ProfileScreenProps = ConnectorProps & {
-  navigation: StackNavigationProp<RootStackParamList, 'ProfileScreen'>;
+  navigation: StackNavigationProp<RootStackParamList, "ProfileScreen">;
 };
 
-export const ProfileScreen = ({navigation, user}: ProfileScreenProps) => {
+export const ProfileScreen = ({ navigation, user }: ProfileScreenProps) => {
   const [userProfile, setUserProfile] = useState<UserProfile>({
     ...user,
-    firstName: '',
-    lastName: '',
+    firstName: "",
+    lastName: "",
   });
   const [partnerProfile, setPartnerProfile] = useState<UserProfile>();
 
@@ -50,20 +50,20 @@ export const ProfileScreen = ({navigation, user}: ProfileScreenProps) => {
     text: 'Manage Tags'
   },*/ {
       icon: EvilIcon,
-      iconName: 'envelope',
-      text: 'Submit Feedback',
+      iconName: "envelope",
+      text: "Submit Feedback",
       onPress: () =>
         Linking.openURL(
-          'mailto:feedback@two.date?subject=Feedback&body=Let%20us%20know%20how%20to%20improve...',
+          "mailto:feedback@two.date?subject=Feedback&body=Let%20us%20know%20how%20to%20improve..."
         ),
     },
     {
       icon: EvilIcon,
-      iconName: 'exclamation',
-      text: 'Report a Problem',
+      iconName: "exclamation",
+      text: "Report a Problem",
       onPress: () =>
         Linking.openURL(
-          'mailto:problem@two.date?subject=Report%20a%20Problem&body=Let%20us%20know%what%went%wrong...',
+          "mailto:problem@two.date?subject=Report%20a%20Problem&body=Let%20us%20know%what%went%wrong..."
         ),
     } /*, {
     icon: EvilIcon,
@@ -76,19 +76,19 @@ export const ProfileScreen = ({navigation, user}: ProfileScreenProps) => {
   }*/,
     {
       icon: EvilIcon,
-      iconName: 'lock',
-      text: 'Privacy Policy',
+      iconName: "lock",
+      text: "Privacy Policy",
       onPress: () => Linking.openURL(Config.PRIVACY_POLICY_URL),
     },
     {
       icon: Feather,
-      iconName: 'power',
-      text: 'Logout',
+      iconName: "power",
+      text: "Logout",
       iconSize: 14,
       iconStyle: {
         marginRight: 5,
       },
-      onPress: () => resetNavigate('LogoutScreen', navigation),
+      onPress: () => resetNavigate("LogoutScreen", navigation),
     },
   ];
 
@@ -103,11 +103,13 @@ export const ProfileScreen = ({navigation, user}: ProfileScreenProps) => {
               partnerProfile={partnerProfile}
             />
           )}
-          renderItem={({item}) => <MenuItem {...item} />}
+          renderItem={({ item }) => <MenuItem {...item} />}
           ItemSeparatorComponent={() => (
-            <View style={{flex: 1, height: 2, backgroundColor: Colors.LIGHT}} />
+            <View
+              style={{ flex: 1, height: 2, backgroundColor: Colors.LIGHT }}
+            />
           )}
-          keyExtractor={item => item.text}
+          keyExtractor={(item) => item.text}
           testID="menu"
         />
       </NoWrapContainer>
@@ -121,18 +123,18 @@ type ProfileHeaderProps = {
   partnerProfile: UserProfile | undefined;
 };
 
-const ProfileHeader = ({userProfile, partnerProfile}: ProfileHeaderProps) => (
-  <View style={{height: 150, alignItems: 'center', flexDirection: 'row'}}>
+const ProfileHeader = ({ userProfile, partnerProfile }: ProfileHeaderProps) => (
+  <View style={{ height: 150, alignItems: "center", flexDirection: "row" }}>
     <View style={styles.profilePicture}>
       <AntIcon name="user" size={50} color="#7D4F50" />
     </View>
-    <View style={{flex: 1, flexGrow: 1, padding: 20}}>
+    <View style={{ flex: 1, flexGrow: 1, padding: 20 }}>
       <Text style={styles.profileName} data-testid="user-name">
         {userProfile.firstName} {userProfile.lastName}
       </Text>
       {partnerProfile != null && (
         <Text>
-          with{' '}
+          with{" "}
           <Text style={styles.subProfileName} data-testid="partner-name">
             {partnerProfile.firstName} {partnerProfile.lastName}
           </Text>
@@ -155,8 +157,9 @@ const MenuItem = (props: MenuItemProps) => (
   <TouchableOpacity
     style={styles.listItem}
     onPress={props.onPress}
-    accessibilityLabel={props.text}>
-    <Text style={{color: Colors.REGULAR}}>{props.text}</Text>
+    accessibilityLabel={props.text}
+  >
+    <Text style={{ color: Colors.REGULAR }}>{props.text}</Text>
     <props.icon
       size={props.iconSize}
       name={props.iconName}
@@ -174,29 +177,29 @@ MenuItem.defaultProps = {
 
 const styles = StyleSheet.create({
   profilePicture: {
-    backgroundColor: '#FEEFDD',
+    backgroundColor: "#FEEFDD",
     width: 100,
     height: 100,
     borderRadius: 30,
     borderWidth: 1,
     borderColor: Colors.LIGHT,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   profileName: {
     fontSize: 30,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: Colors.DARK,
   },
   subProfileName: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: Colors.DARK,
   },
   listItem: {
     height: 50,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
 

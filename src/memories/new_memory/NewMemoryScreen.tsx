@@ -1,28 +1,28 @@
-import React, {useState} from 'react';
-import {Text, View} from 'react-native';
-import {useDispatch} from 'react-redux';
-import type {NavigationProp} from '@react-navigation/native';
-import {useNavigation} from '@react-navigation/native';
+import React, { useState } from "react";
+import { Text, View } from "react-native";
+import { useDispatch } from "react-redux";
+import type { NavigationProp } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 
-import type {RootStackParamList} from '../../../Router';
-import SubmitButton from '../../forms/SubmitButton';
-import {Heading} from '../../home/Heading';
-import type {ErrorResponse} from '../../http/Response';
-import {SelectTag} from '../../tags/SelectTag';
-import {ScrollContainer} from '../../views/View';
+import type { RootStackParamList } from "../../../Router";
+import SubmitButton from "../../forms/SubmitButton";
+import { Heading } from "../../home/Heading";
+import type { ErrorResponse } from "../../http/Response";
+import { SelectTag } from "../../tags/SelectTag";
+import { ScrollContainer } from "../../views/View";
 import {
   isMemoryDescriptionValid,
   createMemory,
   getMemory,
-} from '../MemoryService';
-import type {MemoryDescription, Memory} from '../MemoryModels';
-import {insertMemory} from '../store';
+} from "../MemoryService";
+import type { MemoryDescription, Memory } from "../MemoryModels";
+import { insertMemory } from "../store";
 
-import {DateTimePicker} from './DateInput';
-import {LocationInput} from './LocationInput';
-import TitleInput from './TitleInput';
+import { DateTimePicker } from "./DateInput";
+import { LocationInput } from "./LocationInput";
+import TitleInput from "./TitleInput";
 
-type NavProp = NavigationProp<RootStackParamList, 'NewMemoryScreen'>;
+type NavProp = NavigationProp<RootStackParamList, "NewMemoryScreen">;
 
 export const NewMemoryScreen = () => {
   const dispatch = useDispatch();
@@ -30,8 +30,8 @@ export const NewMemoryScreen = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [uploadError, setUploadError] = useState<string>();
   const [formState, setFormState] = useState<MemoryDescription>({
-    title: '',
-    location: '',
+    title: "",
+    location: "",
     date: Date.now(),
     tag: undefined,
   });
@@ -45,10 +45,10 @@ export const NewMemoryScreen = () => {
         navigation.reset({
           index: 1,
           routes: [
-            {name: 'HomeScreen'},
+            { name: "HomeScreen" },
             {
-              name: 'MemoryScreen',
-              params: {mid: newMemory.id},
+              name: "MemoryScreen",
+              params: { mid: newMemory.id },
             },
           ],
         });
@@ -64,15 +64,17 @@ export const NewMemoryScreen = () => {
       <View>
         <Heading>New Memory</Heading>
 
-        <TitleInput setTitle={title => setFormState({...formState, title})} />
+        <TitleInput
+          setTitle={(title) => setFormState({ ...formState, title })}
+        />
         <LocationInput
-          setLocation={location => setFormState({...formState, location})}
+          setLocation={(location) => setFormState({ ...formState, location })}
         />
         <DateTimePicker
-          setDateTime={date => setFormState({...formState, date})}
+          setDateTime={(date) => setFormState({ ...formState, date })}
         />
         <SelectTag
-          onTagChange={tag => setFormState({...formState, tag: tag?.tid})}
+          onTagChange={(tag) => setFormState({ ...formState, tag: tag?.tid })}
         />
 
         <SubmitButton

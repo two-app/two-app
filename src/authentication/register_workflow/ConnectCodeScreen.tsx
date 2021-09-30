@@ -1,6 +1,6 @@
-import 'react-native-get-random-values';
-import uuid from 'uuidv4';
-import React, {useState} from 'react';
+import "react-native-get-random-values";
+import uuid from "uuidv4";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -8,33 +8,33 @@ import {
   View,
   Share,
   RefreshControl,
-} from 'react-native';
-import Clipboard from '@react-native-community/clipboard';
-import {useSelector} from 'react-redux';
-import HapticFeedback from 'react-native-haptic-feedback';
-import {useNavigation} from '@react-navigation/native';
+} from "react-native";
+import Clipboard from "@react-native-community/clipboard";
+import { useSelector } from "react-redux";
+import HapticFeedback from "react-native-haptic-feedback";
+import { useNavigation } from "@react-navigation/native";
 
-import {ScrollContainer} from '../../views/View';
-import LogoHeader from '../LogoHeader';
-import Colors from '../../Colors';
-import Input from '../../forms/Input';
-import SubmitButton from '../../forms/SubmitButton';
-import type {TwoState} from '../../state/reducers';
-import {selectUnconnectedUser} from '../../user';
-import {Button, ButtonStyles} from '../../forms/Button';
-import {resetNavigate} from '../../navigation/NavigationUtilities';
-import ConnectService from '../../user/ConnectService';
-import type {ErrorResponse} from '../../http/Response';
-import AuthenticationService from '../AuthenticationService';
-import type {Routes} from '../../navigation/RootNavigation';
-import type {User} from '../UserModel';
+import { ScrollContainer } from "../../views/View";
+import LogoHeader from "../LogoHeader";
+import Colors from "../../Colors";
+import Input from "../../forms/Input";
+import SubmitButton from "../../forms/SubmitButton";
+import type { TwoState } from "../../state/reducers";
+import { selectUnconnectedUser } from "../../user";
+import { Button, ButtonStyles } from "../../forms/Button";
+import { resetNavigate } from "../../navigation/NavigationUtilities";
+import ConnectService from "../../user/ConnectService";
+import type { ErrorResponse } from "../../http/Response";
+import AuthenticationService from "../AuthenticationService";
+import type { Routes } from "../../navigation/RootNavigation";
+import type { User } from "../UserModel";
 
 export const ConnectCodeScreen = () => {
   const user = useSelector((state: TwoState) =>
-    selectUnconnectedUser(state.user),
+    selectUnconnectedUser(state.user)
   );
 
-  const [partnerConnectCode, setPartnerConnectCode] = useState('');
+  const [partnerConnectCode, setPartnerConnectCode] = useState("");
   const isPartnerCodeValid = (code: string): boolean =>
     uuid.is(code) && code !== user.uid;
   const [submitted, setSubmitted] = useState(false);
@@ -49,14 +49,14 @@ export const ConnectCodeScreen = () => {
     AuthenticationService.connectUser(uid)
       .then((updatedUser: User) => {
         console.log(
-          `Successfully connected, updated to: ${updatedUser}. Navigating to HomeScreen.`,
+          `Successfully connected, updated to: ${updatedUser}. Navigating to HomeScreen.`
         );
-        resetNavigate('HomeScreen', navigation);
+        resetNavigate("HomeScreen", navigation);
       })
       .catch((e: ErrorResponse) => {
         if (
-          e.reason === 'User already has a partner.' ||
-          e.reason === 'Invalid JSON Web Token'
+          e.reason === "User already has a partner." ||
+          e.reason === "Invalid JSON Web Token"
         ) {
           refresh();
         } else {
@@ -71,7 +71,7 @@ export const ConnectCodeScreen = () => {
     setRefreshing(true);
     ConnectService.checkConnection()
       .then((isConnected: boolean) => {
-        if (isConnected) resetNavigate('HomeScreen', navigation);
+        if (isConnected) resetNavigate("HomeScreen", navigation);
       })
       .catch((e: ErrorResponse) => setError(e.reason))
       .finally(() => setRefreshing(false));
@@ -82,12 +82,13 @@ export const ConnectCodeScreen = () => {
       isLoading={submitted}
       refreshControl={
         <RefreshControl
-          colors={['#9Bd35A', '#689F38']}
+          colors={["#9Bd35A", "#689F38"]}
           refreshing={refreshing}
           onRefresh={refresh}
         />
       }
-      keyboardShouldPersistTaps="always">
+      keyboardShouldPersistTaps="always"
+    >
       <LogoHeader heading="Connect Your Partner" />
       <Text style={styles.subheading}>Thanks for joining us!</Text>
       <Text style={styles.paragraph}>
@@ -99,12 +100,12 @@ export const ConnectCodeScreen = () => {
 
       <ShareConnectCodeButton code={user.uid} />
 
-      <Text style={{...styles.subheading, marginTop: 20}}>
+      <Text style={{ ...styles.subheading, marginTop: 20 }}>
         Or, enter your partners code...
       </Text>
       <View style={styles.codeInputContainer}>
         <Input
-          attributes={{placeholder: 'e.g bWzGl2'}}
+          attributes={{ placeholder: "e.g bWzGl2" }}
           isValid={() => isPartnerCodeValid(partnerConnectCode)}
           onChange={setPartnerConnectCode}
           accessibilityLabel="Enter partner code"
@@ -130,7 +131,7 @@ export const ConnectCodeScreen = () => {
       <View style={styles.logoutButtonContainer}>
         <Button
           text="logout"
-          onPress={() => resetNavigate('LogoutScreen', navigation)}
+          onPress={() => resetNavigate("LogoutScreen", navigation)}
           accessibilityLabel="Tap to logout"
         />
       </View>
@@ -140,12 +141,12 @@ export const ConnectCodeScreen = () => {
   );
 };
 
-const CopyConnectCodeButton = ({code}: {code: string}) => {
+const CopyConnectCodeButton = ({ code }: { code: string }) => {
   const [copied, setCopied] = useState(false);
 
   const onCopy = () => {
     Clipboard.setString(code);
-    HapticFeedback.trigger('selection', {enableVibrateFallback: false});
+    HapticFeedback.trigger("selection", { enableVibrateFallback: false });
     setCopied(true);
   };
 
@@ -156,12 +157,12 @@ const CopyConnectCodeButton = ({code}: {code: string}) => {
 
   const textStyle = {
     ...styles.copyTip,
-    color: copied ? 'white' : Colors.DARK,
+    color: copied ? "white" : Colors.DARK,
   };
 
   const codeStyle = {
     ...styles.code,
-    color: copied ? 'white' : Colors.VERY_DARK,
+    color: copied ? "white" : Colors.VERY_DARK,
   };
 
   return (
@@ -169,28 +170,29 @@ const CopyConnectCodeButton = ({code}: {code: string}) => {
       onPress={onCopy}
       style={buttonStyle}
       accessibilityHint="Copy connect code to clipboard"
-      accessibilityState={{checked: copied}}>
-      <Text style={{...textStyle, marginBottom: 10}}>Your Code</Text>
+      accessibilityState={{ checked: copied }}
+    >
+      <Text style={{ ...textStyle, marginBottom: 10 }}>Your Code</Text>
 
       <Text style={codeStyle}>{code}</Text>
 
       {copied ? (
-        <Text style={{...textStyle, marginTop: 10}}>Copied!</Text>
+        <Text style={{ ...textStyle, marginTop: 10 }}>Copied!</Text>
       ) : (
-        <Text style={{...textStyle, marginTop: 10}}>Tap to Copy</Text>
+        <Text style={{ ...textStyle, marginTop: 10 }}>Tap to Copy</Text>
       )}
     </TouchableOpacity>
   );
 };
 
-const ShareConnectCodeButton = ({code}: {code: string}) => {
+const ShareConnectCodeButton = ({ code }: { code: string }) => {
   const [shared, setShared] = useState(false);
 
   const share = () => {
     Share.share({
       message: code,
     })
-      .then(result => {
+      .then((result) => {
         if (result.action === Share.sharedAction) {
           setShared(true);
         }
@@ -211,17 +213,18 @@ const ShareConnectCodeButton = ({code}: {code: string}) => {
     <Button
       onPress={share}
       text="Shared!"
-      buttonStyle={{backgroundColor: Colors.VALID_GREEN, textColor: 'white'}}
+      buttonStyle={{ backgroundColor: Colors.VALID_GREEN, textColor: "white" }}
       pressedButtonStyle={{
         backgroundColor: Colors.VALID_GREEN_DARK,
-        textColor: 'white',
+        textColor: "white",
       }}
     />
   );
 
   return (
     <View
-      style={{flexDirection: 'row', justifyContent: 'center', marginTop: 15}}>
+      style={{ flexDirection: "row", justifyContent: "center", marginTop: 15 }}
+    >
       {shared ? sharedButton : shareButton}
     </View>
   );
@@ -230,7 +233,7 @@ const ShareConnectCodeButton = ({code}: {code: string}) => {
 const styles = StyleSheet.create({
   subheading: {
     marginTop: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   paragraph: {
     marginTop: 10,
@@ -240,13 +243,13 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   copyTip: {
-    fontWeight: '500',
-    textAlign: 'center',
+    fontWeight: "500",
+    textAlign: "center",
   },
   code: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 25,
-    textAlign: 'center',
+    textAlign: "center",
   },
   codeInputContainer: {
     marginTop: 5,
@@ -256,8 +259,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   logoutButtonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
   },
   footer: {
     marginBottom: 0,

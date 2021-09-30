@@ -1,0 +1,13 @@
+{
+  "plugins": ["react", "react-native"],
+  "extends": ["plugin:react-native/all", "prettier"],
+  "env": {
+    "react-native/react-native": true
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "ignorePatterns": ["App.js", "index.js", "metro.config.js"]
+}

@@ -1,4 +1,4 @@
-import jwtDecode from 'jwt-decode';
+import jwtDecode from "jwt-decode";
 
 // @ts-ignore
 const decode = (token: string): any => jwtDecode(token);
@@ -8,7 +8,7 @@ export type UnconnectedUser = {
 };
 
 export const unconnectedUserFromAccessToken = (
-  accessToken: string,
+  accessToken: string
 ): UnconnectedUser => ({
   uid: decode(accessToken).uid,
 });
@@ -28,10 +28,10 @@ export const userFromAccessToken = (accessToken: string): User => ({
 });
 
 export const detectUserFromAccessToken = (
-  accessToken: string,
+  accessToken: string
 ): User | UnconnectedUser => {
-  const {role} = decode(accessToken);
-  if (role.toLowerCase() === 'connect') {
+  const { role } = decode(accessToken);
+  if (role.toLowerCase() === "connect") {
     return unconnectedUserFromAccessToken(accessToken);
   } else {
     return userFromAccessToken(accessToken);
@@ -42,7 +42,7 @@ export const detectUserFromAccessToken = (
  * @param user {User | UnconnectedUser}  narrows the type based if the connect code is present.
  */
 export const isUnconnectedUser = (
-  user: User | UnconnectedUser,
+  user: User | UnconnectedUser
 ): user is UnconnectedUser => {
   return (user as User).pid == null;
 };

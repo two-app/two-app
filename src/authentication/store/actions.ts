@@ -1,7 +1,7 @@
-import {createAction} from 'typesafe-actions';
+import { createAction } from "typesafe-actions";
 
-import {Tokens} from '../AuthenticationModel';
+import { Tokens } from "../AuthenticationModel";
 
-export const storeTokens = createAction('STORE_TOKENS')<Tokens>();
+export const storeTokens = createAction("STORE_TOKENS")<Tokens>();
 
-export default {storeTokens};
+export default { storeTokens };

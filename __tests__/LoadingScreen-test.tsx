@@ -1,73 +1,73 @@
-import {Text} from 'react-native';
-import React from 'react';
-import {CommonActions} from '@react-navigation/native';
-import uuidv4 from 'uuidv4';
-import type {RenderAPI} from '@testing-library/react-native';
-import {render} from '@testing-library/react-native';
+import { Text } from "react-native";
+import React from "react";
+import { CommonActions } from "@react-navigation/native";
+import uuidv4 from "uuidv4";
+import type { RenderAPI } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
 
-import {LoadingScreen} from '../src/LoadingScreen';
-import type {UnconnectedUser, User} from '../src/authentication/UserModel';
-import type {Tokens} from '../src/authentication/AuthenticationModel';
-import {persistor} from '../src/state/reducers';
+import { LoadingScreen } from "../src/LoadingScreen";
+import type { UnconnectedUser, User } from "../src/authentication/UserModel";
+import type { Tokens } from "../src/authentication/AuthenticationModel";
+import { persistor } from "../src/state/reducers";
 
-import {resetMockNavigation} from './utils/NavigationMocking';
+import { resetMockNavigation } from "./utils/NavigationMocking";
 
-describe('LoadingScreen', () => {
+describe("LoadingScreen", () => {
   let tb: LoadingScreenTestBed;
 
   beforeEach(() => (tb = new LoadingScreenTestBed()));
 
-  describe('With no auth', () => {
+  describe("With no auth", () => {
     beforeEach(() => tb.build());
 
-    test('state should be cleared non async', () =>
+    test("state should be cleared non async", () =>
       expect(tb.clearStateFn).toHaveBeenCalled());
 
-    test('navigates to Register Screen', () =>
+    test("navigates to Register Screen", () =>
       expect(tb.dispatchFn).toHaveBeenCalledWith(
         CommonActions.reset({
           index: 0,
-          routes: [{name: 'RegisterScreen'}],
-        }),
+          routes: [{ name: "RegisterScreen" }],
+        })
       ));
 
-    test('redux should be persisted to local storage', () =>
+    test("redux should be persisted to local storage", () =>
       expect(tb.persistFn).toHaveBeenCalled());
   });
 
-  describe('With Unconnected Auth', () => {
+  describe("With Unconnected Auth", () => {
     const stubUser: UnconnectedUser = {
       uid: uuidv4(),
     };
     const stubTokens: Tokens = {
-      accessToken: 'unconnectedAccess',
-      refreshToken: 'unconnectedRefresh',
+      accessToken: "unconnectedAccess",
+      refreshToken: "unconnectedRefresh",
     };
     beforeEach(() => tb.setUserProp(stubUser).setAuthProp(stubTokens).build());
 
-    test('navigates to Connect Code Screen', () =>
+    test("navigates to Connect Code Screen", () =>
       expect(tb.dispatchFn).toHaveBeenCalledWith(
         CommonActions.reset({
           index: 0,
-          routes: [{name: 'ConnectCodeScreen'}],
-        }),
+          routes: [{ name: "ConnectCodeScreen" }],
+        })
       ));
   });
 
-  describe('With Connected Auth', () => {
-    const stubUser: User = {uid: uuidv4(), pid: uuidv4(), cid: uuidv4()};
+  describe("With Connected Auth", () => {
+    const stubUser: User = { uid: uuidv4(), pid: uuidv4(), cid: uuidv4() };
     const stubTokens: Tokens = {
-      accessToken: 'connectedAccess',
-      refreshToken: 'connectedRefresh',
+      accessToken: "connectedAccess",
+      refreshToken: "connectedRefresh",
     };
     beforeEach(() => tb.setUserProp(stubUser).setAuthProp(stubTokens).build());
 
-    test('navigates to Home Screen', () =>
+    test("navigates to Home Screen", () =>
       expect(tb.dispatchFn).toHaveBeenCalledWith(
         CommonActions.reset({
           index: 0,
-          routes: [{name: 'HomeScreen'}],
-        }),
+          routes: [{ name: "HomeScreen" }],
+        })
       ));
   });
 });
@@ -77,7 +77,7 @@ class LoadingScreenTestBed {
   clearStateFn = jest.fn();
   userProp: User | UnconnectedUser | null = null;
   authProp: Tokens | null = null;
-  persistFn = jest.spyOn(persistor, 'persist');
+  persistFn = jest.spyOn(persistor, "persist");
 
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 
@@ -95,11 +95,11 @@ class LoadingScreenTestBed {
     resetMockNavigation();
     this.render = render(
       <LoadingScreen
-        navigation={{dispatch: this.dispatchFn} as any}
+        navigation={{ dispatch: this.dispatchFn } as any}
         clearState={this.clearStateFn as any}
         user={this.userProp as any}
         auth={this.authProp as any}
-      />,
+      />
     );
     return this;
   };

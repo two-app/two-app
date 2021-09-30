@@ -1,23 +1,23 @@
-import React from 'react';
-import type {AlertButton} from 'react-native';
-import {View, StyleSheet, Alert} from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
-import EvilIcon from 'react-native-vector-icons/EvilIcons';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useDispatch} from 'react-redux';
-import type {NavigationProp} from '@react-navigation/native';
-import {CommonActions, useNavigation} from '@react-navigation/native';
+import React from "react";
+import type { AlertButton } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
+import Icon from "react-native-vector-icons/AntDesign";
+import EvilIcon from "react-native-vector-icons/EvilIcons";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useDispatch } from "react-redux";
+import type { NavigationProp } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 
-import {MemoryDisplayView} from '../MemoryDisplayView';
-import type {Memory} from '../MemoryModels';
-import Colors from '../../Colors';
-import type {PickedContent} from '../../content/ContentPicker';
-import {ContentPicker} from '../../content/ContentPicker';
-import {deleteMemory} from '../MemoryService';
-import {deleteMemory as deleteMemoryFromState} from '../store';
-import type {RootStackParamList} from '../../../Router';
+import { MemoryDisplayView } from "../MemoryDisplayView";
+import type { Memory } from "../MemoryModels";
+import Colors from "../../Colors";
+import type { PickedContent } from "../../content/ContentPicker";
+import { ContentPicker } from "../../content/ContentPicker";
+import { deleteMemory } from "../MemoryService";
+import { deleteMemory as deleteMemoryFromState } from "../store";
+import type { RootStackParamList } from "../../../Router";
 
-export const MemoryToolbar = ({memory}: {memory: Memory}) => (
+export const MemoryToolbar = ({ memory }: { memory: Memory }) => (
   <View>
     <View style={styles.toolbar}>
       <BackButton />
@@ -31,33 +31,35 @@ export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   </View>
 );
 
-type NavProp = NavigationProp<RootStackParamList, 'MemoryScreen'>;
+type NavProp = NavigationProp<RootStackParamList, "MemoryScreen">;
 
 const BackButton = () => {
-  const {navigate} = useNavigation<NavProp>();
+  const { navigate } = useNavigation<NavProp>();
   return (
     <TouchableOpacity
       accessibilityLabel="Go Back"
-      onPress={() => navigate('HomeScreen')}>
+      onPress={() => navigate("HomeScreen")}
+    >
       <Icon name="arrowleft" size={25} color={Colors.DARK} />
     </TouchableOpacity>
   );
 };
 
-const EditButton = ({memory}: {memory: Memory}) => {
-  const {navigate} = useNavigation<NavProp>();
+const EditButton = ({ memory }: { memory: Memory }) => {
+  const { navigate } = useNavigation<NavProp>();
   return (
     <TouchableOpacity
       accessibilityLabel="Edit Memory"
       style={styles.icon}
-      onPress={() => navigate('EditMemoryScreen', {mid: memory.id})}>
+      onPress={() => navigate("EditMemoryScreen", { mid: memory.id })}
+    >
       <Icon name="edit" size={25} color={Colors.DARK} />
     </TouchableOpacity>
   );
 };
 
-export const UploadContentButton = ({memory}: {memory: Memory}) => {
-  const {navigate} = useNavigation<NavProp>();
+export const UploadContentButton = ({ memory }: { memory: Memory }) => {
+  const { navigate } = useNavigation<NavProp>();
   return (
     <TouchableOpacity
       accessibilityLabel="Upload Content"
@@ -71,19 +73,20 @@ export const UploadContentButton = ({memory}: {memory: Memory}) => {
               content[0].setDisplayPicture = true;
             }
 
-            navigate('ContentUploadScreen', {
+            navigate("ContentUploadScreen", {
               mid: memory.id,
               content,
             });
-          },
+          }
         );
-      }}>
+      }}
+    >
       <Icon name="plussquareo" size={25} color={Colors.DARK} />
     </TouchableOpacity>
   );
 };
 
-export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
+export const DeleteMemoryButton = ({ memory }: { memory: Memory }) => {
   const dispatch = useDispatch();
   const nav = useNavigation();
 
@@ -93,10 +96,10 @@ export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
   }
 
   const onPress = (): void => {
-    const cancelBtn: AlertButton = {text: 'Cancel', style: 'cancel'};
+    const cancelBtn: AlertButton = { text: "Cancel", style: "cancel" };
     const deleteBtn: AlertButton = {
-      text: 'Delete',
-      style: 'destructive',
+      text: "Delete",
+      style: "destructive",
       onPress: async () => {
         await deleteMemory(memory.id);
 
@@ -104,22 +107,23 @@ export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
           // reset as state will no longer exist
           CommonActions.reset({
             index: 0,
-            routes: [{name: 'HomeScreen'}],
-          }),
+            routes: [{ name: "HomeScreen" }],
+          })
         );
-        dispatch(deleteMemoryFromState({mid: memory.id}));
+        dispatch(deleteMemoryFromState({ mid: memory.id }));
       },
     };
 
-    Alert.alert('Delete Memory', message, [cancelBtn, deleteBtn]);
+    Alert.alert("Delete Memory", message, [cancelBtn, deleteBtn]);
   };
 
   return (
     <TouchableOpacity
       accessibilityLabel="Delete Memory"
       // if only the icon was clipped correctly...
-      style={{marginLeft: 8, marginRight: -8}}
-      onPress={onPress}>
+      style={{ marginLeft: 8, marginRight: -8 }}
+      onPress={onPress}
+    >
       <EvilIcon name="trash" size={36} color={Colors.DARK_SALMON} />
     </TouchableOpacity>
   );
@@ -127,14 +131,14 @@ export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
 
 const styles = StyleSheet.create({
   toolbar: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingVertical: 10,
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   toolbarGroup: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   icon: {
     marginLeft: 15,

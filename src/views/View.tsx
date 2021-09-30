@@ -1,20 +1,20 @@
-import React from 'react';
-import {View, ViewProps, StatusBar, ScrollViewProps} from 'react-native';
-import SafeAreaView from 'react-native-safe-area-view';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import React from "react";
+import { View, ViewProps, StatusBar, ScrollViewProps } from "react-native";
+import SafeAreaView from "react-native-safe-area-view";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import LoadingView from './LoadingView';
+import LoadingView from "./LoadingView";
 
 /**
  * Wrapper providing the status bar and safe area view.
  * Consumes the full screen.
  */
-export const Wrapper = ({children}: {children?: React.ReactNode}) => (
+export const Wrapper = ({ children }: { children?: React.ReactNode }) => (
   <>
     <StatusBar backgroundColor="white" barStyle="dark-content" />
     <SafeAreaProvider>
-      <SafeAreaView style={{flexGrow: 1}}>{children}</SafeAreaView>
+      <SafeAreaView style={{ flexGrow: 1 }}>{children}</SafeAreaView>
     </SafeAreaProvider>
   </>
 );
@@ -44,7 +44,7 @@ type ViewContainerProps = ViewProps & Container;
 export const NoWrapContainer = (props: ViewContainerProps) => (
   <>
     {props.isLoading === true && <LoadingView />}
-    <View {...props} style={{flex: 1, marginLeft: '5%', marginRight: '5%'}}>
+    <View {...props} style={{ flex: 1, marginLeft: "5%", marginRight: "5%" }}>
       {props.children}
     </View>
   </>
@@ -58,7 +58,7 @@ export const Container = (props: ViewContainerProps) => (
     {props.isLoading === true && (
       <LoadingView loadingPercentage={props.loadingPercentage} />
     )}
-    <View {...props} style={{flex: 1, marginLeft: '5%', marginRight: '5%'}}>
+    <View {...props} style={{ flex: 1, marginLeft: "5%", marginRight: "5%" }}>
       {props.children}
     </View>
   </Wrapper>
@@ -76,8 +76,13 @@ export const ScrollContainer = (props: ScrollViewContainerProps) => (
     )}
     <KeyboardAwareScrollView
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{flexGrow: 1, marginLeft: '5%', marginRight: '5%'}}
-      {...props}>
+      contentContainerStyle={{
+        flexGrow: 1,
+        marginLeft: "5%",
+        marginRight: "5%",
+      }}
+      {...props}
+    >
       {props.children}
     </KeyboardAwareScrollView>
   </Wrapper>

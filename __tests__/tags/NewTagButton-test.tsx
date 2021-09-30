@@ -1,27 +1,27 @@
-import {Text} from 'react-native';
-import React from 'react';
-import type {RenderAPI} from '@testing-library/react-native';
-import {render, fireEvent, waitFor} from '@testing-library/react-native';
+import { Text } from "react-native";
+import React from "react";
+import type { RenderAPI } from "@testing-library/react-native";
+import { render, fireEvent, waitFor } from "@testing-library/react-native";
 
-import {NewTagButton, TagCard} from '../../src/tags/NewTagButton';
-import type {Tag} from '../../src/tags/Tag';
-import {navigateFn} from '../../src/navigation/__mocks__/RootNavigation';
+import { NewTagButton, TagCard } from "../../src/tags/NewTagButton";
+import type { Tag } from "../../src/tags/Tag";
+import { navigateFn } from "../../src/navigation/__mocks__/RootNavigation";
 
-describe('NewTagButton', () => {
+describe("NewTagButton", () => {
   let tb: NewTagButtonTestBed;
 
   beforeEach(() => (tb = new NewTagButtonTestBed().build()));
 
-  describe('tapping the button', () => {
-    test('it should navigate to the TagManagementScreen', () => {
+  describe("tapping the button", () => {
+    test("it should navigate to the TagManagementScreen", () => {
       const newTagButton = tb.render.getByText(
-        'Optional tag, e.g Anniversary or Birthday...',
+        "Optional tag, e.g Anniversary or Birthday..."
       );
 
       fireEvent.press(newTagButton);
 
       expect(navigateFn).toHaveBeenCalledTimes(1);
-      expect(navigateFn).toHaveBeenCalledWith('TagManagementScreen', {
+      expect(navigateFn).toHaveBeenCalledWith("TagManagementScreen", {
         onSubmit: tb.onCreated,
       });
     });
@@ -38,25 +38,25 @@ class NewTagButtonTestBed {
   };
 }
 
-describe('TagCard', () => {
+describe("TagCard", () => {
   let tb: TagCardTestBed;
 
   beforeEach(() => (tb = new TagCardTestBed().build()));
 
-  describe('tapping the card', () => {
-    test('should open the deselect modal', () => {
+  describe("tapping the card", () => {
+    test("should open the deselect modal", () => {
       tb.pressTag();
       expect(tb.render.getByText(`Deselect ${tb.tag.name} Tag`)).toBeTruthy();
     });
   });
 
-  describe('on the deselect modal', () => {
-    test('it should call the deselect function on press', async () => {
+  describe("on the deselect modal", () => {
+    test("it should call the deselect function on press", async () => {
       tb.pressTag().pressDeselect();
 
       await waitFor(() => {
         if (tb.onDeselect.mock.calls.length === 0) {
-          throw new Error('Deselect not called yet.');
+          throw new Error("Deselect not called yet.");
         }
       });
 
@@ -66,13 +66,13 @@ describe('TagCard', () => {
 });
 
 class TagCardTestBed {
-  tag: Tag = {name: 'TestTag', tid: 5, color: '#1a1a1a', memoryCount: 0};
+  tag: Tag = { name: "TestTag", tid: 5, color: "#1a1a1a", memoryCount: 0 };
   onDeselect = jest.fn();
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 
   build = (): TagCardTestBed => {
     this.render = render(
-      <TagCard tag={this.tag} onDeselect={this.onDeselect} />,
+      <TagCard tag={this.tag} onDeselect={this.onDeselect} />
     );
     return this;
   };
@@ -85,7 +85,7 @@ class TagCardTestBed {
 
   pressDeselect = (): TagCardTestBed => {
     const deselectButton = this.render.getByText(
-      `Deselect ${this.tag.name} Tag`,
+      `Deselect ${this.tag.name} Tag`
     );
     fireEvent.press(deselectButton);
     return this;

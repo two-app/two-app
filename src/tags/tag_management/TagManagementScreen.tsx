@@ -1,28 +1,28 @@
-import React, {useState} from 'react';
-import {Text, StyleSheet, View} from 'react-native';
-import type {StackNavigationProp} from '@react-navigation/stack';
-import type {RouteProp} from '@react-navigation/native';
+import React, { useState } from "react";
+import { Text, StyleSheet, View } from "react-native";
+import type { StackNavigationProp } from "@react-navigation/stack";
+import type { RouteProp } from "@react-navigation/native";
 
-import type {RootStackParamList} from '../../../Router';
-import SubmitButton from '../../forms/SubmitButton';
-import {Heading} from '../../home/Heading';
-import type {ErrorResponse} from '../../http/Response';
-import {TagInput} from '../../memories/new_memory/TagInput';
-import {ScrollContainer} from '../../views/View';
-import type {TagDescription, Tag} from '../Tag';
-import {TagButton} from '../TagButton';
-import {createTag, updateTag} from '../TagService';
-import Colors from '../../Colors';
+import type { RootStackParamList } from "../../../Router";
+import SubmitButton from "../../forms/SubmitButton";
+import { Heading } from "../../home/Heading";
+import type { ErrorResponse } from "../../http/Response";
+import { TagInput } from "../../memories/new_memory/TagInput";
+import { ScrollContainer } from "../../views/View";
+import type { TagDescription, Tag } from "../Tag";
+import { TagButton } from "../TagButton";
+import { createTag, updateTag } from "../TagService";
+import Colors from "../../Colors";
 
-import {ColorList} from './ColorSelection';
+import { ColorList } from "./ColorSelection";
 
 type TagManagementScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'TagManagementScreen'>;
-  route: RouteProp<RootStackParamList, 'TagManagementScreen'>;
+  navigation: StackNavigationProp<RootStackParamList, "TagManagementScreen">;
+  route: RouteProp<RootStackParamList, "TagManagementScreen">;
 };
 
 type Mode = {
-  type: 'create' | 'edit';
+  type: "create" | "edit";
   heading: string;
   submitText: string;
   submitHint: string;
@@ -31,17 +31,17 @@ type Mode = {
 const getMode = (initialTag?: Tag): Mode => {
   if (initialTag == null) {
     return {
-      type: 'create',
-      heading: 'Create new Tag',
-      submitText: 'Create Tag',
-      submitHint: 'Creates a new tag with the given name and color.',
+      type: "create",
+      heading: "Create new Tag",
+      submitText: "Create Tag",
+      submitHint: "Creates a new tag with the given name and color.",
     };
   } else {
     return {
-      type: 'edit',
+      type: "edit",
       heading: `Edit '${initialTag.name}' Tag`,
-      submitText: 'Update Tag',
-      submitHint: 'Updates the tag with the given name and color.',
+      submitText: "Update Tag",
+      submitHint: "Updates the tag with the given name and color.",
     };
   }
 };
@@ -50,7 +50,7 @@ export const TagManagementScreen = ({
   navigation,
   route,
 }: TagManagementScreenProps) => {
-  const {onSubmit, initialTag} = route.params;
+  const { onSubmit, initialTag } = route.params;
   const mode: Mode = getMode(initialTag);
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -60,7 +60,7 @@ export const TagManagementScreen = ({
 
   const onSubmitPress = () => {
     if (name != null && color != null) {
-      const tag: TagDescription = {name, color};
+      const tag: TagDescription = { name, color };
       setLoading(true);
 
       const handleResponse = (promise: Promise<Tag>) => {
@@ -96,7 +96,8 @@ export const TagManagementScreen = ({
       {error && (
         <Text
           style={s.error}
-          accessibilityHint="The error encountered from processing a tag">
+          accessibilityHint="The error encountered from processing a tag"
+        >
           {error}
         </Text>
       )}
@@ -110,12 +111,12 @@ export const TagManagementScreen = ({
       <ColorList onSelected={setColor} initialColor={initialTag?.color} />
 
       {/* Display a 'Preview' widget if the name & color is present */}
-      <View style={{alignItems: 'center', marginTop: 20}}>
+      <View style={{ alignItems: "center", marginTop: 20 }}>
         {name != null && color != null && (
-          <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-            <TagButton tag={{tid: -1, name, color, memoryCount: 0}} />
+          <View style={{ flexDirection: "row", alignItems: "baseline" }}>
+            <TagButton tag={{ tid: -1, name, color, memoryCount: 0 }} />
             <TagButton
-              tag={{tid: -1, name, color, memoryCount: 0}}
+              tag={{ tid: -1, name, color, memoryCount: 0 }}
               focused={true}
             />
           </View>
@@ -135,19 +136,19 @@ export const TagManagementScreen = ({
 
 const s = StyleSheet.create({
   subtitle: {
-    fontFamily: 'Montserrat-Medium',
+    fontFamily: "Montserrat-Medium",
     marginTop: 20,
     color: Colors.DARK,
     fontSize: 17,
   },
   paragraph: {
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: "Montserrat-Regular",
     marginTop: 10,
     color: Colors.DARK,
     fontSize: 15,
   },
   error: {
-    fontFamily: 'Montserrat-Medium',
+    fontFamily: "Montserrat-Medium",
     marginTop: 20,
     color: Colors.DARK_SALMON,
     fontSize: 13,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   View,
@@ -6,19 +6,19 @@ import {
   TouchableWithoutFeedback,
   Animated,
   AccessibilityProps,
-} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import HapticFeedback from 'react-native-haptic-feedback';
+} from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import HapticFeedback from "react-native-haptic-feedback";
 
-import Colors from '../Colors';
+import Colors from "../Colors";
 
 type CardProps = {
   children?: React.ReactNode;
   style?: any;
 };
 
-const Card = ({children, style}: CardProps) => (
-  <View style={{...s.card, ...style}}>{children}</View>
+const Card = ({ children, style }: CardProps) => (
+  <View style={{ ...s.card, ...style }}>{children}</View>
 );
 
 type TouchableCardProps = CardProps & {
@@ -29,7 +29,7 @@ type TouchableCardProps = CardProps & {
 };
 
 const TouchableCard = (props: TouchableCardProps) => {
-  if (Platform.OS === 'ios') {
+  if (Platform.OS === "ios") {
     return <IOSTouchableCard {...props} />;
   } else {
     return <AndroidTouchableCard {...props} />;
@@ -44,8 +44,9 @@ const IOSTouchableCard = ({
 }: TouchableCardProps) => (
   <TouchableOpacity
     {...a11}
-    containerStyle={{overflow: 'visible'}}
-    onPress={() => onPress && onPress()}>
+    containerStyle={{ overflow: "visible" }}
+    onPress={() => onPress && onPress()}
+  >
     <Card style={style}>{children}</Card>
   </TouchableOpacity>
 );
@@ -70,28 +71,29 @@ const AndroidTouchableCard = ({
       {...a11}
       onPressIn={() => {
         animateOpacity(0.8);
-        HapticFeedback.trigger('selection', {enableVibrateFallback: false});
+        HapticFeedback.trigger("selection", { enableVibrateFallback: false });
       }}
       onPress={() => onPress && onPress()}
       onPressOut={() => {
         animateOpacity(1);
-      }}>
-      <Animated.View style={[style, s.card, {opacity}]}>
+      }}
+    >
+      <Animated.View style={[style, s.card, { opacity }]}>
         {children}
       </Animated.View>
     </TouchableWithoutFeedback>
   );
 };
 
-export {Card, TouchableCard};
+export { Card, TouchableCard };
 
 const s = StyleSheet.create({
   card: {
-    overflow: 'visible',
-    flexDirection: 'row',
-    alignItems: 'center',
+    overflow: "visible",
+    flexDirection: "row",
+    alignItems: "center",
     padding: 12,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderColor: Colors.FADED,
     borderWidth: 0.5,
     borderRadius: 5,
@@ -99,7 +101,7 @@ const s = StyleSheet.create({
     ...Platform.select({
       ios: {
         shadowColor: Colors.DARK,
-        shadowOffset: {width: 0, height: 1},
+        shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.22,
         shadowRadius: 3,
       },

@@ -1,41 +1,41 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {FlatList, RefreshControl, Text, View, StyleSheet} from 'react-native';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RouteProp} from '@react-navigation/native';
-import {connect, ConnectedProps} from 'react-redux';
+import React, { useState, useEffect, useRef } from "react";
+import { FlatList, RefreshControl, Text, View, StyleSheet } from "react-native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RouteProp } from "@react-navigation/native";
+import { connect, ConnectedProps } from "react-redux";
 
-import {Memory} from '../MemoryModels';
-import {RootStackParamList} from '../../../Router';
-import {Container} from '../../views/View';
-import {getMemory} from '../MemoryService';
-import Colors from '../../Colors';
-import {TwoState} from '../../state/reducers';
+import { Memory } from "../MemoryModels";
+import { RootStackParamList } from "../../../Router";
+import { Container } from "../../views/View";
+import { getMemory } from "../MemoryService";
+import Colors from "../../Colors";
+import { TwoState } from "../../state/reducers";
 import {
   selectMemory,
   updateMemory,
   selectMemoryContent,
   storeContent,
-} from '../store';
-import {getContent} from '../../content/ContentService';
-import {Content} from '../../content/ContentModels';
+} from "../store";
+import { getContent } from "../../content/ContentService";
+import { Content } from "../../content/ContentModels";
 
 import {
   GridRow,
   TouchableImageCell,
   TouchableVideoCell,
   chunkToRows,
-} from './Grid';
-import {ContentGallery} from './ContentGallery';
-import {MemoryToolbar} from './MemoryToolbar';
-import {MemoryInteractionModal} from './MemoryInteractionModal';
+} from "./Grid";
+import { ContentGallery } from "./ContentGallery";
+import { MemoryToolbar } from "./MemoryToolbar";
+import { MemoryInteractionModal } from "./MemoryInteractionModal";
 
 type NavigationProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'MemoryScreen'>;
-  route: RouteProp<RootStackParamList, 'MemoryScreen'>;
+  navigation: StackNavigationProp<RootStackParamList, "MemoryScreen">;
+  route: RouteProp<RootStackParamList, "MemoryScreen">;
 };
 
 const mapStateToProps = (state: TwoState, ownProps: NavigationProps) => {
-  const {mid} = ownProps.route.params;
+  const { mid } = ownProps.route.params;
   return {
     memory: selectMemory(state.memories, mid),
     content: selectMemoryContent(state.memories, mid),
@@ -46,7 +46,7 @@ const connector = connect(mapStateToProps);
 type ConnectorProps = ConnectedProps<typeof connector>;
 type MemoryScreenProps = ConnectorProps & NavigationProps;
 
-const MemoryScreen = ({memory, dispatch, content}: MemoryScreenProps) => {
+const MemoryScreen = ({ memory, dispatch, content }: MemoryScreenProps) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const hasMounted = useRef<boolean>(false);
   useEffect(() => {
@@ -57,17 +57,19 @@ const MemoryScreen = ({memory, dispatch, content}: MemoryScreenProps) => {
     Promise.all([getMemory(memory.id), getContent(memory.id)])
       .then((result: [Memory, Content[]]) => {
         const [updatedMemory, updatedContent] = result;
-        dispatch(updateMemory({mid: updatedMemory.id, memory: updatedMemory}));
         dispatch(
-          storeContent({mid: updatedMemory.id, content: updatedContent}),
+          updateMemory({ mid: updatedMemory.id, memory: updatedMemory })
+        );
+        dispatch(
+          storeContent({ mid: updatedMemory.id, content: updatedContent })
         );
       })
       .finally(() => setRefreshing(false));
   };
 
   useEffect(() => {
-    getContent(memory.id).then(newContent => {
-      dispatch(storeContent({mid: memory.id, content: newContent}));
+    getContent(memory.id).then((newContent) => {
+      dispatch(storeContent({ mid: memory.id, content: newContent }));
     });
   }, []);
 
@@ -133,15 +135,15 @@ const ContentGrid = ({
       <FlatList
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={() => <MemoryToolbar memory={memory} />}
-        contentContainerStyle={{paddingBottom: 100}}
+        contentContainerStyle={{ paddingBottom: 100 }}
         ListEmptyComponent={EmptyMemory}
         data={rows}
-        renderItem={({item, index: rowIndex}) => (
+        renderItem={({ item, index: rowIndex }) => (
           <GridRow
             content={item}
             renderCell={(content, colIndex) => {
               const childIndex = rowIndex * numberOfColumns + colIndex;
-              return content.contentType === 'image' ? (
+              return content.contentType === "image" ? (
                 <TouchableImageCell
                   item={content}
                   onClick={() => setGalleryIndex(childIndex)}
@@ -160,12 +162,12 @@ const ContentGrid = ({
             key={rowIndex}
           />
         )}
-        keyExtractor={i =>
-          i.map(c => (c == null ? 'empty' : c.fileKey)).join('-')
+        keyExtractor={(i) =>
+          i.map((c) => (c == null ? "empty" : c.fileKey)).join("-")
         }
         refreshControl={
           <RefreshControl
-            colors={['#9Bd35A', '#689F38']}
+            colors={["#9Bd35A", "#689F38"]}
             refreshing={refreshing}
             onRefresh={onRefresh}
           />
@@ -176,7 +178,7 @@ const ContentGrid = ({
 };
 
 const EmptyMemory = () => (
-  <View style={{padding: 20, marginTop: 5, alignItems: 'center'}}>
+  <View style={{ padding: 20, marginTop: 5, alignItems: "center" }}>
     <Text style={styles.emptyText}>
       You haven't added any content to this memory yet! Upload some pictures 🖼️
       and videos 📹
@@ -187,7 +189,7 @@ const EmptyMemory = () => (
 const styles = StyleSheet.create({
   emptyText: {
     color: Colors.REGULAR,
-    textAlign: 'center',
+    textAlign: "center",
     lineHeight: 25,
     marginBottom: 30,
   },

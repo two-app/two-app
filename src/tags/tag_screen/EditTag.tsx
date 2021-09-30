@@ -1,11 +1,11 @@
-import React from 'react';
-import {StyleProp, ViewStyle} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
+import React from "react";
+import { StyleProp, ViewStyle } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import SimpleLineIcon from "react-native-vector-icons/SimpleLineIcons";
 
-import Colors from '../../Colors';
-import {getNavigation} from '../../navigation/RootNavigation';
-import {Tag} from '../Tag';
+import Colors from "../../Colors";
+import { getNavigation } from "../../navigation/RootNavigation";
+import { Tag } from "../Tag";
 
 type EditTagIconProps = {
   tag: Tag;
@@ -13,9 +13,9 @@ type EditTagIconProps = {
   style?: StyleProp<ViewStyle>;
 };
 
-export const EditTagIcon = ({tag, onUpdated, style}: EditTagIconProps) => {
+export const EditTagIcon = ({ tag, onUpdated, style }: EditTagIconProps) => {
   const edit = () => {
-    getNavigation().navigate('TagManagementScreen', {
+    getNavigation().navigate("TagManagementScreen", {
       initialTag: tag,
       onSubmit: onUpdated,
     });
@@ -26,12 +26,13 @@ export const EditTagIcon = ({tag, onUpdated, style}: EditTagIconProps) => {
       style={style}
       onPress={edit}
       accessibilityLabel="Edit Tag"
-      accessibilityHint={`Edit Tag '${tag.name}'`}>
+      accessibilityHint={`Edit Tag '${tag.name}'`}
+    >
       <SimpleLineIcon
         name="pencil"
         style={{
           fontSize: 18,
-          fontWeight: 'bold',
+          fontWeight: "bold",
           color: Colors.DARK,
         }}
       />

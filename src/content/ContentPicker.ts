@@ -1,4 +1,4 @@
-import ImagePicker, {Image, Options} from 'react-native-image-crop-picker';
+import ImagePicker, { Image, Options } from "react-native-image-crop-picker";
 
 export type PickedContent = Image & {
   setDisplayPicture?: boolean;
@@ -7,7 +7,7 @@ export type PickedContent = Image & {
 export class ContentPicker {
   static open = (
     onClose: () => void,
-    onPickedContent: (content: PickedContent[]) => void,
+    onPickedContent: (content: PickedContent[]) => void
   ) => {
     const options: Options = {
       multiple: true,
@@ -17,12 +17,10 @@ export class ContentPicker {
 
     ImagePicker.openPicker(options)
       .then((value: Image | Image[]) =>
-        Array.isArray(value)
-          ? onPickedContent(value)
-          : onPickedContent([value]),
+        Array.isArray(value) ? onPickedContent(value) : onPickedContent([value])
       )
-      .catch(e => {
-        console.log('Failed to select media.', e);
+      .catch((e) => {
+        console.log("Failed to select media.", e);
         onClose();
       });
   };

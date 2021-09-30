@@ -1,17 +1,17 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   TouchableOpacity,
   ImageBackground,
   AccessibilityProps,
-} from 'react-native';
-import Image from 'react-native-fast-image';
-import _ from 'lodash';
-import Icon from 'react-native-vector-icons/FontAwesome';
+} from "react-native";
+import Image from "react-native-fast-image";
+import _ from "lodash";
+import Icon from "react-native-vector-icons/FontAwesome";
 
-import Colors from '../../Colors';
-import {Content} from '../../content/ContentModels';
-import {buildContentURI} from '../../content/ContentService';
+import Colors from "../../Colors";
+import { Content } from "../../content/ContentModels";
+import { buildContentURI } from "../../content/ContentService";
 
 /**
  * Chunks the content into rows.
@@ -22,7 +22,7 @@ import {buildContentURI} from '../../content/ContentService';
  */
 export function chunkToRows<T>(
   content: T[],
-  numColumns: number,
+  numColumns: number
 ): (T | null)[][] {
   if (content.length === 0) {
     return [];
@@ -58,9 +58,9 @@ export const GridRow = <T extends unknown>({
   content,
   renderCell,
 }: GridRowProps<T>) => (
-  <View style={{flexDirection: 'row', flex: 1, margin: -5}}>
+  <View style={{ flexDirection: "row", flex: 1, margin: -5 }}>
     {content.map((cell, index) =>
-      cell === null ? <EmptyCell key={index} /> : renderCell(cell, index),
+      cell === null ? <EmptyCell key={index} /> : renderCell(cell, index)
     )}
   </View>
 );
@@ -73,45 +73,57 @@ type CellProps = {
 
 export const EmptyCell = () => <Cell />;
 
-export const TouchableImageCell = ({item, onClick, onLongPress}: CellProps) => (
+export const TouchableImageCell = ({
+  item,
+  onClick,
+  onLongPress,
+}: CellProps) => (
   <Cell key={item.fileKey}>
     <TouchableOpacity
-      style={{width: '100%', height: '100%'}}
+      style={{ width: "100%", height: "100%" }}
       onPress={onClick}
-      onLongPress={onLongPress}>
+      onLongPress={onLongPress}
+    >
       <Image
-        source={{uri: buildContentURI(item.fileKey, item.thumbnail)}}
-        style={{flex: 1, backgroundColor: Colors.DARK}}
+        source={{ uri: buildContentURI(item.fileKey, item.thumbnail) }}
+        style={{ flex: 1, backgroundColor: Colors.DARK }}
       />
     </TouchableOpacity>
   </Cell>
 );
 
-export const ImageCell = ({item}: {item: Content}) => (
+export const ImageCell = ({ item }: { item: Content }) => (
   <Cell
     key={item.fileKey}
-    a11={{accessibilityLabel: 'A preview of selected content.'}}>
+    a11={{ accessibilityLabel: "A preview of selected content." }}
+  >
     <Image
-      source={{uri: buildContentURI(item.fileKey, item.thumbnail)}}
-      style={{flex: 1, backgroundColor: Colors.DARK}}
+      source={{ uri: buildContentURI(item.fileKey, item.thumbnail) }}
+      style={{ flex: 1, backgroundColor: Colors.DARK }}
     />
   </Cell>
 );
 
-export const TouchableVideoCell = ({item, onClick, onLongPress}: CellProps) => (
+export const TouchableVideoCell = ({
+  item,
+  onClick,
+  onLongPress,
+}: CellProps) => (
   <Cell key={item.fileKey}>
     <TouchableOpacity
-      style={{width: '100%', height: '100%'}}
+      style={{ width: "100%", height: "100%" }}
       onPress={onClick}
-      onLongPress={onLongPress}>
+      onLongPress={onLongPress}
+    >
       <ImageBackground
-        source={{uri: buildContentURI(item.fileKey, item.thumbnail)}}
+        source={{ uri: buildContentURI(item.fileKey, item.thumbnail) }}
         style={{
           flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
+          alignItems: "center",
+          justifyContent: "center",
           backgroundColor: Colors.DARK,
-        }}>
+        }}
+      >
         <Icon name="play-circle" color="white" size={30} />
       </ImageBackground>
     </TouchableOpacity>
@@ -123,8 +135,8 @@ type BaseCellProps = {
   a11?: AccessibilityProps;
 };
 
-export const Cell = ({children, a11}: BaseCellProps) => (
-  <View style={{flex: 1, aspectRatio: 1, padding: 5, marginTop: 10}} {...a11}>
+export const Cell = ({ children, a11 }: BaseCellProps) => (
+  <View style={{ flex: 1, aspectRatio: 1, padding: 5, marginTop: 10 }} {...a11}>
     {children}
   </View>
 );

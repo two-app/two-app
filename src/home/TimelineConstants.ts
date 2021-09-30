@@ -1,12 +1,12 @@
-import {ReactElement} from 'react';
-import Animated, {EasingNode} from 'react-native-reanimated';
-import {PayloadActionCreator} from 'typesafe-actions';
+import { ReactElement } from "react";
+import Animated, { EasingNode } from "react-native-reanimated";
+import { PayloadActionCreator } from "typesafe-actions";
 
-import {MemoryTimelineComponent} from '../memories/MemoryTimeline';
-import {TwoState} from '../state/reducers';
-import {GroupedTimelineComponent} from '../tags/TagTimeline';
+import { MemoryTimelineComponent } from "../memories/MemoryTimeline";
+import { TwoState } from "../state/reducers";
+import { GroupedTimelineComponent } from "../tags/TagTimeline";
 
-export type TimelineType = 'timeline' | 'grouped' | 'grid';
+export type TimelineType = "timeline" | "grouped" | "grid";
 
 export type TimelineComponent<T> = {
   fetch: () => Promise<Array<T>>;

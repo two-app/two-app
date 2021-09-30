@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
-import {TouchableWithoutFeedback, View} from 'react-native';
+import React, { useEffect, useState } from "react";
+import { TouchableWithoutFeedback, View } from "react-native";
 
-import {TagColors} from './TagColors';
+import { TagColors } from "./TagColors";
 
 type ColorListProps = {
   initialColor?: string;
@@ -13,10 +13,10 @@ const selectRandomColor = (colors: string[]) => {
   return colors[randomIndex];
 };
 
-export const ColorList = ({initialColor, onSelected}: ColorListProps) => {
+export const ColorList = ({ initialColor, onSelected }: ColorListProps) => {
   const colors = TagColors;
   const [selected, setSelected] = useState<string>(
-    initialColor || selectRandomColor(colors),
+    initialColor || selectRandomColor(colors)
   );
 
   useEffect(() => {
@@ -34,12 +34,13 @@ export const ColorList = ({initialColor, onSelected}: ColorListProps) => {
   return (
     <View
       style={{
-        flexDirection: 'row',
-        flexWrap: 'wrap',
+        flexDirection: "row",
+        flexWrap: "wrap",
         marginTop: 5,
         margin: -10,
-      }}>
-      {colors.map(color => (
+      }}
+    >
+      {colors.map((color) => (
         <ColorButton
           color={color}
           isSelected={color === selected}
@@ -57,20 +58,21 @@ type ColorButtonProps = {
   onClick: (color: string) => void;
 };
 
-const ColorButton = ({color, isSelected, onClick}: ColorButtonProps) => {
+const ColorButton = ({ color, isSelected, onClick }: ColorButtonProps) => {
   return (
     <TouchableWithoutFeedback
       onPress={() => onClick(color)}
       accessibilityHint={`Set the tag color to ${color}`}
       accessibilityLabel={color}
-      testID={isSelected ? 'selected-color' : undefined}>
+      testID={isSelected ? "selected-color" : undefined}
+    >
       <View
         style={{
           width: 40,
           height: 40,
           margin: 10,
           borderRadius: isSelected ? 30 : 3,
-          borderColor: 'white',
+          borderColor: "white",
           backgroundColor: color,
         }}
       />

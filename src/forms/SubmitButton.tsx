@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {View, Keyboard} from 'react-native';
+import React from "react";
+import PropTypes from "prop-types";
+import { View, Keyboard } from "react-native";
 
-import Colors from '../Colors';
+import Colors from "../Colors";
 
-import {Button} from './Button';
+import { Button } from "./Button";
 
 type DisabledButtonProps = {
   text: string;
@@ -27,7 +27,7 @@ const SubmitButton = ({
   accessibilityHint,
   accessibilityLabel,
 }: SubmitButtonProps) => (
-  <View style={{marginVertical: 25}}>
+  <View style={{ marginVertical: 25 }}>
     {disabled ? (
       <DisabledSubmitButton
         text={text}
@@ -51,7 +51,7 @@ const DisabledSubmitButton = ({
   text,
   accessibilityLabel,
 }: DisabledButtonProps) => {
-  const style = {backgroundColor: 'white', textColor: Colors.FADED};
+  const style = { backgroundColor: "white", textColor: Colors.FADED };
   return (
     <Button
       onPress={() => Keyboard.dismiss()}
@@ -59,7 +59,7 @@ const DisabledSubmitButton = ({
       buttonStyle={style}
       pressedButtonStyle={style}
       accessibilityLabel={accessibilityLabel}
-      accessibilityState={{disabled: true}}
+      accessibilityState={{ disabled: true }}
     />
   );
 };
@@ -73,14 +73,14 @@ const EnabledSubmitButton = ({
   <Button
     onPress={onSubmit}
     text={text}
-    buttonStyle={{backgroundColor: Colors.VALID_GREEN, textColor: 'white'}}
+    buttonStyle={{ backgroundColor: Colors.VALID_GREEN, textColor: "white" }}
     pressedButtonStyle={{
       backgroundColor: Colors.VALID_GREEN_DARK,
-      textColor: 'white',
+      textColor: "white",
     }}
     accessibilityLabel={accessibilityLabel}
     accessibilityHint={accessibilityHint}
-    accessibilityState={{disabled: false}}
+    accessibilityState={{ disabled: false }}
   />
 );
 

@@ -1,98 +1,101 @@
-import {Text} from 'react-native';
-import React from 'react';
-import type {ReactTestInstance} from 'react-test-renderer';
-import type {QueryReturn, RenderAPI} from '@testing-library/react-native';
+import { Text } from "react-native";
+import React from "react";
+import type { ReactTestInstance } from "react-test-renderer";
+import type { QueryReturn, RenderAPI } from "@testing-library/react-native";
 import {
   waitForElementToBeRemoved,
   fireEvent,
   render,
-} from '@testing-library/react-native';
+} from "@testing-library/react-native";
 
-import {LoginScreen} from '../../src/authentication/LoginScreen';
-import AuthenticationService from '../../src/authentication/AuthenticationService';
-import type {ErrorResponse} from '../../src/http/Response';
-import {mockNavigation, resetMockNavigation} from '../utils/NavigationMocking';
+import { LoginScreen } from "../../src/authentication/LoginScreen";
+import AuthenticationService from "../../src/authentication/AuthenticationService";
+import type { ErrorResponse } from "../../src/http/Response";
+import {
+  mockNavigation,
+  resetMockNavigation,
+} from "../utils/NavigationMocking";
 
-describe('LoginScreen', () => {
+describe("LoginScreen", () => {
   let tb: LoginScreenTestBed;
 
   beforeEach(() => (tb = new LoginScreenTestBed().build()));
 
-  test('Pressing create account button should navigate to RegisterScreen', () => {
+  test("Pressing create account button should navigate to RegisterScreen", () => {
     tb.pressRegister();
 
     expect(mockNavigation.reset).toHaveBeenCalledWith({
       index: 0,
-      routes: [{name: 'RegisterScreen'}],
+      routes: [{ name: "RegisterScreen" }],
     });
   });
 
-  describe('Form Validation', () => {
-    test('the submit button should be disabled by default', () => {
+  describe("Form Validation", () => {
+    test("the submit button should be disabled by default", () => {
       expect(tb.isSubmitEnabled()).toEqual(false);
     });
 
-    test('the submit button should be disabled with a valid email but no password', () => {
-      tb.setEmailInput('user@two.date');
-
-      expect(tb.isSubmitEnabled()).toEqual(false);
-    });
-
-    test('the submit button should be disabled with a valid password but no email', () => {
-      tb.setPasswordInput('SoMePassWord');
+    test("the submit button should be disabled with a valid email but no password", () => {
+      tb.setEmailInput("user@two.date");
 
       expect(tb.isSubmitEnabled()).toEqual(false);
     });
 
-    test('password < 6 in length disables the submit', () => {
-      tb.setEmailInput('user@two.date');
-      tb.setPasswordInput('hi');
+    test("the submit button should be disabled with a valid password but no email", () => {
+      tb.setPasswordInput("SoMePassWord");
 
       expect(tb.isSubmitEnabled()).toEqual(false);
     });
 
-    test('invalid email disables the submit', () => {
-      tb.setPasswordInput('soMePassWord');
-      tb.setEmailInput('invalid email');
+    test("password < 6 in length disables the submit", () => {
+      tb.setEmailInput("user@two.date");
+      tb.setPasswordInput("hi");
 
       expect(tb.isSubmitEnabled()).toEqual(false);
     });
 
-    test('the submit should be enabled', () => {
-      tb.setEmailInput('user@two.date');
-      tb.setPasswordInput('SoMePassWord');
+    test("invalid email disables the submit", () => {
+      tb.setPasswordInput("soMePassWord");
+      tb.setEmailInput("invalid email");
+
+      expect(tb.isSubmitEnabled()).toEqual(false);
+    });
+
+    test("the submit should be enabled", () => {
+      tb.setEmailInput("user@two.date");
+      tb.setPasswordInput("SoMePassWord");
 
       expect(tb.isSubmitEnabled()).toEqual(true);
     });
   });
 
-  describe('On Valid Login', () => {
-    test('it should navigate to the home screen', async () => {
-      tb.setEmailInput('user@two.date');
-      tb.setPasswordInput('SoMePassWord');
+  describe("On Valid Login", () => {
+    test("it should navigate to the home screen", async () => {
+      tb.setEmailInput("user@two.date");
+      tb.setPasswordInput("SoMePassWord");
 
       await tb.pressSubmit();
 
       expect(mockNavigation.reset).toHaveBeenCalledWith({
         index: 0,
-        routes: [{name: 'LoadingScreen'}],
+        routes: [{ name: "LoadingScreen" }],
       });
     });
   });
 
-  describe('On Failed Login', () => {
-    test('it should display the error', async () => {
-      tb.setEmailInput('user@two.date');
-      tb.setPasswordInput('SoMePassWord');
+  describe("On Failed Login", () => {
+    test("it should display the error", async () => {
+      tb.setEmailInput("user@two.date");
+      tb.setPasswordInput("SoMePassWord");
       tb.onLoginReject({
-        reason: 'Invalid login combination',
+        reason: "Invalid login combination",
         code: 400,
-        status: 'Bad Request',
+        status: "Bad Request",
       });
 
       await tb.pressSubmit();
 
-      expect(tb.render.queryByText('Invalid login combination')).toBeTruthy();
+      expect(tb.render.queryByText("Invalid login combination")).toBeTruthy();
     });
   });
 });
@@ -105,17 +108,17 @@ class LoginScreenTestBed {
   }
 
   // elements
-  submitButton = () => this.render.getByA11yLabel('Press to login');
-  emailInput = () => this.render.getByA11yLabel('Enter your email');
-  passwordInput = () => this.render.getByA11yLabel('Enter your password');
-  registerButton = () => this.render.getByA11yLabel('Register a new account');
+  submitButton = () => this.render.getByA11yLabel("Press to login");
+  emailInput = () => this.render.getByA11yLabel("Enter your email");
+  passwordInput = () => this.render.getByA11yLabel("Enter your password");
+  registerButton = () => this.render.getByA11yLabel("Register a new account");
 
   // queries
   isSubmitEnabled = (): boolean =>
     !this.submitButton().props.accessibilityState.disabled;
 
   queryLoadingScreen = (): QueryReturn => {
-    return this.render.queryByA11yHint('Waiting for an action to finish...');
+    return this.render.queryByA11yHint("Waiting for an action to finish...");
   };
 
   // events
@@ -129,11 +132,11 @@ class LoginScreenTestBed {
 
   private setInput = (input: ReactTestInstance, text: string) => {
     fireEvent.changeText(input, text);
-    fireEvent(input, 'blur');
+    fireEvent(input, "blur");
   };
 
   // request/response mocks
-  private loginSpy = jest.spyOn(AuthenticationService, 'login');
+  private loginSpy = jest.spyOn(AuthenticationService, "login");
 
   onLoginResolve = () => this.loginSpy.mockResolvedValue({} as any);
   onLoginReject = (e: ErrorResponse) => this.loginSpy.mockRejectedValue(e);

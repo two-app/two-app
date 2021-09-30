@@ -1,64 +1,64 @@
-import {Text} from 'react-native';
-import React from 'react';
-import type {RenderAPI} from '@testing-library/react-native';
-import {render, fireEvent, waitFor} from '@testing-library/react-native';
-import moment from 'moment';
-import {Provider} from 'react-redux';
+import { Text } from "react-native";
+import React from "react";
+import type { RenderAPI } from "@testing-library/react-native";
+import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import moment from "moment";
+import { Provider } from "react-redux";
 
-import * as ContentService from '../../../src/content/ContentService';
-import {MemoryInteractionModal} from '../../../src/memories/memory/MemoryInteractionModal';
-import type {Memory} from '../../../src/memories/MemoryModels';
-import type {ErrorResponse} from '../../../src/http/Response';
-import type {Content} from '../../../src/content/ContentModels';
-import type {DeleteContentResponse} from '../../../src/content/ContentService';
-import {store} from '../../../src/state/reducers';
+import * as ContentService from "../../../src/content/ContentService";
+import { MemoryInteractionModal } from "../../../src/memories/memory/MemoryInteractionModal";
+import type { Memory } from "../../../src/memories/MemoryModels";
+import type { ErrorResponse } from "../../../src/http/Response";
+import type { Content } from "../../../src/content/ContentModels";
+import type { DeleteContentResponse } from "../../../src/content/ContentService";
+import { store } from "../../../src/state/reducers";
 
-describe('MemoryInteractionModal', () => {
+describe("MemoryInteractionModal", () => {
   let tb: MemoryInteractionModalTestBed;
 
-  describe('With no content selected', () => {
+  describe("With no content selected", () => {
     beforeEach(() => (tb = new MemoryInteractionModalTestBed().build()));
 
-    test('it should not display the modal', () => {
+    test("it should not display the modal", () => {
       expect(tb.isModalVisible()).toBe(false);
     });
   });
 
-  describe('With content selected', () => {
+  describe("With content selected", () => {
     beforeEach(() => {
       tb = new MemoryInteractionModalTestBed().setContent(testContent).build();
     });
 
-    test('it should display an image', () => {
+    test("it should display an image", () => {
       expect(
-        tb.render.getByA11yLabel('A preview of selected content.'),
+        tb.render.getByA11yLabel("A preview of selected content.")
       ).toBeTruthy();
     });
 
-    describe('Updating the display content', () => {
-      test('it should send a request with the content id', () => {
+    describe("Updating the display content", () => {
+      test("it should send a request with the content id", () => {
         tb.pressUpdateDisplayContentButton();
 
         expect(tb.setMemoryDisplayPictureFn).toHaveBeenCalledTimes(1);
         expect(tb.setMemoryDisplayPictureFn).toHaveBeenCalledWith(
           tb.memory.id,
-          testContent.contentId,
+          testContent.contentId
         );
       });
 
-      test('it should update the memory in the global state', async () => {
+      test("it should update the memory in the global state", async () => {
         // GIVEN a memory has content in global
         store.getState().memories.allMemories.push(testMemory);
 
         // GIVEN the update succeeds
-        const updatedMemory: Memory = {...tb.memory, title: 'another title'}; // any update will do
+        const updatedMemory: Memory = { ...tb.memory, title: "another title" }; // any update will do
         tb.onSetMemoryDisplayPictureResolve(updatedMemory);
 
         // WHEN the update display content button is pressed
         tb.pressUpdateDisplayContentButton();
         await waitFor(() => {
           if (tb.isModalVisible()) {
-            throw new Error('Modal still visible');
+            throw new Error("Modal still visible");
           }
         });
 
@@ -67,34 +67,34 @@ describe('MemoryInteractionModal', () => {
         expect(store.getState().memories.allMemories).toEqual([updatedMemory]);
       });
 
-      test('it should display an error if one occurs', async () => {
+      test("it should display an error if one occurs", async () => {
         const e: ErrorResponse = {
           code: 400,
-          reason: 'Test Reason',
-          status: 'Bad Request',
+          reason: "Test Reason",
+          status: "Bad Request",
         };
 
         tb.onSetMemoryDisplayPictureReject(e).pressUpdateDisplayContentButton();
         await waitFor(() => tb.render.getByText(e.reason));
 
         expect(tb.render.getByText(e.reason).props.accessibilityLabel).toEqual(
-          'Resulting error from your action.',
+          "Resulting error from your action."
         );
       });
     });
 
-    describe('Deleting the content', () => {
-      test('it should send a request with the content id', () => {
+    describe("Deleting the content", () => {
+      test("it should send a request with the content id", () => {
         tb.pressDeleteContentButton();
 
         expect(tb.deleteContentFn).toHaveBeenCalledTimes(1);
         expect(tb.deleteContentFn).toHaveBeenCalledWith(
           tb.memory.id,
-          testContent.contentId,
+          testContent.contentId
         );
       });
 
-      test('it should update the state in redux', async () => {
+      test("it should update the state in redux", async () => {
         // GIVEN the a memory and its associated content
         store.getState().memories.allMemories.push(testMemory);
         store.getState().memories.content[testMemory.id] = [testContent];
@@ -104,25 +104,25 @@ describe('MemoryInteractionModal', () => {
         tb.pressDeleteContentButton();
         await waitFor(() => {
           if (tb.isModalVisible()) {
-            throw new Error('Modal still visible');
+            throw new Error("Modal still visible");
           }
         });
 
         expect(store.getState().memories.content[testMemory.id]).toEqual([]);
       });
 
-      test('it should display an error if one occurs', async () => {
+      test("it should display an error if one occurs", async () => {
         const e: ErrorResponse = {
           code: 400,
-          reason: 'Test Reason',
-          status: 'Bad Request',
+          reason: "Test Reason",
+          status: "Bad Request",
         };
 
         tb.onDeleteMemoryContentReject(e).pressDeleteContentButton();
         await waitFor(() => tb.render.getByText(e.reason));
 
         expect(tb.render.getByText(e.reason).props.accessibilityLabel).toEqual(
-          'Resulting error from your action.',
+          "Resulting error from your action."
         );
       });
     });
@@ -149,10 +149,10 @@ class MemoryInteractionModalTestBed {
 
     this.setMemoryDisplayPictureFn = jest.spyOn(
       ContentService,
-      'setMemoryDisplayPicture',
+      "setMemoryDisplayPicture"
     );
 
-    this.deleteContentFn = jest.spyOn(ContentService, 'deleteContent');
+    this.deleteContentFn = jest.spyOn(ContentService, "deleteContent");
 
     this.onSetMemoryDisplayPictureResolve(this.memory);
     this.onDeleteMemoryContentResolve();
@@ -164,14 +164,14 @@ class MemoryInteractionModalTestBed {
   };
 
   onSetMemoryDisplayPictureResolve = (
-    memory: Memory,
+    memory: Memory
   ): MemoryInteractionModalTestBed => {
     this.setMemoryDisplayPictureFn.mockResolvedValue(memory);
     return this;
   };
 
   onSetMemoryDisplayPictureReject = (
-    e: ErrorResponse,
+    e: ErrorResponse
   ): MemoryInteractionModalTestBed => {
     this.setMemoryDisplayPictureFn.mockRejectedValue(e);
     return this;
@@ -184,26 +184,26 @@ class MemoryInteractionModalTestBed {
   };
 
   onDeleteMemoryContentReject = (
-    e: ErrorResponse,
+    e: ErrorResponse
   ): MemoryInteractionModalTestBed => {
     this.deleteContentFn.mockRejectedValue(e);
     return this;
   };
 
   pressUpdateDisplayContentButton = (): MemoryInteractionModalTestBed => {
-    const btn = this.render.getByA11yLabel('Set the Display Picture');
+    const btn = this.render.getByA11yLabel("Set the Display Picture");
     fireEvent.press(btn);
     return this;
   };
 
   pressDeleteContentButton = (): MemoryInteractionModalTestBed => {
-    const btn = this.render.getByA11yLabel('Delete this content.');
+    const btn = this.render.getByA11yLabel("Delete this content.");
     fireEvent.press(btn);
     return this;
   };
 
   isModalVisible = (): boolean => {
-    return this.render.getAllByTestId('interaction-modal')[0].props.visible;
+    return this.render.getAllByTestId("interaction-modal")[0].props.visible;
   };
 
   build = (): MemoryInteractionModalTestBed => {
@@ -214,7 +214,7 @@ class MemoryInteractionModalTestBed {
           content={this.content}
           onClose={this.onCloseFn}
         />
-      </Provider>,
+      </Provider>
     );
     return this;
   };
@@ -222,8 +222,8 @@ class MemoryInteractionModalTestBed {
 
 const testMemory: Memory = {
   id: 5,
-  title: 'Test Memory',
-  location: 'Test Location',
+  title: "Test Memory",
+  location: "Test Location",
   date: moment().valueOf(),
   tag: undefined,
   imageCount: 0,
@@ -233,28 +233,28 @@ const testMemory: Memory = {
 
 const testContent: Content = {
   contentId: 9,
-  contentType: 'image',
+  contentType: "image",
   thumbnail: {
-    contentType: 'image',
-    extension: 'png',
+    contentType: "image",
+    extension: "png",
     height: 100,
     width: 100,
-    suffix: 'thumbnail',
+    suffix: "thumbnail",
   },
   display: {
-    contentType: 'image',
-    extension: 'png',
+    contentType: "image",
+    extension: "png",
     height: 500,
     width: 500,
-    suffix: 'display',
+    suffix: "display",
   },
   gallery: {
-    contentType: 'image',
-    extension: 'png',
+    contentType: "image",
+    extension: "png",
     height: 1000,
     width: 1000,
-    suffix: 'gallery',
+    suffix: "gallery",
   },
-  extension: 'png',
-  fileKey: 'abcdefg',
+  extension: "png",
+  fileKey: "abcdefg",
 };

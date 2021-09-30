@@ -1,5 +1,5 @@
-import {Tag} from '../tags/Tag';
-import {Content} from '../content/ContentModels';
+import { Tag } from "../tags/Tag";
+import { Content } from "../content/ContentModels";
 
 export type MemoryDescription = {
   tag?: number;

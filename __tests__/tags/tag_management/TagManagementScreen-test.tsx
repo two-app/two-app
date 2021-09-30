@@ -1,50 +1,50 @@
-import {Text} from 'react-native';
-import React from 'react';
-import type {RenderAPI, QueryReturn} from '@testing-library/react-native';
+import { Text } from "react-native";
+import React from "react";
+import type { RenderAPI, QueryReturn } from "@testing-library/react-native";
 import {
   render,
   fireEvent,
   waitFor,
   waitForElementToBeRemoved,
-} from '@testing-library/react-native';
-import type {ReactTestInstance} from 'react-test-renderer';
+} from "@testing-library/react-native";
+import type { ReactTestInstance } from "react-test-renderer";
 
-import * as TagService from '../../../src/tags/TagService';
-import type {Tag, TagDescription} from '../../../src/tags/Tag';
-import type {ErrorResponse} from '../../../src/http/Response';
-import {TagManagementScreen} from '../../../src/tags/tag_management/TagManagementScreen';
-import {TagColors} from '../../../src/tags/tag_management/TagColors';
+import * as TagService from "../../../src/tags/TagService";
+import type { Tag, TagDescription } from "../../../src/tags/Tag";
+import type { ErrorResponse } from "../../../src/http/Response";
+import { TagManagementScreen } from "../../../src/tags/tag_management/TagManagementScreen";
+import { TagColors } from "../../../src/tags/tag_management/TagColors";
 
-describe('TagManagementScreen - Create Mode', () => {
+describe("TagManagementScreen - Create Mode", () => {
   let tb: TagManagementScreenTestBed;
 
   beforeEach(() => (tb = new TagManagementScreenTestBed().build()));
 
-  test('the submit button should be disabled by default', () => {
+  test("the submit button should be disabled by default", () => {
     expect(tb.isSubmitButtonEnabled()).toEqual(false);
   });
 
-  describe('Modifying the tag name', () => {
-    test('it should enable the submit button', () => {
-      tb.setNameInput('Anniversary');
+  describe("Modifying the tag name", () => {
+    test("it should enable the submit button", () => {
+      tb.setNameInput("Anniversary");
       expect(tb.isSubmitButtonEnabled()).toEqual(true);
     });
 
-    test('it should disable the submit button with a length of zero', () => {
-      tb.setNameInput('');
+    test("it should disable the submit button with a length of zero", () => {
+      tb.setNameInput("");
       expect(tb.isSubmitButtonEnabled()).toEqual(false);
     });
   });
 
-  describe('Modifying the tag color', () => {
-    test('it should have a random color selected by default', () => {
+  describe("Modifying the tag color", () => {
+    test("it should have a random color selected by default", () => {
       const colorHex = tb.getSelectedColor();
       const color = colorHex.substring(1); // remove prefixed octothorp for hex
       expect(color?.length).toEqual(6);
-      expect(!isNaN(Number('0x' + color))).toEqual(true);
+      expect(!isNaN(Number("0x" + color))).toEqual(true);
     });
 
-    test('it should select a color', () => {
+    test("it should select a color", () => {
       const prevColor = tb.getSelectedColor();
 
       // evade the random selection by choosing our test color based on current selection
@@ -55,9 +55,9 @@ describe('TagManagementScreen - Create Mode', () => {
     });
   });
 
-  describe('Submitting a New Tag', () => {
+  describe("Submitting a New Tag", () => {
     const tagDescription: TagDescription = {
-      name: 'Birthday',
+      name: "Birthday",
       color: TagColors[3],
     };
 
@@ -66,24 +66,24 @@ describe('TagManagementScreen - Create Mode', () => {
       tb.setColorInput(tagDescription.color);
     });
 
-    test('it should message the tag description', () => {
+    test("it should message the tag description", () => {
       tb.pressCreateButton();
       expect(tb.createTagFn).toHaveBeenCalledWith(tagDescription);
     });
 
-    test('it should show a loading indicator', () => {
+    test("it should show a loading indicator", () => {
       tb.pressCreateButton();
       expect(tb.getLoadingScreen()).toBeTruthy();
     });
 
-    test('it should navigate to the previous screen', async () => {
-      const tag: Tag = {...tagDescription, tid: 3, memoryCount: 0};
+    test("it should navigate to the previous screen", async () => {
+      const tag: Tag = { ...tagDescription, tid: 3, memoryCount: 0 };
       tb.onSubmitTagResolve(tag);
       tb.pressCreateButton();
 
       await waitFor(() => {
         if (tb.goBackFn.mock.calls.length === 0) {
-          throw new Error('Zero calls');
+          throw new Error("Zero calls");
         }
       });
 
@@ -91,7 +91,7 @@ describe('TagManagementScreen - Create Mode', () => {
       expect(tb.onSubmitPropCallback).toHaveBeenCalledWith(tag);
     });
 
-    test('it should hide the loading indicator when complete', async () => {
+    test("it should hide the loading indicator when complete", async () => {
       tb.pressCreateButton();
 
       await waitForElementToBeRemoved(() => tb.queryLoadingScreen());
@@ -99,11 +99,11 @@ describe('TagManagementScreen - Create Mode', () => {
       expect(tb.queryLoadingScreen()).toBeFalsy();
     });
 
-    test('it should display an error for a rejected patch', async () => {
+    test("it should display an error for a rejected patch", async () => {
       const e: ErrorResponse = {
-        status: 'Bad Request',
+        status: "Bad Request",
         code: 400,
-        reason: 'This tag name already exists.',
+        reason: "This tag name already exists.",
       };
 
       tb.onSubmitTagError(e);
@@ -113,7 +113,7 @@ describe('TagManagementScreen - Create Mode', () => {
       expect(tb.render.getByText(e.reason)).toBeTruthy();
 
       const a11yError = tb.render.getByA11yHint(
-        'The error encountered from processing a tag',
+        "The error encountered from processing a tag"
       );
       const errorText = tb.render.getByText(e.reason);
       expect(a11yError).toBeTruthy();
@@ -122,26 +122,26 @@ describe('TagManagementScreen - Create Mode', () => {
   });
 });
 
-describe('TagManagementScreen - Edit Mode', () => {
+describe("TagManagementScreen - Edit Mode", () => {
   let tb: TagManagementScreenTestBed;
   const tag: Tag = {
     tid: 3,
-    name: 'Some Tag',
-    color: '#f4989c',
+    name: "Some Tag",
+    color: "#f4989c",
     memoryCount: 5,
   };
 
   beforeEach(() => (tb = new TagManagementScreenTestBed(tag).build()));
 
-  test('the color should be set', () => {
+  test("the color should be set", () => {
     expect(tb.getSelectedColor()).toEqual(tag.color);
   });
 
-  test('the name should be set', () => {
+  test("the name should be set", () => {
     expect(tb.render.getAllByText(tag.name)).toBeTruthy();
   });
 
-  test('the update function should be called on submit', () => {
+  test("the update function should be called on submit", () => {
     tb.pressUpdateButton();
 
     expect(tb.updateTagFn).toHaveBeenCalledWith(tag.tid, {
@@ -164,16 +164,16 @@ class TagManagementScreenTestBed {
   constructor(initialTag?: Tag) {
     this.initialTag = initialTag;
 
-    this.createTagFn = jest.spyOn(TagService, 'createTag').mockClear();
-    this.updateTagFn = jest.spyOn(TagService, 'updateTag').mockClear();
+    this.createTagFn = jest.spyOn(TagService, "createTag").mockClear();
+    this.updateTagFn = jest.spyOn(TagService, "updateTag").mockClear();
 
     this.onSubmitPropCallback = jest.fn();
     this.goBackFn = jest.fn();
     this.dispatchFn = jest.fn();
     this.onSubmitTagError({
       code: -1,
-      reason: 'not implemented',
-      status: 'not implemented',
+      reason: "not implemented",
+      status: "not implemented",
     });
   }
 
@@ -189,9 +189,9 @@ class TagManagementScreenTestBed {
   };
 
   setNameInput = (name: string) => {
-    const input = this.render.getByA11yLabel('Set Tag Name');
+    const input = this.render.getByA11yLabel("Set Tag Name");
     fireEvent.changeText(input, name);
-    fireEvent(input, 'blur');
+    fireEvent(input, "blur");
   };
 
   setColorInput = (color: string) => {
@@ -200,45 +200,45 @@ class TagManagementScreenTestBed {
   };
 
   getSelectedColor = (): string => {
-    return this.render.getByTestId('selected-color').props.accessibilityLabel;
+    return this.render.getByTestId("selected-color").props.accessibilityLabel;
   };
 
   pressCreateButton = () => {
-    const button = this.render.getByA11yLabel('Create Tag');
+    const button = this.render.getByA11yLabel("Create Tag");
     fireEvent.press(button);
   };
 
   pressUpdateButton = () => {
-    const button = this.render.getByA11yLabel('Update Tag');
+    const button = this.render.getByA11yLabel("Update Tag");
     fireEvent.press(button);
   };
 
   isSubmitButtonEnabled = (): boolean => {
-    const submit = this.render.getByA11yLabel('Create Tag');
+    const submit = this.render.getByA11yLabel("Create Tag");
     return submit.props.accessibilityState.disabled === false;
   };
 
   queryLoadingScreen = (): QueryReturn => {
-    return this.render.queryByA11yHint('Waiting for an action to finish...');
+    return this.render.queryByA11yHint("Waiting for an action to finish...");
   };
 
   getLoadingScreen = (): ReactTestInstance => {
-    return this.render.getByA11yHint('Waiting for an action to finish...');
+    return this.render.getByA11yHint("Waiting for an action to finish...");
   };
 
   build = (): TagManagementScreenTestBed => {
     this.render = render(
       <TagManagementScreen
-        navigation={{goBack: this.goBackFn} as any}
+        navigation={{ goBack: this.goBackFn } as any}
         route={{
           params: {
             onSubmit: this.onSubmitPropCallback,
             initialTag: this.initialTag,
           },
-          key: '',
-          name: 'TagManagementScreen',
+          key: "",
+          name: "TagManagementScreen",
         }}
-      />,
+      />
     );
     return this;
   };

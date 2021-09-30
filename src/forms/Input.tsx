@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {StyleSheet, TextInput} from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, TextInput } from "react-native";
 
-import Colors from '../Colors';
+import Colors from "../Colors";
 
-import Label from './Label';
+import Label from "./Label";
 
 type InputProps = {
   attributes?: Record<string, unknown>;
@@ -22,7 +22,7 @@ const Input = ({
   accessibilityHint,
   accessibilityLabel,
 }: InputProps) => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const [valid, setValid] = useState(true);
   const [focused, setFocused] = useState(false);
 
@@ -30,7 +30,7 @@ const Input = ({
     <TextInput
       {...attributes}
       value={value}
-      onChangeText={v => {
+      onChangeText={(v) => {
         setValue(v);
         onChange(v);
       }}
@@ -46,7 +46,7 @@ const Input = ({
       ]}
       accessibilityHint={accessibilityHint}
       accessibilityLabel={accessibilityLabel}
-      accessibilityValue={{text: valid ? 'Valid entry' : 'Invalid entry'}}
+      accessibilityValue={{ text: valid ? "Valid entry" : "Invalid entry" }}
     />
   );
 
@@ -64,7 +64,7 @@ const Input = ({
 
 const styles = StyleSheet.create({
   input: {
-    width: '100%',
+    width: "100%",
     borderBottomColor: Colors.FADED,
     borderBottomWidth: 1,
     paddingHorizontal: 0,
