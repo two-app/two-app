@@ -7,4 +7,4 @@ import {AuthState} from './reducers';
  * using this type-unsafe selector.
  * @param state holding the tokens.
  */
-export const selectTokens = (state: AuthState): Tokens => <Tokens>state;
+export const selectTokens = (state: AuthState): Tokens => state as Tokens;
