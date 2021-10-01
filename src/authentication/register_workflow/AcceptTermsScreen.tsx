@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import { useState } from 'react';
 import {StyleSheet, Text, View, Linking} from 'react-native';
 import type {NavigationProp, RouteProp} from '@react-navigation/native';
 import {useNavigation, CommonActions, useRoute} from '@react-navigation/native';

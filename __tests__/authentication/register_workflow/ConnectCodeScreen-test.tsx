@@ -1,5 +1,4 @@
 import {Text} from 'react-native';
-import React from 'react';
 import uuidv4 from 'uuidv4';
 import type {QueryReturn, RenderAPI} from '@testing-library/react-native';
 import {

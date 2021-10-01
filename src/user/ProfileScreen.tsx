@@ -1,5 +1,5 @@
 import type {ComponentClass} from 'react';
-import React, {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import {View, Text, StyleSheet, Linking} from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';

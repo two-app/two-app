@@ -1,4 +1,3 @@
-import React from 'react';
 import {Text, TextStyle} from 'react-native';
 
 import Colors from '../Colors';

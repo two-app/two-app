@@ -2,7 +2,6 @@ import type {RenderAPI} from '@testing-library/react-native';
 import {fireEvent, render, waitFor} from '@testing-library/react-native';
 import type {AlertButton} from 'react-native';
 import {Alert, Text} from 'react-native';
-import React from 'react';
 import {Provider} from 'react-redux';
 import {CommonActions} from '@react-navigation/native';
 

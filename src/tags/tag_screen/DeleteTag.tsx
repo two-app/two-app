@@ -1,4 +1,3 @@
-import React from 'react';
 import {Alert, AlertButton, StyleProp, ViewStyle} from 'react-native';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import {TouchableOpacity} from 'react-native-gesture-handler';

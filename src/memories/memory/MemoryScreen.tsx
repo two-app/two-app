@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {FlatList, RefreshControl, Text, View, StyleSheet} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';

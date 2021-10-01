@@ -1,5 +1,4 @@
 import {Text} from 'react-native';
-import React from 'react';
 import {CommonActions} from '@react-navigation/native';
 import uuidv4 from 'uuidv4';
 import type {RenderAPI} from '@testing-library/react-native';

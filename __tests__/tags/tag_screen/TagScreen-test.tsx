@@ -1,6 +1,5 @@
 import type {RenderAPI} from '@testing-library/react-native';
 import {fireEvent, render, waitFor} from '@testing-library/react-native';
-import React from 'react';
 import {Alert, Text} from 'react-native';
 import {Provider} from 'react-redux';
 
