@@ -1,6 +1,6 @@
 import {TextInput, View} from 'react-native';
 import FoundationIcon from 'react-native-vector-icons/Foundation';
-import { useState } from 'react';
+import {useState} from 'react';
 
 import Colors from '../../Colors';
 import {Card} from '../../forms/Card';

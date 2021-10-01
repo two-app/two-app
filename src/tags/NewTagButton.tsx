@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import Modal from 'react-native-modal';
 import {View, Text} from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';

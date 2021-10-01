@@ -1,4 +1,4 @@
-import { createRef } from 'react';
+import {createRef} from 'react';
 import type {NavigationProp} from '@react-navigation/native';
 
 import type {RootStackParamList} from '../../Router';

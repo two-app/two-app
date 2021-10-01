@@ -1,5 +1,5 @@
 import {Text, View, StyleSheet} from 'react-native';
-import { useState, useEffect } from 'react';
+import {useState, useEffect} from 'react';
 import NativeModal from 'react-native-modal';
 import {useDispatch} from 'react-redux';
 import {PayloadAction} from 'typesafe-actions';

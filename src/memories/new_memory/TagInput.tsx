@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import {TextInput, View} from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 

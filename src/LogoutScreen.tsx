@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import {useEffect} from 'react';
 import {Text} from 'react-native';
 import {connect} from 'react-redux';
 import {StackNavigationProp} from '@react-navigation/stack';

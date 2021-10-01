@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import {FlatList, RefreshControl} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import Animated from 'react-native-reanimated';

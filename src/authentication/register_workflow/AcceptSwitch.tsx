@@ -1,6 +1,6 @@
 import {StyleSheet, Switch, Text, View} from 'react-native';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import {useState} from 'react';
 
 import Colors from '../../Colors';
 

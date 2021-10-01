@@ -1,6 +1,6 @@
 import 'react-native-get-random-values';
 import uuid from 'uuidv4';
-import { useState } from 'react';
+import {useState} from 'react';
 import {
   StyleSheet,
   Text,
