@@ -3458,10 +3458,10 @@ eslint-config-prettier@^8.3.0:
   resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.3.0.tgz#f7471b20b6fe8a9a9254cc684454202886a2dd7a"
   integrity sha512-BgZuLUSeKzvlL/VUjx/Yb787VQ26RU3gGjA3iiFvdsp/2bMfVIWUVP7tjxtjS0e+HP409cPlPvNkQloz8C91ew==
 
-eslint-config-react-native-wcandillon@^3.6.5:
-  version "3.6.5"
-  resolved "https://registry.npmjs.org/eslint-config-react-native-wcandillon/-/eslint-config-react-native-wcandillon-3.6.5.tgz"
-  integrity sha512-c4xbhsS6fnkKSM/4LyBakRmvxkN4LQDsiYVlgL4iEDBHliZECxDyT8g/FhqpVU63v9jVQCHVYoIGMqy5od9zdw==
+eslint-config-react-native-wcandillon@^3.7.0:
+  version "3.7.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-react-native-wcandillon/-/eslint-config-react-native-wcandillon-3.7.0.tgz#f08936565e9700fdbc88e89a3d1c0f4cc731d0ed"
+  integrity sha512-4Mu8zh3/X4Gq/LvC76PeQx2uUZTQnEykRn6hylZxzWN3xxA3zaXa8P+ZPuw55inC6jkAPqoDW/ESPd1+t9Dqjg==
   dependencies:
     "@react-native-community/eslint-config" "3.0.0"
     eslint-plugin-import "2.24.0"
@@ -3531,14 +3531,9 @@ eslint-plugin-prettier@3.1.2:
   dependencies:
     prettier-linter-helpers "^1.0.0"
 
-eslint-plugin-react-hooks@^4.0.7:
+eslint-plugin-react-hooks@^4.0.7, eslint-plugin-react-hooks@^4.2.0:
   version "4.2.0"
   resolved "https://registry.npmjs.org/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-4.2.0.tgz"
-  integrity sha512-623WEiZJqxR7VdxFCKLI6d6LLpwJkGPYKODnkH3D7WpOG5KM8yWueBd8TLsNAetEJNF5iJmolaAKO3F8yzyVBQ==
-
-eslint-plugin-react-hooks@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-4.2.0.tgz#8c229c268d468956334c943bb45fc860280f5556"
   integrity sha512-623WEiZJqxR7VdxFCKLI6d6LLpwJkGPYKODnkH3D7WpOG5KM8yWueBd8TLsNAetEJNF5iJmolaAKO3F8yzyVBQ==
 
 eslint-plugin-react-native-globals@^0.1.1:

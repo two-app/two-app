@@ -80,7 +80,7 @@
     "enzyme-to-json": "^3.6.2",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-config-react-native-wcandillon": "^3.6.5",
+    "eslint-config-react-native-wcandillon": "^3.7.0",
     "eslint-plugin-react": "^7.26.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-react-native": "^3.11.0",
