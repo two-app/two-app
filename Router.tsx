@@ -54,7 +54,8 @@ const AppStack = () => (
       gestureResponseDistance: 50,
       cardOverlayEnabled: false,
       cardShadowEnabled: false,
-    }}>
+    }}
+  >
     <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
     <Stack.Screen name="LogoutScreen" component={LogoutScreen} />
     <Stack.Screen name="LoginScreen" component={LoginScreen} />

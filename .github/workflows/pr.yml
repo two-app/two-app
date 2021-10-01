@@ -78,4 +78,6 @@ jobs:
 
       - run: yarn eslint
 
+      - run: yarn prettier --check .
+
       - run: yarn tsc

@@ -38,7 +38,8 @@ export const DeleteTagIcon = ({tag, onDeleted, style}: DeleteTagIconProps) => {
       style={style}
       onPress={onPress}
       accessibilityLabel="Delete Tag"
-      accessibilityHint={`Delete Tag '${tag.name}'`}>
+      accessibilityHint={`Delete Tag '${tag.name}'`}
+    >
       <EvilIcon
         name="trash"
         style={{fontSize: 32, color: Colors.DARK_SALMON}}

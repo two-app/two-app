@@ -76,8 +76,13 @@ export const ScrollContainer = (props: ScrollViewContainerProps) => (
     )}
     <KeyboardAwareScrollView
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{flexGrow: 1, marginLeft: '5%', marginRight: '5%'}}
-      {...props}>
+      contentContainerStyle={{
+        flexGrow: 1,
+        marginLeft: '5%',
+        marginRight: '5%',
+      }}
+      {...props}
+    >
       {props.children}
     </KeyboardAwareScrollView>
   </Wrapper>

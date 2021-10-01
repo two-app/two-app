@@ -61,11 +61,13 @@ const AcceptTermsScreen = () => {
             setUserRegistration({...userRegistration, acceptedTerms})
           }
           data-testid="terms"
-          required>
+          required
+        >
           I agree to the{' '}
           <Text
             style={{fontWeight: 'bold'}}
-            onPress={() => Linking.openURL(Config.PRIVACY_POLICY_URL)}>
+            onPress={() => Linking.openURL(Config.PRIVACY_POLICY_URL)}
+          >
             Privacy Policy.
           </Text>
         </AcceptBox>
@@ -73,14 +75,16 @@ const AcceptTermsScreen = () => {
           accessibilityHint="I am over the age of 16."
           onEmit={ofAge => setUserRegistration({...userRegistration, ofAge})}
           data-testid="age"
-          required>
+          required
+        >
           I am over the age of 16.
         </AcceptBox>
         <AcceptBox
           accessibilityHint="I agree to occasionally receive emails from Two."
           onEmit={receivesEmails =>
             setUserRegistration({...userRegistration, receivesEmails})
-          }>
+          }
+        >
           I agree to occasionally receive emails from Two.
         </AcceptBox>
 
@@ -94,7 +98,8 @@ const AcceptTermsScreen = () => {
           <Text
             style={styles.error}
             accessibilityHint={registrationError}
-            accessibilityLabel="Something went wrong with your registration.">
+            accessibilityLabel="Something went wrong with your registration."
+          >
             {registrationError}
           </Text>
         )}

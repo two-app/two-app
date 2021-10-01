@@ -96,7 +96,8 @@ export const TagManagementScreen = ({
       {error && (
         <Text
           style={s.error}
-          accessibilityHint="The error encountered from processing a tag">
+          accessibilityHint="The error encountered from processing a tag"
+        >
           {error}
         </Text>
       )}

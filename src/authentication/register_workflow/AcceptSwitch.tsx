@@ -26,9 +26,11 @@ const AcceptBox = ({
         required ? styles.required : undefined,
         accepted ? styles.accepted : undefined,
       ]}
-      data-testid="container">
+      data-testid="container"
+    >
       <Text
-        style={[styles.condition, accepted ? styles.acceptedText : undefined]}>
+        style={[styles.condition, accepted ? styles.acceptedText : undefined]}
+      >
         {children}
       </Text>
       <View style={styles.switchContainer}>

@@ -26,7 +26,8 @@ export const EditTagIcon = ({tag, onUpdated, style}: EditTagIconProps) => {
       style={style}
       onPress={edit}
       accessibilityLabel="Edit Tag"
-      accessibilityHint={`Edit Tag '${tag.name}'`}>
+      accessibilityHint={`Edit Tag '${tag.name}'`}
+    >
       <SimpleLineIcon
         name="pencil"
         style={{

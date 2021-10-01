@@ -52,7 +52,8 @@ export const DateTimePicker = ({
       <TouchableCard
         a11={{accessibilityLabel: 'Set the Date and Time'}}
         style={FormStyle.card}
-        onPress={openPicker}>
+        onPress={openPicker}
+      >
         <View style={FormStyle.iconContainer}>
           <AntIcon
             name={'calendar'}

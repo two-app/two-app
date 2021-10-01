@@ -21,7 +21,8 @@ const LoadingView = ({loadingPercentage}: LoadingViewProps) => (
       width: useWindowDimensions().width,
     }}
     accessibilityState={{busy: true}}
-    accessibilityHint="Waiting for an action to finish...">
+    accessibilityHint="Waiting for an action to finish..."
+  >
     {loadingPercentage != null && (
       <Text style={styles.percentage}>{loadingPercentage}%</Text>
     )}

@@ -57,7 +57,8 @@ export const ContentGallery = ({
       onDismiss={closeGallery}
       animated={true}
       animationType="fade"
-      onRequestClose={closeGallery}>
+      onRequestClose={closeGallery}
+    >
       <StatusBar
         barStyle="light-content"
         backgroundColor={'black'}

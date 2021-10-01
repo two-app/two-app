@@ -11,7 +11,8 @@ const Heading = ({children, style}: {children: string; style?: TextStyle}) => (
       fontFamily: 'Montserrat-ExtraBold',
       marginTop: 20,
       ...style,
-    }}>
+    }}
+  >
     {children}
   </Text>
 );

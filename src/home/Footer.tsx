@@ -62,7 +62,8 @@ const Item = (props: ItemProps) => {
   return (
     <TouchableOpacity
       style={styles.item}
-      onPress={() => resetNavigate(props.navigateTo, nav)}>
+      onPress={() => resetNavigate(props.navigateTo, nav)}
+    >
       <props.icon
         size={25}
         name={props.iconName}
@@ -73,7 +74,8 @@ const Item = (props: ItemProps) => {
         style={{
           ...styles.iconText,
           color: props.active ? Colors.DARK_SALMON : Colors.REGULAR,
-        }}>
+        }}
+      >
         {props.text}
       </Text>
     </TouchableOpacity>

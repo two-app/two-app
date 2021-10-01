@@ -113,7 +113,11 @@ describe('PartnerScreen', () => {
 
 class PartnerScreenTestBed {
   user: User = {uid: uuidv4(), pid: uuidv4(), cid: uuidv4()};
-  userProfile: UserProfile = {...this.user, firstName: 'ABC', lastName: '123'};
+  userProfile: UserProfile = {
+    ...this.user,
+    firstName: 'ABC',
+    lastName: '123',
+  };
   partnerProfile: UserProfile = {
     uid: this.user.pid,
     pid: this.user.uid,

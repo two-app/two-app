@@ -38,7 +38,8 @@ const BackButton = () => {
   return (
     <TouchableOpacity
       accessibilityLabel="Go Back"
-      onPress={() => navigate('HomeScreen')}>
+      onPress={() => navigate('HomeScreen')}
+    >
       <Icon name="arrowleft" size={25} color={Colors.DARK} />
     </TouchableOpacity>
   );
@@ -50,7 +51,8 @@ const EditButton = ({memory}: {memory: Memory}) => {
     <TouchableOpacity
       accessibilityLabel="Edit Memory"
       style={styles.icon}
-      onPress={() => navigate('EditMemoryScreen', {mid: memory.id})}>
+      onPress={() => navigate('EditMemoryScreen', {mid: memory.id})}
+    >
       <Icon name="edit" size={25} color={Colors.DARK} />
     </TouchableOpacity>
   );
@@ -77,7 +79,8 @@ export const UploadContentButton = ({memory}: {memory: Memory}) => {
             });
           },
         );
-      }}>
+      }}
+    >
       <Icon name="plussquareo" size={25} color={Colors.DARK} />
     </TouchableOpacity>
   );
@@ -119,7 +122,8 @@ export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
       accessibilityLabel="Delete Memory"
       // if only the icon was clipped correctly...
       style={{marginLeft: 8, marginRight: -8}}
-      onPress={onPress}>
+      onPress={onPress}
+    >
       <EvilIcon name="trash" size={36} color={Colors.DARK_SALMON} />
     </TouchableOpacity>
   );

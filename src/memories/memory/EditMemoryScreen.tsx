@@ -149,7 +149,8 @@ export const EditMemoryScreen = ({
 
         <Text
           style={{color: Colors.DARK_SALMON}}
-          accessibilityHint="The error encountered with the edit.">
+          accessibilityHint="The error encountered with the edit."
+        >
           {error}
         </Text>
       </View>

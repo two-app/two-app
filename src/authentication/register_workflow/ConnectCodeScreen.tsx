@@ -87,7 +87,8 @@ export const ConnectCodeScreen = () => {
           onRefresh={refresh}
         />
       }
-      keyboardShouldPersistTaps="always">
+      keyboardShouldPersistTaps="always"
+    >
       <LogoHeader heading="Connect Your Partner" />
       <Text style={styles.subheading}>Thanks for joining us!</Text>
       <Text style={styles.paragraph}>
@@ -169,7 +170,8 @@ const CopyConnectCodeButton = ({code}: {code: string}) => {
       onPress={onCopy}
       style={buttonStyle}
       accessibilityHint="Copy connect code to clipboard"
-      accessibilityState={{checked: copied}}>
+      accessibilityState={{checked: copied}}
+    >
       <Text style={{...textStyle, marginBottom: 10}}>Your Code</Text>
 
       <Text style={codeStyle}>{code}</Text>
@@ -221,7 +223,8 @@ const ShareConnectCodeButton = ({code}: {code: string}) => {
 
   return (
     <View
-      style={{flexDirection: 'row', justifyContent: 'center', marginTop: 15}}>
+      style={{flexDirection: 'row', justifyContent: 'center', marginTop: 15}}
+    >
       {shared ? sharedButton : shareButton}
     </View>
   );

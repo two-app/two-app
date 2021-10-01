@@ -27,7 +27,8 @@ const MemoryItem = ({memory}: {memory: Memory}) => {
     <TouchableOpacity
       accessibilityLabel={`Open memory '${memory.title}'`}
       style={{marginTop: 10, marginBottom: 20}}
-      onPress={() => navigate('MemoryScreen', {mid: memory.id})}>
+      onPress={() => navigate('MemoryScreen', {mid: memory.id})}
+    >
       <MemoryDisplayView memory={memory} />
     </TouchableOpacity>
   );

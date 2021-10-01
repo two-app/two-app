@@ -78,7 +78,8 @@ export const TouchableImageCell = ({item, onClick, onLongPress}: CellProps) => (
     <TouchableOpacity
       style={{width: '100%', height: '100%'}}
       onPress={onClick}
-      onLongPress={onLongPress}>
+      onLongPress={onLongPress}
+    >
       <Image
         source={{uri: buildContentURI(item.fileKey, item.thumbnail)}}
         style={{flex: 1, backgroundColor: Colors.DARK}}
@@ -90,7 +91,8 @@ export const TouchableImageCell = ({item, onClick, onLongPress}: CellProps) => (
 export const ImageCell = ({item}: {item: Content}) => (
   <Cell
     key={item.fileKey}
-    a11={{accessibilityLabel: 'A preview of selected content.'}}>
+    a11={{accessibilityLabel: 'A preview of selected content.'}}
+  >
     <Image
       source={{uri: buildContentURI(item.fileKey, item.thumbnail)}}
       style={{flex: 1, backgroundColor: Colors.DARK}}
@@ -103,7 +105,8 @@ export const TouchableVideoCell = ({item, onClick, onLongPress}: CellProps) => (
     <TouchableOpacity
       style={{width: '100%', height: '100%'}}
       onPress={onClick}
-      onLongPress={onLongPress}>
+      onLongPress={onLongPress}
+    >
       <ImageBackground
         source={{uri: buildContentURI(item.fileKey, item.thumbnail)}}
         style={{
@@ -111,7 +114,8 @@ export const TouchableVideoCell = ({item, onClick, onLongPress}: CellProps) => (
           alignItems: 'center',
           justifyContent: 'center',
           backgroundColor: Colors.DARK,
-        }}>
+        }}
+      >
         <Icon name="play-circle" color="white" size={30} />
       </ImageBackground>
     </TouchableOpacity>

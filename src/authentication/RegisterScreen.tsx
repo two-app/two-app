@@ -87,7 +87,8 @@ const RegisterScreen = () => {
         <TouchableOpacity
           style={{marginLeft: 5}}
           onPress={() => resetNavigate('LoginScreen', navigation)}
-          accessibilityLabel="Press to login">
+          accessibilityLabel="Press to login"
+        >
           <Text style={{fontWeight: 'bold', color: Colors.DARK}}>Sign In</Text>
         </TouchableOpacity>
       </View>

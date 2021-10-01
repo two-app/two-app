@@ -45,7 +45,8 @@ const IOSTouchableCard = ({
   <TouchableOpacity
     {...a11}
     containerStyle={{overflow: 'visible'}}
-    onPress={() => onPress && onPress()}>
+    onPress={() => onPress && onPress()}
+  >
     <Card style={style}>{children}</Card>
   </TouchableOpacity>
 );
@@ -75,7 +76,8 @@ const AndroidTouchableCard = ({
       onPress={() => onPress && onPress()}
       onPressOut={() => {
         animateOpacity(1);
-      }}>
+      }}
+    >
       <Animated.View style={[style, s.card, {opacity}]}>
         {children}
       </Animated.View>

@@ -155,7 +155,8 @@ const MenuItem = (props: MenuItemProps) => (
   <TouchableOpacity
     style={styles.listItem}
     onPress={props.onPress}
-    accessibilityLabel={props.text}>
+    accessibilityLabel={props.text}
+  >
     <Text style={{color: Colors.REGULAR}}>{props.text}</Text>
     <props.icon
       size={props.iconSize}
