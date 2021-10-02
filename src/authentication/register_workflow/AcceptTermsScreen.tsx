@@ -1,6 +1,5 @@
 import {useState} from 'react';
-import {StyleSheet, Text, View, Linking} from 'react-native';
-import type {NavigationProp, RouteProp} from '@react-navigation/native';
+import {Text, View, Linking} from 'react-native';
 import {useNavigation, CommonActions, useRoute} from '@react-navigation/native';
 import Config from 'react-native-config';
 
@@ -9,30 +8,23 @@ import SubmitButton from '../../forms/SubmitButton';
 import {ScrollContainer} from '../../views/View';
 import Colors from '../../Colors';
 import AuthenticationService from '../AuthenticationService';
-import type {RootStackParamList} from '../../../Router';
 import type {ErrorResponse} from '../../http/Response';
 
 import type {UserRegistration} from './UserRegistrationModel';
 import AcceptBox from './AcceptSwitch';
+import {Route, Routes} from '../../navigation/RootNavigation';
 
-type ScreenRouteProp = RouteProp<RootStackParamList, 'AcceptTermsScreen'>;
+export const AcceptTermsScreen = () => {
+  const route = useRoute<Route<'AcceptTermsScreen'>>();
+  const navigation = useNavigation<Routes>();
 
-type ScreenNavProp = NavigationProp<RootStackParamList, 'AcceptTermsScreen'>;
-
-const AcceptTermsScreen = () => {
-  const route = useRoute<ScreenRouteProp>();
-  const navigation = useNavigation<ScreenNavProp>();
-
-  const [userRegistration, setUserRegistration] = useState<UserRegistration>(
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
+  const [registration, setRegistration] = useState<UserRegistration>(
     route.params.userRegistration,
   );
-  const validAgreedState =
-    userRegistration.acceptedTerms && userRegistration.ofAge;
 
-  const [submitted, setSubmitted] = useState(false);
-  const [registrationError, setRegistrationError] = useState<string | null>(
-    null,
-  );
+  const validAgreedState = registration.acceptedTerms && registration.ofAge;
 
   const navigateToConnectCodeScreen = () =>
     navigation.dispatch(
@@ -42,25 +34,22 @@ const AcceptTermsScreen = () => {
       }),
     );
 
-  if (submitted) {
-    AuthenticationService.registerUser(userRegistration)
+  const onSubmit = () => {
+    AuthenticationService.registerUser(registration)
       .then(() => navigateToConnectCodeScreen())
-      .catch((e: ErrorResponse) => {
-        setSubmitted(false);
-        setRegistrationError(e.reason);
-      });
-  }
+      .catch((e: ErrorResponse) => setError(e.reason))
+      .finally(() => setLoading(false));
+  };
 
   return (
-    <ScrollContainer isLoading={submitted}>
+    <ScrollContainer isLoading={loading}>
       <View>
         <LogoHeader heading="Terms & Conditions" />
         <AcceptBox
           accessibilityLabel="I agree to the privacy policy."
           onEmit={acceptedTerms =>
-            setUserRegistration({...userRegistration, acceptedTerms})
+            setRegistration({...registration, acceptedTerms})
           }
-          data-testid="terms"
           required>
           I agree to the{' '}
           <Text
@@ -71,42 +60,34 @@ const AcceptTermsScreen = () => {
         </AcceptBox>
         <AcceptBox
           accessibilityLabel="I am over the age of 16."
-          onEmit={ofAge => setUserRegistration({...userRegistration, ofAge})}
-          data-testid="age"
+          onEmit={ofAge => setRegistration({...registration, ofAge})}
           required>
           I am over the age of 16.
         </AcceptBox>
         <AcceptBox
           accessibilityLabel="I agree to occasionally receive emails from Two."
           onEmit={receivesEmails =>
-            setUserRegistration({...userRegistration, receivesEmails})
+            setRegistration({...registration, receivesEmails})
           }>
           I agree to occasionally receive emails from Two.
         </AcceptBox>
 
         <SubmitButton
-          onSubmit={() => setSubmitted(true)}
+          onSubmit={onSubmit}
           text="Accept"
           disabled={!validAgreedState}
           accessibilityLabel="Press to submit terms and conditions"
         />
-        {registrationError && (
+
+        {error && (
           <Text
-            style={styles.error}
-            accessibilityHint={registrationError}
+            style={{color: Colors.DARK_SALMON}}
+            accessibilityHint={error}
             accessibilityLabel="Something went wrong with your registration.">
-            {registrationError}
+            {error}
           </Text>
         )}
       </View>
     </ScrollContainer>
   );
 };
-
-const styles = StyleSheet.create({
-  error: {
-    color: Colors.DARK_SALMON,
-  },
-});
-
-export {AcceptTermsScreen};

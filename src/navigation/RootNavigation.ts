@@ -1,5 +1,5 @@
 import {createRef} from 'react';
-import type {NavigationProp} from '@react-navigation/native';
+import type {NavigationProp, RouteProp} from '@react-navigation/native';
 
 import type {RootStackParamList} from '../../Router';
 
@@ -9,6 +9,10 @@ import type {RootStackParamList} from '../../Router';
 export const navigationRef = createRef<Routes>();
 
 export type Routes = NavigationProp<RootStackParamList>;
+export type Route<T extends keyof RootStackParamList> = RouteProp<
+  RootStackParamList,
+  T
+>;
 
 export const getNavigation = (): Routes => {
   return navigationRef.current!;

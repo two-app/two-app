@@ -16,29 +16,30 @@ const AcceptBox = ({
   required,
   accessibilityLabel,
 }: AcceptBoxProps) => {
-  const [accepted, setAccepted] = useState(false);
+  const [checked, setChecked] = useState(false);
+
+  const check = (isChecked: boolean) => {
+    setChecked(isChecked);
+    onEmit(isChecked);
+  };
 
   return (
     <View
       style={[
         styles.container,
         required ? styles.required : undefined,
-        accepted ? styles.accepted : undefined,
-      ]}
-      data-testid="container">
+        checked ? styles.accepted : undefined,
+      ]}>
       <Text
-        style={[styles.condition, accepted ? styles.acceptedText : undefined]}>
+        style={[styles.condition, checked ? styles.acceptedText : undefined]}>
         {children}
       </Text>
       <View style={styles.switchContainer}>
         <Switch
           style={styles.switch}
-          value={accepted}
-          onValueChange={v => {
-            setAccepted(v);
-            onEmit(v);
-          }}
-          accessibilityState={{checked: accepted}}
+          value={checked}
+          onValueChange={check}
+          accessibilityState={{checked: checked}}
           accessibilityLabel={accessibilityLabel}
           accessibilityHint={
             required ? 'Acceptance is required.' : 'Acceptance is optional.'
