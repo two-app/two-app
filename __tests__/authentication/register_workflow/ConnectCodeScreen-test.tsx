@@ -24,16 +24,14 @@ describe('ConnectCodeScreen', () => {
   let tb: ConnectCodeScreenTestBed;
   beforeEach(() => (tb = new ConnectCodeScreenTestBed().build()));
 
-  describe('Clicking the logout button', () => {
-    test('it should navigate to the LogoutScreen', () => {
-      tb.pressLogout();
+  test('pressing logout should navigate to the LogoutScreen', () => {
+    tb.pressLogout();
 
-      expect(mockNavigation.dispatch).toHaveBeenCalledTimes(1);
-    });
+    expect(mockNavigation.dispatch).toHaveBeenCalledTimes(1);
   });
 
-  describe('By Default', () => {
-    test('submit is disabled', () => expect(tb.isSubmitEnabled()).toBe(false));
+  test('submit should be disabled by default', () => {
+    expect(tb.isSubmitEnabled()).toBe(false);
   });
 
   describe('When entered partner code is identical to users code', () => {
@@ -51,9 +49,11 @@ describe('ConnectCodeScreen', () => {
   });
 
   describe('When entered code is not 6 characters in length', () => {
-    beforeEach(() => tb.setPartnerCode('ab'));
+    test('disables submit', () => {
+      tb.setPartnerCode('ab');
 
-    test('disables submit', () => expect(tb.isSubmitEnabled()).toBe(false));
+      expect(tb.isSubmitEnabled()).toBe(false);
+    });
   });
 
   describe('When entered code is valid', () => {

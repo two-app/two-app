@@ -27,25 +27,26 @@ import ConnectService from '../../user/ConnectService';
 import type {ErrorResponse} from '../../http/Response';
 import AuthenticationService from '../AuthenticationService';
 import type {Routes} from '../../navigation/RootNavigation';
-import type {User} from '../UserModel';
+import type {UnconnectedUser, User} from '../UserModel';
 
 export const ConnectCodeScreen = () => {
-  const user = useSelector((state: TwoState) =>
+  const user: UnconnectedUser = useSelector((state: TwoState) =>
     selectUnconnectedUser(state.user),
   );
 
   const [partnerConnectCode, setPartnerConnectCode] = useState('');
-  const isPartnerCodeValid = (code: string): boolean =>
-    uuid.is(code) && code !== user.uid;
-  const [submitted, setSubmitted] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>('');
   const [refreshing, setRefreshing] = useState(false);
+
+  const isPartnerCodeValid = (): boolean =>
+    uuid.is(partnerConnectCode) && partnerConnectCode !== user.uid;
 
   const navigation = useNavigation<Routes>();
 
   const connectToPartner = (uid: string) => {
-    setError(null);
-    setSubmitted(true);
+    setError('');
+    setLoading(true);
     AuthenticationService.connectUser(uid)
       .then((updatedUser: User) => {
         console.log(
@@ -53,21 +54,21 @@ export const ConnectCodeScreen = () => {
         );
         resetNavigate('HomeScreen', navigation);
       })
-      .catch((e: ErrorResponse) => {
+      .catch(({reason}: ErrorResponse) => {
         if (
-          e.reason === 'User already has a partner.' ||
-          e.reason === 'Invalid JSON Web Token'
+          reason === 'User already has a partner.' ||
+          reason === 'Invalid JSON Web Token'
         ) {
           refresh();
         } else {
-          setError(e.reason);
+          setError(reason);
         }
       })
-      .finally(() => setSubmitted(false));
+      .finally(() => setLoading(false));
   };
 
   const refresh = () => {
-    setError(null);
+    setError('');
     setRefreshing(true);
     ConnectService.checkConnection()
       .then((isConnected: boolean) => {
@@ -79,7 +80,7 @@ export const ConnectCodeScreen = () => {
 
   return (
     <ScrollContainer
-      isLoading={submitted}
+      isLoading={loading}
       refreshControl={
         <RefreshControl
           colors={['#9Bd35A', '#689F38']}
@@ -87,8 +88,7 @@ export const ConnectCodeScreen = () => {
           onRefresh={refresh}
         />
       }
-      keyboardShouldPersistTaps="always"
-    >
+      keyboardShouldPersistTaps="always">
       <LogoHeader heading="Connect Your Partner" />
       <Text style={styles.subheading}>Thanks for joining us!</Text>
       <Text style={styles.paragraph}>
@@ -106,24 +106,18 @@ export const ConnectCodeScreen = () => {
       <View style={styles.codeInputContainer}>
         <Input
           attributes={{placeholder: 'e.g bWzGl2'}}
-          isValid={() => isPartnerCodeValid(partnerConnectCode)}
+          isValid={isPartnerCodeValid}
           onChange={setPartnerConnectCode}
           accessibilityLabel="Enter partner code"
         />
         {partnerConnectCode === user.uid && (
-          <Text style={styles.error} data-testid="error">
-            You can't connect with yourself!
-          </Text>
+          <Text style={styles.error}>You can't connect with yourself!</Text>
         )}
-        {error && (
-          <Text style={styles.error} data-testid="error">
-            {error}
-          </Text>
-        )}
+        {error && <Text style={styles.error}>{error}</Text>}
         <SubmitButton
           onSubmit={() => connectToPartner(partnerConnectCode)}
           text="Connect"
-          disabled={!isPartnerCodeValid(partnerConnectCode)}
+          disabled={!isPartnerCodeValid()}
           accessibilityLabel="Press to connect"
         />
       </View>
@@ -170,8 +164,7 @@ const CopyConnectCodeButton = ({code}: {code: string}) => {
       onPress={onCopy}
       style={buttonStyle}
       accessibilityHint="Copy connect code to clipboard"
-      accessibilityState={{checked: copied}}
-    >
+      accessibilityState={{checked: copied}}>
       <Text style={{...textStyle, marginBottom: 10}}>Your Code</Text>
 
       <Text style={codeStyle}>{code}</Text>
@@ -191,13 +184,7 @@ const ShareConnectCodeButton = ({code}: {code: string}) => {
   const share = () => {
     Share.share({
       message: code,
-    })
-      .then(result => {
-        if (result.action === Share.sharedAction) {
-          setShared(true);
-        }
-      })
-      .catch(() => {});
+    }).then(({action}) => setShared(action === Share.sharedAction));
   };
 
   const shareButton = (
@@ -223,8 +210,7 @@ const ShareConnectCodeButton = ({code}: {code: string}) => {
 
   return (
     <View
-      style={{flexDirection: 'row', justifyContent: 'center', marginTop: 15}}
-    >
+      style={{flexDirection: 'row', justifyContent: 'center', marginTop: 15}}>
       {shared ? sharedButton : shareButton}
     </View>
   );
