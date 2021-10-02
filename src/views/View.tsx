@@ -81,8 +81,7 @@ export const ScrollContainer = (props: ScrollViewContainerProps) => (
         marginLeft: '5%',
         marginRight: '5%',
       }}
-      {...props}
-    >
+      {...props}>
       {props.children}
     </KeyboardAwareScrollView>
   </Wrapper>

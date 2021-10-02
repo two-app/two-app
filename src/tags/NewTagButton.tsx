@@ -24,8 +24,7 @@ export const NewTagButton = ({onCreated, placeholder}: NewTagButtonProps) => (
         onSubmit: onCreated,
       })
     }
-    a11={{accessibilityLabel: 'Tap to create a new tag'}}
-  >
+    a11={{accessibilityLabel: 'Tap to create a new tag'}}>
     <View style={FormStyle.iconContainer}>
       <AntIcon name="tago" style={{fontSize: 13, color: Colors.REGULAR}} />
     </View>
@@ -89,8 +88,7 @@ const DeselectModal = ({
       accessibilityHint="Tap to deselect tag"
       swipeDirection={['up', 'down']}
       style={{justifyContent: 'center', margin: 0}}
-      backdropOpacity={0.8}
-    >
+      backdropOpacity={0.8}>
       <View style={{margin: 20}}>
         <Button
           onPress={() => {

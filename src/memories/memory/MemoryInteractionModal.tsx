@@ -107,8 +107,7 @@ export const MemoryInteractionModal = ({
 
         onClose();
       }}
-      testID="interaction-modal"
-    >
+      testID="interaction-modal">
       {modal.content != null && (
         <Modal
           content={modal.content}
@@ -165,8 +164,7 @@ const Modal = ({
 
       <Text
         style={styles.errorText}
-        accessibilityLabel="Resulting error from your action."
-      >
+        accessibilityLabel="Resulting error from your action.">
         {error}
       </Text>
     </View>

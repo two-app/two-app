@@ -6,7 +6,7 @@ import {
   render,
 } from '@testing-library/react-native';
 
-import RegisterScreen from '../../src/authentication/RegisterScreen';
+import {RegisterScreen} from '../../src/authentication/RegisterScreen';
 import EmailValidator from '../../src/forms/EmailValidator';
 import {UserRegistration} from '../../src/authentication/register_workflow/UserRegistrationModel';
 import {mockNavigation, resetMockNavigation} from '../utils/NavigationMocking';

@@ -38,8 +38,7 @@ export const TimelineHeader = ({selected, onSelected}: TimelineHeaderProps) => {
       <TouchableCard
         a11={{accessibilityLabel: 'Create a new memory'}}
         onPress={() => navigate('NewMemoryScreen')}
-        style={{marginVertical: 20}}
-      >
+        style={{marginVertical: 20}}>
         <SimpleLineIcon
           name="pencil"
           style={{fontSize: 13, paddingRight: 10, color: Colors.REGULAR}}

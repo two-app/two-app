@@ -15,8 +15,7 @@ export const TimelineIcon = ({focused, onPress}: IconProps) => {
     <TouchableOpacity
       style={s.container}
       onPress={onPress}
-      accessibilityLabel={'Open timeline Timeline'}
-    >
+      accessibilityLabel={'Open timeline Timeline'}>
       <MaterialCommunityIcon
         name="timeline-text-outline"
         style={[getIconStyle(focused), {transform: [{rotate: '-90deg'}]}]}
@@ -31,8 +30,7 @@ export const GroupedIcon = ({focused, onPress}: IconProps) => {
     <TouchableOpacity
       style={s.container}
       onPress={onPress}
-      accessibilityLabel={'Open grouped Timeline'}
-    >
+      accessibilityLabel={'Open grouped Timeline'}>
       <AntIcon name="tagso" style={[getIconStyle(focused), {marginTop: 2}]} />
       <Text style={getTextStyle(focused)}>GROUPED</Text>
     </TouchableOpacity>
@@ -44,8 +42,7 @@ export const GridIcon = ({focused, onPress}: IconProps) => {
     <TouchableOpacity
       style={s.container}
       onPress={onPress}
-      accessibilityLabel={'Open grid Timeline'}
-    >
+      accessibilityLabel={'Open grid Timeline'}>
       <MaterialIcon
         name="grid-on"
         style={[getIconStyle(), {fontSize: 18, color: Colors.FADED}]}

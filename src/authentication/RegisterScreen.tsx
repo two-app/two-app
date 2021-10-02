@@ -15,7 +15,7 @@ import UserRegistrationModel, {
 } from './register_workflow/UserRegistrationModel';
 import {LogoHeader} from './LogoHeader';
 
-const RegisterScreen = () => {
+export const RegisterScreen = () => {
   const navigation = useNavigation<Routes>();
   const [userRegistration, setUserRegistration] = useState(
     new UserRegistration(),
@@ -96,5 +96,3 @@ const RegisterScreen = () => {
     </ScrollContainer>
   );
 };
-
-export default RegisterScreen;

@@ -31,8 +31,7 @@ export const Touchable = (props: TouchableProps) => {
       onPressIn={() => {
         HapticFeedback.trigger('selection', {enableVibrateFallback: false});
         events.onPressIn();
-      }}
-    >
+      }}>
       <View {...viewProps}>{viewProps.children}</View>
     </TouchableWithoutFeedback>
   );

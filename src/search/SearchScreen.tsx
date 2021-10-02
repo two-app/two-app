@@ -21,8 +21,7 @@ export const SearchScreen = ({navigation}: SearchScreenProps) => {
           flexDirection: 'column',
           alignItems: 'center',
           marginTop: 20,
-        }}
-      >
+        }}>
         <Button text="Send me back!" onPress={() => navigation.goBack()} />
       </View>
     </ScrollContainer>

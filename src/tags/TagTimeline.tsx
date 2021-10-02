@@ -18,8 +18,7 @@ const TagItem = ({tag}: {tag: Tag}) => {
   return (
     <TouchableOpacity
       style={{marginVertical: 20}}
-      accessibilityLabel={`Open tag '${tag.name}'`}
-    >
+      accessibilityLabel={`Open tag '${tag.name}'`}>
       <Text>{tag.name}</Text>
     </TouchableOpacity>
   );
