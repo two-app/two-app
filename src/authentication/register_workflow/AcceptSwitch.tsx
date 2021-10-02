@@ -1,21 +1,20 @@
 import {StyleSheet, Switch, Text, View} from 'react-native';
-import PropTypes from 'prop-types';
-import {useState} from 'react';
+import React, {useState} from 'react';
 
 import Colors from '../../Colors';
 
 type AcceptBoxProps = {
-  children?: any;
-  onEmit: any;
+  children?: React.ReactNode;
+  onEmit: (isChecked: boolean) => void;
   required?: boolean;
-  accessibilityHint: string;
+  accessibilityLabel: string;
 };
 
 const AcceptBox = ({
   children,
   onEmit,
   required,
-  accessibilityHint,
+  accessibilityLabel,
 }: AcceptBoxProps) => {
   const [accepted, setAccepted] = useState(false);
 
@@ -26,11 +25,9 @@ const AcceptBox = ({
         required ? styles.required : undefined,
         accepted ? styles.accepted : undefined,
       ]}
-      data-testid="container"
-    >
+      data-testid="container">
       <Text
-        style={[styles.condition, accepted ? styles.acceptedText : undefined]}
-      >
+        style={[styles.condition, accepted ? styles.acceptedText : undefined]}>
         {children}
       </Text>
       <View style={styles.switchContainer}>
@@ -41,20 +38,15 @@ const AcceptBox = ({
             setAccepted(v);
             onEmit(v);
           }}
-          accessibilityHint={accessibilityHint}
+          accessibilityState={{checked: accepted}}
+          accessibilityLabel={accessibilityLabel}
+          accessibilityHint={
+            required ? 'Acceptance is required.' : 'Acceptance is optional.'
+          }
         />
       </View>
     </View>
   );
-};
-
-AcceptBox.propTypes = {
-  onEmit: PropTypes.func.isRequired,
-  isRequired: PropTypes.bool,
-};
-
-AcceptBox.defaultProps = {
-  isRequired: false,
 };
 
 const styles = StyleSheet.create({
