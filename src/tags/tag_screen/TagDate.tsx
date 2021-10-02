@@ -1,4 +1,3 @@
-import React from 'react';
 import moment from 'moment';
 import {Text, View, StyleSheet} from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';

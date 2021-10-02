@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {createRef, useEffect, useState} from 'react';
 import {
   Animated,
   Modal,
@@ -137,7 +137,7 @@ type ProgressiveVideo = {
 const ProgressiveVideo = ({content, isActive}: ProgressiveVideo) => {
   const [isBuffering, setBuffering] = useState(true);
   const uri = buildContentURI(content.fileKey, content.gallery);
-  const player = React.createRef<Video>();
+  const player = createRef<Video>();
 
   useEffect(() => {
     if (isActive) {

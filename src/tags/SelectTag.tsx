@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import {Text, StyleSheet} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 

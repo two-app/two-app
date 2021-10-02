@@ -1,4 +1,3 @@
-import React from 'react';
 import type {AlertButton} from 'react-native';
 import {View, StyleSheet, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';

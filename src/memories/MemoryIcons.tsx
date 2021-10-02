@@ -1,4 +1,3 @@
-import React from 'react';
 import FoundationIcon from 'react-native-vector-icons/Foundation';
 import {StyleSheet, Text, View} from 'react-native';
 import AntIcon from 'react-native-vector-icons/AntDesign';

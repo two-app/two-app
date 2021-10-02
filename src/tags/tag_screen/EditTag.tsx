@@ -1,4 +1,3 @@
-import React from 'react';
 import {StyleProp, ViewStyle} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';

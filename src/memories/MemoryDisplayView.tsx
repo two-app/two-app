@@ -1,4 +1,3 @@
-import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Image from 'react-native-fast-image';
 import {Colors} from 'react-native/Libraries/NewAppScreen';

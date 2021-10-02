@@ -1,6 +1,5 @@
 import {fireEvent, render} from '@testing-library/react-native';
 import type {RenderAPI} from '@testing-library/react-native';
-import React from 'react';
 import {Text} from 'react-native';
 import {Provider} from 'react-redux';
 import {CommonActions} from '@react-navigation/native';

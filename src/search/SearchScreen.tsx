@@ -1,4 +1,3 @@
-import React from 'react';
 import {Text, View} from 'react-native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {Colors} from 'react-native/Libraries/NewAppScreen';

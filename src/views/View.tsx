@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {View, ViewProps, StatusBar, ScrollViewProps} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import {SafeAreaProvider} from 'react-native-safe-area-context';

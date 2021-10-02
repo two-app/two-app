@@ -1,5 +1,4 @@
 import {Text} from 'react-native';
-import React from 'react';
 import type {RenderAPI} from '@testing-library/react-native';
 import {render, fireEvent, cleanup} from '@testing-library/react-native';
 import {CommonActions} from '@react-navigation/native';
