@@ -9,7 +9,7 @@ import SubmitButton from '../forms/SubmitButton';
 import type {ErrorResponse} from '../http/Response';
 import type {Routes} from '../navigation/RootNavigation';
 
-import LogoHeader from './LogoHeader';
+import {LogoHeader} from './LogoHeader';
 import UserRegistrationModel from './register_workflow/UserRegistrationModel';
 import type {LoginCredentials} from './AuthenticationService';
 import AuthenticationService, {
@@ -82,8 +82,7 @@ const LoginScreen = () => {
       {loginError && (
         <Text
           style={{color: Colors.DARK_SALMON}}
-          accessibilityHint="Login error"
-        >
+          accessibilityHint="Login error">
           {loginError}
         </Text>
       )}
@@ -98,8 +97,7 @@ const LoginScreen = () => {
               routes: [{name: 'RegisterScreen'}],
             })
           }
-          accessibilityLabel="Register a new account"
-        >
+          accessibilityLabel="Register a new account">
           <Text style={{fontWeight: 'bold', color: Colors.DARK}}>
             Create Account
           </Text>

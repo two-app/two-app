@@ -15,7 +15,7 @@ import HapticFeedback from 'react-native-haptic-feedback';
 import {useNavigation} from '@react-navigation/native';
 
 import {ScrollContainer} from '../../views/View';
-import LogoHeader from '../LogoHeader';
+import {LogoHeader} from '../LogoHeader';
 import Colors from '../../Colors';
 import Input from '../../forms/Input';
 import SubmitButton from '../../forms/SubmitButton';

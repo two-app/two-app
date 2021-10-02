@@ -13,7 +13,7 @@ import type {Routes} from '../navigation/RootNavigation';
 import UserRegistrationModel, {
   UserRegistration,
 } from './register_workflow/UserRegistrationModel';
-import LogoHeader from './LogoHeader';
+import {LogoHeader} from './LogoHeader';
 
 const RegisterScreen = () => {
   const navigation = useNavigation<Routes>();
@@ -87,8 +87,7 @@ const RegisterScreen = () => {
         <TouchableOpacity
           style={{marginLeft: 5}}
           onPress={() => resetNavigate('LoginScreen', navigation)}
-          accessibilityLabel="Press to login"
-        >
+          accessibilityLabel="Press to login">
           <Text style={{fontWeight: 'bold', color: Colors.DARK}}>Sign In</Text>
         </TouchableOpacity>
       </View>

@@ -3,7 +3,7 @@ import {Text, View, Linking} from 'react-native';
 import {useNavigation, CommonActions, useRoute} from '@react-navigation/native';
 import Config from 'react-native-config';
 
-import LogoHeader from '../LogoHeader';
+import {LogoHeader} from '../LogoHeader';
 import SubmitButton from '../../forms/SubmitButton';
 import {ScrollContainer} from '../../views/View';
 import Colors from '../../Colors';
