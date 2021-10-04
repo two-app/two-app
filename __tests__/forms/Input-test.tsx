@@ -1,122 +1,85 @@
-import 'react-native';
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
-import type {ShallowWrapper} from 'enzyme';
-import {shallow} from 'enzyme';
-
-import Input from '../../src/forms/Input';
-import Colors from '../../src/Colors';
+import {Input} from '../../src/forms/Input';
+import {fireEvent, render, RenderAPI} from '@testing-library/react-native';
+import {Text} from 'react-native';
 
 describe('Input', () => {
   let tb: InputTestBed;
   beforeEach(() => {
-    tb = new InputTestBed();
+    tb = new InputTestBed().build();
   });
 
-  test('should maintain snapshot', () =>
-    expect(renderer.create(<Input />)).toMatchSnapshot());
+  test('starts with an empty value', () => {
+    expect(tb.getInputValue()).toEqual('');
+  });
 
-  test('starts with an empty value', () =>
-    expect(tb.input.prop('value')).toEqual(''));
-
-  test('applies supplied attributes', () =>
-    expect(tb.input.prop('placeholder')).toEqual(tb.attributes.placeholder));
+  test('applies supplied attributes', () => {
+    expect(tb.input().props.placeholder).toEqual(tb.attributes.placeholder);
+  });
 
   test('maintains the input value', () => {
     expect(tb.getInputValue()).toEqual('');
+
     tb.setInputValue('New Value');
+
     expect(tb.getInputValue()).toEqual('New Value');
   });
-});
 
-describe('On Change', () => {
-  test('emits to onChangeFn', () => {
-    const tb = new InputTestBed();
+  test('emits the changed value', () => {
+    tb.setInputValue('New Value');
 
-    tb.setInputValue('testVal');
-
-    expect(tb.onChangeFn).toHaveBeenCalledWith('testVal');
+    expect(tb.onChange).toHaveBeenCalledWith('New Value');
   });
-});
-
-describe('On Blur', () => {
-  let tb: InputTestBed;
-  beforeEach(() => (tb = new InputTestBed()));
 
   test('checks if input is valid', () => {
-    tb.blurInput('Test Text');
-    expect(tb.isValidFn).toHaveBeenCalledWith('Test Text');
+    tb.isValid = jest.fn().mockReturnValue(true);
+    tb.build();
+
+    tb.setInputValue('New Value');
+
+    expect(tb.isValid).toHaveBeenCalledWith('New Value');
+    expect(tb.input().props.accessibilityValue.text).toEqual('Valid entry');
   });
 
-  test('gets a dark border when focused', () => {
-    tb.input.prop<() => void>('onFocus')();
-    tb.refresh();
-    expect(tb.input.prop<any>('style')[1]).toHaveProperty(
-      'borderBottomColor',
-      Colors.DARK,
-    );
-  });
+  test('becomes invalid if the valid function returns false', () => {
+    tb.isValid = () => false;
+    tb.build();
 
-  test('gets a salmon border when invalid', () => {
-    tb.isValidFn.mockReturnValue(false);
-    tb.blurInput('');
-    expect(tb.input.prop<any>('style')[2]).toHaveProperty(
-      'borderBottomColor',
-      Colors.SALMON,
-    );
-  });
-});
+    tb.setInputValue('New Value');
 
-describe('With label', () => {
-  test('creates the label', () =>
-    expect(new InputTestBed('lbl').wrapper.exists('Label')).toBe(true));
-
-  test('passes label text in', () => {
-    expect(new InputTestBed('lbl').wrapper.find('Label').prop('text')).toEqual(
-      'lbl',
-    );
-  });
-
-  test('does not create a label if none provided', () => {
-    expect(new InputTestBed().wrapper.exists('Label')).toBe(false);
+    expect(tb.input().props.accessibilityValue.text).toEqual('Invalid entry');
   });
 });
 
 class InputTestBed {
-  attributes = {placeholder: 'Test Placeholder'};
-  isValidFn = jest.fn();
-  onChangeFn = jest.fn();
-  wrapper: ShallowWrapper;
-  input: ShallowWrapper;
+  render: RenderAPI = render(<Text>Not Implemented</Text>);
 
-  constructor(label?: string) {
-    this.wrapper = shallow(
+  attributes = {placeholder: 'Test Placeholder'};
+  isValid: () => boolean = () => true;
+  onChange = jest.fn();
+  inputLabel = 'Test Input Label';
+
+  // elements
+  input = () => this.render.getByA11yLabel('Test Input');
+
+  // queries
+  getInputValue = (): string => this.input().props.value;
+
+  // events
+  setInputValue = (text: string) => {
+    fireEvent.changeText(this.input(), text);
+    fireEvent(this.input(), 'blur');
+  };
+
+  build = (): InputTestBed => {
+    this.render = render(
       <Input
         attributes={this.attributes}
-        isValid={this.isValidFn}
-        onChange={this.onChangeFn}
-        label={label}
+        isValid={this.isValid}
+        onChange={this.onChange}
+        label={this.inputLabel}
+        accessibilityLabel="Test Input"
       />,
     );
-
-    this.input = this.wrapper.find('TextInput');
-  }
-
-  refresh = () => {
-    this.wrapper.update();
-    this.input = this.wrapper.find('TextInput');
+    return this;
   };
-
-  setInputValue = (value: string) => {
-    this.input.prop<(v: string) => void>('onChangeText')(value);
-    this.refresh();
-  };
-
-  blurInput = (value: string) => {
-    this.setInputValue(value);
-    this.input.prop<() => void>('onBlur')();
-    this.refresh();
-  };
-
-  getInputValue = () => this.input.prop('value');
 }

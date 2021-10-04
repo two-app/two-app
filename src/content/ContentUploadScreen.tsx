@@ -13,7 +13,7 @@ import type {RootStackParamList} from '../../Router';
 import Colors from '../Colors';
 import {Heading} from '../home/Heading';
 import {chunkToRows, GridRow, Cell} from '../memories/memory/Grid';
-import SubmitButton from '../forms/SubmitButton';
+import {SubmitButton} from '../forms/SubmitButton';
 import {MemoryImageCount, MemoryVideoCount} from '../memories/MemoryIcons';
 import {uploadToMemory} from '../memories/MemoryService';
 import type {ErrorResponse} from '../http/Response';

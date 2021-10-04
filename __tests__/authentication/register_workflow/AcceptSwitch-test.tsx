@@ -1,4 +1,4 @@
-import AcceptSwitch from '../../../src/authentication/register_workflow/AcceptSwitch';
+import {AcceptSwitch} from '../../../src/authentication/register_workflow/AcceptSwitch';
 import {fireEvent, render, RenderAPI} from '@testing-library/react-native';
 import {Text} from 'react-native';
 

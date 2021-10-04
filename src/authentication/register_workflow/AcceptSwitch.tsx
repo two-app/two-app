@@ -10,7 +10,7 @@ type AcceptBoxProps = {
   accessibilityLabel: string;
 };
 
-const AcceptBox = ({
+export const AcceptSwitch = ({
   children,
   onEmit,
   required,
@@ -86,5 +86,3 @@ const styles = StyleSheet.create({
     transform: [{scaleX: 0.8}, {scaleY: 0.8}],
   },
 });
-
-export default AcceptBox;

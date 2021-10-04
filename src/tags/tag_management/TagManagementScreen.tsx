@@ -4,7 +4,7 @@ import type {StackNavigationProp} from '@react-navigation/stack';
 import type {RouteProp} from '@react-navigation/native';
 
 import type {RootStackParamList} from '../../../Router';
-import SubmitButton from '../../forms/SubmitButton';
+import {SubmitButton} from '../../forms/SubmitButton';
 import {Heading} from '../../home/Heading';
 import type {ErrorResponse} from '../../http/Response';
 import {TagInput} from '../../memories/new_memory/TagInput';

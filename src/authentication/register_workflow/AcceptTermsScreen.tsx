@@ -4,14 +4,14 @@ import {useNavigation, CommonActions, useRoute} from '@react-navigation/native';
 import Config from 'react-native-config';
 
 import {LogoHeader} from '../LogoHeader';
-import SubmitButton from '../../forms/SubmitButton';
+import {SubmitButton} from '../../forms/SubmitButton';
 import {ScrollContainer} from '../../views/View';
 import Colors from '../../Colors';
 import AuthenticationService from '../AuthenticationService';
 import type {ErrorResponse} from '../../http/Response';
 
 import type {UserRegistration} from './UserRegistrationModel';
-import AcceptBox from './AcceptSwitch';
+import {AcceptSwitch} from './AcceptSwitch';
 import {Route, Routes} from '../../navigation/RootNavigation';
 
 export const AcceptTermsScreen = () => {
@@ -20,11 +20,11 @@ export const AcceptTermsScreen = () => {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const [registration, setRegistration] = useState<UserRegistration>(
+  const [reg, setReg] = useState<UserRegistration>(
     route.params.userRegistration,
   );
 
-  const validAgreedState = registration.acceptedTerms && registration.ofAge;
+  const validAgreedState = reg.acceptedTerms && reg.ofAge;
 
   const navigateToConnectCodeScreen = () =>
     navigation.dispatch(
@@ -35,7 +35,7 @@ export const AcceptTermsScreen = () => {
     );
 
   const onSubmit = () => {
-    AuthenticationService.registerUser(registration)
+    AuthenticationService.registerUser(reg)
       .then(() => navigateToConnectCodeScreen())
       .catch((e: ErrorResponse) => setError(e.reason))
       .finally(() => setLoading(false));
@@ -45,11 +45,10 @@ export const AcceptTermsScreen = () => {
     <ScrollContainer isLoading={loading}>
       <View>
         <LogoHeader heading="Terms & Conditions" />
-        <AcceptBox
+
+        <AcceptSwitch
           accessibilityLabel="I agree to the privacy policy."
-          onEmit={acceptedTerms =>
-            setRegistration({...registration, acceptedTerms})
-          }
+          onEmit={acceptedTerms => setReg({...reg, acceptedTerms})}
           required>
           I agree to the{' '}
           <Text
@@ -57,20 +56,20 @@ export const AcceptTermsScreen = () => {
             onPress={() => Linking.openURL(Config.PRIVACY_POLICY_URL)}>
             Privacy Policy.
           </Text>
-        </AcceptBox>
-        <AcceptBox
+        </AcceptSwitch>
+
+        <AcceptSwitch
           accessibilityLabel="I am over the age of 16."
-          onEmit={ofAge => setRegistration({...registration, ofAge})}
+          onEmit={ofAge => setReg({...reg, ofAge})}
           required>
           I am over the age of 16.
-        </AcceptBox>
-        <AcceptBox
+        </AcceptSwitch>
+
+        <AcceptSwitch
           accessibilityLabel="I agree to occasionally receive emails from Two."
-          onEmit={receivesEmails =>
-            setRegistration({...registration, receivesEmails})
-          }>
+          onEmit={receivesEmails => setReg({...reg, receivesEmails})}>
           I agree to occasionally receive emails from Two.
-        </AcceptBox>
+        </AcceptSwitch>
 
         <SubmitButton
           onSubmit={onSubmit}

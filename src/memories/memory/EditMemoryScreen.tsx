@@ -10,7 +10,7 @@ import {ScrollContainer} from '../../views/View';
 import TitleInput from '../new_memory/TitleInput';
 import {RootStackParamList} from '../../../Router';
 import {Heading} from '../../home/Heading';
-import SubmitButton from '../../forms/SubmitButton';
+import {SubmitButton} from '../../forms/SubmitButton';
 import {DateTimePicker} from '../new_memory/DateInput';
 import {LocationInput} from '../new_memory/LocationInput';
 import {SelectTag} from '../../tags/SelectTag';

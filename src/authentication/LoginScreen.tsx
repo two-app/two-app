@@ -4,8 +4,8 @@ import {useNavigation} from '@react-navigation/native';
 
 import {ScrollContainer} from '../views/View';
 import Colors from '../Colors';
-import Input from '../forms/Input';
-import SubmitButton from '../forms/SubmitButton';
+import {Input} from '../forms/Input';
+import {SubmitButton} from '../forms/SubmitButton';
 import type {ErrorResponse} from '../http/Response';
 import type {Routes} from '../navigation/RootNavigation';
 

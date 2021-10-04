@@ -3,9 +3,9 @@ import {Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 
-import SubmitButton from '../forms/SubmitButton';
+import {SubmitButton} from '../forms/SubmitButton';
 import {ScrollContainer} from '../views/View';
-import Input from '../forms/Input';
+import {Input} from '../forms/Input';
 import Colors from '../Colors';
 import {resetNavigate} from '../navigation/NavigationUtilities';
 import type {Routes} from '../navigation/RootNavigation';
