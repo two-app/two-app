@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
 
-import SubmitButton from '../forms/SubmitButton';
+import {SubmitButton} from '../forms/SubmitButton';
 import {ScrollContainer} from '../views/View';
-import Input from '../forms/Input';
+import {Input} from '../forms/Input';
 import Colors from '../Colors';
 import {resetNavigate} from '../navigation/NavigationUtilities';
 import type {Routes} from '../navigation/RootNavigation';
@@ -13,9 +13,9 @@ import type {Routes} from '../navigation/RootNavigation';
 import UserRegistrationModel, {
   UserRegistration,
 } from './register_workflow/UserRegistrationModel';
-import LogoHeader from './LogoHeader';
+import {LogoHeader} from './LogoHeader';
 
-const RegisterScreen = () => {
+export const RegisterScreen = () => {
   const navigation = useNavigation<Routes>();
   const [userRegistration, setUserRegistration] = useState(
     new UserRegistration(),
@@ -96,5 +96,3 @@ const RegisterScreen = () => {
     </ScrollContainer>
   );
 };
-
-export default RegisterScreen;

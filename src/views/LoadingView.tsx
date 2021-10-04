@@ -5,7 +5,6 @@ import {
   Text,
   useWindowDimensions,
 } from 'react-native';
-import React from 'react';
 
 import Colors from '../Colors';
 

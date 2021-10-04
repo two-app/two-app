@@ -1,5 +1,4 @@
 import {Text} from 'react-native';
-import React from 'react';
 import type {ReactTestInstance} from 'react-test-renderer';
 import type {QueryReturn, RenderAPI} from '@testing-library/react-native';
 import {

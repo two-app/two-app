@@ -1,9 +1,8 @@
-import React from 'react';
 import {StyleSheet, Text} from 'react-native';
 
 import Colors from '../Colors';
 
-const LogoHeader = ({heading}: {heading: string}) => (
+export const LogoHeader = ({heading}: {heading: string}) => (
   <>
     <Text style={styles.logo}>two.</Text>
     <Text style={styles.heading} data-testid="heading">
@@ -27,5 +26,3 @@ const styles = StyleSheet.create({
     color: Colors.DARK,
   },
 });
-
-export default LogoHeader;

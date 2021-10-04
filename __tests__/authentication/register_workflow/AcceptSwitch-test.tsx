@@ -1,92 +1,77 @@
-import 'react-native';
-import React from 'react';
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
-import type {ShallowWrapper} from 'enzyme';
-import {shallow} from 'enzyme';
+import {AcceptSwitch} from '../../../src/authentication/register_workflow/AcceptSwitch';
+import {fireEvent, render, RenderAPI} from '@testing-library/react-native';
+import {Text} from 'react-native';
 
-import AcceptSwitch from '../../../src/authentication/register_workflow/AcceptSwitch';
-import Colors from '../../../src/Colors';
+describe('AcceptSwitch', () => {
+  let tb: AcceptSwitchTestBed;
 
-let tb: AcceptSwitchTestBed;
+  beforeEach(() => (tb = new AcceptSwitchTestBed().build()));
 
-beforeEach(() => (tb = new AcceptSwitchTestBed()));
-
-test('should maintain snapshot', () =>
-  expect(
-    renderer.create(
-      <AcceptSwitch accessibilityHint="test hint" onEmit={tb.onEmitFn}>
-        Some Condition
-      </AcceptSwitch>,
-    ),
-  ).toMatchSnapshot());
-
-test('should display the condition', () =>
-  expect(tb.wrapper.find('Text').render().text()).toEqual('Some Condition'));
-
-test('should emit when the value changes', () => {
-  tb.setValueChanged();
-  expect(tb.onEmitFn).toHaveBeenCalledWith(true);
-});
-
-describe('Switch', () => {
-  test('should be false by default', () =>
-    expect(tb.getSwitch().prop('value')).toBe(false));
-
-  test('should change to true when clicked', () => {
-    tb.setValueChanged();
-    expect(tb.wrapper.find('Switch').prop('value')).toBe(true);
+  test('it should display the condition', () => {
+    expect(tb.render.getByText('Some Condition')).toBeTruthy();
   });
 
-  test('should turn the container border green', () => {
-    tb.setValueChanged();
-
-    expect(
-      tb.doesContainerStyleContain('borderColor', Colors.VALID_GREEN_DARK),
-    ).toBe(true);
+  test('should be unchecked by default', () => {
+    expect(tb.isSwitchEnabled()).toEqual(false);
   });
 
-  test('should set the background to green', () => {
-    tb.setValueChanged();
-    expect(
-      tb.doesContainerStyleContain('backgroundColor', Colors.VALID_GREEN),
-    ).toBe(true);
-  });
-});
+  test('should emit its status when pressed', () => {
+    tb.pressSwitch();
 
-describe('Required', () => {
-  test('should not be required by default, and have no border', () => {
-    expect(tb.doesContainerStyleContain('borderColor', Colors.DARK)).toBe(
-      false,
-    );
+    expect(tb.onEmit).toHaveBeenCalledWith(true);
   });
 
-  test('should have border if required', () => {
-    tb.wrapper.setProps({...tb.wrapper.props(), required: true});
+  test('should become checked when pressed', () => {
+    tb.pressSwitch();
 
-    expect(tb.doesContainerStyleContain('borderColor', Colors.DARK)).toBe(true);
+    expect(tb.isSwitchEnabled()).toEqual(true);
+  });
+
+  test('should be a required field', () => {
+    expect(tb.isSwitchRequired()).toEqual(true);
+  });
+
+  test('should be optional without the required flag', () => {
+    tb.setRequired(false);
+    tb.build();
+
+    expect(tb.isSwitchRequired()).toEqual(false);
   });
 });
 
 class AcceptSwitchTestBed {
-  onEmitFn = jest.fn();
-  wrapper = shallow(
-    <AcceptSwitch accessibilityHint="test hint" onEmit={this.onEmitFn}>
-      Some Condition
-    </AcceptSwitch>,
-  );
+  isRequired: boolean = true;
 
-  getSwitch = (): ShallowWrapper => this.wrapper.find('Switch');
+  render: RenderAPI = render(<Text>Not Implemented</Text>);
 
-  setValueChanged = () =>
-    this.wrapper.find('Switch').prop<(v: boolean) => void>('onValueChange')(
-      true,
+  setRequired = (isRequired: boolean) => {
+    this.isRequired = isRequired;
+  };
+
+  // elements
+  switchButton = () => this.render.getByA11yLabel('Test Switch Hint');
+
+  // queries
+  isSwitchRequired = () =>
+    this.switchButton().props.accessibilityHint === 'Acceptance is required.';
+  isSwitchEnabled = () =>
+    this.switchButton().props.accessibilityState.checked === true;
+
+  // events
+  pressSwitch = () => fireEvent(this.switchButton(), 'onValueChange', true);
+
+  // mocks
+  onEmit = jest.fn();
+
+  build = (): AcceptSwitchTestBed => {
+    this.render = render(
+      <AcceptSwitch
+        accessibilityLabel="Test Switch Hint"
+        onEmit={this.onEmit}
+        required={this.isRequired}>
+        <Text>Some Condition</Text>
+      </AcceptSwitch>,
     );
-
-  doesContainerStyleContain = (key: string, value: any): boolean =>
-    this.wrapper
-      .find("View[data-testid='container']")
-      .prop<[any]>('style')
-      .filter(f => f !== undefined)
-      .some(f => f[key] === value);
+    return this;
+  };
 }

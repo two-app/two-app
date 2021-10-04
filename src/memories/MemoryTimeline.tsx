@@ -1,6 +1,5 @@
 import type {NavigationProp} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
 import {TouchableOpacity} from 'react-native';
 
 import type {RootStackParamList} from '../../Router';

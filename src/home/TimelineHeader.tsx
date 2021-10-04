@@ -1,5 +1,4 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
 import {View, Text} from 'react-native';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';

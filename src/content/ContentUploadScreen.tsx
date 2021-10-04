@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import type {StackNavigationProp} from '@react-navigation/stack';
 import type {RouteProp} from '@react-navigation/native';
 import {View, Text, StyleSheet} from 'react-native';
@@ -13,7 +13,7 @@ import type {RootStackParamList} from '../../Router';
 import Colors from '../Colors';
 import {Heading} from '../home/Heading';
 import {chunkToRows, GridRow, Cell} from '../memories/memory/Grid';
-import SubmitButton from '../forms/SubmitButton';
+import {SubmitButton} from '../forms/SubmitButton';
 import {MemoryImageCount, MemoryVideoCount} from '../memories/MemoryIcons';
 import {uploadToMemory} from '../memories/MemoryService';
 import type {ErrorResponse} from '../http/Response';

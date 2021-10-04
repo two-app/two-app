@@ -345,7 +345,7 @@ PODS:
     - React-RCTVibration
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.7.2):
+  - RNScreens (3.8.0):
     - React-Core
     - React-RCTImage
   - RNVectorIcons (8.1.0):
@@ -509,7 +509,7 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
-  FBReactNativeSpec: ea646b6cdb614a8e8892abe5dee9ed0a6b70e7c1
+  FBReactNativeSpec: 987ca4745097d45b1cf7ec2dec6e1a0e458f1ee1
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
@@ -549,7 +549,7 @@ SPEC CHECKSUMS:
   RNImageCropPicker: 35a3ceb837446fa11547704709bb22b5fac6d584
   RNReactNativeHapticFeedback: 653a8c126a0f5e88ce15ffe280b3ff37e1fbb285
   RNReanimated: 241c586663f44f19a53883c63375fdd041253960
-  RNScreens: 0591543e343c7444ea1756b6265d81a4295922c9
+  RNScreens: 6e1ea5787989f92b0671049b808aef64fa1ef98c
   RNVectorIcons: 31cebfcf94e8cf8686eb5303ae0357da64d7a5a4
   SDWebImage: 0b42b8719ab0c5257177d5894306e8a336b21cbb
   SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21

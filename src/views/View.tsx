@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import {View, ViewProps, StatusBar, ScrollViewProps} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -76,7 +76,11 @@ export const ScrollContainer = (props: ScrollViewContainerProps) => (
     )}
     <KeyboardAwareScrollView
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{flexGrow: 1, marginLeft: '5%', marginRight: '5%'}}
+      contentContainerStyle={{
+        flexGrow: 1,
+        marginLeft: '5%',
+        marginRight: '5%',
+      }}
       {...props}>
       {props.children}
     </KeyboardAwareScrollView>

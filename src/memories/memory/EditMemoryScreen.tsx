@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 import {View, Text} from 'react-native';
@@ -10,7 +10,7 @@ import {ScrollContainer} from '../../views/View';
 import TitleInput from '../new_memory/TitleInput';
 import {RootStackParamList} from '../../../Router';
 import {Heading} from '../../home/Heading';
-import SubmitButton from '../../forms/SubmitButton';
+import {SubmitButton} from '../../forms/SubmitButton';
 import {DateTimePicker} from '../new_memory/DateInput';
 import {LocationInput} from '../new_memory/LocationInput';
 import {SelectTag} from '../../tags/SelectTag';

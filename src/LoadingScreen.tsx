@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import {Text} from 'react-native';
 import type {ConnectedProps} from 'react-redux';
 import {connect} from 'react-redux';

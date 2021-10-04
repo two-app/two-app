@@ -1,5 +1,4 @@
 import {Text} from 'react-native';
-import React from 'react';
 import type {RenderAPI} from '@testing-library/react-native';
 import {render, fireEvent, cleanup} from '@testing-library/react-native';
 import {CommonActions} from '@react-navigation/native';
@@ -113,7 +112,11 @@ describe('PartnerScreen', () => {
 
 class PartnerScreenTestBed {
   user: User = {uid: uuidv4(), pid: uuidv4(), cid: uuidv4()};
-  userProfile: UserProfile = {...this.user, firstName: 'ABC', lastName: '123'};
+  userProfile: UserProfile = {
+    ...this.user,
+    firstName: 'ABC',
+    lastName: '123',
+  };
   partnerProfile: UserProfile = {
     uid: this.user.pid,
     pid: this.user.uid,

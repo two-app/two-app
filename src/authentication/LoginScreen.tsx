@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 import {ScrollContainer} from '../views/View';
 import Colors from '../Colors';
-import Input from '../forms/Input';
-import SubmitButton from '../forms/SubmitButton';
+import {Input} from '../forms/Input';
+import {SubmitButton} from '../forms/SubmitButton';
 import type {ErrorResponse} from '../http/Response';
 import type {Routes} from '../navigation/RootNavigation';
 
-import LogoHeader from './LogoHeader';
+import {LogoHeader} from './LogoHeader';
 import UserRegistrationModel from './register_workflow/UserRegistrationModel';
 import type {LoginCredentials} from './AuthenticationService';
 import AuthenticationService, {

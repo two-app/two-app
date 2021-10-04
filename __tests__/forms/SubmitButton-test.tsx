@@ -1,45 +1,58 @@
-import 'react-native';
-import React from 'react';
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
-import type {ShallowWrapper} from 'enzyme';
-import {shallow} from 'enzyme';
-
-import SubmitButton from '../../src/forms/SubmitButton';
+import {SubmitButton} from '../../src/forms/SubmitButton';
+import {fireEvent, render, RenderAPI} from '@testing-library/react-native';
+import {Text} from 'react-native';
 
 describe('SubmitButton', () => {
-  test('should maintain snapshot', () =>
-    expect(
-      renderer.create(<SubmitButton text={'Submit'} onSubmit={() => null} />),
-    ).toMatchSnapshot());
+  let tb: SubmitButtonTestBed;
 
-  let onSubmitFn: jest.Mock;
-  let wrapper: ShallowWrapper;
+  beforeEach(() => (tb = new SubmitButtonTestBed().build()));
 
-  beforeEach(() => {
-    onSubmitFn = jest.fn();
-    wrapper = shallow(
-      <SubmitButton onSubmit={onSubmitFn} text="Test Submit" />,
-    );
+  test('it should fire the submit event on press', () => {
+    tb.pressSubmit();
+
+    expect(tb.onSubmit).toHaveBeenCalledTimes(1);
   });
 
-  test('should callback onSubmit when pressed', () => {
-    wrapper.find('EnabledSubmitButton').prop<() => void>('onSubmit')();
-    expect(onSubmitFn).toHaveBeenCalled();
+  test('it should display the given text', () => {
+    expect(tb.render.getByText(tb.submitText)).toBeTruthy();
   });
 
-  test('should display given text', () =>
-    expect(wrapper.find('EnabledSubmitButton').shallow().prop('text')).toEqual(
-      'Test Submit',
-    ));
+  describe('disabled button', () => {
+    test('it should not fire an event when pressed', () => {
+      tb.disabled = true;
+      tb.build();
 
-  test('with disabled set to true it should render a disabled button', () => {
-    const w = shallow(
-      <SubmitButton onSubmit={onSubmitFn} text="text" disabled={true} />,
-    );
-    expect(w.exists('DisabledSubmitButton')).toBe(true);
+      tb.pressSubmit();
+
+      expect(tb.onSubmit).not.toHaveBeenCalled();
+    });
   });
-
-  test('should not be disabled by default', () =>
-    expect(wrapper.exists('EnabledSubmitButton')).toBe(true));
 });
+
+class SubmitButtonTestBed {
+  render: RenderAPI = render(<Text>Not Implemented</Text>);
+  onSubmit = jest.fn();
+  submitText = 'Test Submit';
+  disabled = false;
+
+  constructor() {}
+
+  //  elements
+  button = () => this.render.getByA11yLabel('Test Submit Label');
+
+  // events
+  pressSubmit = () => fireEvent.press(this.button());
+
+  build = (): SubmitButtonTestBed => {
+    this.render = render(
+      <SubmitButton
+        onSubmit={this.onSubmit}
+        text={this.submitText}
+        disabled={this.disabled}
+        accessibilityHint="Test Submit Hint"
+        accessibilityLabel="Test Submit Label"
+      />,
+    );
+    return this;
+  };
+}
