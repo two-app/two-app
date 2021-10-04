@@ -104,8 +104,7 @@ export const Button = ({
         HapticFeedback.trigger('selection', {enableVibrateFallback: false});
       }}
       onPressOut={() => setPressed(false)}
-      onPress={onPress}
-    >
+      onPress={onPress}>
       <View style={[viewStyle, style]}>
         <Text style={textStyle}>{text}</Text>
         {loading && (

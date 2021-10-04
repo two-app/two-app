@@ -1,7 +1,7 @@
 import {createStackNavigator} from '@react-navigation/stack';
 
 import {LoginScreen} from './src/authentication/LoginScreen';
-import RegisterScreen from './src/authentication/RegisterScreen';
+import {RegisterScreen} from './src/authentication/RegisterScreen';
 import {AcceptTermsScreen} from './src/authentication/register_workflow/AcceptTermsScreen';
 import {ConnectCodeScreen} from './src/authentication/register_workflow/ConnectCodeScreen';
 import type {UserRegistration} from './src/authentication/register_workflow/UserRegistrationModel';
@@ -53,8 +53,7 @@ const AppStack = () => (
       gestureResponseDistance: 50,
       cardOverlayEnabled: false,
       cardShadowEnabled: false,
-    }}
-  >
+    }}>
     <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
     <Stack.Screen name="LogoutScreen" component={LogoutScreen} />
     <Stack.Screen name="LoginScreen" component={LoginScreen} />

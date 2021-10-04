@@ -1,60 +1,53 @@
 import {StyleSheet, Switch, Text, View} from 'react-native';
-import PropTypes from 'prop-types';
-import {useState} from 'react';
+import React, {useState} from 'react';
 
 import Colors from '../../Colors';
 
 type AcceptBoxProps = {
-  children?: any;
-  onEmit: any;
+  children?: React.ReactNode;
+  onEmit: (isChecked: boolean) => void;
   required?: boolean;
-  accessibilityHint: string;
+  accessibilityLabel: string;
 };
 
-const AcceptBox = ({
+export const AcceptSwitch = ({
   children,
   onEmit,
   required,
-  accessibilityHint,
+  accessibilityLabel,
 }: AcceptBoxProps) => {
-  const [accepted, setAccepted] = useState(false);
+  const [checked, setChecked] = useState(false);
+
+  const check = (isChecked: boolean) => {
+    setChecked(isChecked);
+    onEmit(isChecked);
+  };
 
   return (
     <View
       style={[
         styles.container,
         required ? styles.required : undefined,
-        accepted ? styles.accepted : undefined,
-      ]}
-      data-testid="container"
-    >
+        checked ? styles.accepted : undefined,
+      ]}>
       <Text
-        style={[styles.condition, accepted ? styles.acceptedText : undefined]}
-      >
+        style={[styles.condition, checked ? styles.acceptedText : undefined]}>
         {children}
       </Text>
       <View style={styles.switchContainer}>
         <Switch
           style={styles.switch}
-          value={accepted}
-          onValueChange={v => {
-            setAccepted(v);
-            onEmit(v);
-          }}
-          accessibilityHint={accessibilityHint}
+          value={checked}
+          onValueChange={check}
+          accessibilityState={{checked: checked}}
+          accessibilityLabel={accessibilityLabel}
+          accessibilityHint={
+            required ? 'Acceptance is required.' : 'Acceptance is optional.'
+          }
         />
       </View>
     </View>
   );
-};
-
-AcceptBox.propTypes = {
-  onEmit: PropTypes.func.isRequired,
-  isRequired: PropTypes.bool,
-};
-
-AcceptBox.defaultProps = {
-  isRequired: false,
 };
 
 const styles = StyleSheet.create({
@@ -93,5 +86,3 @@ const styles = StyleSheet.create({
     transform: [{scaleX: 0.8}, {scaleY: 0.8}],
   },
 });
-
-export default AcceptBox;

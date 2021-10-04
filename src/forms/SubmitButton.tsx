@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import {View, Keyboard} from 'react-native';
 
 import Colors from '../Colors';
@@ -16,13 +15,13 @@ type EnabledButtonProps = DisabledButtonProps & {
 };
 
 type SubmitButtonProps = EnabledButtonProps & {
-  disabled: boolean;
+  disabled?: boolean;
 };
 
-const SubmitButton = ({
+export const SubmitButton = ({
   text,
   onSubmit,
-  disabled,
+  disabled = false,
   accessibilityHint,
   accessibilityLabel,
 }: SubmitButtonProps) => (
@@ -82,15 +81,3 @@ const EnabledSubmitButton = ({
     accessibilityState={{disabled: false}}
   />
 );
-
-SubmitButton.propTypes = {
-  text: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  disabled: PropTypes.bool,
-};
-
-SubmitButton.defaultProps = {
-  disabled: false,
-};
-
-export default SubmitButton;

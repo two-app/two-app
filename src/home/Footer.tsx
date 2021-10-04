@@ -1,6 +1,13 @@
 import {NavigationProp} from '@react-navigation/native';
-import {ComponentClass} from 'enzyme';
-import {StyleSheet, Text, TouchableOpacity, View, Platform} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Platform,
+  AccessibilityProps,
+} from 'react-native';
+import {Icon} from 'react-native-vector-icons/Icon';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -8,6 +15,7 @@ import {RootStackParamList} from '../../Router';
 import Colors from '../Colors';
 import {resetNavigate} from '../navigation/NavigationUtilities';
 import {getNavigation} from '../navigation/RootNavigation';
+import {a11y} from '../views/helpers';
 
 type FooterProps = {
   active: keyof RootStackParamList;
@@ -47,12 +55,12 @@ export const Footer = ({active}: FooterProps) => (
 
 type ItemProps = {
   navigateTo: keyof RootStackParamList;
-  icon: ComponentClass<any>;
+  icon: typeof Icon;
   iconName: string;
   text: string;
   rotateIcon?: boolean;
   active?: boolean;
-};
+} & AccessibilityProps;
 
 const Item = (props: ItemProps) => {
   const nav: NavigationProp<RootStackParamList, keyof RootStackParamList> =
@@ -60,9 +68,9 @@ const Item = (props: ItemProps) => {
 
   return (
     <TouchableOpacity
+      {...a11y(props)}
       style={styles.item}
-      onPress={() => resetNavigate(props.navigateTo, nav)}
-    >
+      onPress={() => resetNavigate(props.navigateTo, nav)}>
       <props.icon
         size={25}
         name={props.iconName}
@@ -73,8 +81,7 @@ const Item = (props: ItemProps) => {
         style={{
           ...styles.iconText,
           color: props.active ? Colors.DARK_SALMON : Colors.REGULAR,
-        }}
-      >
+        }}>
         {props.text}
       </Text>
     </TouchableOpacity>

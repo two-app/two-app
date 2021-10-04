@@ -10,7 +10,7 @@ import {ScrollContainer} from '../../views/View';
 import TitleInput from '../new_memory/TitleInput';
 import {RootStackParamList} from '../../../Router';
 import {Heading} from '../../home/Heading';
-import SubmitButton from '../../forms/SubmitButton';
+import {SubmitButton} from '../../forms/SubmitButton';
 import {DateTimePicker} from '../new_memory/DateInput';
 import {LocationInput} from '../new_memory/LocationInput';
 import {SelectTag} from '../../tags/SelectTag';
@@ -149,8 +149,7 @@ export const EditMemoryScreen = ({
 
         <Text
           style={{color: Colors.DARK_SALMON}}
-          accessibilityHint="The error encountered with the edit."
-        >
+          accessibilityHint="The error encountered with the edit.">
           {error}
         </Text>
       </View>

@@ -13,7 +13,7 @@ import type {RootStackParamList} from '../../Router';
 import Colors from '../Colors';
 import {Heading} from '../home/Heading';
 import {chunkToRows, GridRow, Cell} from '../memories/memory/Grid';
-import SubmitButton from '../forms/SubmitButton';
+import {SubmitButton} from '../forms/SubmitButton';
 import {MemoryImageCount, MemoryVideoCount} from '../memories/MemoryIcons';
 import {uploadToMemory} from '../memories/MemoryService';
 import type {ErrorResponse} from '../http/Response';
@@ -91,8 +91,7 @@ export const ContentUploadScreen = ({
       />
       <Text
         accessibilityHint="The error encountered with the upload."
-        style={{color: Colors.DARK_SALMON}}
-      >
+        style={{color: Colors.DARK_SALMON}}>
         {uploadError}
       </Text>
     </>
@@ -101,8 +100,7 @@ export const ContentUploadScreen = ({
   return (
     <Container
       isLoading={loading.isLoading}
-      loadingPercentage={loading.percentage}
-    >
+      loadingPercentage={loading.percentage}>
       <View>
         <FlatList
           data={chunkToRows(content, 3)}

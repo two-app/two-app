@@ -16,7 +16,7 @@ import type {UserRegistration} from '../../../src/authentication/register_workfl
 import AuthenticationService from '../../../src/authentication/AuthenticationService';
 import type {ErrorResponse} from '../../../src/http/Response';
 
-describe('AcceptTermsScreen2', () => {
+describe('AcceptTermsScreen', () => {
   let tb: AcceptTermsScreenTestBed;
 
   beforeEach(() => (tb = new AcceptTermsScreenTestBed().build()));
@@ -142,7 +142,7 @@ class AcceptTermsScreenTestBed {
   pressSubmit = () => fireEvent.press(this.submitButton());
 
   private changeValue = (label: string, enabled = true) =>
-    fireEvent(this.render.getByA11yHint(label), 'valueChange', enabled);
+    fireEvent(this.render.getByA11yLabel(label), 'valueChange', enabled);
 
   tickPrivacyPolicy = () => this.changeValue('I agree to the privacy policy.');
   tickAge = () => this.changeValue('I am over the age of 16.');

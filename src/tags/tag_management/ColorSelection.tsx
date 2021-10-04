@@ -38,8 +38,7 @@ export const ColorList = ({initialColor, onSelected}: ColorListProps) => {
         flexWrap: 'wrap',
         marginTop: 5,
         margin: -10,
-      }}
-    >
+      }}>
       {colors.map(color => (
         <ColorButton
           color={color}
@@ -64,8 +63,7 @@ const ColorButton = ({color, isSelected, onClick}: ColorButtonProps) => {
       onPress={() => onClick(color)}
       accessibilityHint={`Set the tag color to ${color}`}
       accessibilityLabel={color}
-      testID={isSelected ? 'selected-color' : undefined}
-    >
+      testID={isSelected ? 'selected-color' : undefined}>
       <View
         style={{
           width: 40,

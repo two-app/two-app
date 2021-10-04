@@ -3,7 +3,7 @@ import {StyleSheet, TextInput} from 'react-native';
 
 import Colors from '../Colors';
 
-import Label from './Label';
+import {Label} from './Label';
 
 type InputProps = {
   attributes?: Record<string, unknown>;
@@ -14,7 +14,7 @@ type InputProps = {
   accessibilityLabel?: string;
 };
 
-const Input = ({
+export const Input = ({
   attributes = {},
   isValid = () => true,
   onChange = () => null,
@@ -22,9 +22,9 @@ const Input = ({
   accessibilityHint,
   accessibilityLabel,
 }: InputProps) => {
-  const [value, setValue] = useState('');
-  const [valid, setValid] = useState(true);
-  const [focused, setFocused] = useState(false);
+  const [value, setValue] = useState<string>('');
+  const [valid, setValid] = useState<boolean>(true);
+  const [focused, setFocused] = useState<boolean>(false);
 
   const input = (
     <TextInput
@@ -50,16 +50,14 @@ const Input = ({
     />
   );
 
-  if (label == null) {
-    return input;
-  } else {
-    return (
-      <>
-        <Label text={label} />
-        {input}
-      </>
-    );
-  }
+  return label == null ? (
+    input
+  ) : (
+    <>
+      <Label text={label} />
+      {input}
+    </>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -80,5 +78,3 @@ const styles = StyleSheet.create({
     color: Colors.SALMON,
   },
 });
-
-export default Input;

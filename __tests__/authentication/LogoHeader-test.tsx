@@ -1,19 +1,26 @@
-import 'react-native';
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
-import {shallow} from 'enzyme';
+import {LogoHeader} from '../../src/authentication/LogoHeader';
+import {render, RenderAPI} from '@testing-library/react-native';
+import {Text} from 'react-native';
 
-import LogoHeader from '../../src/authentication/LogoHeader';
+describe('LogoHeader', () => {
+  let tb: LogoHeaderTestBed;
 
-test('should maintain snapshot', () =>
-  expect(
-    renderer.create(<LogoHeader heading="Test Heading" />),
-  ).toMatchSnapshot());
+  beforeEach(() => {
+    tb = new LogoHeaderTestBed().build();
+  });
 
-test('should display given heading', () =>
-  expect(
-    shallow(<LogoHeader heading="Test Heading" />)
-      .find("Text[data-testid='heading']")
-      .render()
-      .text(),
-  ).toEqual('Test Heading'));
+  test('it should display the passed heading', () => {
+    expect(tb.render.getByText(tb.heading)).toBeTruthy();
+  });
+});
+
+class LogoHeaderTestBed {
+  render: RenderAPI = render(<Text>Not Implemented</Text>);
+
+  heading: string = 'Some Test Heading';
+
+  build = (): LogoHeaderTestBed => {
+    this.render = render(<LogoHeader heading={this.heading} />);
+    return this;
+  };
+}

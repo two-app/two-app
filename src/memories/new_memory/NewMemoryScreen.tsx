@@ -5,7 +5,7 @@ import type {NavigationProp} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
 
 import type {RootStackParamList} from '../../../Router';
-import SubmitButton from '../../forms/SubmitButton';
+import {SubmitButton} from '../../forms/SubmitButton';
 import {Heading} from '../../home/Heading';
 import type {ErrorResponse} from '../../http/Response';
 import {SelectTag} from '../../tags/SelectTag';
