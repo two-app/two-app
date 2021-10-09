@@ -20,7 +20,7 @@ import {
 
 export type MemoryState = {
   readonly allMemories: Memory[];
-  readonly content: Record<number, Content[]>;
+  readonly content: Record<string, Content[]>;
 };
 
 type MemoryActions = ActionType<typeof import('./actions').default>;
@@ -32,13 +32,13 @@ const handleStoreMemories = (
 
 const handleUpdateMemory = (
   state: MemoryState,
-  action: PayloadAction<'UPDATE_MEMORY', {mid: number; memory: Memory}>,
+  action: PayloadAction<'UPDATE_MEMORY', {mid: string; memory: Memory}>,
 ): MemoryState => {
   const {mid, memory} = action.payload;
   return {
     ...state,
     allMemories: state.allMemories
-      .map(m => (m.id === mid ? memory : m))
+      .map(m => (m.mid === mid ? memory : m))
       .sort(inAscending),
   };
 };
@@ -51,21 +51,22 @@ const handleInsertMemory = (
   allMemories: [...state.allMemories, action.payload].sort(inAscending),
 });
 
-const inAscending = (a: Memory, b: Memory) => b.date - a.date;
+const inAscending = (a: Memory, b: Memory): number =>
+  b.occurredAt.getTime() - a.occurredAt.getTime();
 
 const handleDeleteMemory = (
   state: MemoryState,
-  action: PayloadAction<'DELETE_MEMORY', {mid: number}>,
+  action: PayloadAction<'DELETE_MEMORY', {mid: string}>,
 ): MemoryState => ({
   ...state,
   allMemories: [...state.allMemories].filter(
-    (m: Memory) => m.id !== action.payload.mid,
+    (m: Memory) => m.mid !== action.payload.mid,
   ),
 });
 
 const handleStoreContent = (
   state: MemoryState,
-  action: PayloadAction<'STORE_CONTENT', {mid: number; content: Content[]}>,
+  action: PayloadAction<'STORE_CONTENT', {mid: string; content: Content[]}>,
 ): MemoryState => {
   const {mid, content} = action.payload;
   const newContent = {...state.content};
@@ -75,7 +76,7 @@ const handleStoreContent = (
 
 const handleDeleteContent = (
   state: MemoryState,
-  action: PayloadAction<'DELETE_CONTENT', {mid: number; contentId: number}>,
+  action: PayloadAction<'DELETE_CONTENT', {mid: string; contentId: string}>,
 ): MemoryState => {
   const {mid, contentId} = action.payload;
   const content = {...state.content};

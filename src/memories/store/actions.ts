@@ -6,22 +6,22 @@ import {Content} from '../../content/ContentModels';
 export const storeMemories = createAction('STORE_MEMORIES')<Memory[]>();
 
 export const updateMemory = createAction('UPDATE_MEMORY')<{
-  mid: number;
+  mid: string;
   memory: Memory;
 }>();
 
 export const deleteMemory = createAction('DELETE_MEMORY')<{
-  mid: number;
+  mid: string;
 }>();
 
 export const storeContent = createAction('STORE_CONTENT')<{
-  mid: number;
+  mid: string;
   content: Content[];
 }>();
 
 export const deleteContent = createAction('DELETE_CONTENT')<{
-  mid: number;
-  contentId: number;
+  mid: string;
+  contentId: string;
 }>();
 
 export const insertMemory = createAction('INSERT_MEMORY')<Memory>();

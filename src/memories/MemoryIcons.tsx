@@ -16,7 +16,7 @@ export const MemoryLocation = ({location}: {location: string}) => (
   </View>
 );
 
-export const MemoryDate = ({date}: {date: number}) => (
+export const MemoryDate = ({date}: {date: Date}) => (
   <View style={c.icon}>
     <Text style={s.text}>{moment(date).fromNow()}</Text>
     <AntIcon name="calendar" {...iconArguments} style={s.iconRight} />

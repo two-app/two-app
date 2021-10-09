@@ -1,7 +1,6 @@
 import {Text} from 'react-native';
 import type {RenderAPI} from '@testing-library/react-native';
 import {render, fireEvent, waitFor} from '@testing-library/react-native';
-import moment from 'moment';
 import {Provider} from 'react-redux';
 
 import * as ContentService from '../../../src/content/ContentService';
@@ -11,6 +10,7 @@ import type {ErrorResponse} from '../../../src/http/Response';
 import type {Content} from '../../../src/content/ContentModels';
 import type {DeleteContentResponse} from '../../../src/content/ContentService';
 import {store} from '../../../src/state/reducers';
+import uuidv4 from 'uuidv4';
 
 describe('MemoryInteractionModal', () => {
   let tb: MemoryInteractionModalTestBed;
@@ -40,7 +40,7 @@ describe('MemoryInteractionModal', () => {
 
         expect(tb.setMemoryDisplayPictureFn).toHaveBeenCalledTimes(1);
         expect(tb.setMemoryDisplayPictureFn).toHaveBeenCalledWith(
-          tb.memory.id,
+          tb.memory.mid,
           testContent.contentId,
         );
       });
@@ -88,7 +88,7 @@ describe('MemoryInteractionModal', () => {
 
         expect(tb.deleteContentFn).toHaveBeenCalledTimes(1);
         expect(tb.deleteContentFn).toHaveBeenCalledWith(
-          tb.memory.id,
+          tb.memory.mid,
           testContent.contentId,
         );
       });
@@ -96,7 +96,7 @@ describe('MemoryInteractionModal', () => {
       test('it should update the state in redux', async () => {
         // GIVEN the a memory and its associated content
         store.getState().memories.allMemories.push(testMemory);
-        store.getState().memories.content[testMemory.id] = [testContent];
+        store.getState().memories.content[testMemory.mid] = [testContent];
         tb.onDeleteMemoryContentResolve();
 
         // WHEN the delete button is pressed
@@ -107,7 +107,7 @@ describe('MemoryInteractionModal', () => {
           }
         });
 
-        expect(store.getState().memories.content[testMemory.id]).toEqual([]);
+        expect(store.getState().memories.content[testMemory.mid]).toEqual([]);
       });
 
       test('it should display an error if one occurs', async () => {
@@ -135,11 +135,11 @@ class MemoryInteractionModalTestBed {
   onCloseFn: jest.Mock;
   setMemoryDisplayPictureFn: jest.SpyInstance<
     Promise<Memory>,
-    [number, number]
+    [string, string]
   >;
   deleteContentFn: jest.SpyInstance<
     Promise<DeleteContentResponse>,
-    [number, number]
+    [string, string]
   >;
 
   constructor() {
@@ -220,10 +220,11 @@ class MemoryInteractionModalTestBed {
 }
 
 const testMemory: Memory = {
-  id: 5,
+  mid: uuidv4(),
   title: 'Test Memory',
   location: 'Test Location',
-  date: moment().valueOf(),
+  occurredAt: new Date(),
+  createdAt: new Date(),
   tag: undefined,
   imageCount: 0,
   videoCount: 0,
@@ -231,7 +232,7 @@ const testMemory: Memory = {
 };
 
 const testContent: Content = {
-  contentId: 9,
+  contentId: uuidv4(),
   contentType: 'image',
   thumbnail: {
     contentType: 'image',

@@ -8,9 +8,18 @@ import TagScreen from '../../../src/tags/tag_screen/TagScreen';
 import * as TagService from '../../../src/tags/TagService';
 import * as RootNavigation from '../../../src/navigation/RootNavigation';
 import {store} from '../../../src/state/reducers';
+import uuidv4 from 'uuidv4';
 
 describe('TagScreen', () => {
   let tb: TagScreenTestBed;
+
+  const names = ['Birthday', 'Anniversary', 'Holiday'];
+  const tags: Tag[] = names.map((name, index) => ({
+    name,
+    color: '#1985a1',
+    tid: uuidv4(),
+    memoryCount: index + 2, // to make it interesting
+  }));
 
   beforeEach(() => (tb = new TagScreenTestBed()));
 
@@ -30,13 +39,6 @@ describe('TagScreen', () => {
     });
 
     it('should display the resolved tag names', async () => {
-      const names = ['Anniversary', 'Birthday', 'Wedding'];
-      const tags: Tag[] = names.map((name, tid) => ({
-        name,
-        color: '#1a1a1a',
-        tid,
-        memoryCount: 0,
-      }));
       tb.onGetTagsResolve(tags);
 
       tb.build();
@@ -60,14 +62,6 @@ describe('TagScreen', () => {
   });
 
   describe('Tag Management', () => {
-    const names = ['Birthday', 'Anniversary', 'Holiday'];
-    const tags: Tag[] = names.map((name, tid) => ({
-      name,
-      color: '#1985a1',
-      tid,
-      memoryCount: tid + 2, // to make it interesting
-    }));
-
     beforeEach(() => {
       tb.onGetTagsResolve(tags);
       tb.build();

@@ -18,7 +18,7 @@ export const MemoryDisplayView = ({memory}: {memory: Memory}) => (
     <Text style={s.heading}>{memory.title}</Text>
     <View style={s.spacedRow}>
       <MemoryLocation location={memory.location} />
-      <MemoryDate date={memory.date} />
+      <MemoryDate date={memory.occurredAt} />
     </View>
     <View style={s.spacedRow}>
       <View style={{flexDirection: 'row'}}>

@@ -5,9 +5,9 @@ import {PickedContent} from '../content/ContentPicker';
 import ContentService, {ContentUploadResponse} from '../content/ContentService';
 import {Content} from '../content/ContentModels';
 
-import {Memory, MemoryDescription, MemoryPatch} from './MemoryModels';
+import {Memory, MemoryMeta} from './MemoryModels';
 
-export const isMemoryDescriptionValid = (upload: MemoryDescription) =>
+export const isMemoryDescriptionValid = (upload: MemoryMeta) =>
   upload.title.length > 0 && upload.location.length > 0;
 
 /**
@@ -24,7 +24,7 @@ export const getMemories = (): Promise<Memory[]> =>
  * Display image is updated to localised AWS.
  * @param mid the memory ID to retrieve.
  */
-export const getMemory = (mid: number): Promise<Memory> =>
+export const getMemory = (mid: string): Promise<Memory> =>
   Gateway.get('/memory/' + mid.toString()).then(
     (response: AxiosResponse<Memory>) => formatMemory(response.data),
   );
@@ -36,27 +36,17 @@ const formatMemory = (memory: Memory): Memory => {
     );
   }
 
-  // Memory actually comes back as a string, so it needs to be converted to a number
-  memory.date = Number.parseInt(memory.date as any, 10);
   return memory;
 };
 
-type PostMemoryResponse = {
-  memoryId: number;
-};
-
-export const createMemory = (
-  description: MemoryDescription,
-): Promise<number> => {
-  description.date = description.date.toString() as any;
-
+export const createMemory = (description: MemoryMeta): Promise<string> => {
   return Gateway.post('/memory', description).then(
-    (v: AxiosResponse<PostMemoryResponse>) => v.data.memoryId,
+    (v: AxiosResponse<Memory>) => v.data.mid,
   );
 };
 
 export const uploadToMemory = (
-  mid: number,
+  mid: string,
   contentToUpload: PickedContent[],
   setProgress: (percentage: number) => void,
 ): Promise<[Memory, Content[]]> => {
@@ -83,8 +73,8 @@ export const uploadToMemory = (
 };
 
 export const patchMemory = (
-  mid: number,
-  patch: MemoryPatch,
+  mid: string,
+  patch: MemoryMeta,
 ): Promise<Memory> => {
   return Gateway.patch<any>(`/memory/${mid}`, patch).then(
     (r: AxiosResponse<any>) => {
@@ -94,7 +84,7 @@ export const patchMemory = (
   );
 };
 
-export const deleteMemory = async (mid: number): Promise<void> => {
+export const deleteMemory = async (mid: string): Promise<void> => {
   const r = await Gateway.delete<any>(`/memory/${mid}`);
   console.log(`Successfully deleted memory. Response: ${r}`);
   return r.data;

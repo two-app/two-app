@@ -15,12 +15,13 @@ import {
   createMemory,
   getMemory,
 } from '../MemoryService';
-import type {MemoryDescription, Memory} from '../MemoryModels';
+import type {Memory, MemoryMeta} from '../MemoryModels';
 import {insertMemory} from '../store';
 
 import {DateTimePicker} from './DateInput';
 import {LocationInput} from './LocationInput';
 import TitleInput from './TitleInput';
+import uuidv4 from 'uuidv4';
 
 type NavProp = NavigationProp<RootStackParamList, 'NewMemoryScreen'>;
 
@@ -29,17 +30,20 @@ export const NewMemoryScreen = () => {
   const navigation = useNavigation<NavProp>();
   const [loading, setLoading] = useState<boolean>(false);
   const [uploadError, setUploadError] = useState<string>();
-  const [formState, setFormState] = useState<MemoryDescription>({
+  const [formState, setFormState] = useState<MemoryMeta>({
+    mid: uuidv4(),
     title: '',
     location: '',
-    date: Date.now(),
-    tag: undefined,
+    occurredAt: new Date(),
+    tid: undefined,
+    displayContentId: undefined,
   });
 
   const createNewMemory = () => {
     setLoading(true);
     createMemory(formState)
-      .then((mid: number) => getMemory(mid))
+      // TODO POST memory already returns the complete memory data
+      .then((mid: string) => getMemory(mid))
       .then((newMemory: Memory) => {
         dispatch(insertMemory(newMemory));
         navigation.reset({
@@ -48,7 +52,7 @@ export const NewMemoryScreen = () => {
             {name: 'HomeScreen'},
             {
               name: 'MemoryScreen',
-              params: {mid: newMemory.id},
+              params: {mid: newMemory.mid},
             },
           ],
         });
@@ -69,10 +73,10 @@ export const NewMemoryScreen = () => {
           setLocation={location => setFormState({...formState, location})}
         />
         <DateTimePicker
-          setDateTime={date => setFormState({...formState, date})}
+          setDateTime={occurredAt => setFormState({...formState, occurredAt})}
         />
         <SelectTag
-          onTagChange={tag => setFormState({...formState, tag: tag?.tid})}
+          onTagChange={tag => setFormState({...formState, tid: tag?.tid})}
         />
 
         <SubmitButton

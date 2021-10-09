@@ -49,7 +49,7 @@ const EditButton = ({memory}: {memory: Memory}) => {
     <TouchableOpacity
       accessibilityLabel="Edit Memory"
       style={styles.icon}
-      onPress={() => navigate('EditMemoryScreen', {mid: memory.id})}>
+      onPress={() => navigate('EditMemoryScreen', {mid: memory.mid})}>
       <Icon name="edit" size={25} color={Colors.DARK} />
     </TouchableOpacity>
   );
@@ -71,7 +71,7 @@ export const UploadContentButton = ({memory}: {memory: Memory}) => {
             }
 
             navigate('ContentUploadScreen', {
-              mid: memory.id,
+              mid: memory.mid,
               content,
             });
           },
@@ -97,7 +97,7 @@ export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
       text: 'Delete',
       style: 'destructive',
       onPress: async () => {
-        await deleteMemory(memory.id);
+        await deleteMemory(memory.mid);
 
         nav.dispatch(
           // reset as state will no longer exist
@@ -106,7 +106,7 @@ export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
             routes: [{name: 'HomeScreen'}],
           }),
         );
-        dispatch(deleteMemoryFromState({mid: memory.id}));
+        dispatch(deleteMemoryFromState({mid: memory.mid}));
       },
     };
 

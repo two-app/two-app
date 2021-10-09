@@ -5,6 +5,7 @@ import {render, fireEvent, waitFor} from '@testing-library/react-native';
 import {NewTagButton, TagCard} from '../../src/tags/NewTagButton';
 import type {Tag} from '../../src/tags/Tag';
 import {navigateFn} from '../../src/navigation/__mocks__/RootNavigation';
+import uuidv4 from 'uuidv4';
 
 describe('NewTagButton', () => {
   let tb: NewTagButtonTestBed;
@@ -65,7 +66,7 @@ describe('TagCard', () => {
 });
 
 class TagCardTestBed {
-  tag: Tag = {name: 'TestTag', tid: 5, color: '#1a1a1a', memoryCount: 0};
+  tag: Tag = {name: 'TestTag', tid: uuidv4(), color: '#1a1a1a', memoryCount: 0};
   onDeselect = jest.fn();
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 

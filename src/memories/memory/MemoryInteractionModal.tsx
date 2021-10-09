@@ -67,23 +67,23 @@ export const MemoryInteractionModal = ({
     });
   };
 
-  const updateDisplayPicture = (contentId: number) => {
+  const updateDisplayPicture = (contentId: string) => {
     setLoading({...loading, setDisplayPicture: true});
-    setMemoryDisplayPicture(memory.id, contentId)
+    setMemoryDisplayPicture(memory.mid, contentId)
       .then((updatedMemory: Memory) =>
         dispatchAfterClosed(
-          updateMemory({mid: memory.id, memory: updatedMemory}),
+          updateMemory({mid: memory.mid, memory: updatedMemory}),
         ),
       )
       .catch((e: ErrorResponse) => setError(e.reason))
       .finally(() => setLoading(noLoading));
   };
 
-  const deleteContentThenUpdate = (contentId: number) => {
+  const deleteContentThenUpdate = (contentId: string) => {
     setLoading({...loading, deleteContent: true});
-    deleteContent(memory.id, contentId)
+    deleteContent(memory.mid, contentId)
       .then(() =>
-        dispatchAfterClosed(deleteContentReducer({mid: memory.id, contentId})),
+        dispatchAfterClosed(deleteContentReducer({mid: memory.mid, contentId})),
       )
       .catch((e: ErrorResponse) => setError(e.reason))
       .finally(() => setLoading(noLoading));
@@ -123,8 +123,8 @@ export const MemoryInteractionModal = ({
 
 type ModalType = {
   content: Content;
-  onUpdateDisplayPicture: (contentId: number) => void;
-  onDelete: (contentId: number) => void;
+  onUpdateDisplayPicture: (contentId: string) => void;
+  onDelete: (contentId: string) => void;
   loading: ButtonLoading;
   error?: string;
 };

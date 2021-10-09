@@ -5,6 +5,7 @@ import {
   deleteContent,
 } from '../../../src/memories/store';
 import {Content} from '../../../src/content/ContentModels';
+import uuidv4 from 'uuidv4';
 
 describe('MemoriesReducer', () => {
   const baseState: MemoryState = {
@@ -16,82 +17,80 @@ describe('MemoriesReducer', () => {
     test("it should do nothing for memory that doesn't exist", () => {
       const newState = memoryReducer(
         baseState,
-        deleteContent({mid: 1, contentId: 2}),
+        deleteContent({mid: uuidv4(), contentId: uuidv4()}),
       );
 
       expect(newState).toEqual(baseState);
     });
 
     test("it should do nothing for content that doesn't exist", () => {
+      const mid = uuidv4();
       const state: MemoryState = {
         ...baseState,
         content: {
-          1: [{...testContent, contentId: 3}],
+          mid: [{...testContent, contentId: uuidv4()}],
         },
       };
 
       const newState = memoryReducer(
         state,
-        deleteContent({mid: 1, contentId: 2}),
+        deleteContent({mid, contentId: uuidv4()}),
       );
 
       expect(newState).toEqual(state);
     });
 
     test('it should delete the content', () => {
+      const mid = uuidv4();
+      const contentId = uuidv4();
+
       const state: MemoryState = {
         ...baseState,
         content: {
-          1: [{...testContent, contentId: 3}],
+          [mid]: [{...testContent, contentId}],
         },
       };
 
-      const newState = memoryReducer(
-        state,
-        deleteContent({mid: 1, contentId: 3}),
-      );
+      const newState = memoryReducer(state, deleteContent({mid, contentId}));
 
       expect(newState).toEqual({
         ...baseState,
         content: {
-          1: [],
+          [mid]: [],
         },
       });
     });
 
     test('it should only delete one piece of content', () => {
+      // GIVEN
+      const mid = uuidv4();
+      const content = [1, 2, 3].map(_ => ({
+        ...testContent,
+        contentId: uuidv4(),
+      }));
+
       const state: MemoryState = {
         ...baseState,
         content: {
-          1: [
-            {
-              ...testContent,
-              contentId: 1,
-            },
-            {
-              ...testContent,
-              contentId: 2,
-            },
-            {
-              ...testContent,
-              contentId: 3,
-            },
-          ],
+          [mid]: content,
         },
       };
 
+      // WHEN
+
       const newState = memoryReducer(
         state,
-        deleteContent({mid: 1, contentId: 2}),
+        deleteContent({mid, contentId: content[1].contentId}),
       );
 
-      expect(newState.content[1].length).toEqual(2);
+      // THEN
+      expect(newState.content[mid].length).toEqual(2);
     });
   });
 });
 
 const testContent: Content = {
-  contentId: 9,
+  contentId: uuidv4(),
   contentType: 'image',
   thumbnail: {
     contentType: 'image',

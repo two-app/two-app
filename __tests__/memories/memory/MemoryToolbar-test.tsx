@@ -15,6 +15,7 @@ import {
 import {persistor, store} from '../../../src/state/reducers';
 import type {PickedContent} from '../../../src/content/ContentPicker';
 import {ContentPicker} from '../../../src/content/ContentPicker';
+import uuidv4 from 'uuidv4';
 
 describe('MemoryToolbar', () => {
   let tb: MemoryToolbarTestBed;
@@ -38,7 +39,7 @@ describe('MemoryToolbar', () => {
       fireEvent.press(editBtn);
 
       expect(mockNavigation.navigate).toHaveBeenCalledWith('EditMemoryScreen', {
-        mid: tb.memory.id,
+        mid: tb.memory.mid,
       });
     });
   });
@@ -64,7 +65,7 @@ describe('MemoryToolbar', () => {
       expect(mockNavigation.navigate).toHaveBeenCalledWith(
         'ContentUploadScreen',
         {
-          mid: tb.memory.id,
+          mid: tb.memory.mid,
           content,
         },
       );
@@ -112,7 +113,7 @@ describe('MemoryToolbar', () => {
         );
       });
 
-      expect(tb.deleteMemoryFn).toHaveBeenCalledWith(tb.memory.id);
+      expect(tb.deleteMemoryFn).toHaveBeenCalledWith(tb.memory.mid);
       expect(store.getState().memories.allMemories).toEqual([]);
     });
   });
@@ -121,7 +122,7 @@ describe('MemoryToolbar', () => {
 class MemoryToolbarTestBed {
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 
-  deleteMemoryFn: jest.SpyInstance<Promise<void>, [number]>;
+  deleteMemoryFn: jest.SpyInstance<Promise<void>, [string]>;
   dispatch: jest.SpyInstance<void, []>;
   memory: Memory;
 
@@ -129,8 +130,9 @@ class MemoryToolbarTestBed {
     this.deleteMemoryFn = jest.spyOn(MemoryService, 'deleteMemory').mockClear();
     this.dispatch = jest.spyOn(persistor, 'persist').mockClear();
     this.memory = {
-      id: 3,
-      date: 10,
+      mid: uuidv4(),
+      occurredAt: new Date(),
+      createdAt: new Date(),
       imageCount: 5,
       videoCount: 19,
       location: 'test location',
