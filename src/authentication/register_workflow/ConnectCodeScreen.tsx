@@ -113,7 +113,7 @@ export const ConnectCodeScreen = () => {
         {partnerConnectCode === user.uid && (
           <Text style={styles.error}>You can't connect with yourself!</Text>
         )}
-        {error && <Text style={styles.error}>{error}</Text>}
+        {error != '' && <Text style={styles.error}>{error}</Text>}
         <SubmitButton
           onSubmit={() => connectToPartner(partnerConnectCode)}
           text="Connect"

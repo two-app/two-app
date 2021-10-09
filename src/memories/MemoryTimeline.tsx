@@ -15,7 +15,7 @@ export const MemoryTimelineComponent = (): TimelineComponent<Memory> => ({
   select: selectAllMemories,
   dispatcher: storeMemories,
   render: memory => <MemoryItem memory={memory} />,
-  key: memory => `memory-${memory.id}`,
+  key: memory => `memory-${memory.mid}`,
 });
 
 type NavProp = NavigationProp<RootStackParamList, 'HomeScreen'>;
@@ -26,7 +26,7 @@ const MemoryItem = ({memory}: {memory: Memory}) => {
     <TouchableOpacity
       accessibilityLabel={`Open memory '${memory.title}'`}
       style={{marginTop: 10, marginBottom: 20}}
-      onPress={() => navigate('MemoryScreen', {mid: memory.id})}>
+      onPress={() => navigate('MemoryScreen', {mid: memory.mid})}>
       <MemoryDisplayView memory={memory} />
     </TouchableOpacity>
   );

@@ -1,28 +1,23 @@
 import {Tag} from '../tags/Tag';
 import {Content} from '../content/ContentModels';
 
-export type MemoryDescription = {
-  tag?: number;
+export type MemoryMeta = {
+  mid: string;
   title: string;
   location: string;
-  date: number;
+  occurredAt: Date;
+  displayContentId?: string;
+  tid?: string;
 };
 
 export type Memory = {
-  id: number;
-  tag?: Tag;
+  mid: string;
   title: string;
   location: string;
-  date: number;
+  occurredAt: Date;
+  createdAt: Date;
+  displayContent?: Content;
+  tag?: Tag;
   imageCount: number;
   videoCount: number;
-  displayContent?: Content;
-};
-
-export type MemoryPatch = {
-  title?: string;
-  location?: string;
-  date?: string;
-  displayContentId?: number;
-  tagId?: number;
 };

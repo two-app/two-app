@@ -28,15 +28,15 @@ export type RootStackParamList = {
   ConnectCodeScreen: undefined;
   HomeScreen: undefined;
   NewMemoryScreen: undefined;
-  MemoryScreen: {mid: number};
+  MemoryScreen: {mid: string};
   TagManagementScreen: {
     initialTag?: Tag;
     onSubmit: (tag: Tag) => void;
   };
   SearchScreen: undefined;
   ProfileScreen: undefined;
-  EditMemoryScreen: {mid: number};
-  ContentUploadScreen: {mid: number; content: PickedContent[]};
+  EditMemoryScreen: {mid: string};
+  ContentUploadScreen: {mid: string; content: PickedContent[]};
   TagScreen: undefined;
 };
 

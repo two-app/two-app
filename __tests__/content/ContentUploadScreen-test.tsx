@@ -6,7 +6,6 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react-native';
-import moment from 'moment';
 import type {ReactTestInstance} from 'react-test-renderer';
 
 import {ContentUploadScreen} from '../../src/content/ContentUploadScreen';
@@ -16,6 +15,7 @@ import * as MemoryService from '../../src/memories/MemoryService';
 import type {ErrorResponse} from '../../src/http/Response';
 import {updateMemory, storeContent} from '../../src/memories/store';
 import type {Content} from '../../src/content/ContentModels';
+import uuidv4 from 'uuidv4';
 
 describe('ContentUploadScreen', () => {
   let tb: ContentUploadScreenTestBed;
@@ -55,11 +55,11 @@ describe('ContentUploadScreen', () => {
     expect(tb.dispatchFn).toHaveBeenCalledTimes(2);
     expect(tb.dispatchFn).toHaveBeenNthCalledWith(
       1,
-      updateMemory({mid: updatedMemory.id, memory: updatedMemory}),
+      updateMemory({mid: updatedMemory.mid, memory: updatedMemory}),
     );
     expect(tb.dispatchFn).toHaveBeenNthCalledWith(
       2,
-      storeContent({mid: updatedMemory.id, content: updatedContent}),
+      storeContent({mid: updatedMemory.mid, content: updatedContent}),
     );
   });
 
@@ -127,7 +127,7 @@ class ContentUploadScreenTestBed {
       <ContentUploadScreen
         navigation={{goBack: this.goBackFn} as any}
         route={{
-          params: {content: this.uploadContent, mid: this.memory.id},
+          params: {content: this.uploadContent, mid: this.memory.mid},
           name: 'ContentUploadScreen',
           key: 'test-key',
         }}
@@ -140,8 +140,9 @@ class ContentUploadScreenTestBed {
 }
 
 const testMemoryData: Memory = {
-  id: 10,
-  date: moment().valueOf(),
+  mid: uuidv4(),
+  occurredAt: new Date(),
+  createdAt: new Date(),
   imageCount: 0,
   videoCount: 0,
   location: 'Test Location',

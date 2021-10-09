@@ -12,7 +12,7 @@ export const createTag = (tagDescription: TagDescription): Promise<Tag> => {
   tagDescription.name.trim();
 
   type PostTagResponse = {
-    tid: number;
+    tid: string;
   };
 
   return Gateway.post('/tag', tagDescription).then(
@@ -22,11 +22,11 @@ export const createTag = (tagDescription: TagDescription): Promise<Tag> => {
   );
 };
 
-export const deleteTag = (tid: number): Promise<void> => {
+export const deleteTag = (tid: string): Promise<void> => {
   return Gateway.delete(`/tag/${tid}`);
 };
 
-export const updateTag = (tid: number, desc: TagDescription): Promise<Tag> => {
+export const updateTag = (tid: string, desc: TagDescription): Promise<Tag> => {
   return Gateway.put(`/tag/${tid}`, desc).then((res: AxiosResponse<Tag>) => {
     return res.data;
   });

@@ -1,7 +1,7 @@
 import {Content} from '../content/ContentModels';
 
 export type Tag = {
-  tid: number;
+  tid: string;
   name: string;
   color: string;
   memoryCount: number;

@@ -13,7 +13,7 @@ export type VideoContent = {
 };
 
 export type Content = {
-  contentId: number;
+  contentId: string;
   contentType: 'image' | 'video';
   fileKey: string;
   extension: string;

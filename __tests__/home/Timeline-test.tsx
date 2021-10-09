@@ -2,7 +2,6 @@ import type {RenderAPI} from '@testing-library/react-native';
 import {fireEvent, render, waitFor} from '@testing-library/react-native';
 import {Text} from 'react-native';
 import {Provider} from 'react-redux';
-import moment from 'moment';
 
 import * as MemoryService from '../../src/memories/MemoryService';
 import * as TagService from '../../src/tags/TagService';
@@ -12,6 +11,7 @@ import {store} from '../../src/state/reducers';
 import type {Tag} from '../../src/tags/Tag';
 import {mockNavigation, resetMockNavigation} from '../utils/NavigationMocking';
 import type {TimelineType} from '../../src/home/TimelineConstants';
+import uuidv4 from 'uuidv4';
 
 describe('Timeline', () => {
   let tb: TimelineTestBed;
@@ -22,17 +22,18 @@ describe('Timeline', () => {
   });
 
   const testTag: Tag = {
-    tid: 3,
+    tid: uuidv4(),
     color: '#1a1a1a',
     memoryCount: 1,
     name: 'Birthday 2021',
   };
 
   const testMemory: Memory = {
-    id: 5,
+    mid: uuidv4(),
     title: 'Birthday Cake',
     location: 'London',
-    date: moment().valueOf(),
+    occurredAt: new Date(),
+    createdAt: new Date(),
     tag: testTag,
     imageCount: 3,
     videoCount: 5,
@@ -67,7 +68,7 @@ describe('Timeline', () => {
       const btn = tb.render.getByA11yLabel(`Open memory '${testMemory.title}'`);
       fireEvent.press(btn);
       expect(mockNavigation.navigate).toHaveBeenCalledWith('MemoryScreen', {
-        mid: testMemory.id,
+        mid: testMemory.mid,
       });
     });
 

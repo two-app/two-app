@@ -113,9 +113,9 @@ export const TagManagementScreen = ({
       <View style={{alignItems: 'center', marginTop: 20}}>
         {name != null && color != null && (
           <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-            <TagButton tag={{tid: -1, name, color, memoryCount: 0}} />
+            <TagButton tag={{tid: '', name, color, memoryCount: 0}} />
             <TagButton
-              tag={{tid: -1, name, color, memoryCount: 0}}
+              tag={{tid: '', name, color, memoryCount: 0}}
               focused={true}
             />
           </View>

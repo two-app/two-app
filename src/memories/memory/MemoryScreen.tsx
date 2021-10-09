@@ -54,20 +54,20 @@ const MemoryScreen = ({memory, dispatch, content}: MemoryScreenProps) => {
   }, []);
 
   const refreshMemory = () => {
-    Promise.all([getMemory(memory.id), getContent(memory.id)])
+    Promise.all([getMemory(memory.mid), getContent(memory.mid)])
       .then((result: [Memory, Content[]]) => {
         const [updatedMemory, updatedContent] = result;
-        dispatch(updateMemory({mid: updatedMemory.id, memory: updatedMemory}));
+        dispatch(updateMemory({mid: updatedMemory.mid, memory: updatedMemory}));
         dispatch(
-          storeContent({mid: updatedMemory.id, content: updatedContent}),
+          storeContent({mid: updatedMemory.mid, content: updatedContent}),
         );
       })
       .finally(() => setRefreshing(false));
   };
 
   useEffect(() => {
-    getContent(memory.id).then(newContent => {
-      dispatch(storeContent({mid: memory.id, content: newContent}));
+    getContent(memory.mid).then(newContent => {
+      dispatch(storeContent({mid: memory.mid, content: newContent}));
     });
   }, []);
 

@@ -72,10 +72,10 @@ export const ContentUploadScreen = ({
 
   const upload = () => {
     setLoading({isLoading: true, percentage: 0});
-    uploadToMemory(memory.id, content, setLoadingPercentage)
+    uploadToMemory(memory.mid, content, setLoadingPercentage)
       .then(([updatedMemory, updatedContent]: [Memory, Content[]]) => {
-        dispatch(updateMemory({mid: memory.id, memory: updatedMemory}));
-        dispatch(storeContent({mid: memory.id, content: updatedContent}));
+        dispatch(updateMemory({mid: memory.mid, memory: updatedMemory}));
+        dispatch(storeContent({mid: memory.mid, content: updatedContent}));
         navigation.goBack();
       })
       .catch((e: ErrorResponse) => setUploadError(e.reason))

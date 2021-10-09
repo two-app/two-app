@@ -10,8 +10,8 @@ import {TouchableCard} from '../../forms/Card';
 import {FormStyle} from './FormStyles';
 
 type DateTimePickerProps = {
-  setDateTime: (datetime: number) => void;
-  initialValue: number;
+  setDateTime: (datetime: Date) => void;
+  initialValue: Date;
   placeholder?: string;
 };
 
@@ -26,8 +26,8 @@ export const DateTimePicker = ({
   placeholder,
 }: DateTimePickerProps) => {
   const [isVisible, setVisibility] = useState(false);
-  const [pickerValue, setPickerValue] = useState<number>();
-  const [date, setDate] = useState<number>(initialValue);
+  const [pickerValue, setPickerValue] = useState<Date>();
+  const [date, setDate] = useState<Date>(initialValue);
   const [selecting, setSelecting] = useState<'date' | 'time'>('date');
 
   const openPicker = () => {
@@ -41,7 +41,7 @@ export const DateTimePicker = ({
     setPickerValue(undefined);
   };
 
-  const updateDate = (newDate: number) => {
+  const updateDate = (newDate: Date) => {
     setDate(newDate);
     setDateTime(newDate);
     reset();
@@ -72,7 +72,7 @@ export const DateTimePicker = ({
           isVisible={isVisible}
           maximumDate={new Date()}
           mode="datetime"
-          onConfirm={(selectedDate: Date) => updateDate(selectedDate.getTime())}
+          onConfirm={updateDate}
           onCancel={reset}
         />
       ) : (
@@ -88,13 +88,13 @@ export const DateTimePicker = ({
           }
           onConfirm={(selectedDate: Date) => {
             if (selecting === 'date') {
-              setPickerValue(selectedDate.getTime());
+              setPickerValue(selectedDate);
               setSelecting('time');
             } else {
               const onlyDate = moment(pickerValue).format('YYYY-MM-DD');
               const onlyTime = moment(selectedDate).format('HH:mm:00');
               const datetime = moment(`${onlyDate} ${onlyTime}`);
-              updateDate(datetime.valueOf());
+              updateDate(datetime.toDate());
             }
           }}
           onCancel={reset}

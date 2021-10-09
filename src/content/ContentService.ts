@@ -3,24 +3,24 @@ import {AxiosResponse} from 'axios';
 import Config from 'react-native-config';
 
 import Gateway from '../http/Gateway';
-import {MemoryPatch, Memory} from '../memories/MemoryModels';
+import {Memory} from '../memories/MemoryModels';
 import {getMemory} from '../memories/MemoryService';
 
 import {PickedContent} from './ContentPicker';
 import {Content, ImageContent, VideoContent} from './ContentModels';
 
 export const setMemoryDisplayPicture = (
-  mid: number,
-  displayId: number,
+  mid: string,
+  displayId: string,
 ): Promise<Memory> => {
-  const patch: MemoryPatch = {
+  const patch = {
     displayContentId: displayId,
   };
 
   return Gateway.patch(`/memory/${mid}`, patch).then(() => getMemory(mid));
 };
 
-export type ContentUploadResponse = {contentId: number};
+export type ContentUploadResponse = {contentId: string};
 
 /**
  * @param mid the memory id
@@ -28,7 +28,7 @@ export type ContentUploadResponse = {contentId: number};
  * @param setDisplayContent if the content should be set as the display picture
  */
 export const uploadContent = (
-  mid: number,
+  mid: string,
   content: PickedContent,
   setDisplayContent: boolean,
 ): Promise<ContentUploadResponse> => {
@@ -52,7 +52,7 @@ export const uploadContent = (
   }).then((r: AxiosResponse<ContentUploadResponse>) => r.data);
 };
 
-export const getContent = (mid: number): Promise<Content[]> =>
+export const getContent = (mid: string): Promise<Content[]> =>
   Gateway.get<Content[]>(`/memory/${mid}/content`).then(
     (v: AxiosResponse<Content[]>) => {
       return v.data.map(content => {
@@ -67,8 +67,8 @@ export type DeleteContentResponse = {
 };
 
 export const deleteContent = async (
-  mid: number,
-  contentId: number,
+  mid: string,
+  contentId: string,
 ): Promise<DeleteContentResponse> => {
   const uri = `/memory/${mid}/content/${contentId}`;
   const response = await Gateway.delete<DeleteContentResponse>(uri);

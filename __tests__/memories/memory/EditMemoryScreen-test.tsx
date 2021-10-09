@@ -6,16 +6,16 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react-native';
-import moment from 'moment';
 import type {ReactTestInstance} from 'react-test-renderer';
 
 import {EditMemoryScreen} from '../../../src/memories/memory/EditMemoryScreen';
-import type {Memory, MemoryPatch} from '../../../src/memories/MemoryModels';
+import type {Memory, MemoryMeta} from '../../../src/memories/MemoryModels';
 import * as TagService from '../../../src/tags/TagService';
 import type {Tag} from '../../../src/tags/Tag';
 import * as MemoryService from '../../../src/memories/MemoryService';
 import type {ErrorResponse} from '../../../src/http/Response';
 import {updateMemory} from '../../../src/memories/store';
+import uuidv4 from 'uuidv4';
 
 describe('EditMemoryScreen', () => {
   let tb: EditMemoryScreenTestBed;
@@ -70,14 +70,22 @@ describe('EditMemoryScreen', () => {
     });
 
     test('submitting a deselected tag should pass value -1 for tag id', () => {
+      // GIVEN
+      const expected: MemoryMeta = {
+        mid: tb.memory.mid,
+        title: tb.memory.title,
+        location: tb.memory.location,
+        occurredAt: tb.memory.occurredAt,
+        displayContentId: undefined,
+        tid: undefined,
+      };
+
       tb.selectTag(tb.selectedTag.name); // deselect tag
 
       tb.pressSubmitButton();
 
       expect(tb.patchMemoryFn).toHaveBeenCalledTimes(1);
-      expect(tb.patchMemoryFn).toHaveBeenCalledWith(tb.memory.id, {
-        tagId: -1,
-      });
+      expect(tb.patchMemoryFn).toHaveBeenCalledWith(tb.memory.mid, expected);
     });
   });
 
@@ -89,14 +97,21 @@ describe('EditMemoryScreen', () => {
     });
 
     test('it should calculate the correct patch', () => {
+      // GIVEN
+      const expected: MemoryMeta = {
+        mid: tb.memory.mid,
+        occurredAt: tb.memory.occurredAt,
+        title: 'New Title',
+        location: 'New Location',
+        tid: tb.otherTag.tid,
+        displayContentId: undefined,
+      };
+
+      // WHEN
       tb.pressSubmitButton();
 
       expect(tb.patchMemoryFn).toHaveBeenCalledTimes(1);
-      expect(tb.patchMemoryFn).toHaveBeenCalledWith(tb.memory.id, {
-        title: 'New Title',
-        location: 'New Location',
-        tagId: tb.otherTag.tid,
-      });
+      expect(tb.patchMemoryFn).toHaveBeenCalledWith(tb.memory.mid, expected);
     });
 
     test('it should show a loading indicator', () => {
@@ -160,7 +175,7 @@ describe('EditMemoryScreen', () => {
       expect(tb.dispatchFn).toHaveBeenCalledTimes(1);
       expect(tb.dispatchFn).toHaveBeenCalledWith(
         updateMemory({
-          mid: updatedMemory.id,
+          mid: updatedMemory.mid,
           memory: updatedMemory,
         }),
       );
@@ -174,22 +189,23 @@ class EditMemoryScreenTestBed {
   selectedTag: Tag = {
     name: 'Test Tag',
     color: '#1a1a1a',
-    tid: 5,
+    tid: uuidv4(),
     memoryCount: 0,
   };
   otherTag: Tag = {
     name: 'Other Tag',
     color: '#FFFFFF',
-    tid: 10,
+    tid: uuidv4(),
     memoryCount: 0,
   };
   tags: Tag[] = [this.selectedTag, this.otherTag];
 
   memory: Memory = {
-    id: 5,
+    mid: uuidv4(),
     title: 'Test Memory',
     location: 'Test Location',
-    date: moment().valueOf(),
+    createdAt: new Date(),
+    occurredAt: new Date(),
     tag: this.selectedTag,
     imageCount: 3,
     videoCount: 4,
@@ -197,7 +213,7 @@ class EditMemoryScreenTestBed {
   };
 
   goBackFn: jest.Mock;
-  patchMemoryFn: jest.SpyInstance<Promise<Memory>, [number, MemoryPatch]>;
+  patchMemoryFn: jest.SpyInstance<Promise<Memory>, [string, MemoryMeta]>;
   dispatchFn: jest.Mock;
 
   constructor() {
@@ -257,7 +273,7 @@ class EditMemoryScreenTestBed {
     this.render = render(
       <EditMemoryScreen
         navigation={{goBack: this.goBackFn} as any}
-        route={{params: {mid: this.memory.id}} as any}
+        route={{params: {mid: this.memory.mid}} as any}
         memory={this.memory}
         dispatch={this.dispatchFn}
       />,

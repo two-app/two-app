@@ -13,6 +13,7 @@ import type {Tag, TagDescription} from '../../../src/tags/Tag';
 import type {ErrorResponse} from '../../../src/http/Response';
 import {TagManagementScreen} from '../../../src/tags/tag_management/TagManagementScreen';
 import {TagColors} from '../../../src/tags/tag_management/TagColors';
+import uuidv4 from 'uuidv4';
 
 describe('TagManagementScreen - Create Mode', () => {
   let tb: TagManagementScreenTestBed;
@@ -76,7 +77,7 @@ describe('TagManagementScreen - Create Mode', () => {
     });
 
     test('it should navigate to the previous screen', async () => {
-      const tag: Tag = {...tagDescription, tid: 3, memoryCount: 0};
+      const tag: Tag = {...tagDescription, tid: uuidv4(), memoryCount: 0};
       tb.onSubmitTagResolve(tag);
       tb.pressCreateButton();
 
@@ -124,7 +125,7 @@ describe('TagManagementScreen - Create Mode', () => {
 describe('TagManagementScreen - Edit Mode', () => {
   let tb: TagManagementScreenTestBed;
   const tag: Tag = {
-    tid: 3,
+    tid: uuidv4(),
     name: 'Some Tag',
     color: '#f4989c',
     memoryCount: 5,
@@ -155,7 +156,7 @@ class TagManagementScreenTestBed {
   initialTag?: Tag = undefined;
 
   createTagFn: jest.SpyInstance<Promise<Tag>, [TagDescription]>;
-  updateTagFn: jest.SpyInstance<Promise<Tag>, [number, TagDescription]>;
+  updateTagFn: jest.SpyInstance<Promise<Tag>, [string, TagDescription]>;
   onSubmitPropCallback: jest.Mock;
   goBackFn: jest.Mock;
   dispatchFn: jest.Mock;

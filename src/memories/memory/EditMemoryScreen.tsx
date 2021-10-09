@@ -5,7 +5,7 @@ import {View, Text} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {connect, ConnectedProps} from 'react-redux';
 
-import {MemoryPatch, Memory} from '../MemoryModels';
+import {Memory, MemoryMeta} from '../MemoryModels';
 import {ScrollContainer} from '../../views/View';
 import TitleInput from '../new_memory/TitleInput';
 import {RootStackParamList} from '../../../Router';
@@ -35,15 +35,15 @@ type EditMemoryScreenProps = ConnectedProps<typeof connector> & NavigationProps;
 type FormState = {
   title?: string;
   location?: string;
-  date?: number;
-  tagId?: number;
+  occurredAt?: Date;
+  tid?: string;
 };
 
 const isValidUpdate = (memory: Memory, form: FormState): boolean => {
   const titleDiff = memory.title !== form.title;
   const locationDiff = memory.location !== form.location;
-  const dateDiff = memory.date !== form.date;
-  const tagDiff = memory.tag?.tid !== form.tagId;
+  const dateDiff = memory.occurredAt !== form.occurredAt;
+  const tagDiff = memory.tag?.tid !== form.tid;
 
   const isDiff = titleDiff || locationDiff || dateDiff || tagDiff;
   const isTitleValid = form.title != null && form.title.length > 0;
@@ -52,31 +52,15 @@ const isValidUpdate = (memory: Memory, form: FormState): boolean => {
   return isDiff && isTitleValid && isLocationValid;
 };
 
-const buildPatch = (memory: Memory, form: FormState): MemoryPatch => {
-  const patch: MemoryPatch = {};
-
-  if (form.title !== memory.title) {
-    patch.title = form.title;
-  }
-
-  if (form.location !== memory.location) {
-    patch.location = form.location;
-  }
-
-  if (form.date !== memory.date && form.date != null) {
-    patch.date = form.date.toString() as any;
-  }
-
-  if (form.tagId !== memory.tag?.tid) {
-    // handle delete case, where tag is set to -1
-    if (form.tagId == null) {
-      patch.tagId = -1;
-    } else {
-      patch.tagId = form.tagId;
-    }
-  }
-
-  return patch;
+const buildPatch = (memory: Memory, form: FormState): MemoryMeta => {
+  return {
+    mid: memory.mid,
+    title: form.title || memory.title,
+    location: form.location || memory.location,
+    occurredAt: form.occurredAt || memory.occurredAt,
+    tid: form.tid,
+    displayContentId: memory.displayContent?.contentId,
+  };
 };
 
 export const EditMemoryScreen = ({
@@ -89,17 +73,17 @@ export const EditMemoryScreen = ({
   const [formState, setFormState] = useState<FormState>({
     title: memory.title,
     location: memory.location,
-    date: memory.date,
-    tagId: memory.tag?.tid,
+    occurredAt: memory.occurredAt,
+    tid: memory.tag?.tid,
   });
 
   const submitEdit = () => {
     setLoading(true);
-    patchMemory(memory.id, buildPatch(memory, formState))
+    patchMemory(memory.mid, buildPatch(memory, formState))
       .then((patchedMemory: Memory) => {
         dispatch(
           updateMemory({
-            mid: memory.id,
+            mid: memory.mid,
             memory: patchedMemory,
           }),
         );
@@ -128,13 +112,15 @@ export const EditMemoryScreen = ({
         />
 
         <DateTimePicker
-          setDateTime={(date: number) => setFormState({...formState, date})}
-          initialValue={formState.date}
+          setDateTime={(occurredAt: Date) =>
+            setFormState({...formState, occurredAt})
+          }
+          initialValue={formState.occurredAt}
         />
 
         <SelectTag
           onTagChange={(tag: undefined | Tag) =>
-            setFormState({...formState, tagId: tag?.tid})
+            setFormState({...formState, tid: tag?.tid})
           }
           initialValue={memory?.tag}
         />

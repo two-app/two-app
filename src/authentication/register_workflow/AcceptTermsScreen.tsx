@@ -78,7 +78,7 @@ export const AcceptTermsScreen = () => {
           accessibilityLabel="Press to submit terms and conditions"
         />
 
-        {error && (
+        {error != '' && (
           <Text
             style={{color: Colors.DARK_SALMON}}
             accessibilityHint={error}
