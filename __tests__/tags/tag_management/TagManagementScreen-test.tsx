@@ -101,8 +101,7 @@ describe('TagManagementScreen - Create Mode', () => {
 
     test('it should display an error for a rejected patch', async () => {
       const e: ErrorResponse = {
-        status: 'Bad Request',
-        code: 400,
+        status: 400,
         reason: 'This tag name already exists.',
       };
 
@@ -171,9 +170,8 @@ class TagManagementScreenTestBed {
     this.goBackFn = jest.fn();
     this.dispatchFn = jest.fn();
     this.onSubmitTagError({
-      code: -1,
+      status: -1,
       reason: 'not implemented',
-      status: 'not implemented',
     });
   }
 

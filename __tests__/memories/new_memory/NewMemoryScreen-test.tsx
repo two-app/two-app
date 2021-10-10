@@ -62,9 +62,8 @@ describe('NewMemoryScreen', () => {
     test('it should retrieve the memory on 409 conflict', async () => {
       // GIVEN the memory already exists
       tb.onCreateMemoryReject({
-        code: 409,
+        status: 409,
         reason: 'Conflict',
-        status: 'Conflict',
       });
 
       tb.onGetMemoryResolve(testMemory);
@@ -89,8 +88,7 @@ describe('NewMemoryScreen', () => {
 
     test('it should display errors', async () => {
       tb.onCreateMemoryReject({
-        code: 400,
-        status: 'Some Error',
+        status: 400,
         reason: 'Some Error',
       });
 
@@ -106,14 +104,12 @@ describe('NewMemoryScreen', () => {
 
     test('it should display retry/conflict errors', async () => {
       tb.onCreateMemoryReject({
-        code: 409,
-        status: 'Conflict',
+        status: 409,
         reason: 'Conflcit',
       });
 
       tb.onGetMemoryReject({
-        code: 500,
-        status: 'Internal Error',
+        status: 500,
         reason: 'Internal Error',
       });
 

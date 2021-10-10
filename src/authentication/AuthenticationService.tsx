@@ -48,7 +48,7 @@ const refreshTokens = (): Promise<MixedUser> =>
   Gateway.post<Tokens>('/refresh')
     .then(r => persistTokens(r.data))
     .catch((error: ErrorResponse) => {
-      if (error.code === 401) {
+      if (error.status === 401) {
         resetNavigate('LogoutScreen', getNavigation() as any);
       }
 

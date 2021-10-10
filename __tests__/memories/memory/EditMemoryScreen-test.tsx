@@ -143,8 +143,7 @@ describe('EditMemoryScreen', () => {
 
     test('it should display an error for a rejected patch', async () => {
       const e: ErrorResponse = {
-        status: 'Bad Request',
-        code: 400,
+        status: 400,
         reason: 'Something went wrong.',
       };
 

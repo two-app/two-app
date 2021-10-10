@@ -65,8 +65,7 @@ describe('ContentUploadScreen', () => {
 
   test('it should display an error on failure', async () => {
     const error: ErrorResponse = {
-      code: 400,
-      status: 'Bad Request',
+      status: 400,
       reason: 'Test Reason',
     };
 
