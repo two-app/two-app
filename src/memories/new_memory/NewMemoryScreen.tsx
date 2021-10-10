@@ -22,6 +22,7 @@ import {DateTimePicker} from './DateInput';
 import {LocationInput} from './LocationInput';
 import TitleInput from './TitleInput';
 import uuidv4 from 'uuidv4';
+import Colors from '../../Colors';
 
 type NavProp = NavigationProp<RootStackParamList, 'NewMemoryScreen'>;
 
@@ -29,7 +30,7 @@ export const NewMemoryScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation<NavProp>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [uploadError, setUploadError] = useState<string>();
+  const [error, setUploadError] = useState<string>();
   const [formState, setFormState] = useState<MemoryMeta>({
     mid: uuidv4(),
     title: '',
@@ -51,6 +52,7 @@ export const NewMemoryScreen = () => {
         },
       ],
     });
+    setLoading(false);
   };
 
   const onError = (e: ErrorResponse): void => {
@@ -83,6 +85,7 @@ export const NewMemoryScreen = () => {
         />
         <DateTimePicker
           setDateTime={occurredAt => setFormState({...formState, occurredAt})}
+          initialValue={formState.occurredAt}
         />
         <SelectTag
           onTagChange={tag => setFormState({...formState, tid: tag?.tid})}
@@ -96,7 +99,14 @@ export const NewMemoryScreen = () => {
           accessibilityLabel="Create a new memory"
         />
 
-        {uploadError != null && <Text>{uploadError}</Text>}
+        {error != null && (
+          <Text
+            style={{color: Colors.DARK_SALMON}}
+            accessibilityHint={error}
+            accessibilityLabel="Something went wrong creating your memory.">
+            {error}
+          </Text>
+        )}
       </View>
     </ScrollContainer>
   );
