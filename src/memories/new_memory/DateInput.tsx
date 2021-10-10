@@ -103,8 +103,3 @@ export const DateTimePicker = ({
     </>
   );
 };
-
-DateTimePicker.defaultProps = {
-  initialValue: undefined,
-  placeholder: 'When it took place...',
-};

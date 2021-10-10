@@ -39,27 +39,36 @@ export const NewMemoryScreen = () => {
     displayContentId: undefined,
   });
 
+  const storeAndNavigate = (m: Memory): void => {
+    dispatch(insertMemory(m));
+    navigation.reset({
+      index: 1,
+      routes: [
+        {name: 'HomeScreen'},
+        {
+          name: 'MemoryScreen',
+          params: {mid: m.mid},
+        },
+      ],
+    });
+  };
+
+  const onError = (e: ErrorResponse): void => {
+    setLoading(false);
+    setUploadError(e.reason);
+  };
+
   const createNewMemory = () => {
     setLoading(true);
     createMemory(formState)
-      // TODO POST memory already returns the complete memory data
-      .then((mid: string) => getMemory(mid))
-      .then((newMemory: Memory) => {
-        dispatch(insertMemory(newMemory));
-        navigation.reset({
-          index: 1,
-          routes: [
-            {name: 'HomeScreen'},
-            {
-              name: 'MemoryScreen',
-              params: {mid: newMemory.mid},
-            },
-          ],
-        });
-      })
+      .then(storeAndNavigate)
       .catch((e: ErrorResponse) => {
-        setLoading(false);
-        setUploadError(e.reason);
+        if (e.code === 409) {
+          // Memory already  exists, perform reset
+          getMemory(formState.mid).then(storeAndNavigate).catch(onError);
+        } else {
+          onError(e);
+        }
       });
   };
 
@@ -83,6 +92,8 @@ export const NewMemoryScreen = () => {
           onSubmit={createNewMemory}
           text="Create Memory"
           disabled={!isMemoryDescriptionValid(formState)}
+          accessibilityHint="Create a new memory"
+          accessibilityLabel="Create a new memory"
         />
 
         {uploadError != null && <Text>{uploadError}</Text>}

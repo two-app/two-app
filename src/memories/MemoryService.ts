@@ -35,15 +35,13 @@ const formatMemory = (memory: Memory): Memory => {
       memory.displayContent.fileKey,
     );
   }
-
   return memory;
 };
-
-export const createMemory = (description: MemoryMeta): Promise<string> => {
-  return Gateway.post('/memory', description).then(
-    (v: AxiosResponse<Memory>) => v.data.mid,
-  );
-};
+/**
+ * POST /memory to create a memory from a meta description.
+ */
+export const createMemory = (memory: MemoryMeta): Promise<Memory> =>
+  Gateway.post<Memory>('/memory', memory).then(r => r.data);
 
 export const uploadToMemory = (
   mid: string,
