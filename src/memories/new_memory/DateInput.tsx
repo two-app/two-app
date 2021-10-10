@@ -11,7 +11,7 @@ import {FormStyle} from './FormStyles';
 
 type DateTimePickerProps = {
   setDateTime: (datetime: Date) => void;
-  initialValue: Date;
+  initialValue?: Date;
   placeholder?: string;
 };
 
@@ -22,8 +22,8 @@ type DateTimePickerProps = {
  */
 export const DateTimePicker = ({
   setDateTime,
-  initialValue,
-  placeholder,
+  initialValue = new Date(),
+  placeholder = 'When it took place...',
 }: DateTimePickerProps) => {
   const [isVisible, setVisibility] = useState(false);
   const [pickerValue, setPickerValue] = useState<Date>();
@@ -102,9 +102,4 @@ export const DateTimePicker = ({
       )}
     </>
   );
-};
-
-DateTimePicker.defaultProps = {
-  initialValue: undefined,
-  placeholder: 'When it took place...',
 };

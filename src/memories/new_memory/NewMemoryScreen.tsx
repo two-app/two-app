@@ -22,6 +22,7 @@ import {DateTimePicker} from './DateInput';
 import {LocationInput} from './LocationInput';
 import TitleInput from './TitleInput';
 import uuidv4 from 'uuidv4';
+import Colors from '../../Colors';
 
 type NavProp = NavigationProp<RootStackParamList, 'NewMemoryScreen'>;
 
@@ -29,7 +30,7 @@ export const NewMemoryScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation<NavProp>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [uploadError, setUploadError] = useState<string>();
+  const [error, setUploadError] = useState<string>();
   const [formState, setFormState] = useState<MemoryMeta>({
     mid: uuidv4(),
     title: '',
@@ -39,27 +40,37 @@ export const NewMemoryScreen = () => {
     displayContentId: undefined,
   });
 
+  const storeAndNavigate = (m: Memory): void => {
+    dispatch(insertMemory(m));
+    navigation.reset({
+      index: 1,
+      routes: [
+        {name: 'HomeScreen'},
+        {
+          name: 'MemoryScreen',
+          params: {mid: m.mid},
+        },
+      ],
+    });
+    setLoading(false);
+  };
+
+  const onError = (e: ErrorResponse): void => {
+    setLoading(false);
+    setUploadError(e.reason);
+  };
+
   const createNewMemory = () => {
     setLoading(true);
     createMemory(formState)
-      // TODO POST memory already returns the complete memory data
-      .then((mid: string) => getMemory(mid))
-      .then((newMemory: Memory) => {
-        dispatch(insertMemory(newMemory));
-        navigation.reset({
-          index: 1,
-          routes: [
-            {name: 'HomeScreen'},
-            {
-              name: 'MemoryScreen',
-              params: {mid: newMemory.mid},
-            },
-          ],
-        });
-      })
+      .then(storeAndNavigate)
       .catch((e: ErrorResponse) => {
-        setLoading(false);
-        setUploadError(e.reason);
+        if (e.code === 409) {
+          // Memory already  exists, perform reset
+          getMemory(formState.mid).then(storeAndNavigate).catch(onError);
+        } else {
+          onError(e);
+        }
       });
   };
 
@@ -74,6 +85,7 @@ export const NewMemoryScreen = () => {
         />
         <DateTimePicker
           setDateTime={occurredAt => setFormState({...formState, occurredAt})}
+          initialValue={formState.occurredAt}
         />
         <SelectTag
           onTagChange={tag => setFormState({...formState, tid: tag?.tid})}
@@ -83,9 +95,18 @@ export const NewMemoryScreen = () => {
           onSubmit={createNewMemory}
           text="Create Memory"
           disabled={!isMemoryDescriptionValid(formState)}
+          accessibilityHint="Create a new memory"
+          accessibilityLabel="Create a new memory"
         />
 
-        {uploadError != null && <Text>{uploadError}</Text>}
+        {error != null && (
+          <Text
+            style={{color: Colors.DARK_SALMON}}
+            accessibilityHint={error}
+            accessibilityLabel="Something went wrong creating your memory.">
+            {error}
+          </Text>
+        )}
       </View>
     </ScrollContainer>
   );
