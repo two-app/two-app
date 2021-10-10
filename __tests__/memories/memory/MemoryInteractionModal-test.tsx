@@ -68,9 +68,8 @@ describe('MemoryInteractionModal', () => {
 
       test('it should display an error if one occurs', async () => {
         const e: ErrorResponse = {
-          code: 400,
+          status: 400,
           reason: 'Test Reason',
-          status: 'Bad Request',
         };
 
         tb.onSetMemoryDisplayPictureReject(e).pressUpdateDisplayContentButton();
@@ -112,9 +111,8 @@ describe('MemoryInteractionModal', () => {
 
       test('it should display an error if one occurs', async () => {
         const e: ErrorResponse = {
-          code: 400,
+          status: 400,
           reason: 'Test Reason',
-          status: 'Bad Request',
         };
 
         tb.onDeleteMemoryContentReject(e).pressDeleteContentButton();

@@ -85,8 +85,7 @@ describe('LoginScreen', () => {
       tb.setPasswordInput('SoMePassWord');
       tb.onLoginReject({
         reason: 'Invalid login combination',
-        code: 400,
-        status: 'Bad Request',
+        status: 400,
       });
 
       await tb.pressSubmit();

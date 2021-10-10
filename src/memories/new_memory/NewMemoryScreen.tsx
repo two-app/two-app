@@ -65,7 +65,7 @@ export const NewMemoryScreen = () => {
     createMemory(formState)
       .then(storeAndNavigate)
       .catch((e: ErrorResponse) => {
-        if (e.code === 409) {
+        if (e.status === 409) {
           // Memory already  exists, perform reset
           getMemory(formState.mid).then(storeAndNavigate).catch(onError);
         } else {

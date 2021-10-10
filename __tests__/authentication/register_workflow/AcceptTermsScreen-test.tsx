@@ -82,8 +82,7 @@ describe('AcceptTermsScreen', () => {
 
   describe('on failed submit', () => {
     const registerUserResponse: ErrorResponse = {
-      code: 400,
-      status: '400 Bad Request',
+      status: 400,
       reason: 'Some API Error Message',
     };
 
