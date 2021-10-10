@@ -19,6 +19,8 @@ export const mapErrorResponse = (error: AxiosError<any>): ErrorResponse => {
   console.log('--- The Request  ---');
   console.log(JSON.stringify(error.request));
   console.log('--- The Response ---');
+  console.log(JSON.stringify(error.response));
+  console.log('~~~   Meta Inf   ~~~');
   if (!error.response) {
     console.log(
       `Failed to connect to server. Using API ${Config.API_URL}.`,
@@ -31,13 +33,10 @@ export const mapErrorResponse = (error: AxiosError<any>): ErrorResponse => {
   } else {
     const response = error.response.data;
     if (isErrorResponse(response)) {
-      console.log('Server returned ErrorResponse.', response);
+      console.log(`Parsed ErrorResponse: ${response}`);
       return response;
     } else {
-      console.log(
-        'Server returned a malformed error.',
-        JSON.stringify(error.response),
-      );
+      console.log('Server returned a malformed error; not type ErrorResponse.');
       return {
         status: 500,
         reason: 'Something went wrong.',

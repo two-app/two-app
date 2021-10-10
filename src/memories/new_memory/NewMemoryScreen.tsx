@@ -62,11 +62,10 @@ export const NewMemoryScreen = () => {
 
   const createNewMemory = () => {
     setLoading(true);
-    Promise.all([createMemory(formState), createMemory(formState)])
-      .then(([m]) => storeAndNavigate(m))
+    createMemory(formState)
+      .then(storeAndNavigate)
       .catch((e: ErrorResponse) => {
         if (e.status === 409) {
-          console.log('Got code 409');
           // Memory already  exists, perform reset
           getMemory(formState.mid).then(storeAndNavigate).catch(onError);
         } else {
