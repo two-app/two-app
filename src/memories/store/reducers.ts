@@ -18,6 +18,11 @@ import {
   deleteMemory,
 } from './actions';
 
+// @ts-ignore
+const inAscending = (a: Memory, b: Memory): number =>
+  // @ts-ignore
+  b.occurredAt - a.occurredAt;
+
 export type MemoryState = {
   readonly allMemories: Memory[];
   readonly content: Record<string, Content[]>;
@@ -50,9 +55,6 @@ const handleInsertMemory = (
   ...state,
   allMemories: [...state.allMemories, action.payload].sort(inAscending),
 });
-
-const inAscending = (a: Memory, b: Memory): number =>
-  b.occurredAt.getTime() - a.occurredAt.getTime();
 
 const handleDeleteMemory = (
   state: MemoryState,
