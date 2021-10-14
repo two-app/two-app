@@ -50,7 +50,9 @@ export const ConnectCodeScreen = () => {
     AuthenticationService.connectUser(uid)
       .then((updatedUser: User) => {
         console.log(
-          `Successfully connected, updated to: ${updatedUser}. Navigating to HomeScreen.`,
+          `Successfully connected, updated to: ${JSON.stringify(
+            updatedUser,
+          )}. Navigating to HomeScreen.`,
         );
         resetNavigate('HomeScreen', navigation);
       })

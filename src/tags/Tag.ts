@@ -13,6 +13,7 @@ export type Tag = {
 };
 
 export type TagDescription = {
+  tid: string;
   name: string;
   color: string;
 };

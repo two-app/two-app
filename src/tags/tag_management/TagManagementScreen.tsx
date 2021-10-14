@@ -15,6 +15,7 @@ import {createTag, updateTag} from '../TagService';
 import Colors from '../../Colors';
 
 import {ColorList} from './ColorSelection';
+import uuidv4 from 'uuidv4';
 
 type TagManagementScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'TagManagementScreen'>;
@@ -52,6 +53,7 @@ export const TagManagementScreen = ({
 }: TagManagementScreenProps) => {
   const {onSubmit, initialTag} = route.params;
   const mode: Mode = getMode(initialTag);
+  const tid: string = initialTag?.tid ?? uuidv4();
 
   const [loading, setLoading] = useState<boolean>(false);
   const [name, setName] = useState<string | undefined>(initialTag?.name);
@@ -59,29 +61,25 @@ export const TagManagementScreen = ({
   const [error, setError] = useState<string | undefined>(undefined);
 
   const onSubmitPress = () => {
-    if (name != null && color != null) {
-      const tag: TagDescription = {name, color};
-      setLoading(true);
-
-      const handleResponse = (promise: Promise<Tag>) => {
-        promise
-          .then((createdTag: Tag) => {
-            onSubmit(createdTag);
-            navigation.goBack();
-          })
-          .catch((e: ErrorResponse) => {
-            console.log(e.reason);
-            setError(e.reason);
-          })
-          .finally(() => setLoading(false));
-      };
-
-      if (initialTag != null) {
-        handleResponse(updateTag(initialTag.tid, tag));
-      } else {
-        handleResponse(createTag(tag));
-      }
+    if (name == null || color == null) {
+      return;
     }
+
+    const tag: TagDescription = {tid, name, color};
+    setLoading(true);
+
+    const handleResponse = (promise: Promise<Tag>) => {
+      promise
+        .then((createdTag: Tag) => {
+          onSubmit(createdTag);
+          navigation.goBack();
+        })
+        .catch(({reason}: ErrorResponse) => setError(reason))
+        .finally(() => setLoading(false));
+    };
+
+    const perform = initialTag == null ? createTag : updateTag;
+    handleResponse(perform(tag));
   };
 
   return (
