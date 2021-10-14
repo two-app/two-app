@@ -57,6 +57,7 @@ describe('TagManagementScreen - Create Mode', () => {
 
   describe('Submitting a New Tag', () => {
     const tagDescription: TagDescription = {
+      tid: uuidv4(),
       name: 'Birthday',
       color: TagColors[3],
     };
@@ -68,7 +69,10 @@ describe('TagManagementScreen - Create Mode', () => {
 
     test('it should message the tag description', () => {
       tb.pressCreateButton();
-      expect(tb.createTagFn).toHaveBeenCalledWith(tagDescription);
+      expect(tb.createTagFn).toHaveBeenCalledWith({
+        ...tagDescription,
+        tid: expect.any(String),
+      });
     });
 
     test('it should show a loading indicator', () => {
@@ -143,7 +147,8 @@ describe('TagManagementScreen - Edit Mode', () => {
   test('the update function should be called on submit', () => {
     tb.pressUpdateButton();
 
-    expect(tb.updateTagFn).toHaveBeenCalledWith(tag.tid, {
+    expect(tb.updateTagFn).toHaveBeenCalledWith({
+      tid: tag.tid,
       color: tag.color,
       name: tag.name,
     });
@@ -155,7 +160,7 @@ class TagManagementScreenTestBed {
   initialTag?: Tag = undefined;
 
   createTagFn: jest.SpyInstance<Promise<Tag>, [TagDescription]>;
-  updateTagFn: jest.SpyInstance<Promise<Tag>, [string, TagDescription]>;
+  updateTagFn: jest.SpyInstance<Promise<Tag>, [TagDescription]>;
   onSubmitPropCallback: jest.Mock;
   goBackFn: jest.Mock;
   dispatchFn: jest.Mock;

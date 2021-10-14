@@ -1,33 +1,21 @@
-import {AxiosResponse} from 'axios';
-
 import Gateway from '../http/Gateway';
-
 import {Tag, TagDescription} from './Tag';
 
-export const getTags = (): Promise<Tag[]> => {
-  return Gateway.get('/tag').then((res: AxiosResponse<Tag[]>) => res.data);
-};
+/* GET /tag */
+export const getTags = (): Promise<Tag[]> =>
+  Gateway.get<Tag[]>('/tag').then(r => r.data);
 
-export const createTag = (tagDescription: TagDescription): Promise<Tag> => {
-  tagDescription.name.trim();
+/* POST /tag */
+export const createTag = (desc: TagDescription): Promise<Tag> =>
+  Gateway.post<Tag>('/tag', {
+    ...desc,
+    name: desc.name.trim(),
+  }).then(r => r.data);
 
-  type PostTagResponse = {
-    tid: string;
-  };
+/* DELETE /tag/$tid */
+export const deleteTag = (tid: string): Promise<void> =>
+  Gateway.delete(`/tag/${tid}`);
 
-  return Gateway.post('/tag', tagDescription).then(
-    (res: AxiosResponse<PostTagResponse>) => {
-      return {...tagDescription, tid: res.data.tid, memoryCount: 0};
-    },
-  );
-};
-
-export const deleteTag = (tid: string): Promise<void> => {
-  return Gateway.delete(`/tag/${tid}`);
-};
-
-export const updateTag = (tid: string, desc: TagDescription): Promise<Tag> => {
-  return Gateway.put(`/tag/${tid}`, desc).then((res: AxiosResponse<Tag>) => {
-    return res.data;
-  });
-};
+/* PUT /tag/$tid */
+export const updateTag = (desc: TagDescription): Promise<Tag> =>
+  Gateway.put<Tag>(`/tag/${desc.tid}`, desc).then(r => r.data);
