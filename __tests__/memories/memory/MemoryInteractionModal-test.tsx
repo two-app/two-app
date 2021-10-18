@@ -1,5 +1,5 @@
 import {Text} from 'react-native';
-import type {RenderAPI} from '@testing-library/react-native';
+import {RenderAPI} from '@testing-library/react-native';
 import {render, fireEvent, waitFor} from '@testing-library/react-native';
 import {Provider} from 'react-redux';
 
@@ -9,8 +9,9 @@ import type {Memory} from '../../../src/memories/MemoryModels';
 import type {ErrorResponse} from '../../../src/http/Response';
 import type {Content} from '../../../src/content/ContentModels';
 import type {DeleteContentResponse} from '../../../src/content/ContentService';
-import {store} from '../../../src/state/reducers';
+import {clearState, store} from '../../../src/state/reducers';
 import uuidv4 from 'uuidv4';
+import {storeMemories} from '../../../src/memories/store';
 
 describe('MemoryInteractionModal', () => {
   let tb: MemoryInteractionModalTestBed;
@@ -47,7 +48,7 @@ describe('MemoryInteractionModal', () => {
 
       test('it should update the memory in the global state', async () => {
         // GIVEN a memory has content in global
-        store.getState().memories.allMemories.push(testMemory);
+        store.dispatch(storeMemories([testMemory]));
 
         // GIVEN the update succeeds
         const updatedMemory: Memory = {...tb.memory, title: 'another title'}; // any update will do
@@ -62,7 +63,6 @@ describe('MemoryInteractionModal', () => {
         });
 
         // THEN the redux state should be updated to the latest memory
-
         expect(store.getState().memories.allMemories).toEqual([updatedMemory]);
       });
 
@@ -200,10 +200,12 @@ class MemoryInteractionModalTestBed {
   };
 
   isModalVisible = (): boolean => {
-    return this.render.getAllByTestId('interaction-modal')[0].props.visible;
+    return this.render.getByA11yLabel('Content options modal.').props.visible;
   };
 
   build = (): MemoryInteractionModalTestBed => {
+    store.dispatch(clearState());
+
     this.render = render(
       <Provider store={store}>
         <MemoryInteractionModal

@@ -76,7 +76,6 @@ export const TagScreen = ({tags, dispatch}: TagScreenProps) => {
           ItemSeparatorComponent={() => (
             <View style={{flex: 1, height: 2, backgroundColor: Colors.LIGHT}} />
           )}
-          testID="menu"
           keyExtractor={(tag: Tag) => tag.name}
           ListEmptyComponent={() => (
             <EmptyTagsComponent loadingStatus={loadingStatus} />
