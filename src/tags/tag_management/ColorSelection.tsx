@@ -61,9 +61,9 @@ const ColorButton = ({color, isSelected, onClick}: ColorButtonProps) => {
   return (
     <TouchableWithoutFeedback
       onPress={() => onClick(color)}
-      accessibilityHint={`Set the tag color to ${color}`}
+      accessibilityState={{selected: isSelected}}
       accessibilityLabel={color}
-      testID={isSelected ? 'selected-color' : undefined}>
+      accessibilityHint={`Set the tag color to ${color}`}>
       <View
         style={{
           width: 40,

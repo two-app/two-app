@@ -1,54 +1,38 @@
 import type {ComponentClass} from 'react';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {View, Text, StyleSheet, Linking} from 'react-native';
-import AntIcon from 'react-native-vector-icons/AntDesign';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import Feather from 'react-native-vector-icons/Feather';
-import type {StackNavigationProp} from '@react-navigation/stack';
-import type {ConnectedProps} from 'react-redux';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {TouchableOpacity, FlatList} from 'react-native-gesture-handler';
 import Config from 'react-native-config';
 
 import Colors from '../Colors';
 import {resetNavigate} from '../navigation/NavigationUtilities';
-import type {TwoState} from '../state/reducers';
-import type {RootStackParamList} from '../../Router';
+import {TwoState} from '../state/reducers';
 import {Footer} from '../home/Footer';
 import {Wrapper, NoWrapContainer} from '../views/View';
+import {Couple, fetchCouple} from '../couple/CoupleService';
+import {useNavigation} from '@react-navigation/native';
+import {Routes} from '../navigation/RootNavigation';
+import {storeCoupleProfile} from './profile/profile-state';
+import {Profile} from '../couple/Profile';
 
-import type {UserProfile} from './UserService';
-import UserService from './UserService';
+type CoupleState = Couple | undefined;
 
-import {selectUser} from '.';
-
-const mapStateToProps = (state: TwoState) => ({user: selectUser(state.user)});
-const connector = connect(mapStateToProps);
-type ConnectorProps = ConnectedProps<typeof connector>;
-type ProfileScreenProps = ConnectorProps & {
-  navigation: StackNavigationProp<RootStackParamList, 'ProfileScreen'>;
-};
-
-export const ProfileScreen = ({navigation, user}: ProfileScreenProps) => {
-  const [userProfile, setUserProfile] = useState<UserProfile>({
-    ...user,
-    firstName: '',
-    lastName: '',
-  });
-  const [partnerProfile, setPartnerProfile] = useState<UserProfile>();
+export const ProfileScreen = () => {
+  const navigation = useNavigation<Routes>();
+  const dispatch = useDispatch();
+  const couple = useSelector<TwoState, CoupleState>(
+    state => state.profile?.couple,
+  );
 
   useEffect(() => {
-    // TODO use GET /couple
-    UserService.getSelf().then(setUserProfile);
-    setPartnerProfile(undefined);
+    fetchCouple().then(couple => dispatch(storeCoupleProfile(couple)));
   }, []);
 
   const data: MenuItemProps[] = [
-    /*{
-    icon: EvilIcon,
-    iconName: 'tag',
-    text: 'Manage Tags'
-  },*/ {
+    {
       icon: EvilIcon,
       iconName: 'envelope',
       text: 'Submit Feedback',
@@ -65,15 +49,17 @@ export const ProfileScreen = ({navigation, user}: ProfileScreenProps) => {
         Linking.openURL(
           'mailto:problem@two.date?subject=Report%20a%20Problem&body=Let%20us%20know%what%went%wrong...',
         ),
-    } /*, {
-    icon: EvilIcon,
-    iconName: 'location',
-    text: 'Location Settings'
-  }*/ /*, {
-    icon: EvilIcon,
-    iconName: 'archive',
-    text: 'Terms and Conditions'
-  }*/,
+    },
+    {
+      icon: EvilIcon,
+      iconName: 'location',
+      text: 'Location Settings',
+    },
+    {
+      icon: EvilIcon,
+      iconName: 'archive',
+      text: 'Terms and Conditions',
+    },
     {
       icon: EvilIcon,
       iconName: 'lock',
@@ -92,23 +78,23 @@ export const ProfileScreen = ({navigation, user}: ProfileScreenProps) => {
     },
   ];
 
+  const listHeader = couple ? (
+    <ProfileHeader userProfile={couple.user} partnerProfile={couple.partner!} />
+  ) : (
+    <></>
+  );
+
   return (
     <Wrapper>
       <NoWrapContainer>
         <FlatList
           data={data}
-          ListHeaderComponent={() => (
-            <ProfileHeader
-              userProfile={userProfile}
-              partnerProfile={partnerProfile}
-            />
-          )}
+          ListHeaderComponent={() => listHeader}
           renderItem={({item}) => <MenuItem {...item} />}
           ItemSeparatorComponent={() => (
             <View style={{flex: 1, height: 2, backgroundColor: Colors.LIGHT}} />
           )}
           keyExtractor={item => item.text}
-          testID="menu"
         />
       </NoWrapContainer>
       <Footer active="ProfileScreen" />
@@ -117,28 +103,21 @@ export const ProfileScreen = ({navigation, user}: ProfileScreenProps) => {
 };
 
 type ProfileHeaderProps = {
-  userProfile: UserProfile;
-  partnerProfile: UserProfile | undefined;
+  userProfile: Profile;
+  partnerProfile: Profile;
 };
 
 const ProfileHeader = ({userProfile, partnerProfile}: ProfileHeaderProps) => (
-  <View style={{height: 150, alignItems: 'center', flexDirection: 'row'}}>
-    <View style={styles.profilePicture}>
-      <AntIcon name="user" size={50} color="#7D4F50" />
-    </View>
-    <View style={{flex: 1, flexGrow: 1, padding: 20}}>
-      <Text style={styles.profileName} data-testid="user-name">
-        {userProfile.firstName} {userProfile.lastName}
+  <View style={styles.profileHeader}>
+    <Text style={styles.profileName}>
+      {userProfile.firstName} {userProfile.lastName}
+    </Text>
+    <Text>
+      with{' '}
+      <Text style={styles.subProfileName}>
+        {partnerProfile.firstName} {partnerProfile.lastName}
       </Text>
-      {partnerProfile != null && (
-        <Text>
-          with{' '}
-          <Text style={styles.subProfileName} data-testid="partner-name">
-            {partnerProfile.firstName} {partnerProfile.lastName}
-          </Text>
-        </Text>
-      )}
-    </View>
+    </Text>
   </View>
 );
 
@@ -158,7 +137,7 @@ const MenuItem = (props: MenuItemProps) => (
     accessibilityLabel={props.text}>
     <Text style={{color: Colors.REGULAR}}>{props.text}</Text>
     <props.icon
-      size={props.iconSize}
+      size={props.iconSize ?? 25}
       name={props.iconName}
       color={Colors.REGULAR}
       style={props.iconStyle}
@@ -166,31 +145,22 @@ const MenuItem = (props: MenuItemProps) => (
   </TouchableOpacity>
 );
 
-MenuItem.defaultProps = {
-  iconSize: 25,
-  iconStyle: {},
-  onPress: () => {},
-};
-
 const styles = StyleSheet.create({
-  profilePicture: {
-    backgroundColor: '#FEEFDD',
-    width: 100,
-    height: 100,
-    borderRadius: 30,
-    borderWidth: 1,
-    borderColor: Colors.LIGHT,
+  profileHeader: {
+    paddingVertical: 30,
     alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: 'column',
   },
   profileName: {
     fontSize: 30,
     fontWeight: 'bold',
     color: Colors.DARK,
+    textAlign: 'center',
   },
   subProfileName: {
     fontWeight: 'bold',
     color: Colors.DARK,
+    textAlign: 'center',
   },
   listItem: {
     height: 50,
@@ -199,5 +169,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-export default connector(ProfileScreen);

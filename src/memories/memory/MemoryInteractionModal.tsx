@@ -106,8 +106,7 @@ export const MemoryInteractionModal = ({
         }
 
         onClose();
-      }}
-      testID="interaction-modal">
+      }}>
       {modal.content != null && (
         <Modal
           content={modal.content}

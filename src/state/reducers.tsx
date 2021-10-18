@@ -8,9 +8,11 @@ import {userReducer, UserState} from '../user';
 import {authReducer, AuthState} from '../authentication/store';
 import {MemoryState, memoryReducer} from '../memories/store/reducers';
 import {tagReducer, TagState} from '../tags/store';
+import {profileReducer, ProfileState} from '../user/profile/profile-state';
 
 export type TwoState = {
   user?: UserState;
+  profile?: ProfileState;
   auth?: AuthState;
   memories: MemoryState;
   tags: TagState;
@@ -26,6 +28,7 @@ const reducer = combineReducers({
   auth: authReducer,
   memories: memoryReducer,
   tags: tagReducer,
+  profile: profileReducer,
 });
 
 const clearState = createAction('CLEAR_STATE')();

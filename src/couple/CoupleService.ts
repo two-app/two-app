@@ -8,9 +8,6 @@ export type Couple = {
   cid?: string;
 };
 
-const getCouple = (): Promise<Couple> => {
-  console.log('Performing GET /couple');
-  return Gateway.get<Couple>('couple').then(r => r.data);
-};
-
-export default {getCouple};
+/* GET /couple */
+export const fetchCouple = (): Promise<Couple> =>
+  Gateway.get<Couple>('couple').then(r => r.data);

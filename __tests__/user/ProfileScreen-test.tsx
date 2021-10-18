@@ -1,14 +1,17 @@
 import {Text} from 'react-native';
 import type {RenderAPI} from '@testing-library/react-native';
-import {render, fireEvent, cleanup} from '@testing-library/react-native';
+import {render, fireEvent} from '@testing-library/react-native';
 import {CommonActions} from '@react-navigation/native';
 import Config from 'react-native-config';
 import uuidv4 from 'uuidv4';
 
 import {ProfileScreen} from '../../src/user/ProfileScreen';
-import type {UserProfile} from '../../src/user/UserService';
-import UserService from '../../src/user/UserService';
-import type {User} from '../../src/authentication/UserModel';
+import * as CoupleService from '../../src/couple/CoupleService';
+import {mockNavigation, resetMockNavigation} from '../utils/NavigationMocking';
+import {clearState, store} from '../../src/state/reducers';
+import {storeCoupleProfile} from '../../src/user/profile/profile-state';
+import {Couple} from '../../src/couple/CoupleService';
+import {Provider} from 'react-redux';
 
 const mockOpenURLFn = jest.fn().mockResolvedValue({});
 
@@ -19,37 +22,31 @@ jest.mock('react-native/Libraries/Linking/Linking', () => ({
 describe('PartnerScreen', () => {
   let tb: PartnerScreenTestBed;
 
-  beforeEach(() => {
-    mockOpenURLFn.mockClear();
-    tb = new PartnerScreenTestBed().build();
-  });
-  afterEach(cleanup);
+  beforeEach(() => (tb = new PartnerScreenTestBed().build()));
 
-  test('should display the users first and last name', () =>
+  test('should display the users first and last name', () => {
     expect(
-      tb.wrapper.getByText(
-        `${tb.userProfile.firstName} ${tb.userProfile.lastName}`,
+      tb.render.getByText(
+        `${tb.couple.user.firstName} ${tb.couple.user.lastName}`,
       ),
-    ).toBeTruthy());
+    ).toBeTruthy();
+  });
 
-  // test('should have a Manage Tags link', () => expect(
-  //   tb.wrapper.getByA11yLabel('Manage Tags')
-  // ).toBeTruthy());
+  test('should have a Location Settings link', () => {
+    expect(tb.render.getByA11yLabel('Location Settings')).toBeTruthy();
+  });
 
-  // test('should have a Location Settings link', () => expect(
-  //   tb.wrapper.getByA11yLabel('Location Settings')
-  // ).toBeTruthy());
-
-  // test('should have a Terms & Conditions link', () => expect(
-  //   tb.wrapper.getByA11yLabel('Terms and Conditions')
-  // ).toBeTruthy());
+  test('should have a Terms & Conditions link', () => {
+    expect(tb.render.getByA11yLabel('Terms and Conditions')).toBeTruthy();
+  });
 
   describe('Submit Feedback', () => {
-    test('should have a Submit Feedback link', () =>
-      expect(tb.wrapper.getByA11yLabel('Submit Feedback')).toBeTruthy());
+    test('should have a Submit Feedback link', () => {
+      expect(tb.render.getByA11yLabel('Submit Feedback')).toBeTruthy();
+    });
 
     test('should create an email to feedback@two.date', () => {
-      const feedbackButton = tb.wrapper.getByA11yLabel('Submit Feedback');
+      const feedbackButton = tb.render.getByA11yLabel('Submit Feedback');
 
       fireEvent.press(feedbackButton);
 
@@ -62,10 +59,10 @@ describe('PartnerScreen', () => {
 
   describe('Report Problem', () => {
     test('should have a Report Problem link', () =>
-      expect(tb.wrapper.getByA11yLabel('Report a Problem')).toBeTruthy());
+      expect(tb.render.getByA11yLabel('Report a Problem')).toBeTruthy());
 
     test('should create an email to report@two.date', () => {
-      const reportButton = tb.wrapper.getByA11yLabel('Report a Problem');
+      const reportButton = tb.render.getByA11yLabel('Report a Problem');
 
       fireEvent.press(reportButton);
 
@@ -78,10 +75,10 @@ describe('PartnerScreen', () => {
 
   describe('Privacy Policy', () => {
     test('should have a Privacy Policy link', () =>
-      expect(tb.wrapper.getByA11yLabel('Privacy Policy')).toBeTruthy());
+      expect(tb.render.getByA11yLabel('Privacy Policy')).toBeTruthy());
 
     test('should direct user to the privacy URL', () => {
-      const privacyButton = tb.wrapper.getByA11yLabel('Privacy Policy');
+      const privacyButton = tb.render.getByA11yLabel('Privacy Policy');
 
       fireEvent.press(privacyButton);
 
@@ -92,15 +89,15 @@ describe('PartnerScreen', () => {
 
   describe('Logout', () => {
     test('should have a Logout link', () =>
-      expect(tb.wrapper.getByA11yLabel('Logout')).toBeTruthy());
+      expect(tb.render.getByA11yLabel('Logout')).toBeTruthy());
 
     test('should log the user out on press', () => {
-      const logoutButton = tb.wrapper.getByA11yLabel('Logout');
+      const logoutButton = tb.render.getByA11yLabel('Logout');
 
       fireEvent.press(logoutButton);
 
-      expect(tb.dispatchFn).toHaveBeenCalledTimes(1);
-      expect(tb.dispatchFn).toHaveBeenCalledWith(
+      expect(mockNavigation.dispatch).toHaveBeenCalledTimes(1);
+      expect(mockNavigation.dispatch).toHaveBeenCalledWith(
         CommonActions.reset({
           index: 0,
           routes: [{name: 'LogoutScreen'}],
@@ -111,36 +108,62 @@ describe('PartnerScreen', () => {
 });
 
 class PartnerScreenTestBed {
-  user: User = {uid: uuidv4(), pid: uuidv4(), cid: uuidv4()};
-  userProfile: UserProfile = {
-    ...this.user,
-    firstName: 'ABC',
-    lastName: '123',
+  render: RenderAPI = render(<Text>Not Implemented</Text>);
+
+  uid = uuidv4();
+  pid = uuidv4();
+  cid = uuidv4();
+
+  couple: Couple = {
+    cid: this.cid,
+    user: {
+      uid: this.uid,
+      cid: this.cid,
+      email: 'user@two.date',
+      firstName: 'UserFirst',
+      lastName: 'UserLast',
+      createdAt: '',
+      updatedAt: '',
+      acceptedTerms: true,
+      receivesEmails: true,
+      ofAge: true,
+    },
+    partner: {
+      uid: this.pid,
+      cid: this.cid,
+      email: 'partner@two.date',
+      firstName: 'PartnerFirst',
+      lastName: 'PartnerLast',
+      createdAt: '',
+      updatedAt: '',
+      acceptedTerms: true,
+      receivesEmails: true,
+      ofAge: true,
+    },
   };
-  partnerProfile: UserProfile = {
-    uid: this.user.pid,
-    pid: this.user.uid,
-    cid: this.user.cid,
-    firstName: 'XYZ',
-    lastName: '789',
-  };
+
   privacyPolicyURL = 'test_privacy_policy_url';
 
-  dispatchFn = jest.fn();
-  wrapper: RenderAPI = render(<Text>Not Implemented</Text>);
-
   constructor() {
-    UserService.getSelf = jest.fn().mockResolvedValue(this.userProfile);
+    this.onFetchCoupleResolve(this.couple);
     Config.PRIVACY_POLICY_URL = this.privacyPolicyURL;
   }
 
+  // request/response mocks
+  private fetchCoupleSpy = jest.spyOn(CoupleService, 'fetchCouple');
+
+  onFetchCoupleResolve = (couple: Couple) =>
+    this.fetchCoupleSpy.mockResolvedValueOnce(couple);
+
   build = (): PartnerScreenTestBed => {
-    this.wrapper = render(
-      <ProfileScreen
-        dispatch={{} as any}
-        navigation={{dispatch: this.dispatchFn} as any}
-        user={this.user}
-      />,
+    resetMockNavigation();
+    store.dispatch(clearState());
+    store.dispatch(storeCoupleProfile(this.couple));
+    mockOpenURLFn.mockClear();
+    this.render = render(
+      <Provider store={store}>
+        <ProfileScreen />
+      </Provider>,
     );
     return this;
   };

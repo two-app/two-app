@@ -12,7 +12,7 @@ import MemoryScreen from './src/memories/memory/MemoryScreen';
 import {NewMemoryScreen} from './src/memories/new_memory/NewMemoryScreen';
 import {SearchScreen} from './src/search/SearchScreen';
 import type {Tag} from './src/tags/Tag';
-import ProfileScreen from './src/user/ProfileScreen';
+import {ProfileScreen} from './src/user/ProfileScreen';
 import EditMemoryScreen from './src/memories/memory/EditMemoryScreen';
 import ContentUploadScreen from './src/content/ContentUploadScreen';
 import type {PickedContent} from './src/content/ContentPicker';

@@ -203,7 +203,10 @@ class TagManagementScreenTestBed {
   };
 
   getSelectedColor = (): string => {
-    return this.render.getByTestId('selected-color').props.accessibilityLabel;
+    return this.render
+      .getAllByA11yState({selected: true})
+      .filter(e => e.props.accessibilityHint.startsWith('Set the tag color'))
+      .map(e => e.props.accessibilityLabel)[0];
   };
 
   pressCreateButton = () => {
