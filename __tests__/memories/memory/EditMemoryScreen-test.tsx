@@ -14,8 +14,15 @@ import * as TagService from '../../../src/tags/TagService';
 import type {Tag} from '../../../src/tags/Tag';
 import * as MemoryService from '../../../src/memories/MemoryService';
 import type {ErrorResponse} from '../../../src/http/Response';
-import {updateMemory} from '../../../src/memories/store';
+import {storeMemories} from '../../../src/memories/store';
 import uuidv4 from 'uuidv4';
+import {
+  mockNavigation,
+  mockRoute,
+  resetMockNavigation,
+} from '../../utils/NavigationMocking';
+import {store, clearState} from '../../../src/state/reducers';
+import {Provider} from 'react-redux';
 
 describe('EditMemoryScreen', () => {
   let tb: EditMemoryScreenTestBed;
@@ -84,8 +91,8 @@ describe('EditMemoryScreen', () => {
 
       tb.pressSubmitButton();
 
-      expect(tb.patchMemoryFn).toHaveBeenCalledTimes(1);
-      expect(tb.patchMemoryFn).toHaveBeenCalledWith(tb.memory.mid, expected);
+      expect(tb.updateMemory).toHaveBeenCalledTimes(1);
+      expect(tb.updateMemory).toHaveBeenCalledWith(expected);
     });
   });
 
@@ -110,12 +117,12 @@ describe('EditMemoryScreen', () => {
       // WHEN
       tb.pressSubmitButton();
 
-      expect(tb.patchMemoryFn).toHaveBeenCalledTimes(1);
-      expect(tb.patchMemoryFn).toHaveBeenCalledWith(tb.memory.mid, expected);
+      expect(tb.updateMemory).toHaveBeenCalledTimes(1);
+      expect(tb.updateMemory).toHaveBeenCalledWith(expected);
     });
 
     test('it should show a loading indicator', () => {
-      tb.patchMemoryFn.mockReturnValue(new Promise(() => {}));
+      tb.updateMemory.mockReturnValue(new Promise(() => {}));
       tb.pressSubmitButton();
 
       expect(tb.getLoadingScreen()).toBeTruthy();
@@ -125,12 +132,12 @@ describe('EditMemoryScreen', () => {
       tb.pressSubmitButton();
 
       await waitFor(() => {
-        if (tb.goBackFn.mock.calls.length === 0) {
+        if (mockNavigation.goBack.mock.calls.length === 0) {
           throw new Error('Zero calls');
         }
       });
 
-      expect(tb.goBackFn).toHaveBeenCalledTimes(1);
+      expect(mockNavigation.goBack).toHaveBeenCalledTimes(1);
     });
 
     test('it should hide the loading indicator when complete', async () => {
@@ -163,21 +170,14 @@ describe('EditMemoryScreen', () => {
 
     test('it should dispatch the updated memory to redux', async () => {
       const updatedMemory: Memory = {...tb.memory, title: 'brand new title'};
-      tb.onPatchResolve(updatedMemory).pressSubmitButton();
+      tb.onPatchResolve(updatedMemory);
 
-      await waitFor(() => {
-        if (tb.dispatchFn.mock.calls.length === 0) {
-          throw new Error('Zero calls');
-        }
-      });
+      // WHEN
+      tb.pressSubmitButton();
 
-      expect(tb.dispatchFn).toHaveBeenCalledTimes(1);
-      expect(tb.dispatchFn).toHaveBeenCalledWith(
-        updateMemory({
-          mid: updatedMemory.mid,
-          memory: updatedMemory,
-        }),
-      );
+      await waitForElementToBeRemoved(tb.getLoadingScreen);
+
+      expect(store.getState().memories.allMemories).toEqual([updatedMemory]);
     });
   });
 });
@@ -197,6 +197,7 @@ class EditMemoryScreenTestBed {
     tid: uuidv4(),
     memoryCount: 0,
   };
+
   tags: Tag[] = [this.selectedTag, this.otherTag];
 
   memory: Memory = {
@@ -211,25 +212,21 @@ class EditMemoryScreenTestBed {
     displayContent: undefined,
   };
 
-  goBackFn: jest.Mock;
-  patchMemoryFn: jest.SpyInstance<Promise<Memory>, [string, MemoryMeta]>;
-  dispatchFn: jest.Mock;
+  updateMemory: jest.SpyInstance<Promise<Memory>, [MemoryMeta]>;
 
   constructor() {
-    this.patchMemoryFn = jest.spyOn(MemoryService, 'patchMemory').mockClear();
+    this.updateMemory = jest.spyOn(MemoryService, 'updateMemory').mockClear();
     jest.spyOn(TagService, 'getTags').mockResolvedValue(this.tags);
-    this.goBackFn = jest.fn();
-    this.dispatchFn = jest.fn();
     this.onPatchResolve(this.memory);
   }
 
   onPatchResolve = (updatedMemory: Memory): EditMemoryScreenTestBed => {
-    this.patchMemoryFn.mockResolvedValue(updatedMemory);
+    this.updateMemory.mockResolvedValue(updatedMemory);
     return this;
   };
 
   onPatchError = (e: ErrorResponse) => {
-    this.patchMemoryFn.mockRejectedValue(e);
+    this.updateMemory.mockRejectedValue(e);
   };
 
   setTitleInput = (title: string) => {
@@ -269,13 +266,18 @@ class EditMemoryScreenTestBed {
   };
 
   build = (): EditMemoryScreenTestBed => {
+    resetMockNavigation();
+    store.dispatch(clearState());
+    store.dispatch(storeMemories([this.memory]));
+    mockRoute.params.mid = this.memory.mid;
+
     this.render = render(
-      <EditMemoryScreen
-        navigation={{goBack: this.goBackFn} as any}
-        route={{params: {mid: this.memory.mid}} as any}
-        memory={this.memory}
-        dispatch={this.dispatchFn}
-      />,
+      <Provider store={store}>
+        <EditMemoryScreen
+          navigation={mockNavigation as any}
+          route={mockRoute as any}
+        />
+      </Provider>,
     );
     return this;
   };
