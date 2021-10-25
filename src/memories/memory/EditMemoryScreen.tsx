@@ -3,7 +3,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 import {View, Text} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {connect, ConnectedProps} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {Memory, MemoryMeta} from '../MemoryModels';
 import {ScrollContainer} from '../../views/View';
@@ -15,31 +15,17 @@ import {DateTimePicker} from '../new_memory/DateInput';
 import {LocationInput} from '../new_memory/LocationInput';
 import {SelectTag} from '../../tags/SelectTag';
 import {Tag} from '../../tags/Tag';
-import {patchMemory} from '../MemoryService';
+import {updateMemory as updateMemoryRequest} from '../MemoryService';
 import {ErrorResponse} from '../../http/Response';
 import {TwoState} from '../../state/reducers';
 import {selectMemory, updateMemory} from '../store';
 
-type NavigationProps = {
+type Props = {
   navigation: StackNavigationProp<RootStackParamList, 'EditMemoryScreen'>;
   route: RouteProp<RootStackParamList, 'EditMemoryScreen'>;
 };
 
-const mapStateToProps = (state: TwoState, ownProps: NavigationProps) => ({
-  memory: selectMemory(state.memories, ownProps.route.params.mid),
-});
-
-const connector = connect(mapStateToProps);
-type EditMemoryScreenProps = ConnectedProps<typeof connector> & NavigationProps;
-
-type FormState = {
-  title?: string;
-  location?: string;
-  occurredAt?: Date;
-  tid?: string;
-};
-
-const isValidUpdate = (memory: Memory, form: FormState): boolean => {
+const isValidUpdate = (memory: Memory, form: MemoryMeta): boolean => {
   const titleDiff = memory.title !== form.title;
   const locationDiff = memory.location !== form.location;
   const dateDiff = memory.occurredAt !== form.occurredAt;
@@ -52,25 +38,16 @@ const isValidUpdate = (memory: Memory, form: FormState): boolean => {
   return isDiff && isTitleValid && isLocationValid;
 };
 
-const buildPatch = (memory: Memory, form: FormState): MemoryMeta => {
-  return {
-    mid: memory.mid,
-    title: form.title || memory.title,
-    location: form.location || memory.location,
-    occurredAt: form.occurredAt || memory.occurredAt,
-    tid: form.tid,
-    displayContentId: memory.displayContent?.contentId,
-  };
-};
+export const EditMemoryScreen = ({navigation, route}: Props) => {
+  const dispatch = useDispatch();
+  const memory: Memory = useSelector<TwoState, Memory>(state =>
+    selectMemory(state.memories, route.params.mid),
+  );
 
-export const EditMemoryScreen = ({
-  navigation,
-  memory,
-  dispatch,
-}: EditMemoryScreenProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
-  const [formState, setFormState] = useState<FormState>({
+  const [formState, setFormState] = useState<MemoryMeta>({
+    mid: memory.mid,
     title: memory.title,
     location: memory.location,
     occurredAt: memory.occurredAt,
@@ -79,14 +56,9 @@ export const EditMemoryScreen = ({
 
   const submitEdit = () => {
     setLoading(true);
-    patchMemory(memory.mid, buildPatch(memory, formState))
-      .then((patchedMemory: Memory) => {
-        dispatch(
-          updateMemory({
-            mid: memory.mid,
-            memory: patchedMemory,
-          }),
-        );
+    updateMemoryRequest(formState)
+      .then((updatedMemory: Memory) => {
+        dispatch(updateMemory({mid: memory.mid, memory: updatedMemory}));
         navigation.goBack();
       })
       .catch((e: ErrorResponse) => setError(e.reason))
@@ -142,5 +114,3 @@ export const EditMemoryScreen = ({
     </ScrollContainer>
   );
 };
-
-export default connector(EditMemoryScreen);

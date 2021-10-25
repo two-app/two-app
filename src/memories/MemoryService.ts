@@ -1,33 +1,9 @@
-import {AxiosResponse} from 'axios';
-
 import Gateway from '../http/Gateway';
 import {PickedContent} from '../content/ContentPicker';
 import ContentService, {ContentUploadResponse} from '../content/ContentService';
 import {Content} from '../content/ContentModels';
 
 import {Memory, MemoryMeta} from './MemoryModels';
-
-export const isMemoryDescriptionValid = (upload: MemoryMeta) =>
-  upload.title.length > 0 && upload.location.length > 0;
-
-/**
- * Retrieves the memories for the user.
- * Display images are updated to localised AWS.
- */
-export const getMemories = (): Promise<Memory[]> =>
-  Gateway.get('/memory').then((v: AxiosResponse<Memory[]>) =>
-    v.data.map(formatMemory),
-  );
-
-/**
- * Retrieves a specific memory.
- * Display image is updated to localised AWS.
- * @param mid the memory ID to retrieve.
- */
-export const getMemory = (mid: string): Promise<Memory> =>
-  Gateway.get('/memory/' + mid.toString()).then(
-    (response: AxiosResponse<Memory>) => formatMemory(response.data),
-  );
 
 const formatMemory = (memory: Memory): Memory => {
   if (memory.displayContent != null) {
@@ -37,11 +13,29 @@ const formatMemory = (memory: Memory): Memory => {
   }
   return memory;
 };
-/**
- * POST /memory to create a memory from a meta description.
- */
+
+export const isMemoryDescriptionValid = (upload: MemoryMeta) =>
+  upload.title.length > 0 && upload.location.length > 0;
+
+/* GET /memory */
+export const getMemories = (): Promise<Memory[]> =>
+  Gateway.get<Memory[]>('/memory').then(({data}) => data.map(formatMemory));
+
+/* GET /memory/$mid */
+export const getMemory = (mid: string): Promise<Memory> =>
+  Gateway.get<Memory>(`/memory/${mid}`).then(({data}) => formatMemory(data));
+
+/* POST /memory */
 export const createMemory = (memory: MemoryMeta): Promise<Memory> =>
   Gateway.post<Memory>('/memory', memory).then(r => r.data);
+
+/* PUT /memory */
+export const updateMemory = (memory: MemoryMeta): Promise<Memory> =>
+  Gateway.put<Memory>('/memory', memory).then(r => r.data);
+
+/* DELETE /memory/$mid */
+export const deleteMemory = async (mid: string): Promise<void> =>
+  Gateway.delete<any>(`/memory/${mid}`).then(r => r.data);
 
 export const uploadToMemory = (
   mid: string,
@@ -68,22 +62,4 @@ export const uploadToMemory = (
   return Promise.all(uploadPromises).then(() =>
     Promise.all([getMemory(mid), ContentService.getContent(mid)]),
   );
-};
-
-export const patchMemory = (
-  mid: string,
-  patch: MemoryMeta,
-): Promise<Memory> => {
-  return Gateway.patch<any>(`/memory/${mid}`, patch).then(
-    (r: AxiosResponse<any>) => {
-      console.log(`Successfully patched memory. Response status: ${r.status}`);
-      return getMemory(mid);
-    },
-  );
-};
-
-export const deleteMemory = async (mid: string): Promise<void> => {
-  const r = await Gateway.delete<any>(`/memory/${mid}`);
-  console.log(`Successfully deleted memory. Response: ${r}`);
-  return r.data;
 };

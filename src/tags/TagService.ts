@@ -18,4 +18,4 @@ export const deleteTag = (tid: string): Promise<void> =>
 
 /* PUT /tag/$tid */
 export const updateTag = (desc: TagDescription): Promise<Tag> =>
-  Gateway.put<Tag>(`/tag/${desc.tid}`, desc).then(r => r.data);
+  Gateway.put<Tag>('/tag', desc).then(r => r.data);
