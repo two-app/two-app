@@ -8,6 +8,7 @@ import {getMemory} from '../memories/MemoryService';
 
 import {PickedContent} from './ContentPicker';
 import {Content, ImageContent, VideoContent} from './ContentModels';
+import uuidv4 from 'uuidv4';
 
 export const setMemoryDisplayPicture = (
   mid: string,
@@ -40,13 +41,19 @@ export const uploadContent = (
     uri: content.path,
   });
 
-  console.log(`Uploading content to memory with id ${mid}`, content);
+  const contentId = uuidv4();
 
-  const uri = `/memory/${mid}/content?setDisplayContent=${setDisplayContent}`;
+  console.log(
+    `Uploading content to memory with id ${mid} with contentId ${contentId}`,
+    content,
+  );
+
+  const uri = `/memory/${mid}/content/${contentId}`;
 
   return Gateway.post<ContentUploadResponse>(uri, form, {
     headers: {
       'Content-Type': 'multipart/form-data',
+      'x-do-not-trace': 'x-do-not-trace',
     },
     timeout: 60 * 1000, // 1m
   }).then((r: AxiosResponse<ContentUploadResponse>) => r.data);
