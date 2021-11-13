@@ -59,7 +59,7 @@ describe('AcceptTermsScreen', () => {
 
     test('it should make a register user request', () => {
       expect(AuthenticationService.registerUser).toHaveBeenCalledWith({
-        uid: tb.userRegistration.uid,
+        uid: expect.any(String),
         firstName: 'Gerry',
         lastName: 'Fletcher',
         email: 'admin@two.com',
@@ -112,7 +112,6 @@ class AcceptTermsScreenTestBed {
   // models
 
   userRegistration: UserRegistration = {
-    uid: uuidv4(),
     firstName: 'Gerry',
     lastName: 'Fletcher',
     email: 'admin@two.com',

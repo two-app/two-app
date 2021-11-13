@@ -99,7 +99,6 @@ describe('RegisterScreen', () => {
             firstName: 'Paul',
             lastName: 'Atreides',
             password: 'P?4Ot2ONz:IJO&%U',
-            uid: expect.any(String),
           },
         },
       );

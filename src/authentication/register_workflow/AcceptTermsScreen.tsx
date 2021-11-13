@@ -13,10 +13,12 @@ import type {ErrorResponse} from '../../http/Response';
 import type {UserRegistration} from './UserRegistrationModel';
 import {AcceptSwitch} from './AcceptSwitch';
 import {Route, Routes} from '../../navigation/RootNavigation';
+import uuidv4 from 'uuidv4';
 
 export const AcceptTermsScreen = () => {
   const route = useRoute<Route<'AcceptTermsScreen'>>();
   const navigation = useNavigation<Routes>();
+  const uid = uuidv4();
 
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
@@ -35,7 +37,7 @@ export const AcceptTermsScreen = () => {
     );
 
   const onSubmit = () => {
-    AuthenticationService.registerUser(reg)
+    AuthenticationService.registerUser({...reg, uid})
       .then(() => navigateToConnectCodeScreen())
       .catch((e: ErrorResponse) => setError(e.reason))
       .finally(() => setLoading(false));

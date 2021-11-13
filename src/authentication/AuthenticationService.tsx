@@ -28,7 +28,9 @@ const login = (loginCredentials: LoginCredentials): Promise<MixedUser> =>
     persistTokens(r.data),
   );
 
-const registerUser = (userRegistration: UserRegistration): Promise<MixedUser> =>
+const registerUser = (
+  userRegistration: UserRegistration & {uid: string},
+): Promise<MixedUser> =>
   Gateway.post<Tokens>('/self', userRegistration).then(r =>
     persistTokens(r.data),
   );
