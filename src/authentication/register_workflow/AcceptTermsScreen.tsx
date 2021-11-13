@@ -37,6 +37,7 @@ export const AcceptTermsScreen = () => {
     );
 
   const onSubmit = () => {
+    setLoading(true);
     AuthenticationService.registerUser({...reg, uid})
       .then(() => navigateToConnectCodeScreen())
       .catch((e: ErrorResponse) => setError(e.reason))
