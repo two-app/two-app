@@ -64,17 +64,11 @@ export const UploadContentButton = ({memory}: {memory: Memory}) => {
       onPress={() => {
         ContentPicker.open(
           () => {},
-          (content: PickedContent[]) => {
-            if (memory.displayContent == null) {
-              // select first item as display picture
-              content[0].setDisplayPicture = true;
-            }
-
+          (content: PickedContent[]) =>
             navigate('ContentUploadScreen', {
               mid: memory.mid,
               content,
-            });
-          },
+            }),
         );
       }}>
       <Icon name="plussquareo" size={25} color={Colors.DARK} />
