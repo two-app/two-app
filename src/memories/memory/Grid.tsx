@@ -10,8 +10,7 @@ import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Colors from '../../Colors';
-import {Content} from '../../content/ContentModels';
-import {buildContentURI} from '../../content/ContentService';
+import {Content, contentUrl} from '../../content/ContentModels';
 
 /**
  * Chunks the content into rows.
@@ -74,13 +73,13 @@ type CellProps = {
 export const EmptyCell = () => <Cell />;
 
 export const TouchableImageCell = ({item, onClick, onLongPress}: CellProps) => (
-  <Cell key={item.fileKey}>
+  <Cell key={item.contentId}>
     <TouchableOpacity
       style={{width: '100%', height: '100%'}}
       onPress={onClick}
       onLongPress={onLongPress}>
       <Image
-        source={{uri: buildContentURI(item.fileKey, item.thumbnail)}}
+        source={{uri: contentUrl(item.contentId, item.thumbnail)}}
         style={{flex: 1, backgroundColor: Colors.DARK}}
       />
     </TouchableOpacity>
@@ -89,23 +88,23 @@ export const TouchableImageCell = ({item, onClick, onLongPress}: CellProps) => (
 
 export const ImageCell = ({item}: {item: Content}) => (
   <Cell
-    key={item.fileKey}
+    key={item.contentId}
     a11={{accessibilityLabel: 'A preview of selected content.'}}>
     <Image
-      source={{uri: buildContentURI(item.fileKey, item.thumbnail)}}
+      source={{uri: contentUrl(item.contentId, item.thumbnail)}}
       style={{flex: 1, backgroundColor: Colors.DARK}}
     />
   </Cell>
 );
 
 export const TouchableVideoCell = ({item, onClick, onLongPress}: CellProps) => (
-  <Cell key={item.fileKey}>
+  <Cell key={item.contentId}>
     <TouchableOpacity
       style={{width: '100%', height: '100%'}}
       onPress={onClick}
       onLongPress={onLongPress}>
       <ImageBackground
-        source={{uri: buildContentURI(item.fileKey, item.thumbnail)}}
+        source={{uri: contentUrl(item.contentId, item.thumbnail)}}
         style={{
           flex: 1,
           alignItems: 'center',

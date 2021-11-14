@@ -2,7 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import Image from 'react-native-fast-image';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-import {Content} from '../content/ContentModels';
+import {Content, contentUrl} from '../content/ContentModels';
 
 import {
   MemoryDate,
@@ -41,7 +41,7 @@ export const MemoryDisplayView = ({memory}: {memory: Memory}) => (
 );
 
 const MemoryDisplayPicture = ({content}: {content: Content}) => {
-  const uri = `${content.fileKey}-${content.display.suffix}.${content.display.extension}`;
+  const uri = contentUrl(content.contentId, content.display);
   return (
     <View style={s.image}>
       <Image style={{width: '100%', height: '100%'}} source={{uri}} />

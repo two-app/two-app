@@ -7,8 +7,7 @@ import {Memory} from '../memories/MemoryModels';
 import {getMemory} from '../memories/MemoryService';
 
 import {PickedContent} from './ContentPicker';
-import {Content, ImageContent, VideoContent} from './ContentModels';
-import uuidv4 from 'uuidv4';
+import {Content} from './ContentModels';
 
 export const setMemoryDisplayPicture = (
   mid: string,
@@ -31,7 +30,6 @@ export type ContentUploadResponse = {contentId: string};
 export const uploadContent = (
   mid: string,
   content: PickedContent,
-  setDisplayContent: boolean,
 ): Promise<ContentUploadResponse> => {
   const form = new FormData();
 
@@ -41,33 +39,20 @@ export const uploadContent = (
     uri: content.path,
   });
 
-  const contentId = uuidv4();
-
-  console.log(
-    `Uploading content to memory with id ${mid} with contentId ${contentId}`,
-    content,
-  );
-
-  const uri = `/memory/${mid}/content/${contentId}`;
+  console.log(`Uploading content to mid ${mid}: ${JSON.stringify(content)}`);
+  const uri = `/memory/${mid}/content/${content.contentId}`;
 
   return Gateway.post<ContentUploadResponse>(uri, form, {
     headers: {
       'Content-Type': 'multipart/form-data',
       'x-do-not-trace': 'x-do-not-trace',
     },
-    timeout: 60 * 1000, // 1m
+    timeout: 90 * 1000, // 1.5m
   }).then((r: AxiosResponse<ContentUploadResponse>) => r.data);
 };
 
 export const getContent = (mid: string): Promise<Content[]> =>
-  Gateway.get<Content[]>(`/memory/${mid}/content`).then(
-    (v: AxiosResponse<Content[]>) => {
-      return v.data.map(content => {
-        content.fileKey = formatFileKey(content.fileKey);
-        return content;
-      });
-    },
-  );
+  Gateway.get<Content[]>(`/memory/${mid}/content`).then(r => r.data);
 
 export type DeleteContentResponse = {
   newDisplayContent?: Content;
@@ -82,13 +67,6 @@ export const deleteContent = async (
   return response.data;
 };
 
-export const buildContentURI = (
-  fileKey: string,
-  content: ImageContent | VideoContent,
-): string => {
-  return `${fileKey}-${content.suffix}.${content.extension}`;
-};
-
 export const formatFileKey = (fileKey: string): string =>
   `${Config.S3_URL}/${fileKey}`;
 
@@ -97,6 +75,5 @@ export default {
   uploadContent,
   getContent,
   deleteContent,
-  buildContentURI,
   formatFileKey,
 };
