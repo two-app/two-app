@@ -39,12 +39,6 @@ export const ContentGallery = ({
   const {width, height} = useWindowDimensions();
   const urls = content.map((c, idx) => {
     const url = contentUrl(c.contentId, c.gallery);
-<<<<<<< HEAD
-
-    console.log('URL:');
-    console.log(url);
-=======
->>>>>>> 1d9a870 (Displaying Gallery Correctly)
 
     if (c.contentType === 'image') {
       const g = c.gallery as ImageContentMeta;
