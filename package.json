@@ -46,7 +46,6 @@
     "react-native-get-random-values": "^1.7.0",
     "react-native-haptic-feedback": "^1.11.0",
     "react-native-image-crop-picker": "^0.36.2",
-    "react-native-image-viewing": "../ui/react-native-image-viewing",
     "react-native-image-zoom-viewer": "^3.0.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.1",
     "react-native-modal": "^12.1.0",
