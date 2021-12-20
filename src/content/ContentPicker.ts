@@ -18,7 +18,7 @@ export class ContentPicker {
 
     ImagePicker.openPicker(options)
       .then((value: Image | Image[]) => {
-        const images = Array.isArray(value) ? value : [value];
+        const images: Image[] = Array.isArray(value) ? value : [value];
         const content = images.map(image => ({
           ...image,
           contentId: uuidv4(),
