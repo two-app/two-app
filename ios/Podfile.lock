@@ -9,9 +9,9 @@ PODS:
     - React-Core (= 0.64.2)
     - React-jsi (= 0.64.2)
     - ReactCommon/turbomodule/core (= 0.64.2)
-  - ffmpeg-kit-ios-video (4.5)
-  - ffmpeg-kit-react-native/video (4.5.0):
-    - ffmpeg-kit-ios-video (= 4.5)
+  - ffmpeg-kit-ios-full-gpl (4.5)
+  - ffmpeg-kit-react-native/full-gpl (4.5.0):
+    - ffmpeg-kit-ios-full-gpl (= 4.5)
     - React-Core
   - glog (0.3.5)
   - libwebp (1.2.1):
@@ -307,6 +307,8 @@ PODS:
     - React-Core
     - SDWebImage (~> 5.8)
     - SDWebImageWebPCoder (~> 0.6.1)
+  - RNFS (2.18.0):
+    - React
   - RNGestureHandler (1.10.3):
     - React-Core
   - RNImageCropPicker (0.36.2):
@@ -367,7 +369,7 @@ DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
-  - ffmpeg-kit-react-native/video (from `../node_modules/ffmpeg-kit-react-native/ffmpeg-kit-react-native.podspec`)
+  - ffmpeg-kit-react-native/full-gpl (from `../node_modules/ffmpeg-kit-react-native/ffmpeg-kit-react-native.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -404,6 +406,7 @@ DEPENDENCIES:
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - "RNDateTimePicker (from `../node_modules/@react-native-community/datetimepicker`)"
   - RNFastImage (from `../node_modules/react-native-fast-image`)
+  - RNFS (from `../node_modules/react-native-fs`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
@@ -415,7 +418,7 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - boost-for-react-native
-    - ffmpeg-kit-ios-video
+    - ffmpeg-kit-ios-full-gpl
     - libwebp
     - SDWebImage
     - SDWebImageWebPCoder
@@ -498,6 +501,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/datetimepicker"
   RNFastImage:
     :path: "../node_modules/react-native-fast-image"
+  RNFS:
+    :path: "../node_modules/react-native-fs"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNImageCropPicker:
@@ -518,7 +523,7 @@ SPEC CHECKSUMS:
   DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: e686045572151edef46010a6f819ade377dfeb4b
   FBReactNativeSpec: 8573b4dda80745521f877939607cfb1c349dd85b
-  ffmpeg-kit-ios-video: 2ba0edaebbc1ac0d7966cdba90901764d8621ed6
+  ffmpeg-kit-ios-full-gpl: 486f8176aa796bb97609160292005d7849a69b30
   ffmpeg-kit-react-native: 03655a7f2d1ede5c465c9ce3ab25817aeac04a8c
   glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
@@ -555,6 +560,7 @@ SPEC CHECKSUMS:
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNDateTimePicker: 7658208086d86d09e1627b5c34ba0cf237c60140
   RNFastImage: 7f2a04b6761e78a6e418d3b4b29b645bc36fa2bc
+  RNFS: 3ab21fa6c56d65566d1fb26c2228e2b6132e5e32
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNImageCropPicker: 35a3ceb837446fa11547704709bb22b5fac6d584
   RNReactNativeHapticFeedback: 653a8c126a0f5e88ce15ffe280b3ff37e1fbb285
@@ -566,6 +572,6 @@ SPEC CHECKSUMS:
   TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
   Yoga: 575c581c63e0d35c9a83f4b46d01d63abc1100ac
 
-PODFILE CHECKSUM: 2e702a6b7bfb95cca3c2f91a34ddb3f1ca9c1bd0
+PODFILE CHECKSUM: 0726dbbeb57ca5899b78c3eda67b933b4e08bbbb
 
 COCOAPODS: 1.11.2
