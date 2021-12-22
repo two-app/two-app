@@ -6,59 +6,14 @@ import ImagePicker, {
 } from 'react-native-image-crop-picker';
 import uuidv4 from 'uuidv4';
 import RNFS from 'react-native-fs';
-import { ContentType } from './ContentModels';
-
-export type File = {
-  path: string;
-  mime: string;
-  width: number;
-  height: number;
-  size: number;
-  // video properties
-  duration?: number;
-};
-
-export type ContentFiles = {
-  thumbnail: File;
-  display: File;
-  gallery: File;
-  contentType: ContentType,
-  initialWidth: number;
-  initialHeight: number;
-  initialSize: number;
-};
+import {ContentType} from './ContentModels';
+import {compressVideo} from './compression/VideoCompression';
+import { compressImage } from './compression/ImageCompression';
+import { File } from './compression/Compression';
 
 export type PickedContent = Image & {
   contentId: string;
 };
-
-const CRF = 24;
-const FPS = 60;
-
-const compressVideoCmd = (
-  path: string,
-  newPath: string,
-  scaleWidth: string = '-1',
-  scaleHeight: string = '-1',
-): string =>
-  [
-    '-i',
-    path,
-    // Configure FPS at 60
-    '-r',
-    FPS.toString(),
-    // Codec Type: H264
-    '-c:v',
-    'libx264',
-    // Constant Rate Factor
-    '-crf',
-    CRF.toString(),
-    // Scale width/height
-    '-vf',
-    `"scale='${scaleWidth}':'${scaleHeight}'"`,
-    // output
-    newPath,
-  ].reduce((l, r) => l + ' ' + r, '');
 
 export class ContentPicker {
   static open = async (
@@ -75,7 +30,7 @@ export class ContentPicker {
 
     const contentPromises = rawContent.map(async (content: ImageOrVideo) => {
       if (content.mime.startsWith('image')) {
-        return content as any as File;
+        return compressImage(content.path, content.width, content.height);
       } else {
         const {path, width, height} = await compressVideo(
           content.path,
@@ -100,55 +55,3 @@ export class ContentPicker {
     console.log(content);
   };
 }
-
-type Compression = {
-  path: string;
-  width: number;
-  height: number;
-};
-
-const compressVideo = async (
-  originalPath: string,
-  originalWidth: number,
-  originalHeight: number,
-): Promise<Compression> => {
-  const path = RNFS.TemporaryDirectoryPath + uuidv4() + '.mp4';
-  const [width, height] = scaleVideo(originalWidth, originalHeight);
-  const cmd = compressVideoCmd(
-    originalPath,
-    path,
-    width.toString(),
-    height.toString(),
-  );
-
-  console.log(
-    `Resized ${originalWidth}x${originalHeight} -> ${width}x${height}`,
-  );
-  console.log(`Executing ffmpeg command: ${cmd}`);
-
-  return new Promise<Compression>((resolve, reject) => {
-    FFmpegKit.executeAsync(cmd, async session => {
-      const code = await session.getReturnCode();
-      const trace = await session.getFailStackTrace();
-
-      if (code.isValueSuccess()) {
-        resolve({path, width, height});
-      } else {
-        reject('Failed to run FFMPEG: ' + trace);
-      }
-    });
-  });
-};
-
-const scaleVideo = (width: number, height: number) => {
-  if (width <= 720 && height <= 720) return [width, height];
-
-  const isLandscape = width > height;
-  const [maxWidth, maxHeight] = isLandscape ? [1080, 720] : [720, 1080];
-
-  const ratioX = maxWidth / width;
-  const ratioY = maxHeight / height;
-  const ratio = Math.min(ratioX, ratioY);
-
-  return [width * ratio, height * ratio];
-};

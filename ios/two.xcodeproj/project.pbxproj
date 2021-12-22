@@ -830,7 +830,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "twoTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/two.app/two";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Two.app/Two";
 			};
 			name = Debug;
 		};
@@ -858,7 +858,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "date.two AppStore";
 				SWIFT_OBJC_BRIDGING_HEADER = "twoTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/two.app/two";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Two.app/Two";
 			};
 			name = Release;
 		};

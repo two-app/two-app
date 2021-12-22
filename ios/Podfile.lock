@@ -525,9 +525,9 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: 8573b4dda80745521f877939607cfb1c349dd85b
   ffmpeg-kit-ios-full-gpl: 486f8176aa796bb97609160292005d7849a69b30
   ffmpeg-kit-react-native: 03655a7f2d1ede5c465c9ce3ab25817aeac04a8c
-  glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
+  glog: 7a8788d88d2a384c05df45e95c5e763e4d81f3ad
   libwebp: 98a37e597e40bfdb4c911fc98f2c53d0b12d05fc
-  RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
+  RCT-Folly: 1af344185a2506dec1e584dd5edaaa8fb6bcda5e
   RCTRequired: 6d3e854f0e7260a648badd0d44fc364bc9da9728
   RCTTypeSafety: c1f31d19349c6b53085766359caac425926fafaa
   React: bda6b6d7ae912de97d7a61aa5c160db24aa2ad69
