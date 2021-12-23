@@ -186,6 +186,10 @@ android {
     dexOptions {
         javaMaxHeapSize "8g"
     }
+
+	packagingOptions {
+	    pickFirst '**/*.so'
+	}
 }
 
 dependencies {
