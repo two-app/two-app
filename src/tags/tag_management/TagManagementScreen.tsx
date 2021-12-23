@@ -15,7 +15,7 @@ import {createTag, updateTag} from '../TagService';
 import Colors from '../../Colors';
 
 import {ColorList} from './ColorSelection';
-import uuidv4 from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 type TagManagementScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'TagManagementScreen'>;
@@ -53,7 +53,7 @@ export const TagManagementScreen = ({
 }: TagManagementScreenProps) => {
   const {onSubmit, initialTag} = route.params;
   const mode: Mode = getMode(initialTag);
-  const tid: string = initialTag?.tid ?? uuidv4();
+  const tid: string = initialTag?.tid ?? uuid();
 
   const [loading, setLoading] = useState<boolean>(false);
   const [name, setName] = useState<string | undefined>(initialTag?.name);

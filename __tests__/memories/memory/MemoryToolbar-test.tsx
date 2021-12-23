@@ -15,7 +15,7 @@ import {
 import {persistor, store} from '../../../src/state/reducers';
 import type {PickedContent} from '../../../src/content/ContentPicker';
 import {ContentPicker} from '../../../src/content/ContentPicker';
-import uuidv4 from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 describe('MemoryToolbar', () => {
   let tb: MemoryToolbarTestBed;
@@ -130,7 +130,7 @@ class MemoryToolbarTestBed {
     this.deleteMemoryFn = jest.spyOn(MemoryService, 'deleteMemory').mockClear();
     this.dispatch = jest.spyOn(persistor, 'persist').mockClear();
     this.memory = {
-      mid: uuidv4(),
+      mid: uuid(),
       occurredAt: new Date(),
       createdAt: new Date(),
       imageCount: 5,

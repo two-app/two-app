@@ -8,7 +8,7 @@ import TagScreen from '../../../src/tags/tag_screen/TagScreen';
 import * as TagService from '../../../src/tags/TagService';
 import * as RootNavigation from '../../../src/navigation/RootNavigation';
 import {store} from '../../../src/state/reducers';
-import uuidv4 from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 describe('TagScreen', () => {
   let tb: TagScreenTestBed;
@@ -17,7 +17,7 @@ describe('TagScreen', () => {
   const tags: Tag[] = names.map((name, index) => ({
     name,
     color: '#1985a1',
-    tid: uuidv4(),
+    tid: uuid(),
     memoryCount: index + 2, // to make it interesting
   }));
 
@@ -32,9 +32,9 @@ describe('TagScreen', () => {
       tb.onGetTagsReject();
       tb.build();
       await waitFor(() =>
-        tb.render.getByText(
-          'Sorry, we were unable to load your tags.\nPlease try again soon.',
-        ),
+        tb.render.getByText('Sorry, we were unable to load your tags.', {
+          exact: false,
+        }),
       );
     });
 

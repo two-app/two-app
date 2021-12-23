@@ -3,7 +3,7 @@ import type {RenderAPI} from '@testing-library/react-native';
 import {Text} from 'react-native';
 import {Provider} from 'react-redux';
 import {CommonActions} from '@react-navigation/native';
-import uuidv4 from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 import {AcceptTermsScreen} from '../../../src/authentication/register_workflow/AcceptTermsScreen';
 import {clearState, store} from '../../../src/state/reducers';
@@ -112,7 +112,7 @@ class AcceptTermsScreenTestBed {
   // models
 
   userRegistration: UserRegistration = {
-    uid: uuidv4(),
+    uid: uuid(),
     firstName: 'Gerry',
     lastName: 'Fletcher',
     email: 'admin@two.com',

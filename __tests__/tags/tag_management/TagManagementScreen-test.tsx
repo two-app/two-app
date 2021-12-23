@@ -13,7 +13,7 @@ import type {Tag, TagDescription} from '../../../src/tags/Tag';
 import type {ErrorResponse} from '../../../src/http/Response';
 import {TagManagementScreen} from '../../../src/tags/tag_management/TagManagementScreen';
 import {TagColors} from '../../../src/tags/tag_management/TagColors';
-import uuidv4 from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 describe('TagManagementScreen - Create Mode', () => {
   let tb: TagManagementScreenTestBed;
@@ -57,7 +57,7 @@ describe('TagManagementScreen - Create Mode', () => {
 
   describe('Submitting a New Tag', () => {
     const tagDescription: TagDescription = {
-      tid: uuidv4(),
+      tid: uuid(),
       name: 'Birthday',
       color: TagColors[3],
     };
@@ -81,7 +81,7 @@ describe('TagManagementScreen - Create Mode', () => {
     });
 
     test('it should navigate to the previous screen', async () => {
-      const tag: Tag = {...tagDescription, tid: uuidv4(), memoryCount: 0};
+      const tag: Tag = {...tagDescription, tid: uuid(), memoryCount: 0};
       tb.onSubmitTagResolve(tag);
       tb.pressCreateButton();
 
@@ -128,7 +128,7 @@ describe('TagManagementScreen - Create Mode', () => {
 describe('TagManagementScreen - Edit Mode', () => {
   let tb: TagManagementScreenTestBed;
   const tag: Tag = {
-    tid: uuidv4(),
+    tid: uuid(),
     name: 'Some Tag',
     color: '#f4989c',
     memoryCount: 5,

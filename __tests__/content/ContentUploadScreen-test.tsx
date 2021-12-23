@@ -15,7 +15,7 @@ import * as MemoryService from '../../src/memories/MemoryService';
 import type {ErrorResponse} from '../../src/http/Response';
 import {updateMemory, storeContent} from '../../src/memories/store';
 import type {Content} from '../../src/content/ContentModels';
-import uuidv4 from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 describe('ContentUploadScreen', () => {
   let tb: ContentUploadScreenTestBed;
@@ -139,7 +139,7 @@ class ContentUploadScreenTestBed {
 }
 
 const testMemoryData: Memory = {
-  mid: uuidv4(),
+  mid: uuid(),
   occurredAt: new Date(),
   createdAt: new Date(),
   imageCount: 0,

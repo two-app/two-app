@@ -1,6 +1,6 @@
 import {Text} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
-import uuidv4 from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 import type {RenderAPI} from '@testing-library/react-native';
 import {render} from '@testing-library/react-native';
 
@@ -36,7 +36,7 @@ describe('LoadingScreen', () => {
 
   describe('With Unconnected Auth', () => {
     const stubUser: UnconnectedUser = {
-      uid: uuidv4(),
+      uid: uuid(),
     };
     const stubTokens: Tokens = {
       accessToken: 'unconnectedAccess',
@@ -54,7 +54,7 @@ describe('LoadingScreen', () => {
   });
 
   describe('With Connected Auth', () => {
-    const stubUser: User = {uid: uuidv4(), pid: uuidv4(), cid: uuidv4()};
+    const stubUser: User = {uid: uuid(), pid: uuid(), cid: uuid()};
     const stubTokens: Tokens = {
       accessToken: 'connectedAccess',
       refreshToken: 'connectedRefresh',

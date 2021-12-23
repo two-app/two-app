@@ -28,6 +28,8 @@ Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
     return config;
   }
 
+  if (!config.headers) config.headers = {};
+
   if (config.url === '/refresh' && config.method === 'post') {
     // apply Refresh JWT to outgoing request
     const token = store.getState().auth?.refreshToken;

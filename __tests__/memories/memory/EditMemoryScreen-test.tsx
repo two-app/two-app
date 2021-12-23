@@ -15,7 +15,7 @@ import type {Tag} from '../../../src/tags/Tag';
 import * as MemoryService from '../../../src/memories/MemoryService';
 import type {ErrorResponse} from '../../../src/http/Response';
 import {storeMemories} from '../../../src/memories/store';
-import uuidv4 from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 import {
   mockNavigation,
   mockRoute,
@@ -188,20 +188,20 @@ class EditMemoryScreenTestBed {
   selectedTag: Tag = {
     name: 'Test Tag',
     color: '#1a1a1a',
-    tid: uuidv4(),
+    tid: uuid(),
     memoryCount: 0,
   };
   otherTag: Tag = {
     name: 'Other Tag',
     color: '#FFFFFF',
-    tid: uuidv4(),
+    tid: uuid(),
     memoryCount: 0,
   };
 
   tags: Tag[] = [this.selectedTag, this.otherTag];
 
   memory: Memory = {
-    mid: uuidv4(),
+    mid: uuid(),
     title: 'Test Memory',
     location: 'Test Location',
     createdAt: new Date(),

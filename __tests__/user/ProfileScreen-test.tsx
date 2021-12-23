@@ -3,7 +3,7 @@ import type {RenderAPI} from '@testing-library/react-native';
 import {render, fireEvent} from '@testing-library/react-native';
 import {CommonActions} from '@react-navigation/native';
 import Config from 'react-native-config';
-import uuidv4 from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 import {ProfileScreen} from '../../src/user/ProfileScreen';
 import * as CoupleService from '../../src/couple/CoupleService';
@@ -110,9 +110,9 @@ describe('PartnerScreen', () => {
 class PartnerScreenTestBed {
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 
-  uid = uuidv4();
-  pid = uuidv4();
-  cid = uuidv4();
+  uid = uuid();
+  pid = uuid();
+  cid = uuid();
 
   couple: Couple = {
     cid: this.cid,

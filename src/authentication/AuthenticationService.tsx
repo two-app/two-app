@@ -1,5 +1,5 @@
 import 'react-native-get-random-values';
-import uuid from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 import decode from 'jwt-decode';
 
 import Gateway from '../http/Gateway';
@@ -34,7 +34,7 @@ const registerUser = (userRegistration: UserRegistration): Promise<MixedUser> =>
   );
 
 const connectUser = (pid: string): Promise<User> =>
-  Gateway.post<Tokens>('/couple', {toUser: pid, cid: uuid()}).then(r => {
+  Gateway.post<Tokens>('/couple', {toUser: pid, cid: uuid}).then(r => {
     const mixedUser = persistTokens(r.data);
     if ('pid' in mixedUser && 'cid' in mixedUser) {
       return mixedUser as User;

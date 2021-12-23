@@ -1,5 +1,5 @@
 import {Text} from 'react-native';
-import uuidv4 from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 import type {QueryReturn, RenderAPI} from '@testing-library/react-native';
 import {
   waitFor,
@@ -57,7 +57,7 @@ describe('ConnectCodeScreen', () => {
   });
 
   describe('When entered code is valid', () => {
-    beforeEach(() => tb.setPartnerCode(uuidv4()));
+    beforeEach(() => tb.setPartnerCode(uuid()));
 
     test('enables submit', () => expect(tb.isSubmitEnabled()).toBe(true));
 
@@ -114,7 +114,7 @@ describe('ConnectCodeScreen', () => {
 });
 
 class ConnectCodeScreenTestBed {
-  user: UnconnectedUser = {uid: uuidv4()};
+  user: UnconnectedUser = {uid: uuid()};
 
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 

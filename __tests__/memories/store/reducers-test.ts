@@ -5,7 +5,7 @@ import {
   deleteContent,
 } from '../../../src/memories/store';
 import {Content} from '../../../src/content/ContentModels';
-import uuidv4 from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 describe('MemoriesReducer', () => {
   const baseState: MemoryState = {
@@ -17,32 +17,32 @@ describe('MemoriesReducer', () => {
     test("it should do nothing for memory that doesn't exist", () => {
       const newState = memoryReducer(
         baseState,
-        deleteContent({mid: uuidv4(), contentId: uuidv4()}),
+        deleteContent({mid: uuid(), contentId: uuid()}),
       );
 
       expect(newState).toEqual(baseState);
     });
 
     test("it should do nothing for content that doesn't exist", () => {
-      const mid = uuidv4();
+      const mid = uuid();
       const state: MemoryState = {
         ...baseState,
         content: {
-          mid: [{...testContent, contentId: uuidv4()}],
+          mid: [{...testContent, contentId: uuid()}],
         },
       };
 
       const newState = memoryReducer(
         state,
-        deleteContent({mid, contentId: uuidv4()}),
+        deleteContent({mid, contentId: uuid()}),
       );
 
       expect(newState).toEqual(state);
     });
 
     test('it should delete the content', () => {
-      const mid = uuidv4();
-      const contentId = uuidv4();
+      const mid = uuid();
+      const contentId = uuid();
 
       const state: MemoryState = {
         ...baseState,
@@ -63,10 +63,10 @@ describe('MemoriesReducer', () => {
 
     test('it should only delete one piece of content', () => {
       // GIVEN
-      const mid = uuidv4();
+      const mid = uuid();
       const content = [1, 2, 3].map(_ => ({
         ...testContent,
-        contentId: uuidv4(),
+        contentId: uuid(),
       }));
 
       const state: MemoryState = {
@@ -90,7 +90,7 @@ describe('MemoriesReducer', () => {
 });
 
 const testContent: Content = {
-  contentId: uuidv4(),
+  contentId: uuid(),
   contentType: 'image',
   thumbnail: {
     contentType: 'image',
