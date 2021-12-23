@@ -13,7 +13,7 @@ import type {Tag, TagDescription} from '../../../src/tags/Tag';
 import type {ErrorResponse} from '../../../src/http/Response';
 import {TagManagementScreen} from '../../../src/tags/tag_management/TagManagementScreen';
 import {TagColors} from '../../../src/tags/tag_management/TagColors';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 describe('TagManagementScreen - Create Mode', () => {
   let tb: TagManagementScreenTestBed;

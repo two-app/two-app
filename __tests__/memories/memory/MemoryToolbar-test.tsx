@@ -15,7 +15,7 @@ import {
 import {persistor, store} from '../../../src/state/reducers';
 import type {PickedContent} from '../../../src/content/ContentPicker';
 import {ContentPicker} from '../../../src/content/ContentPicker';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 describe('MemoryToolbar', () => {
   let tb: MemoryToolbarTestBed;

@@ -10,7 +10,7 @@ import type {ErrorResponse} from '../../../src/http/Response';
 import type {Content} from '../../../src/content/ContentModels';
 import type {DeleteContentResponse} from '../../../src/content/ContentService';
 import {clearState, store} from '../../../src/state/reducers';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 import {storeMemories} from '../../../src/memories/store';
 
 describe('MemoryInteractionModal', () => {

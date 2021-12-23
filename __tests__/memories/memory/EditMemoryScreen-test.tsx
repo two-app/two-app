@@ -15,7 +15,7 @@ import type {Tag} from '../../../src/tags/Tag';
 import * as MemoryService from '../../../src/memories/MemoryService';
 import type {ErrorResponse} from '../../../src/http/Response';
 import {storeMemories} from '../../../src/memories/store';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 import {
   mockNavigation,
   mockRoute,

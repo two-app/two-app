@@ -11,7 +11,7 @@ import {store} from '../../src/state/reducers';
 import type {Tag} from '../../src/tags/Tag';
 import {mockNavigation, resetMockNavigation} from '../utils/NavigationMocking';
 import type {TimelineType} from '../../src/home/TimelineConstants';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 describe('Timeline', () => {
   let tb: TimelineTestBed;

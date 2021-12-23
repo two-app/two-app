@@ -5,7 +5,7 @@ import {render, fireEvent, waitFor} from '@testing-library/react-native';
 import {NewTagButton, TagCard} from '../../src/tags/NewTagButton';
 import type {Tag} from '../../src/tags/Tag';
 import {navigateFn} from '../../src/navigation/__mocks__/RootNavigation';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 describe('NewTagButton', () => {
   let tb: NewTagButtonTestBed;

@@ -1,6 +1,6 @@
 import {Text} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 import type {RenderAPI} from '@testing-library/react-native';
 import {render} from '@testing-library/react-native';
 

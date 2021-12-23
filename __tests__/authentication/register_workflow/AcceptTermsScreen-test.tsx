@@ -3,7 +3,7 @@ import type {RenderAPI} from '@testing-library/react-native';
 import {Text} from 'react-native';
 import {Provider} from 'react-redux';
 import {CommonActions} from '@react-navigation/native';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 import {AcceptTermsScreen} from '../../../src/authentication/register_workflow/AcceptTermsScreen';
 import {clearState, store} from '../../../src/state/reducers';

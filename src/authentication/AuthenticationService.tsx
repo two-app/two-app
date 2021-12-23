@@ -1,5 +1,5 @@
 import 'react-native-get-random-values';
-import uuid from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 import decode from 'jwt-decode';
 
 import Gateway from '../http/Gateway';

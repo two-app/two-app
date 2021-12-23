@@ -23,7 +23,7 @@ import type {Memory} from '../memories/MemoryModels';
 
 import type {PickedContent} from './ContentPicker';
 import type {Content} from './ContentModels';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 type NavigationProps = {
   navigation: StackNavigationProp<RootStackParamList, 'ContentUploadScreen'>;

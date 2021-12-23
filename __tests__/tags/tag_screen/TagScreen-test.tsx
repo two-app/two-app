@@ -8,7 +8,7 @@ import TagScreen from '../../../src/tags/tag_screen/TagScreen';
 import * as TagService from '../../../src/tags/TagService';
 import * as RootNavigation from '../../../src/navigation/RootNavigation';
 import {store} from '../../../src/state/reducers';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 describe('TagScreen', () => {
   let tb: TagScreenTestBed;

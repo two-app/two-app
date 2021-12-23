@@ -15,7 +15,7 @@ import * as MemoryService from '../../src/memories/MemoryService';
 import type {ErrorResponse} from '../../src/http/Response';
 import {updateMemory, storeContent} from '../../src/memories/store';
 import type {Content} from '../../src/content/ContentModels';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 describe('ContentUploadScreen', () => {
   let tb: ContentUploadScreenTestBed;

@@ -15,7 +15,7 @@ import {createTag, updateTag} from '../TagService';
 import Colors from '../../Colors';
 
 import {ColorList} from './ColorSelection';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 type TagManagementScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, 'TagManagementScreen'>;

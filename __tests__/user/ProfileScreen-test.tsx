@@ -3,7 +3,7 @@ import type {RenderAPI} from '@testing-library/react-native';
 import {render, fireEvent} from '@testing-library/react-native';
 import {CommonActions} from '@react-navigation/native';
 import Config from 'react-native-config';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 import {ProfileScreen} from '../../src/user/ProfileScreen';
 import * as CoupleService from '../../src/couple/CoupleService';

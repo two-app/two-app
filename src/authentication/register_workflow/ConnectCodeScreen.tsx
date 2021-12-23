@@ -1,5 +1,5 @@
 import 'react-native-get-random-values';
-import {isUuid} from 'uuidv4';
+import {validate as isUuid} from 'uuid';
 import {useState} from 'react';
 import {
   StyleSheet,

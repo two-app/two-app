@@ -1,5 +1,5 @@
 import {Text} from 'react-native';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 import type {QueryReturn, RenderAPI} from '@testing-library/react-native';
 import {
   waitFor,

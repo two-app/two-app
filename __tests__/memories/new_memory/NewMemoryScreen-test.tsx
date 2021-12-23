@@ -19,7 +19,7 @@ import {
 } from '../../utils/NavigationMocking';
 import {Memory, MemoryMeta} from '../../../src/memories/MemoryModels';
 import {ErrorResponse} from '../../../src/http/Response';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 describe('NewMemoryScreen', () => {
   let tb: NewMemoryScreenTestBed;

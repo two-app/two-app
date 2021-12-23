@@ -5,7 +5,7 @@ import {
   deleteContent,
 } from '../../../src/memories/store';
 import {Content} from '../../../src/content/ContentModels';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 describe('MemoriesReducer', () => {
   const baseState: MemoryState = {

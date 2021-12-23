@@ -21,7 +21,7 @@ import {insertMemory} from '../store';
 import {DateTimePicker} from './DateInput';
 import {LocationInput} from './LocationInput';
 import TitleInput from './TitleInput';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 import Colors from '../../Colors';
 
 type NavProp = NavigationProp<RootStackParamList, 'NewMemoryScreen'>;

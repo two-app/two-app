@@ -1,5 +1,5 @@
 import 'react-native-get-random-values';
-import {uuid} from 'uuidv4';
+import {v4 as uuid} from 'uuid';
 
 import EmailValidator from '../../forms/EmailValidator';
 
