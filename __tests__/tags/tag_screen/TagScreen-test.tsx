@@ -32,10 +32,9 @@ describe('TagScreen', () => {
       tb.onGetTagsReject();
       tb.build();
       await waitFor(() =>
-        tb.render.getByText(
-          'Sorry, we were unable to load your tags.',
-          {exact: false}
-        ),
+        tb.render.getByText('Sorry, we were unable to load your tags.', {
+          exact: false,
+        }),
       );
     });
 

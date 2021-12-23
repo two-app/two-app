@@ -14,14 +14,14 @@ console.error = (message: string) => {
   originalConsoleError(message);
 };
 
-import { NativeModules } from 'react-native';
+import {NativeModules} from 'react-native';
 NativeModules.ImageCropPicker = {
   openPicker: jest.fn(),
   openCamera: jest.fn(),
   openCropper: jest.fn(),
   clean: jest.fn(),
-  cleanSingle: jest.fn()
-}
+  cleanSingle: jest.fn(),
+};
 
 import mockAsyncStorage from '@react-native-community/async-storage/jest/async-storage-mock';
 import {setupMockNavigation} from './__tests__/utils/NavigationMocking';
