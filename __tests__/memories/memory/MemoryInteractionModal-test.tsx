@@ -10,7 +10,7 @@ import type {ErrorResponse} from '../../../src/http/Response';
 import type {Content} from '../../../src/content/ContentModels';
 import type {DeleteContentResponse} from '../../../src/content/ContentService';
 import {clearState, store} from '../../../src/state/reducers';
-import uuidv4 from 'uuidv4';
+import {uuid} from 'uuidv4';
 import {storeMemories} from '../../../src/memories/store';
 
 describe('MemoryInteractionModal', () => {
@@ -220,7 +220,7 @@ class MemoryInteractionModalTestBed {
 }
 
 const testMemory: Memory = {
-  mid: uuidv4(),
+  mid: uuid(),
   title: 'Test Memory',
   location: 'Test Location',
   occurredAt: new Date(),
@@ -232,7 +232,7 @@ const testMemory: Memory = {
 };
 
 const testContent: Content = {
-  contentId: uuidv4(),
+  contentId: uuid(),
   contentType: 'image',
   thumbnail: {
     contentType: 'image',

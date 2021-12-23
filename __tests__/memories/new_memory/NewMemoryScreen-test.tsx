@@ -19,7 +19,7 @@ import {
 } from '../../utils/NavigationMocking';
 import {Memory, MemoryMeta} from '../../../src/memories/MemoryModels';
 import {ErrorResponse} from '../../../src/http/Response';
-import uuidv4 from 'uuidv4';
+import {uuid} from 'uuidv4';
 
 describe('NewMemoryScreen', () => {
   let tb: NewMemoryScreenTestBed;
@@ -205,7 +205,7 @@ class NewMemoryScreenTestBed {
 }
 
 const testMemory: Memory = {
-  mid: uuidv4(),
+  mid: uuid(),
   createdAt: new Date(),
   occurredAt: new Date(),
   title: 'Some Title',

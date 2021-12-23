@@ -1,5 +1,5 @@
 import 'react-native-get-random-values';
-import uuid from 'uuidv4';
+import {isUuid} from 'uuidv4';
 import {useState} from 'react';
 import {
   StyleSheet,
@@ -40,7 +40,7 @@ export const ConnectCodeScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   const isPartnerCodeValid = (): boolean =>
-    uuid.is(partnerConnectCode) && partnerConnectCode !== user.uid;
+    isUuid(partnerConnectCode) && partnerConnectCode !== user.uid;
 
   const navigation = useNavigation<Routes>();
 

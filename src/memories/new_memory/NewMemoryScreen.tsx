@@ -21,7 +21,7 @@ import {insertMemory} from '../store';
 import {DateTimePicker} from './DateInput';
 import {LocationInput} from './LocationInput';
 import TitleInput from './TitleInput';
-import uuidv4 from 'uuidv4';
+import {uuid} from 'uuidv4';
 import Colors from '../../Colors';
 
 type NavProp = NavigationProp<RootStackParamList, 'NewMemoryScreen'>;
@@ -32,7 +32,7 @@ export const NewMemoryScreen = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setUploadError] = useState<string>();
   const [formState, setFormState] = useState<MemoryMeta>({
-    mid: uuidv4(),
+    mid: uuid(),
     title: '',
     location: '',
     occurredAt: new Date(),

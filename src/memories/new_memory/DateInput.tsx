@@ -83,9 +83,7 @@ export const DateTimePicker = ({
           isVisible={isVisible}
           maximumDate={new Date()}
           mode={selecting}
-          headerTextIOS={
-            selecting === 'date' ? 'Pick the date' : 'Pick the time'
-          }
+          confirmTextIOS={selecting === 'date' ? 'Set Date' : 'Set Time'}
           onConfirm={(selectedDate: Date) => {
             if (selecting === 'date') {
               setPickerValue(selectedDate);

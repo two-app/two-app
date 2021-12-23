@@ -23,6 +23,7 @@ import type {Memory} from '../memories/MemoryModels';
 
 import type {PickedContent} from './ContentPicker';
 import type {Content} from './ContentModels';
+import {uuid} from 'uuidv4';
 
 type NavigationProps = {
   navigation: StackNavigationProp<RootStackParamList, 'ContentUploadScreen'>;
@@ -57,7 +58,7 @@ export const ContentUploadScreen = ({
   const content: PickedContent[] = route.params.content.map(c => {
     if (c.filename == null) {
       const ext = c.path.split('.').pop();
-      return {...c, filename: `${uuidv4()}.${ext}`};
+      return {...c, filename: `${uuid()}.${ext}`};
     } else {
       return c;
     }
@@ -114,8 +115,8 @@ export const ContentUploadScreen = ({
           renderItem={({item}) => (
             <GridRow content={item} renderCell={renderCell} />
           )}
-          keyExtractor={(row: PickedContent[]) =>
-            row.map((pc: PickedContent) => pc?.filename).join()
+          keyExtractor={(row: (PickedContent | null)[]) =>
+            row.map(pc => pc?.filename).join()
           }
         />
       </View>
@@ -183,13 +184,3 @@ const s = StyleSheet.create({
     backgroundColor: Colors.LIGHT,
   },
 });
-
-function uuidv4() {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    // eslint-disable-next-line no-bitwise
-    const r = (Math.random() * 16) | 0,
-      // eslint-disable-next-line no-bitwise
-      v = c === 'x' ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-}

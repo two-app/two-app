@@ -34,7 +34,7 @@ const registerUser = (userRegistration: UserRegistration): Promise<MixedUser> =>
   );
 
 const connectUser = (pid: string): Promise<User> =>
-  Gateway.post<Tokens>('/couple', {toUser: pid, cid: uuid()}).then(r => {
+  Gateway.post<Tokens>('/couple', {toUser: pid, cid: uuid}).then(r => {
     const mixedUser = persistTokens(r.data);
     if ('pid' in mixedUser && 'cid' in mixedUser) {
       return mixedUser as User;

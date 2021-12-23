@@ -11,7 +11,7 @@ import {store} from '../../src/state/reducers';
 import type {Tag} from '../../src/tags/Tag';
 import {mockNavigation, resetMockNavigation} from '../utils/NavigationMocking';
 import type {TimelineType} from '../../src/home/TimelineConstants';
-import uuidv4 from 'uuidv4';
+import {uuid} from 'uuidv4';
 
 describe('Timeline', () => {
   let tb: TimelineTestBed;
@@ -22,14 +22,14 @@ describe('Timeline', () => {
   });
 
   const testTag: Tag = {
-    tid: uuidv4(),
+    tid: uuid(),
     color: '#1a1a1a',
     memoryCount: 1,
     name: 'Birthday 2021',
   };
 
   const testMemory: Memory = {
-    mid: uuidv4(),
+    mid: uuid(),
     title: 'Birthday Cake',
     location: 'London',
     occurredAt: new Date(),
