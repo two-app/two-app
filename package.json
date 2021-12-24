@@ -28,7 +28,7 @@
     "@types/react-native": "^0.66.9",
     "@types/react-native-vector-icons": "^6.4.10",
     "@types/react-native-video": "^5.0.11",
-    "@types/react-redux": "^7.1.20",
+    "@types/react-redux": "^7.1.21",
     "@types/react-test-renderer": "^17.0.1",
     "@types/uuid": "^8.3.3",
     "axios": "^0.24.0",
