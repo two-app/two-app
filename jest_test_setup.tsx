@@ -57,6 +57,8 @@ jest.mock('react-native-reanimated', () =>
   jest.requireActual('./node_modules/react-native-reanimated/mock'),
 );
 
+global.__reanimatedWorkletInit = jest.fn();
+
 jest.mock('react-native-keyboard-aware-scroll-view', () => {
   const KeyboardAwareScrollView = ({children}) => children;
   return {KeyboardAwareScrollView};
