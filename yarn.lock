@@ -6307,10 +6307,10 @@ react-native-keyboard-aware-scroll-view@^0.9.5:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
 
-react-native-modal-datetime-picker@^13.0.0:
-  version "13.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-13.0.0.tgz#d41db2bb9dd2b487c10477fce94f027af56dfaf2"
-  integrity sha512-Ltxr5bUXiaRTfDmRQkc3gIVKmRmPo6lW8rQYw+lyMhgveNIeTdGMkC8SY2vI5SLw+tT/3An2W7+6hta61LTb5A==
+react-native-modal-datetime-picker@^13.0.1:
+  version "13.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-13.0.1.tgz#c645c4dff121027f10d4717a1d19551c96fb8b11"
+  integrity sha512-uPgonEKa/nIotmboEEriTCVfWLgrtuR+fybqSw6XcPc/+ve7Q6p55cbUGKtne3+sFcelk+QHcb0aPu56+VbsJA==
   dependencies:
     prop-types "^15.7.2"
 
