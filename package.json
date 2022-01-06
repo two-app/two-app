@@ -32,7 +32,7 @@
     "@types/react-test-renderer": "^17.0.1",
     "@types/uuid": "^8.3.4",
     "axios": "^0.24.0",
-    "ffmpeg-kit-react-native": "^4.5.0",
+    "ffmpeg-kit-react-native": "^4.5.1",
     "form-data": "^4.0.0",
     "jwt-decode": "^3.1.2",
     "lodash": "^4.17.21",
