@@ -45,7 +45,7 @@
     "react-native-config": "^1.4.5",
     "react-native-fast-image": "^8.5.11",
     "react-native-fs": "^2.18.0",
-    "react-native-gesture-handler": "^2.1.1",
+    "react-native-gesture-handler": "^2.2.0",
     "react-native-get-random-values": "^1.7.2",
     "react-native-haptic-feedback": "^1.13.0",
     "react-native-image-crop-picker": "^0.37.2",
