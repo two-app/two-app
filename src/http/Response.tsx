@@ -17,9 +17,9 @@ const isErrorResponse = (
 export const mapErrorResponse = (error: AxiosError<any>): ErrorResponse => {
   console.log('Encountered an error with a HTTP response.');
   console.log('--- The Request  ---');
-  console.log(JSON.stringify(error.request));
+  console.log(JSON.stringify(error.request?.data));
   console.log('--- The Response ---');
-  console.log(JSON.stringify(error.response));
+  console.log(JSON.stringify(error.response?.data));
   console.log('~~~   Meta Inf   ~~~');
   if (!error.response) {
     console.log(

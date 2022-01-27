@@ -1,23 +1,31 @@
-export type ImageContent = {
-  contentType: 'image';
-  extension: string;
+import Config from 'react-native-config';
+
+export type ContentType = 'image' | 'video';
+
+export const contentUrl = (contentId: String, meta: ContentMeta) =>
+  `${Config.S3_URL}/${contentId}-${meta.suffix}.${meta.extension}`;
+
+export type ContentMeta = {
   suffix: 'thumbnail' | 'display' | 'gallery';
-  height: number;
-  width: number;
+  extension: string;
+  contentType: ContentType;
 };
 
-export type VideoContent = {
+export type ImageContentMeta = ContentMeta & {
+  width: number;
+  height: number;
+  contentType: 'image';
+};
+
+export type VideoContentMeta = ContentMeta & {
   contentType: 'video';
-  extension: string;
-  suffix: 'gallery';
 };
 
 export type Content = {
   contentId: string;
-  contentType: 'image' | 'video';
-  fileKey: string;
-  extension: string;
-  thumbnail: ImageContent;
-  display: ImageContent;
-  gallery: ImageContent | VideoContent;
+  mid: string;
+  thumbnail: ImageContentMeta;
+  display: VideoContentMeta;
+  gallery: ImageContentMeta | VideoContentMeta;
+  contentType: ContentType;
 };

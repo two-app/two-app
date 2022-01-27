@@ -15,6 +15,8 @@ import {ContentPicker} from '../../content/ContentPicker';
 import {deleteMemory} from '../MemoryService';
 import {deleteMemory as deleteMemoryFromState} from '../store';
 import type {RootStackParamList} from '../../../Router';
+import {ContentFiles} from '../../content/compression/Compression';
+import ContentService from '../../content/ContentService';
 
 export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   <View>
@@ -62,20 +64,21 @@ export const UploadContentButton = ({memory}: {memory: Memory}) => {
       accessibilityLabel="Upload Content"
       style={styles.icon}
       onPress={() => {
-        ContentPicker.open(
-          () => {},
-          (content: PickedContent[]) => {
-            if (memory.displayContent == null) {
-              // select first item as display picture
-              content[0].setDisplayPicture = true;
-            }
+        ContentPicker.open().then((content: ContentFiles[]) => {
+          console.log('Picked content: ');
+          console.log(JSON.stringify(content));
+          const r = Promise.all(
+            content.map(c => ContentService.uploadContent(memory.mid, c)),
+          );
 
-            navigate('ContentUploadScreen', {
-              mid: memory.mid,
-              content,
-            });
-          },
-        );
+          r.then(response =>
+            console.log(`Got response! ${JSON.stringify(response)}`),
+          ).catch(e => console.error(e));
+          //navigate('ContentUploadScreen', {
+          //    mid: memory.mid,
+          //    content
+          //});
+        });
       }}>
       <Icon name="plussquareo" size={25} color={Colors.DARK} />
     </TouchableOpacity>

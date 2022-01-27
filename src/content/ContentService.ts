@@ -1,13 +1,9 @@
-import FormData from 'form-data';
-import {AxiosResponse} from 'axios';
-import Config from 'react-native-config';
-
 import Gateway from '../http/Gateway';
 import {Memory} from '../memories/MemoryModels';
 import {getMemory} from '../memories/MemoryService';
 
-import {PickedContent} from './ContentPicker';
-import {Content, ImageContent, VideoContent} from './ContentModels';
+import {Content} from './ContentModels';
+import {ContentFiles} from './compression/Compression';
 
 export const setMemoryDisplayPicture = (
   mid: string,
@@ -22,6 +18,12 @@ export const setMemoryDisplayPicture = (
 
 export type ContentUploadResponse = {contentId: string};
 
+const ext = (path: string): string => {
+  const split = path.split('.');
+  const end = split[split.length - 1];
+  return end ?? '';
+};
+
 /**
  * @param mid the memory id
  * @param content to upload
@@ -29,38 +31,79 @@ export type ContentUploadResponse = {contentId: string};
  */
 export const uploadContent = (
   mid: string,
-  content: PickedContent,
-  setDisplayContent: boolean,
+  content: ContentFiles,
 ): Promise<ContentUploadResponse> => {
+  const {thumbnail, display, gallery} = content;
   const form = new FormData();
 
-  form.append('content', {
-    name: content.filename,
-    type: content.mime,
-    uri: content.path,
+  form.append('thumbnail', {
+    name: 'thumbnail.png',
+    type: thumbnail.mime,
+    uri: thumbnail.path,
   });
 
-  console.log(`Uploading content to memory with id ${mid}`, content);
+  form.append('display', {
+    name: 'display',
+    type: display.mime,
+    uri: display.path,
+  });
 
-  const uri = `/memory/${mid}/content?setDisplayContent=${setDisplayContent}`;
+  form.append('gallery', {
+    name: 'gallery',
+    type: gallery.mime,
+    uri: gallery.path,
+  });
+
+  const now = new Date();
+
+  form.append('form', JSON.stringify({
+    contentId: content.contentId,
+    contentType: content.contentType,
+    initialWidth: content.initialWidth,
+    initialHeight: content.initialHeight,
+    initialSize: content.initialSize,
+    createdAt: now,
+    updatedAt: now,
+    thumbnail: {
+      suffix: 'thumbnail',
+      extension: ext(thumbnail.path),
+      mime: thumbnail.mime,
+      width: thumbnail.width,
+      height: thumbnail.height,
+      duration: thumbnail.duration,
+    },
+    display: {
+      suffix: 'display',
+      extension: ext(display.path),
+      mime: display.mime,
+      width: display.width,
+      height: display.height,
+      duration: display.duration,
+    },
+    gallery: {
+      suffix: 'gallery',
+      extension: ext(gallery.path),
+      mime: gallery.mime,
+      width: gallery.width,
+      height: gallery.height,
+      duration: gallery.duration,
+    },
+  }));
+
+  console.log(`Uploading content to mid ${mid}: ${JSON.stringify(form)}`);
+  const uri = `/memory/${mid}/content`;
 
   return Gateway.post<ContentUploadResponse>(uri, form, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
     timeout: 60 * 1000, // 1m
-  }).then((r: AxiosResponse<ContentUploadResponse>) => r.data);
+    headers: {
+      'x-do-not-trace': 'x-do-not-trace',
+      'Content-Type': 'multipart/form-data'
+    }
+  }).then(r => r.data);
 };
 
 export const getContent = (mid: string): Promise<Content[]> =>
-  Gateway.get<Content[]>(`/memory/${mid}/content`).then(
-    (v: AxiosResponse<Content[]>) => {
-      return v.data.map(content => {
-        content.fileKey = formatFileKey(content.fileKey);
-        return content;
-      });
-    },
-  );
+  Gateway.get<Content[]>(`/memory/${mid}/content`).then(r => r.data);
 
 export type DeleteContentResponse = {
   newDisplayContent?: Content;
@@ -75,21 +118,9 @@ export const deleteContent = async (
   return response.data;
 };
 
-export const buildContentURI = (
-  fileKey: string,
-  content: ImageContent | VideoContent,
-): string => {
-  return `${fileKey}-${content.suffix}.${content.extension}`;
-};
-
-export const formatFileKey = (fileKey: string): string =>
-  `${Config.S3_URL}/${fileKey}`;
-
 export default {
   setMemoryDisplayPicture,
   uploadContent,
   getContent,
   deleteContent,
-  buildContentURI,
-  formatFileKey,
 };

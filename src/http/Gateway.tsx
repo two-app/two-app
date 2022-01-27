@@ -14,21 +14,19 @@ import {mapErrorResponse} from './Response';
 
 const Gateway: AxiosInstance = Axios.create({
   baseURL: Config.API_URL,
-  timeout: 5000,
+  timeout: 30000,
 });
 
 const showReq = (config: AxiosRequestConfig): string =>
-  `${config.method?.toUpperCase()} /${config.url}`;
+  `${config.method?.toUpperCase()} ${config.url}`;
 
 Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
-  console.log(
-    `Performing request ${showReq(config)}:\n${JSON.stringify(config)}`,
-  );
+  console.log(`Sending Request ${showReq(config)}`);
+  console.log(`Request Body: ${JSON.stringify(config.data)}`);
+  console.debug(`Request Config: ${JSON.stringify(config)}`);
   if (config.url === '/self' && config.method === 'post') {
     return config;
   }
-
-  if (!config.headers) config.headers = {};
 
   if (config.url === '/refresh' && config.method === 'post') {
     // apply Refresh JWT to outgoing request
@@ -45,8 +43,9 @@ Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
 
 Gateway.interceptors.response.use(
   (response: AxiosResponse<any>): Promise<AxiosResponse<any>> => {
-    const json = JSON.stringify(response);
-    console.log(`Received response from ${showReq(response.config)}:\n${json}`);
+    console.log(`Received response from ${showReq(response.config)}`);
+    console.log(`Response Body: ${JSON.stringify(response.data)}`);
+    console.debug(`Response Config: ${JSON.stringify(response.config)}`);
     return Promise.resolve(response);
   },
   (error: AxiosError<any>): Promise<ErrorResponse> =>
