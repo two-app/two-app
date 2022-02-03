@@ -18,7 +18,7 @@
     "@react-native-community/datetimepicker": "^5.1.0",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/native": "^6.0.8",
-    "@react-navigation/stack": "^6.1.0",
+    "@react-navigation/stack": "^6.1.1",
     "@reduxjs/toolkit": "^1.7.2",
     "@testing-library/react-native": "^9.0.0",
     "@types/jest": "^27.4.0",
@@ -72,9 +72,9 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.12",
+    "@babel/core": "^7.17.0",
     "@babel/preset-typescript": "^7.16.7",
-    "@babel/runtime": "^7.16.7",
+    "@babel/runtime": "^7.17.0",
     "@react-native-community/eslint-config": "^3.0.1",
     "@types/jwt-decode": "^3.1.0",
     "babel-jest": "^27.4.6",
