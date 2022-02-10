@@ -41,6 +41,7 @@ export const NewMemoryScreen = () => {
   });
 
   const storeAndNavigate = (m: Memory): void => {
+    setLoading(false);
     dispatch(insertMemory(m));
     navigation.reset({
       index: 1,
@@ -52,7 +53,6 @@ export const NewMemoryScreen = () => {
         },
       ],
     });
-    setLoading(false);
   };
 
   const onError = (e: ErrorResponse): void => {

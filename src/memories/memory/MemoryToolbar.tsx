@@ -1,8 +1,7 @@
-import type {AlertButton} from 'react-native';
+import {AlertButton, TouchableOpacity} from 'react-native';
 import {View, StyleSheet, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
 import type {NavigationProp} from '@react-navigation/native';
 import {CommonActions, useNavigation} from '@react-navigation/native';
@@ -10,11 +9,13 @@ import {CommonActions, useNavigation} from '@react-navigation/native';
 import {MemoryDisplayView} from '../MemoryDisplayView';
 import type {Memory} from '../MemoryModels';
 import Colors from '../../Colors';
-import type {PickedContent} from '../../content/ContentPicker';
 import {ContentPicker} from '../../content/ContentPicker';
 import {deleteMemory} from '../MemoryService';
-import {deleteMemory as deleteMemoryFromState} from '../store';
+import {deleteMemory as deleteMemoryFromState, storeContent} from '../store';
 import type {RootStackParamList} from '../../../Router';
+import {ContentFiles} from '../../content/compression/Compression';
+import ContentService from '../../content/ContentService';
+import {Content} from '../../content/ContentModels';
 
 export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   <View>
@@ -56,27 +57,21 @@ const EditButton = ({memory}: {memory: Memory}) => {
 };
 
 export const UploadContentButton = ({memory}: {memory: Memory}) => {
-  const {navigate} = useNavigation<NavProp>();
+  const {mid} = memory;
+  const dispatch = useDispatch();
+
+  const uploadContent = (files: ContentFiles[]) =>
+    Promise.all(files.map(f => ContentService.uploadContent(mid, f))).then(
+      (content: Content[]) => {
+        dispatch(storeContent({mid, content}));
+      },
+    );
+
   return (
     <TouchableOpacity
       accessibilityLabel="Upload Content"
       style={styles.icon}
-      onPress={() => {
-        ContentPicker.open(
-          () => {},
-          (content: PickedContent[]) => {
-            if (memory.displayContent == null) {
-              // select first item as display picture
-              content[0].setDisplayPicture = true;
-            }
-
-            navigate('ContentUploadScreen', {
-              mid: memory.mid,
-              content,
-            });
-          },
-        );
-      }}>
+      onPress={() => ContentPicker.open().then(uploadContent)}>
       <Icon name="plussquareo" size={25} color={Colors.DARK} />
     </TouchableOpacity>
   );

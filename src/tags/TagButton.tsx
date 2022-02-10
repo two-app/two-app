@@ -1,5 +1,11 @@
-import {Text, StyleSheet, View, StyleProp, TextStyle} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  Text,
+  StyleSheet,
+  View,
+  StyleProp,
+  TextStyle,
+  TouchableOpacity,
+} from 'react-native';
 
 import {Tag} from './Tag';
 

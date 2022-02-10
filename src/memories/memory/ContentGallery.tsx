@@ -11,8 +11,7 @@ import Image from 'react-native-fast-image';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Video from 'react-native-video';
 
-import type {Content, ImageContent} from '../../content/ContentModels';
-import {buildContentURI} from '../../content/ContentService';
+import {Content, contentUrl} from '../../content/ContentModels';
 
 type ContentGalleryProps = {
   content: Content[];
@@ -35,16 +34,16 @@ export const ContentGallery = ({
 
   const {width, height} = useWindowDimensions();
   const urls = content.map((c, idx) => {
-    const url = buildContentURI(c.fileKey, c.gallery);
+    const url = contentUrl(c, 'gallery');
 
     if (c.contentType === 'image') {
-      const g = c.gallery as ImageContent;
+      const g = c.gallery;
       return {url, props: {index: idx}, width: g.width, height: g.height};
     } else {
       return {
         url,
         props: {index: idx},
-        width,
+        width, // TODO check if using the video width/height works
         height,
       };
     }
@@ -64,6 +63,7 @@ export const ContentGallery = ({
         animated={true}
       />
       <ImageViewer
+        backgroundColor="rgba(0, 0, 0, 0.5)"
         enablePreload={true}
         menuContext={false}
         enableSwipeDown={true}
@@ -96,8 +96,8 @@ type ProgressiveImage = {
 };
 
 const ProgressiveImage = ({content}: ProgressiveImage) => {
-  const thumbnail = buildContentURI(content.fileKey, content.thumbnail);
-  const gallery = buildContentURI(content.fileKey, content.gallery);
+  const thumbnail = contentUrl(content, 'thumbnail');
+  const gallery = contentUrl(content, 'gallery');
 
   const animatedOpacity = new Animated.Value(0);
   const AnimatedFastImage = Animated.createAnimatedComponent(Image);
@@ -135,7 +135,7 @@ type ProgressiveVideo = {
 
 const ProgressiveVideo = ({content, isActive}: ProgressiveVideo) => {
   const [isBuffering, setBuffering] = useState(true);
-  const uri = buildContentURI(content.fileKey, content.gallery);
+  const uri = contentUrl(content, 'gallery');
   const player = createRef<Video>();
 
   useEffect(() => {

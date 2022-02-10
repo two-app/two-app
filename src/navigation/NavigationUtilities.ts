@@ -1,5 +1,5 @@
 import {CommonActions, NavigationProp} from '@react-navigation/native';
-import {StackNavigationProp} from '@react-navigation/stack';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 import {RootStackParamList} from '../../Router';
 
@@ -15,4 +15,4 @@ export const resetNavigate = (
   );
 };
 
-export type TwoNav = StackNavigationProp<RootStackParamList>;
+export type TwoNav = NativeStackNavigationProp<RootStackParamList>;

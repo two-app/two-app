@@ -57,6 +57,16 @@ jest.mock('react-native-reanimated', () =>
   jest.requireActual('./node_modules/react-native-reanimated/mock'),
 );
 
+jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
+jest.mock('react-native-fs', () => {
+  return {
+    stat: jest.fn(),
+    readFile: jest.fn(),
+    read: jest.fn(),
+    TemporaryDirectoryPath: jest.fn(),
+  };
+});
+
 global.__reanimatedWorkletInit = jest.fn();
 
 jest.mock('react-native-keyboard-aware-scroll-view', () => {

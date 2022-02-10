@@ -6,8 +6,8 @@ import {
   TouchableWithoutFeedback,
   Animated,
   AccessibilityProps,
+  TouchableOpacity,
 } from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import HapticFeedback from 'react-native-haptic-feedback';
 
 import Colors from '../Colors';
@@ -44,7 +44,7 @@ const IOSTouchableCard = ({
 }: TouchableCardProps) => (
   <TouchableOpacity
     {...a11}
-    containerStyle={{overflow: 'visible'}}
+    //containerStyle={{overflow: 'visible'}}
     onPress={() => onPress && onPress()}>
     <Card style={style}>{children}</Card>
   </TouchableOpacity>

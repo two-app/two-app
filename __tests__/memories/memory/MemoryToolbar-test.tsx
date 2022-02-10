@@ -13,9 +13,9 @@ import {
   resetMockNavigation,
 } from '../../utils/NavigationMocking';
 import {persistor, store} from '../../../src/state/reducers';
-import type {PickedContent} from '../../../src/content/ContentPicker';
 import {ContentPicker} from '../../../src/content/ContentPicker';
 import {v4 as uuid} from 'uuid';
+import {ContentFiles} from '../../../src/content/compression/Compression';
 
 describe('MemoryToolbar', () => {
   let tb: MemoryToolbarTestBed;
@@ -54,32 +54,6 @@ describe('MemoryToolbar', () => {
 
       // THEN
       expect(mockNavigation.navigate).not.toHaveBeenCalled();
-    });
-
-    it('should navigate to the ContentUploadScreen', () => {
-      const content = [tb.createTestContent()];
-      tb.onUploadPickContent(content);
-
-      tb.pressUploadButton();
-
-      expect(mockNavigation.navigate).toHaveBeenCalledWith(
-        'ContentUploadScreen',
-        {
-          mid: tb.memory.mid,
-          content,
-        },
-      );
-    });
-
-    it('should set the display content for the memory', () => {
-      const content = [tb.createTestContent()];
-
-      expect(content[0].setDisplayPicture).toBeFalsy();
-      tb.onUploadPickContent(content);
-
-      tb.pressUploadButton();
-
-      expect(content[0].setDisplayPicture).toEqual(true);
     });
   });
 
@@ -146,36 +120,16 @@ class MemoryToolbarTestBed {
   }
 
   onUploadCancelPick = () => {
-    jest // spy on ContentPicked and call back cancelled/closed
-      .spyOn(ContentPicker, 'open')
-      .mockImplementation((onClose, _) => {
-        onClose();
-      });
+    jest.spyOn(ContentPicker, 'open').mockResolvedValue([]);
   };
 
-  onUploadPickContent = (content: PickedContent[]) => {
-    jest // spy on ContentPicked and call back with content
-      .spyOn(ContentPicker, 'open')
-      .mockImplementation(
-        (_, onPickedContent: (content: PickedContent[]) => void) => {
-          onPickedContent(content);
-        },
-      );
+  onUploadPickContent = (content: ContentFiles) => {
+    jest.spyOn(ContentPicker, 'open').mockResolvedValue([content]);
   };
 
   pressUploadButton = () => {
     const uploadBtn = this.render.getByA11yLabel('Upload Content');
     fireEvent.press(uploadBtn);
-  };
-
-  createTestContent = (): PickedContent => {
-    return {
-      height: 100,
-      width: 100,
-      mime: 'test-mime',
-      path: 'test-path',
-      size: 10,
-    };
   };
 
   onDeleteMemoryCancel = () => {

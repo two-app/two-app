@@ -1,5 +1,3 @@
-import {createStackNavigator} from '@react-navigation/stack';
-
 import {LoginScreen} from './src/authentication/LoginScreen';
 import {RegisterScreen} from './src/authentication/RegisterScreen';
 import {AcceptTermsScreen} from './src/authentication/register_workflow/AcceptTermsScreen';
@@ -14,10 +12,9 @@ import {SearchScreen} from './src/search/SearchScreen';
 import type {Tag} from './src/tags/Tag';
 import {ProfileScreen} from './src/user/ProfileScreen';
 import {EditMemoryScreen} from './src/memories/memory/EditMemoryScreen';
-import ContentUploadScreen from './src/content/ContentUploadScreen';
-import type {PickedContent} from './src/content/ContentPicker';
 import TagScreen from './src/tags/tag_screen/TagScreen';
 import {TagManagementScreen} from './src/tags/tag_management/TagManagementScreen';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
   LoadingScreen: undefined;
@@ -36,51 +33,58 @@ export type RootStackParamList = {
   SearchScreen: undefined;
   ProfileScreen: undefined;
   EditMemoryScreen: {mid: string};
-  ContentUploadScreen: {mid: string; content: PickedContent[]};
   TagScreen: undefined;
 };
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const AppStack = () => (
   <Stack.Navigator
     initialRouteName="LoadingScreen"
     screenOptions={{
-      cardStyle: {
-        backgroundColor: 'white',
-      },
       headerShown: false,
-      gestureResponseDistance: 50,
-      cardOverlayEnabled: false,
-      cardShadowEnabled: false,
+      gestureEnabled: true,
+      fullScreenGestureEnabled: true,
     }}>
-    <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
+    {/* Workflow */}
     <Stack.Screen name="LogoutScreen" component={LogoutScreen} />
     <Stack.Screen name="LoginScreen" component={LoginScreen} />
     <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
     <Stack.Screen name="AcceptTermsScreen" component={AcceptTermsScreen} />
     <Stack.Screen name="ConnectCodeScreen" component={ConnectCodeScreen} />
+
+    {/* Top Level Screens */}
     <Stack.Screen
       name="HomeScreen"
       component={HomeScreen}
-      options={{animationEnabled: false}}
+      options={{animation: 'none'}}
     />
-    <Stack.Screen name="NewMemoryScreen" component={NewMemoryScreen} />
-    <Stack.Screen name="MemoryScreen" component={MemoryScreen} />
-    <Stack.Screen name="TagManagementScreen" component={TagManagementScreen} />
-    <Stack.Screen name="SearchScreen" component={SearchScreen} />
-    <Stack.Screen
-      name="ProfileScreen"
-      component={ProfileScreen}
-      options={{animationEnabled: false}}
-    />
-    <Stack.Screen name="EditMemoryScreen" component={EditMemoryScreen} />
-    <Stack.Screen name="ContentUploadScreen" component={ContentUploadScreen} />
     <Stack.Screen
       name="TagScreen"
       component={TagScreen}
-      options={{animationEnabled: false}}
+      options={{animation: 'none'}}
     />
+    <Stack.Screen
+      name="ProfileScreen"
+      component={ProfileScreen}
+      options={{animation: 'none'}}
+    />
+
+    {/* Utility */}
+    <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
+    <Stack.Screen
+      name="SearchScreen"
+      component={SearchScreen}
+      options={{animation: 'slide_from_bottom'}}
+    />
+
+    {/* Memories */}
+    <Stack.Screen name="NewMemoryScreen" component={NewMemoryScreen} />
+    <Stack.Screen name="MemoryScreen" component={MemoryScreen} />
+    <Stack.Screen name="EditMemoryScreen" component={EditMemoryScreen} />
+
+    {/* Tags */}
+    <Stack.Screen name="TagManagementScreen" component={TagManagementScreen} />
   </Stack.Navigator>
 );
 

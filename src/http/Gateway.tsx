@@ -14,21 +14,25 @@ import {mapErrorResponse} from './Response';
 
 const Gateway: AxiosInstance = Axios.create({
   baseURL: Config.API_URL,
-  timeout: 5000,
+  timeout: 30000,
 });
 
+const showMethodAndURI = (config: AxiosRequestConfig): string =>
+  `${config.method?.toUpperCase()} ${config.url}`;
+
 const showReq = (config: AxiosRequestConfig): string =>
-  `${config.method?.toUpperCase()} /${config.url}`;
+  `${showMethodAndURI(config)} -- ${JSON.stringify(config.data ?? {})}`;
+
+const showRes = (req: AxiosRequestConfig, code: number, res: any): string =>
+  `${showMethodAndURI(req)} ${code} -- ${JSON.stringify(res ?? {})}`;
 
 Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
-  console.log(
-    `Performing request ${showReq(config)}:\n${JSON.stringify(config)}`,
-  );
+  console.log('>> ' + showReq(config));
+  config.headers = config.headers ?? {};
+
   if (config.url === '/self' && config.method === 'post') {
     return config;
   }
-
-  if (!config.headers) config.headers = {};
 
   if (config.url === '/refresh' && config.method === 'post') {
     // apply Refresh JWT to outgoing request
@@ -45,12 +49,29 @@ Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
 
 Gateway.interceptors.response.use(
   (response: AxiosResponse<any>): Promise<AxiosResponse<any>> => {
-    const json = JSON.stringify(response);
-    console.log(`Received response from ${showReq(response.config)}:\n${json}`);
+    const output = showRes(response.config, response.status, response.data);
+    console.log('<< ' + output);
     return Promise.resolve(response);
   },
-  (error: AxiosError<any>): Promise<ErrorResponse> =>
-    Promise.reject(mapErrorResponse(error)),
+  (error: AxiosError<any>): Promise<ErrorResponse> => {
+    if (error.response == null) {
+      const requestOutput = showMethodAndURI(error.config);
+      const reason = ` -- Failed to connect to server at ${Config.API_URL}`;
+      console.error('<< ' + requestOutput + reason);
+      return Promise.reject({
+        status: 500,
+        reason: 'Failed to reach Two.',
+      });
+    } else {
+      const output = showRes(
+        error.config,
+        error.response.status,
+        error.response.data,
+      );
+      console.error('<< ' + output);
+      return Promise.reject(mapErrorResponse(error.response.data));
+    }
+  },
 );
 
 export default Gateway;

@@ -1,16 +1,16 @@
 import {useEffect} from 'react';
 import {Text} from 'react-native';
 import {connect} from 'react-redux';
-import {StackNavigationProp} from '@react-navigation/stack';
 
 import {RootStackParamList} from '../Router';
 
 import {clearState, persistor} from './state/reducers';
 import {resetNavigate} from './navigation/NavigationUtilities';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 type LogoutScreenProps = {
   clearState: any;
-  navigation: StackNavigationProp<RootStackParamList, 'LogoutScreen'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'LogoutScreen'>;
 };
 
 const LogoutScreen = ({clearState, navigation}: LogoutScreenProps) => {

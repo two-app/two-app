@@ -1,66 +1,62 @@
-import FormData from 'form-data';
-import {AxiosResponse} from 'axios';
-import Config from 'react-native-config';
-
 import Gateway from '../http/Gateway';
 import {Memory} from '../memories/MemoryModels';
 import {getMemory} from '../memories/MemoryService';
 
-import {PickedContent} from './ContentPicker';
-import {Content, ImageContent, VideoContent} from './ContentModels';
+import {Content, contentFilesToContent} from './ContentModels';
+import {ContentFiles} from './compression/Compression';
 
 export const setMemoryDisplayPicture = (
   mid: string,
   displayId: string,
 ): Promise<Memory> => {
-  const patch = {
-    displayContentId: displayId,
-  };
-
+  const patch = {displayContentId: displayId};
   return Gateway.patch(`/memory/${mid}`, patch).then(() => getMemory(mid));
 };
-
-export type ContentUploadResponse = {contentId: string};
 
 /**
  * @param mid the memory id
  * @param content to upload
- * @param setDisplayContent if the content should be set as the display picture
  */
 export const uploadContent = (
   mid: string,
-  content: PickedContent,
-  setDisplayContent: boolean,
-): Promise<ContentUploadResponse> => {
+  content: ContentFiles,
+): Promise<Content> => {
+  const {thumbnail, display, gallery} = content;
   const form = new FormData();
 
-  form.append('content', {
-    name: content.filename,
-    type: content.mime,
-    uri: content.path,
+  form.append('thumbnail', {
+    name: 'thumbnail.png',
+    type: thumbnail.mime,
+    uri: thumbnail.path,
   });
 
-  console.log(`Uploading content to memory with id ${mid}`, content);
+  form.append('display', {
+    name: 'display',
+    type: display.mime,
+    uri: display.path,
+  });
 
-  const uri = `/memory/${mid}/content?setDisplayContent=${setDisplayContent}`;
+  form.append('gallery', {
+    name: 'gallery',
+    type: gallery.mime,
+    uri: gallery.path,
+  });
 
-  return Gateway.post<ContentUploadResponse>(uri, form, {
+  form.append('form', JSON.stringify(contentFilesToContent(mid, content)));
+
+  console.log(`Uploading content to mid ${mid}: ${JSON.stringify(form)}`);
+
+  return Gateway.post<Content>(`/memory/${mid}/content`, form, {
+    timeout: 30 * 1000, // 30s
     headers: {
+      'x-do-not-trace': 'x-do-not-trace',
       'Content-Type': 'multipart/form-data',
     },
-    timeout: 60 * 1000, // 1m
-  }).then((r: AxiosResponse<ContentUploadResponse>) => r.data);
+  }).then(r => r.data);
 };
 
 export const getContent = (mid: string): Promise<Content[]> =>
-  Gateway.get<Content[]>(`/memory/${mid}/content`).then(
-    (v: AxiosResponse<Content[]>) => {
-      return v.data.map(content => {
-        content.fileKey = formatFileKey(content.fileKey);
-        return content;
-      });
-    },
-  );
+  Gateway.get<Content[]>(`/memory/${mid}/content`).then(r => r.data);
 
 export type DeleteContentResponse = {
   newDisplayContent?: Content;
@@ -75,21 +71,9 @@ export const deleteContent = async (
   return response.data;
 };
 
-export const buildContentURI = (
-  fileKey: string,
-  content: ImageContent | VideoContent,
-): string => {
-  return `${fileKey}-${content.suffix}.${content.extension}`;
-};
-
-export const formatFileKey = (fileKey: string): string =>
-  `${Config.S3_URL}/${fileKey}`;
-
 export default {
   setMemoryDisplayPicture,
   uploadContent,
   getContent,
   deleteContent,
-  buildContentURI,
-  formatFileKey,
 };
