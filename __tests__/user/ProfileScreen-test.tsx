@@ -7,7 +7,11 @@ import {v4 as uuid} from 'uuid';
 
 import {ProfileScreen} from '../../src/user/ProfileScreen';
 import * as CoupleService from '../../src/couple/CoupleService';
-import {mockNavigation, resetMockNavigation} from '../utils/NavigationMocking';
+import {
+  mockNavigation,
+  mockNavigationProps,
+  resetMockNavigation,
+} from '../utils/NavigationMocking';
 import {clearState, store} from '../../src/state/reducers';
 import {storeCoupleProfile} from '../../src/user/profile/profile-state';
 import {Couple} from '../../src/couple/CoupleService';
@@ -162,7 +166,7 @@ class PartnerScreenTestBed {
     mockOpenURLFn.mockClear();
     this.render = render(
       <Provider store={store}>
-        <ProfileScreen />
+        <ProfileScreen {...mockNavigationProps()} />
       </Provider>,
     );
     return this;

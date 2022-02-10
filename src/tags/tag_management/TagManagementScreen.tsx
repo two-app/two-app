@@ -1,8 +1,5 @@
 import {useState} from 'react';
 import {Text, StyleSheet, View} from 'react-native';
-import type {RouteProp} from '@react-navigation/native';
-
-import type {RootStackParamList} from '../../../Router';
 import {SubmitButton} from '../../forms/SubmitButton';
 import {Heading} from '../../home/Heading';
 import type {ErrorResponse} from '../../http/Response';
@@ -15,15 +12,7 @@ import Colors from '../../Colors';
 
 import {ColorList} from './ColorSelection';
 import {v4 as uuid} from 'uuid';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-
-type TagManagementScreenProps = {
-  navigation: NativeStackNavigationProp<
-    RootStackParamList,
-    'TagManagementScreen'
-  >;
-  route: RouteProp<RootStackParamList, 'TagManagementScreen'>;
-};
+import {Screen} from '../../navigation/NavigationUtilities';
 
 type Mode = {
   type: 'create' | 'edit';
@@ -53,7 +42,7 @@ const getMode = (initialTag?: Tag): Mode => {
 export const TagManagementScreen = ({
   navigation,
   route,
-}: TagManagementScreenProps) => {
+}: Screen<'TagManagementScreen'>) => {
   const {onSubmit, initialTag} = route.params;
   const mode: Mode = getMode(initialTag);
   const tid: string = initialTag?.tid ?? uuid();
@@ -77,8 +66,10 @@ export const TagManagementScreen = ({
           onSubmit(createdTag);
           navigation.goBack();
         })
-        .catch(({reason}: ErrorResponse) => setError(reason))
-        .finally(() => setLoading(false));
+        .catch(({reason}: ErrorResponse) => {
+          setError(reason);
+          setLoading(false);
+        });
     };
 
     const perform = initialTag == null ? createTag : updateTag;

@@ -1,4 +1,4 @@
-import {NavigationProp} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {
   StyleSheet,
   Text,
@@ -13,8 +13,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 
 import {RootStackParamList} from '../../Router';
 import Colors from '../Colors';
-import {resetNavigate} from '../navigation/NavigationUtilities';
-import {getNavigation} from '../navigation/RootNavigation';
+import {resetNavigate, Routes} from '../navigation/NavigationUtilities';
 import {a11y} from '../views/helpers';
 
 type FooterProps = {
@@ -63,14 +62,13 @@ type ItemProps = {
 } & AccessibilityProps;
 
 const Item = (props: ItemProps) => {
-  const nav: NavigationProp<RootStackParamList, keyof RootStackParamList> =
-    getNavigation();
+  const navigation = useNavigation<Routes>();
 
   return (
     <TouchableOpacity
       {...a11y(props)}
       style={styles.item}
-      onPress={() => resetNavigate(props.navigateTo, nav)}>
+      onPress={() => resetNavigate(props.navigateTo, navigation)}>
       <props.icon
         size={25}
         name={props.iconName}

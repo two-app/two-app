@@ -15,6 +15,7 @@ import * as TagService from '../../../src/tags/TagService';
 import * as MemoryService from '../../../src/memories/MemoryService';
 import {
   mockNavigation,
+  mockNavigationProps,
   resetMockNavigation,
 } from '../../utils/NavigationMocking';
 import {Memory, MemoryMeta} from '../../../src/memories/MemoryModels';
@@ -197,7 +198,7 @@ class NewMemoryScreenTestBed {
 
     this.render = render(
       <Provider store={store}>
-        <NewMemoryScreen />
+        <NewMemoryScreen {...mockNavigationProps()} />
       </Provider>,
     );
     return this;

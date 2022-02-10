@@ -4,11 +4,11 @@ import {Alert, Text} from 'react-native';
 import {Provider} from 'react-redux';
 
 import type {Tag} from '../../../src/tags/Tag';
-import TagScreen from '../../../src/tags/tag_screen/TagScreen';
+import {TagScreen} from '../../../src/tags/tag_screen/TagScreen';
 import * as TagService from '../../../src/tags/TagService';
-import * as RootNavigation from '../../../src/navigation/RootNavigation';
 import {store} from '../../../src/state/reducers';
 import {v4 as uuid} from 'uuid';
+import {mockNavigation} from '../../utils/NavigationMocking';
 
 describe('TagScreen', () => {
   let tb: TagScreenTestBed;
@@ -55,9 +55,12 @@ describe('TagScreen', () => {
   describe('Clicking the tag input button', () => {
     it('should navigate to the TagManagementScreen', () => {
       tb.build().pressCreateTagButton();
-      expect(tb.navigateFn).toHaveBeenCalledWith('TagManagementScreen', {
-        onSubmit: expect.anything(),
-      });
+      expect(mockNavigation.navigate).toHaveBeenCalledWith(
+        'TagManagementScreen',
+        {
+          onSubmit: expect.anything(),
+        },
+      );
     });
   });
 
@@ -70,10 +73,13 @@ describe('TagScreen', () => {
     describe('Clicking a tags edit button', () => {
       it('should navigate to the TagManagementScreen', () => {
         tb.pressEditTagButton(tags[1].name);
-        expect(tb.navigateFn).toHaveBeenCalledWith('TagManagementScreen', {
-          initialTag: tags[1],
-          onSubmit: expect.anything(),
-        });
+        expect(mockNavigation.navigate).toHaveBeenCalledWith(
+          'TagManagementScreen',
+          {
+            initialTag: tags[1],
+            onSubmit: expect.anything(),
+          },
+        );
       });
     });
 
@@ -95,17 +101,10 @@ class TagScreenTestBed {
 
   getTagsFn: jest.SpyInstance<Promise<Tag[]>, []>;
   alertFn: jest.SpyInstance;
-  navigateFn: jest.Mock;
 
   constructor() {
     this.getTagsFn = jest.spyOn(TagService, 'getTags').mockClear();
     this.alertFn = jest.spyOn(Alert, 'alert');
-    this.navigateFn = jest.fn();
-
-    jest // spy on getNavigation custom hook
-      .spyOn(RootNavigation, 'getNavigation')
-      .mockReturnValue({navigate: this.navigateFn} as any);
-
     this.onGetTagsResolve([]);
   }
 
@@ -135,7 +134,7 @@ class TagScreenTestBed {
   build = (): TagScreenTestBed => {
     this.render = render(
       <Provider store={store}>
-        <TagScreen navigation={{navigate: this.navigateFn} as any} />
+        <TagScreen />
       </Provider>,
     );
     return this;

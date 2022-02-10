@@ -1,37 +1,28 @@
 import {useEffect} from 'react';
 import {Text} from 'react-native';
-import type {ConnectedProps} from 'react-redux';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {CommonActions} from '@react-navigation/native';
-
-import type {RootStackParamList} from '../Router';
 
 import {ScrollContainer} from './views/View';
 import type {TwoState} from './state/reducers';
 import {clearState, persistor} from './state/reducers';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {UserState} from './user';
+import {AuthState} from './authentication/store';
+import {Screen} from './navigation/NavigationUtilities';
 
-const mapState = (state: TwoState) => ({user: state.user, auth: state.auth});
-const mapDispatch = {clearState};
-const connector = connect(mapState, mapDispatch);
-type ConnectorProps = ConnectedProps<typeof connector>;
-type LoadingScreenProps = ConnectorProps & {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'LoadingScreen'>;
-};
+const LoadingScreen = ({navigation}: Screen<'LoadingScreen'>) => {
+  const dispatch = useDispatch();
+  const user: UserState | undefined = useSelector((s: TwoState) => s.user);
+  const auth: AuthState | undefined = useSelector((s: TwoState) => s.auth);
 
-const LoadingScreen = ({
-  navigation,
-  user,
-  auth,
-  clearState,
-}: LoadingScreenProps) => {
-  const nav = (route: string) =>
+  const nav = (route: string) => {
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
         routes: [{name: route}],
       }),
     );
+  };
 
   useEffect(() => {
     if (user != null && auth != null) {
@@ -39,7 +30,7 @@ const LoadingScreen = ({
       user.pid != null ? nav('HomeScreen') : nav('ConnectCodeScreen');
     } else {
       // clearing state to ensure user is in clean startup
-      clearState();
+      dispatch(clearState());
       persistor.persist();
       nav('RegisterScreen');
     }
@@ -52,7 +43,6 @@ const LoadingScreen = ({
   );
 };
 
-export default connector(LoadingScreen);
 export {LoadingScreen};
 
 export class LoadingStatus {

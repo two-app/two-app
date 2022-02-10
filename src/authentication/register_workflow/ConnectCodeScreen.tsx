@@ -12,8 +12,6 @@ import {
 import Clipboard from '@react-native-community/clipboard';
 import {useSelector} from 'react-redux';
 import HapticFeedback from 'react-native-haptic-feedback';
-import {useNavigation} from '@react-navigation/native';
-
 import {ScrollContainer} from '../../views/View';
 import {LogoHeader} from '../LogoHeader';
 import Colors from '../../Colors';
@@ -22,14 +20,15 @@ import {SubmitButton} from '../../forms/SubmitButton';
 import type {TwoState} from '../../state/reducers';
 import {selectUnconnectedUser} from '../../user';
 import {Button, ButtonStyles} from '../../forms/Button';
-import {resetNavigate} from '../../navigation/NavigationUtilities';
+import {resetNavigate, Screen} from '../../navigation/NavigationUtilities';
 import ConnectService from '../../user/ConnectService';
 import type {ErrorResponse} from '../../http/Response';
 import AuthenticationService from '../AuthenticationService';
-import type {Routes} from '../../navigation/RootNavigation';
 import type {UnconnectedUser, User} from '../UserModel';
 
-export const ConnectCodeScreen = () => {
+export const ConnectCodeScreen = ({
+  navigation,
+}: Screen<'ConnectCodeScreen'>) => {
   const user: UnconnectedUser = useSelector((state: TwoState) =>
     selectUnconnectedUser(state.user),
   );
@@ -41,8 +40,6 @@ export const ConnectCodeScreen = () => {
 
   const isPartnerCodeValid = (): boolean =>
     isUuid(partnerConnectCode) && partnerConnectCode !== user.uid;
-
-  const navigation = useNavigation<Routes>();
 
   const connectToPartner = (uid: string) => {
     setError('');

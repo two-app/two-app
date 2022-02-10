@@ -15,6 +15,7 @@ import type {ErrorResponse} from '../../../src/http/Response';
 import AuthenticationService from '../../../src/authentication/AuthenticationService';
 import {
   mockNavigation,
+  mockNavigationProps,
   resetMockNavigation,
 } from '../../utils/NavigationMocking';
 import {clearState, store} from '../../../src/state/reducers';
@@ -162,7 +163,7 @@ class ConnectCodeScreenTestBed {
 
     this.render = render(
       <Provider store={store}>
-        <ConnectCodeScreen />
+        <ConnectCodeScreen {...mockNavigationProps()} />
       </Provider>,
     );
     return this;

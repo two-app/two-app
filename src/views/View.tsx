@@ -1,10 +1,34 @@
 import * as React from 'react';
-import {View, ViewProps, StatusBar, ScrollViewProps} from 'react-native';
+import {View, ViewProps, ScrollViewProps, StatusBar} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {RootStackParamList} from '../../Router';
+import {Footer} from '../home/Footer';
 import SafeAreaView from 'react-native-safe-area-view';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import LoadingView from './LoadingView';
+
+type Container = {
+  children?: React.ReactNode;
+
+  /**
+   * Creates a full-screen opaque overlay with a loading spinner in the
+   * centre. The view underneath the screen is not interactive.
+   */
+  isLoading?: boolean;
+
+  /**
+   * If the view is loading, this percentage number will be displayed.
+   * See the 'isLoading' prop.
+   */
+  loadingPercentage?: number;
+
+  /**
+   * If present, a footer will be shown using this prop as the key to
+   * dictate which icon is 'active'.
+   */
+  footer?: keyof RootStackParamList;
+};
 
 /**
  * Wrapper providing the status bar and safe area view.
@@ -21,36 +45,7 @@ export const Wrapper = ({children}: {children?: React.ReactNode}) => (
   </>
 );
 
-type Container = {
-  children?: React.ReactNode;
-
-  /**
-   * Creates a full-screen opaque overlay with a loading spinner in the
-   * centre. The view underneath the screen is not interactive.
-   */
-  isLoading?: boolean;
-
-  /**
-   * If the view is loading, this percentage number will be displayed.
-   * See the 'isLoading' prop.
-   */
-  loadingPercentage?: number;
-};
-
-/**
- * Containers
- */
-
 type ViewContainerProps = ViewProps & Container;
-
-export const NoWrapContainer = (props: ViewContainerProps) => (
-  <>
-    {props.isLoading === true && <LoadingView />}
-    <View {...props} style={{flex: 1, marginLeft: '5%', marginRight: '5%'}}>
-      {props.children}
-    </View>
-  </>
-);
 
 /**
  * Creates a full-screen view with the container margins.
@@ -63,6 +58,7 @@ export const Container = (props: ViewContainerProps) => (
     <View {...props} style={{flex: 1, marginLeft: '5%', marginRight: '5%'}}>
       {props.children}
     </View>
+    {props.footer && <Footer active={props.footer} />}
   </Wrapper>
 );
 
@@ -86,5 +82,6 @@ export const ScrollContainer = (props: ScrollViewContainerProps) => (
       {...props}>
       {props.children}
     </KeyboardAwareScrollView>
+    {props.footer && <Footer active={props.footer} />}
   </Wrapper>
 );

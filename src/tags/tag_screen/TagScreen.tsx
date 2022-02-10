@@ -1,12 +1,9 @@
 import {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, RefreshControl, FlatList} from 'react-native';
-import type {ConnectedProps} from 'react-redux';
-import {connect} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import Colors from '../../Colors';
-import type {RootStackParamList} from '../../../Router';
-import {Footer} from '../../home/Footer';
-import {Wrapper, NoWrapContainer} from '../../views/View';
+import {Container} from '../../views/View';
 import {Heading} from '../../home/Heading';
 import * as TagService from '../TagService';
 import type {Tag} from '../Tag';
@@ -15,26 +12,16 @@ import {LoadingStatus} from '../../LoadingScreen';
 import type {ErrorResponse} from '../../http/Response';
 import type {TwoState} from '../../state/reducers';
 import {persistor} from '../../state/reducers';
-import {selectTags} from '../store/selectors';
 import {storeTags} from '../store';
 
 import {DeleteTagIcon} from './DeleteTag';
 import {EditTagIcon} from './EditTag';
 import {TagDate} from './TagDate';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
-const mapStateToProps = (state: TwoState) => ({
-  tags: selectTags(state.tags),
-});
+export const TagScreen = () => {
+  const dispatch = useDispatch();
+  const tags: Tag[] = useSelector((s: TwoState) => s.tags.allTags);
 
-const connector = connect(mapStateToProps);
-type ConnectorProps = ConnectedProps<typeof connector>;
-
-type TagScreenProps = ConnectorProps & {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'TagScreen'>;
-};
-
-export const TagScreen = ({tags, dispatch}: TagScreenProps) => {
   const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>(
     new LoadingStatus(true, false),
   );
@@ -58,42 +45,34 @@ export const TagScreen = ({tags, dispatch}: TagScreenProps) => {
   }, []);
 
   return (
-    <Wrapper>
-      <NoWrapContainer>
-        <FlatList
-          data={tags}
-          contentContainerStyle={{paddingBottom: 100}}
-          ListHeaderComponent={() => (
-            <TagHeader
-              onCreateTag={() => refreshTags()}
-              isEmpty={tags === []}
-            />
-          )}
-          renderItem={({item}) => (
-            <TagItem tag={item} onDelete={refreshTags} onUpdate={refreshTags} />
-          )}
-          ItemSeparatorComponent={() => (
-            <View style={{flex: 1, height: 2, backgroundColor: Colors.LIGHT}} />
-          )}
-          keyExtractor={(tag: Tag) => tag.name}
-          ListEmptyComponent={() => (
-            <EmptyTagsComponent loadingStatus={loadingStatus} />
-          )}
-          refreshControl={
-            <RefreshControl
-              colors={['#9Bd35A', '#689F38']}
-              refreshing={loadingStatus.displayRefresh}
-              onRefresh={() => refreshTags(true)}
-            />
-          }
-        />
-      </NoWrapContainer>
-      <Footer active="TagScreen" />
-    </Wrapper>
+    <Container footer="TagScreen">
+      <FlatList
+        data={tags}
+        contentContainerStyle={{paddingBottom: 100}}
+        ListHeaderComponent={() => (
+          <TagHeader onCreateTag={() => refreshTags()} isEmpty={tags === []} />
+        )}
+        renderItem={({item}) => (
+          <TagItem tag={item} onDelete={refreshTags} onUpdate={refreshTags} />
+        )}
+        ItemSeparatorComponent={() => (
+          <View style={{flex: 1, height: 2, backgroundColor: Colors.LIGHT}} />
+        )}
+        keyExtractor={(tag: Tag) => tag.name}
+        ListEmptyComponent={() => (
+          <EmptyTagsComponent loadingStatus={loadingStatus} />
+        )}
+        refreshControl={
+          <RefreshControl
+            colors={['#9Bd35A', '#689F38']}
+            refreshing={loadingStatus.displayRefresh}
+            onRefresh={() => refreshTags(true)}
+          />
+        }
+      />
+    </Container>
   );
 };
-
-export default connector(TagScreen);
 
 type TagHeaderProps = {
   onCreateTag: (tag: Tag) => void;

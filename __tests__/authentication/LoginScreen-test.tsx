@@ -10,7 +10,11 @@ import {
 import {LoginScreen} from '../../src/authentication/LoginScreen';
 import AuthenticationService from '../../src/authentication/AuthenticationService';
 import type {ErrorResponse} from '../../src/http/Response';
-import {mockNavigation, resetMockNavigation} from '../utils/NavigationMocking';
+import {
+  mockNavigation,
+  mockNavigationProps,
+  resetMockNavigation,
+} from '../utils/NavigationMocking';
 
 describe('LoginScreen', () => {
   let tb: LoginScreenTestBed;
@@ -138,7 +142,7 @@ class LoginScreenTestBed {
 
   build = (): LoginScreenTestBed => {
     resetMockNavigation();
-    this.render = render(<LoginScreen />);
+    this.render = render(<LoginScreen {...mockNavigationProps()} />);
     return this;
   };
 }

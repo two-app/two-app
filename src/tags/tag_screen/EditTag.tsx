@@ -1,8 +1,9 @@
+import {useNavigation} from '@react-navigation/native';
 import {StyleProp, TouchableOpacity, ViewStyle} from 'react-native';
 import SimpleLineIcon from 'react-native-vector-icons/SimpleLineIcons';
 
 import Colors from '../../Colors';
-import {getNavigation} from '../../navigation/RootNavigation';
+import {Routes} from '../../navigation/NavigationUtilities';
 import {Tag} from '../Tag';
 
 type EditTagIconProps = {
@@ -13,7 +14,7 @@ type EditTagIconProps = {
 
 export const EditTagIcon = ({tag, onUpdated, style}: EditTagIconProps) => {
   const edit = () => {
-    getNavigation().navigate('TagManagementScreen', {
+    useNavigation<Routes>().navigate('TagManagementScreen', {
       initialTag: tag,
       onSubmit: onUpdated,
     });

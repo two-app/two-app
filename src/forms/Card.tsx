@@ -42,10 +42,7 @@ const IOSTouchableCard = ({
   style,
   onPress,
 }: TouchableCardProps) => (
-  <TouchableOpacity
-    {...a11}
-    //containerStyle={{overflow: 'visible'}}
-    onPress={() => onPress && onPress()}>
+  <TouchableOpacity {...a11} onPress={() => onPress && onPress()}>
     <Card style={style}>{children}</Card>
   </TouchableOpacity>
 );

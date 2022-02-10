@@ -1,9 +1,8 @@
-import type {NavigationProp} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native';
 
-import type {RootStackParamList} from '../../Router';
 import type {TimelineComponent} from '../home/TimelineConstants';
+import {Routes} from '../navigation/NavigationUtilities';
 
 import {MemoryDisplayView} from './MemoryDisplayView';
 import type {Memory} from './MemoryModels';
@@ -18,10 +17,8 @@ export const MemoryTimelineComponent = (): TimelineComponent<Memory> => ({
   key: memory => `memory-${memory.mid}`,
 });
 
-type NavProp = NavigationProp<RootStackParamList, 'HomeScreen'>;
-
 const MemoryItem = ({memory}: {memory: Memory}) => {
-  const {navigate} = useNavigation<NavProp>();
+  const {navigate} = useNavigation<Routes>();
   return (
     <TouchableOpacity
       accessibilityLabel={`Open memory '${memory.title}'`}

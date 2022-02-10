@@ -1,10 +1,8 @@
 import {useState, useEffect, useRef} from 'react';
 import {FlatList, RefreshControl, Text, View, StyleSheet} from 'react-native';
-import {RouteProp} from '@react-navigation/native';
-import {connect, ConnectedProps} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {Memory} from '../MemoryModels';
-import {RootStackParamList} from '../../../Router';
 import {Container} from '../../views/View';
 import {getMemory} from '../MemoryService';
 import Colors from '../../Colors';
@@ -27,26 +25,16 @@ import {
 import {ContentGallery} from './ContentGallery';
 import {MemoryToolbar} from './MemoryToolbar';
 import {MemoryInteractionModal} from './MemoryInteractionModal';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {Screen} from '../../navigation/NavigationUtilities';
 
-type NavigationProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'MemoryScreen'>;
-  route: RouteProp<RootStackParamList, 'MemoryScreen'>;
-};
+export const MemoryScreen = ({route}: Screen<'MemoryScreen'>) => {
+  const dispatch = useDispatch();
+  const mid = route.params.mid;
+  const memory = useSelector((s: TwoState) => selectMemory(s.memories, mid));
+  const content = useSelector((s: TwoState) =>
+    selectMemoryContent(s.memories, mid),
+  );
 
-const mapStateToProps = (state: TwoState, ownProps: NavigationProps) => {
-  const {mid} = ownProps.route.params;
-  return {
-    memory: selectMemory(state.memories, mid),
-    content: selectMemoryContent(state.memories, mid),
-  };
-};
-
-const connector = connect(mapStateToProps);
-type ConnectorProps = ConnectedProps<typeof connector>;
-type MemoryScreenProps = ConnectorProps & NavigationProps;
-
-const MemoryScreen = ({memory, dispatch, content}: MemoryScreenProps) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const hasMounted = useRef<boolean>(false);
   useEffect(() => {
@@ -71,6 +59,7 @@ const MemoryScreen = ({memory, dispatch, content}: MemoryScreenProps) => {
     });
   }, []);
 
+  // TODO fix this piece of shit
   // refresh entire memory on content change (update, delete)
   useEffect(() => {
     if (hasMounted) {
@@ -92,8 +81,6 @@ const MemoryScreen = ({memory, dispatch, content}: MemoryScreenProps) => {
     </Container>
   );
 };
-
-export default connector(MemoryScreen);
 
 type ContentGridProps = {
   memory: Memory;

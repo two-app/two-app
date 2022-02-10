@@ -10,7 +10,7 @@ import {
   GroupedIcon,
   GridIcon,
 } from '../memories/MemoryHeaderIcons';
-import {TwoNav} from '../navigation/NavigationUtilities';
+import {Routes} from '../navigation/NavigationUtilities';
 
 import {Heading} from './Heading';
 import {TimelineType} from './TimelineConstants';
@@ -21,7 +21,7 @@ export type TimelineHeaderProps = {
 };
 
 export const TimelineHeader = ({selected, onSelected}: TimelineHeaderProps) => {
-  const {navigate} = useNavigation<TwoNav>();
+  const {navigate} = useNavigation<Routes>();
 
   return (
     <View style={{paddingVertical: 20}}>

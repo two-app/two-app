@@ -1,5 +1,4 @@
 import {useState} from 'react';
-import {RouteProp} from '@react-navigation/native';
 import {View, Text} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {useDispatch, useSelector} from 'react-redux';
@@ -7,7 +6,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Memory, MemoryMeta} from '../MemoryModels';
 import {ScrollContainer} from '../../views/View';
 import TitleInput from '../new_memory/TitleInput';
-import {RootStackParamList} from '../../../Router';
 import {Heading} from '../../home/Heading';
 import {SubmitButton} from '../../forms/SubmitButton';
 import {DateTimePicker} from '../new_memory/DateInput';
@@ -18,12 +16,7 @@ import {updateMemory as updateMemoryRequest} from '../MemoryService';
 import {ErrorResponse} from '../../http/Response';
 import {TwoState} from '../../state/reducers';
 import {selectMemory, updateMemory} from '../store';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-
-type Props = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'EditMemoryScreen'>;
-  route: RouteProp<RootStackParamList, 'EditMemoryScreen'>;
-};
+import {Screen} from '../../navigation/NavigationUtilities';
 
 const isValidUpdate = (memory: Memory, form: MemoryMeta): boolean => {
   const titleDiff = memory.title !== form.title;
@@ -38,7 +31,10 @@ const isValidUpdate = (memory: Memory, form: MemoryMeta): boolean => {
   return isDiff && isTitleValid && isLocationValid;
 };
 
-export const EditMemoryScreen = ({navigation, route}: Props) => {
+export const EditMemoryScreen = ({
+  navigation,
+  route,
+}: Screen<'EditMemoryScreen'>) => {
   const dispatch = useDispatch();
   const memory: Memory = useSelector<TwoState, Memory>(state =>
     selectMemory(state.memories, route.params.mid),
@@ -61,8 +57,10 @@ export const EditMemoryScreen = ({navigation, route}: Props) => {
         dispatch(updateMemory({mid: memory.mid, memory: updatedMemory}));
         navigation.goBack();
       })
-      .catch((e: ErrorResponse) => setError(e.reason))
-      .finally(() => setLoading(false));
+      .catch((e: ErrorResponse) => {
+        setError(e.reason);
+        setLoading(false);
+      });
   };
 
   return (
