@@ -84,7 +84,6 @@ const AppStack = () => (
     <Stack.Screen
       name="EditMemoryScreen"
       component={EditMemoryScreen}
-      options={{animation: 'slide_from_bottom'}}
     />
 
     {/* Tags */}

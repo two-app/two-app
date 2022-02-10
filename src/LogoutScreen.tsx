@@ -6,7 +6,6 @@ import {clearState, persistor} from './state/reducers';
 import {resetNavigate, Screen} from './navigation/NavigationUtilities';
 
 const LogoutScreen = ({navigation}: Screen<'LogoutScreen'>) => {
-
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(clearState());

@@ -13,7 +13,7 @@ import Colors from '../../Colors';
 import {ColorList} from './ColorSelection';
 import {v4 as uuid} from 'uuid';
 import {Screen} from '../../navigation/NavigationUtilities';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 type Mode = {
   type: 'create' | 'edit';
@@ -39,10 +39,6 @@ const getMode = (initialTag?: Tag): Mode => {
     };
   }
 };
-
-const ExitOnPullDown = (props: RefreshControlProps) => {
-  const {navigate} = useNavigation();
-}
 
 export const TagManagementScreen = ({
   navigation,

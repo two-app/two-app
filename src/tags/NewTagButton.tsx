@@ -22,14 +22,16 @@ export const NewTagButton = ({onCreated, placeholder}: NewTagButtonProps) => {
   return (
     <TouchableCard
       style={FormStyle.card}
-      onPress={() => navigate('TagManagementScreen', {
-        onSubmit: onCreated,
-      })}
-      a11={{ accessibilityLabel: 'Tap to create a new tag' }}>
+      onPress={() =>
+        navigate('TagManagementScreen', {
+          onSubmit: onCreated,
+        })
+      }
+      a11={{accessibilityLabel: 'Tap to create a new tag'}}>
       <View style={FormStyle.iconContainer}>
-        <AntIcon name="tago" style={{ fontSize: 13, color: Colors.REGULAR }} />
+        <AntIcon name="tago" style={{fontSize: 13, color: Colors.REGULAR}} />
       </View>
-      <Text style={{ color: Colors.REGULAR }}>{placeholder}</Text>
+      <Text style={{color: Colors.REGULAR}}>{placeholder}</Text>
     </TouchableCard>
   );
 };
