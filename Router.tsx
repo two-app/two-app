@@ -81,10 +81,7 @@ const AppStack = () => (
     {/* Memories */}
     <Stack.Screen name="NewMemoryScreen" component={NewMemoryScreen} />
     <Stack.Screen name="MemoryScreen" component={MemoryScreen} />
-    <Stack.Screen
-      name="EditMemoryScreen"
-      component={EditMemoryScreen}
-    />
+    <Stack.Screen name="EditMemoryScreen" component={EditMemoryScreen} />
 
     {/* Tags */}
     <Stack.Screen name="TagManagementScreen" component={TagManagementScreen} />

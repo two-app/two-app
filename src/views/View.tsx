@@ -34,7 +34,7 @@ type Container = {
  * Wrapper providing the status bar and safe area view.
  * Consumes the full screen.
  */
- export const Wrapper = ({children}: {children?: React.ReactNode}) => (
+export const Wrapper = ({children}: {children?: React.ReactNode}) => (
   <>
     <StatusBar backgroundColor="white" barStyle="dark-content" />
     <SafeAreaProvider>

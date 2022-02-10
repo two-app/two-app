@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {Text, StyleSheet, View, RefreshControlProps} from 'react-native';
+import {Text, StyleSheet, View} from 'react-native';
 import {SubmitButton} from '../../forms/SubmitButton';
 import {Heading} from '../../home/Heading';
 import type {ErrorResponse} from '../../http/Response';
@@ -13,7 +13,6 @@ import Colors from '../../Colors';
 import {ColorList} from './ColorSelection';
 import {v4 as uuid} from 'uuid';
 import {Screen} from '../../navigation/NavigationUtilities';
-import {useNavigation} from '@react-navigation/native';
 
 type Mode = {
   type: 'create' | 'edit';
