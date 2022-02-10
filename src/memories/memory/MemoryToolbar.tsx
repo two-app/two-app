@@ -10,13 +10,13 @@ import {CommonActions, useNavigation} from '@react-navigation/native';
 import {MemoryDisplayView} from '../MemoryDisplayView';
 import type {Memory} from '../MemoryModels';
 import Colors from '../../Colors';
-import type {PickedContent} from '../../content/ContentPicker';
 import {ContentPicker} from '../../content/ContentPicker';
 import {deleteMemory} from '../MemoryService';
-import {deleteMemory as deleteMemoryFromState} from '../store';
+import {deleteMemory as deleteMemoryFromState, storeContent} from '../store';
 import type {RootStackParamList} from '../../../Router';
 import {ContentFiles} from '../../content/compression/Compression';
 import ContentService from '../../content/ContentService';
+import {Content} from '../../content/ContentModels';
 
 export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   <View>
@@ -58,28 +58,21 @@ const EditButton = ({memory}: {memory: Memory}) => {
 };
 
 export const UploadContentButton = ({memory}: {memory: Memory}) => {
-  const {navigate} = useNavigation<NavProp>();
+  const {mid} = memory;
+  const dispatch = useDispatch();
+
+  const uploadContent = (files: ContentFiles[]) =>
+    Promise.all(files.map(f => ContentService.uploadContent(mid, f))).then(
+      (content: Content[]) => {
+        dispatch(storeContent({mid, content}));
+      },
+    );
+
   return (
     <TouchableOpacity
       accessibilityLabel="Upload Content"
       style={styles.icon}
-      onPress={() => {
-        ContentPicker.open().then((content: ContentFiles[]) => {
-          console.log('Picked content: ');
-          console.log(JSON.stringify(content));
-          const r = Promise.all(
-            content.map(c => ContentService.uploadContent(memory.mid, c)),
-          );
-
-          r.then(response =>
-            console.log(`Got response! ${JSON.stringify(response)}`),
-          ).catch(e => console.error(e));
-          //navigate('ContentUploadScreen', {
-          //    mid: memory.mid,
-          //    content
-          //});
-        });
-      }}>
+      onPress={() => ContentPicker.open().then(uploadContent)}>
       <Icon name="plussquareo" size={25} color={Colors.DARK} />
     </TouchableOpacity>
   );

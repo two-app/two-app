@@ -17,13 +17,19 @@ const Gateway: AxiosInstance = Axios.create({
   timeout: 30000,
 });
 
+const showMethodAndURI = (config: AxiosRequestConfig): string =>
+  `${config.method?.toUpperCase()} ${config.url}`
+
 const showReq = (config: AxiosRequestConfig): string =>
-  `${config.method?.toUpperCase()} ${config.url}`;
+  `${showMethodAndURI(config)} -- ${JSON.stringify(config.data ?? {})}`;
+
+const showRes = (req: AxiosRequestConfig, res: any): string =>
+  `${showMethodAndURI(req)} -- ${JSON.stringify(res ?? {})}`;
 
 Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
-  console.log(`Sending Request ${showReq(config)}`);
-  console.log(`Request Body: ${JSON.stringify(config.data)}`);
-  console.debug(`Request Config: ${JSON.stringify(config)}`);
+  console.log('>> ' + showReq(config));
+  config.headers = config.headers ?? {};
+
   if (config.url === '/self' && config.method === 'post') {
     return config;
   }
@@ -43,9 +49,7 @@ Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
 
 Gateway.interceptors.response.use(
   (response: AxiosResponse<any>): Promise<AxiosResponse<any>> => {
-    console.log(`Received response from ${showReq(response.config)}`);
-    console.log(`Response Body: ${JSON.stringify(response.data)}`);
-    console.debug(`Response Config: ${JSON.stringify(response.config)}`);
+    console.log('<< ' + showRes(response.config, response.data))
     return Promise.resolve(response);
   },
   (error: AxiosError<any>): Promise<ErrorResponse> =>

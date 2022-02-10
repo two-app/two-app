@@ -3,18 +3,21 @@ import {v4 as uuid} from 'uuid';
 import RNFS from 'react-native-fs';
 import {Compression, scaleByOrientation} from './Compression';
 
+/**
+ * @returns a tuple of the video compression and path to the extracted frame
+ */
 export const compressVideo = async (
   originalPath: string,
   ogWidth: number,
   ogHeight: number,
-): Promise<Compression> => {
+): Promise<[Compression, string]> => {
   const path = RNFS.TemporaryDirectoryPath + uuid() + '.mp4';
-  const thumbnail = RNFS.TemporaryDirectoryPath + uuid() + '.png';
+  const framePath = RNFS.TemporaryDirectoryPath + uuid() + '.png';
 
   const [width, height] = scaleByOrientation(ogWidth, ogHeight, 1080, 720);
-  console.log(`Resized ${ogWidth}x${ogHeight} -> ${width}x${height}`);
+  console.log(`Scaled video ${ogWidth}x${ogHeight} -> ${width}x${height}`);
 
-  const frame = extractFrameCmd(originalPath, thumbnail);
+  const frame = extractFrameCmd(originalPath, framePath);
   const compress = compressVideoCmd(
     originalPath,
     path,
@@ -25,7 +28,7 @@ export const compressVideo = async (
   await execute(compress);
   await execute(frame);
 
-  return {width, height, path};
+  return [{width, height, path}, framePath];
 };
 
 const execute = (command: string): Promise<void> => {

@@ -1,8 +1,4 @@
 import Gateway from '../http/Gateway';
-import {PickedContent} from '../content/ContentPicker';
-import ContentService, {ContentUploadResponse} from '../content/ContentService';
-import {Content} from '../content/ContentModels';
-
 import {Memory, MemoryMeta} from './MemoryModels';
 
 export const isMemoryDescriptionValid = (upload: MemoryMeta) =>
@@ -27,27 +23,3 @@ export const updateMemory = (memory: MemoryMeta): Promise<Memory> =>
 /* DELETE /memory/$mid */
 export const deleteMemory = async (mid: string): Promise<void> =>
   Gateway.delete<any>(`/memory/${mid}`).then(r => r.data);
-
-export const uploadToMemory = (
-  mid: string,
-  contentToUpload: PickedContent[],
-  setProgress: (percentage: number) => void,
-): Promise<[Memory, Content[]]> => {
-  setProgress(0);
-  const doneTotal = contentToUpload.length + 1;
-  let doneCount = 1;
-
-  const uploadPromises: Promise<ContentUploadResponse>[] = contentToUpload.map(
-    (content: PickedContent) => {
-      return ContentService.uploadContent(mid, content).finally(() => {
-        doneCount++;
-        setProgress(Math.round((doneCount / doneTotal) * 100));
-      });
-    },
-  );
-
-  // upload content, then retrieve latest memory + content data
-  return Promise.all(uploadPromises).then(() =>
-    Promise.all([getMemory(mid), ContentService.getContent(mid)]),
-  );
-};

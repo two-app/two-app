@@ -40,14 +40,14 @@ export const MemoryDisplayView = ({memory}: {memory: Memory}) => (
   </View>
 );
 
-const MemoryDisplayPicture = ({content}: {content: Content}) => {
-  //const uri = contentUrl(content.contentId, content.display);
-  return (
-    <View style={s.image}>
-      <Image style={{width: '100%', height: '100%'}} source={{uri: ''}} />
-    </View>
-  );
-};
+const MemoryDisplayPicture = ({content}: {content: Content}) => (
+  <View style={s.image}>
+    <Image
+      style={{width: '100%', height: '100%'}}
+      source={{uri: contentUrl(content, 'display')}}
+    />
+  </View>
+);
 
 const s = StyleSheet.create({
   heading: {

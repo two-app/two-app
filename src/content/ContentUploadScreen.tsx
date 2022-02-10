@@ -15,7 +15,6 @@ import {Heading} from '../home/Heading';
 import {chunkToRows, GridRow, Cell} from '../memories/memory/Grid';
 import {SubmitButton} from '../forms/SubmitButton';
 import {MemoryImageCount, MemoryVideoCount} from '../memories/MemoryIcons';
-import {uploadToMemory} from '../memories/MemoryService';
 import type {ErrorResponse} from '../http/Response';
 import {updateMemory, selectMemory, storeContent} from '../memories/store';
 import type {TwoState} from '../state/reducers';

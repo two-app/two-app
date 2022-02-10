@@ -22,8 +22,6 @@ type NavProp = NavigationProp<RootStackParamList, 'HomeScreen'>;
 
 const MemoryItem = ({memory}: {memory: Memory}) => {
   const {navigate} = useNavigation<NavProp>();
-  console.log('GOT MEMORY');
-  console.log(memory);
   return (
     <TouchableOpacity
       accessibilityLabel={`Open memory '${memory.title}'`}

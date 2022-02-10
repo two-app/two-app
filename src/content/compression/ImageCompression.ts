@@ -9,6 +9,7 @@ export const compressImage = async (
   height: number,
 ): Promise<ContentFiles> => {
   const image = await RNFS.stat(input);
+  console.log(`Initial ${width}x${height} - ${image.size} bytes`);
 
   const [thumb, disp, gall] = await Promise.all([
     thumbnail(input),
@@ -30,17 +31,23 @@ export const compressImage = async (
 
 const thumbnail = async (input: string): Promise<File> => {
   const output = RNFS.TemporaryDirectoryPath + uuid() + '.png';
-  return resize(input, output, 100, 100, 'cover');
+  const sized = await resize(input, output, 100, 100, 'cover');
+  console.log(`Thumbnail ${sized.width}x${sized.height} - ${sized.size} bytes`);
+  return sized;
 };
 
 const display = async (input: string): Promise<File> => {
   const output = RNFS.TemporaryDirectoryPath + uuid() + '.png';
-  return resize(input, output, 400, 400, 'cover');
+  const sized = await resize(input, output, 400, 400, 'cover');
+  console.log(`Thumbnail ${sized.width}x${sized.height} - ${sized.size} bytes`);
+  return sized;
 };
 
 const gallery = async (input: string): Promise<File> => {
   const output = RNFS.TemporaryDirectoryPath + uuid() + '.png';
-  return resize(input, output, 2400, 2400, 'contain');
+  const sized = await resize(input, output, 1080, 720, 'contain');
+  console.log(`Thumbnail ${sized.width}x${sized.height} - ${sized.size} bytes`);
+  return sized;
 };
 
 const resize = async (
@@ -59,8 +66,11 @@ const resize = async (
     undefined,
     output,
     undefined,
-    {mode},
+    {mode, onlyScaleDown: true},
   );
+
+  console.log(`${width}x${height} - ${size}`);
+
   return {
     width,
     height,

@@ -11,11 +11,7 @@ import Image from 'react-native-fast-image';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Video from 'react-native-video';
 
-import {
-  Content,
-  contentUrl,
-  ImageContentMeta,
-} from '../../content/ContentModels';
+import {Content, contentUrl} from '../../content/ContentModels';
 
 type ContentGalleryProps = {
   content: Content[];
@@ -38,16 +34,16 @@ export const ContentGallery = ({
 
   const {width, height} = useWindowDimensions();
   const urls = content.map((c, idx) => {
-    const url = contentUrl(c.contentId, c.gallery);
+    const url = contentUrl(c, 'gallery');
 
     if (c.contentType === 'image') {
-      const g = c.gallery as ImageContentMeta;
+      const g = c.gallery;
       return {url, props: {index: idx}, width: g.width, height: g.height};
     } else {
       return {
         url,
         props: {index: idx},
-        width,
+        width, // TODO check if using the video width/height works
         height,
       };
     }
@@ -100,8 +96,8 @@ type ProgressiveImage = {
 };
 
 const ProgressiveImage = ({content}: ProgressiveImage) => {
-  const thumbnail = contentUrl(content.contentId, content.thumbnail);
-  const gallery = contentUrl(content.contentId, content.gallery);
+  const thumbnail = contentUrl(content, 'thumbnail');
+  const gallery = contentUrl(content, 'gallery');
 
   const animatedOpacity = new Animated.Value(0);
   const AnimatedFastImage = Animated.createAnimatedComponent(Image);
@@ -139,7 +135,7 @@ type ProgressiveVideo = {
 
 const ProgressiveVideo = ({content, isActive}: ProgressiveVideo) => {
   const [isBuffering, setBuffering] = useState(true);
-  const uri = contentUrl(content.contentId, content.gallery);
+  const uri = contentUrl(content, 'gallery');
   const player = createRef<Video>();
 
   useEffect(() => {

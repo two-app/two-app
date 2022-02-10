@@ -2,37 +2,25 @@ import Gateway from '../http/Gateway';
 import {Memory} from '../memories/MemoryModels';
 import {getMemory} from '../memories/MemoryService';
 
-import {Content} from './ContentModels';
+import {Content, contentFilesToContent} from './ContentModels';
 import {ContentFiles} from './compression/Compression';
 
 export const setMemoryDisplayPicture = (
   mid: string,
   displayId: string,
 ): Promise<Memory> => {
-  const patch = {
-    displayContentId: displayId,
-  };
-
+  const patch = {displayContentId: displayId};
   return Gateway.patch(`/memory/${mid}`, patch).then(() => getMemory(mid));
-};
-
-export type ContentUploadResponse = {contentId: string};
-
-const ext = (path: string): string => {
-  const split = path.split('.');
-  const end = split[split.length - 1];
-  return end ?? '';
 };
 
 /**
  * @param mid the memory id
  * @param content to upload
- * @param setDisplayContent if the content should be set as the display picture
  */
 export const uploadContent = (
   mid: string,
   content: ContentFiles,
-): Promise<ContentUploadResponse> => {
+): Promise<Content> => {
   const {thumbnail, display, gallery} = content;
   const form = new FormData();
 
@@ -54,51 +42,16 @@ export const uploadContent = (
     uri: gallery.path,
   });
 
-  const now = new Date();
-
-  form.append('form', JSON.stringify({
-    contentId: content.contentId,
-    contentType: content.contentType,
-    initialWidth: content.initialWidth,
-    initialHeight: content.initialHeight,
-    initialSize: content.initialSize,
-    createdAt: now,
-    updatedAt: now,
-    thumbnail: {
-      suffix: 'thumbnail',
-      extension: ext(thumbnail.path),
-      mime: thumbnail.mime,
-      width: thumbnail.width,
-      height: thumbnail.height,
-      duration: thumbnail.duration,
-    },
-    display: {
-      suffix: 'display',
-      extension: ext(display.path),
-      mime: display.mime,
-      width: display.width,
-      height: display.height,
-      duration: display.duration,
-    },
-    gallery: {
-      suffix: 'gallery',
-      extension: ext(gallery.path),
-      mime: gallery.mime,
-      width: gallery.width,
-      height: gallery.height,
-      duration: gallery.duration,
-    },
-  }));
+  form.append('form', JSON.stringify(contentFilesToContent(mid, content)));
 
   console.log(`Uploading content to mid ${mid}: ${JSON.stringify(form)}`);
-  const uri = `/memory/${mid}/content`;
 
-  return Gateway.post<ContentUploadResponse>(uri, form, {
-    timeout: 60 * 1000, // 1m
+  return Gateway.post<Content>(`/memory/${mid}/content`, form, {
+    timeout: 30 * 1000, // 30s
     headers: {
       'x-do-not-trace': 'x-do-not-trace',
-      'Content-Type': 'multipart/form-data'
-    }
+      'Content-Type': 'multipart/form-data',
+    },
   }).then(r => r.data);
 };
 

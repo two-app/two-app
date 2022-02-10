@@ -79,7 +79,7 @@ export const TouchableImageCell = ({item, onClick, onLongPress}: CellProps) => (
       onPress={onClick}
       onLongPress={onLongPress}>
       <Image
-        source={{uri: contentUrl(item.contentId, item.thumbnail)}}
+        source={{uri: contentUrl(item, 'thumbnail')}}
         style={{flex: 1, backgroundColor: Colors.DARK}}
       />
     </TouchableOpacity>
@@ -91,7 +91,7 @@ export const ImageCell = ({item}: {item: Content}) => (
     key={item.contentId}
     a11={{accessibilityLabel: 'A preview of selected content.'}}>
     <Image
-      source={{uri: contentUrl(item.contentId, item.thumbnail)}}
+      source={{uri: contentUrl(item, 'thumbnail')}}
       style={{flex: 1, backgroundColor: Colors.DARK}}
     />
   </Cell>
@@ -104,7 +104,7 @@ export const TouchableVideoCell = ({item, onClick, onLongPress}: CellProps) => (
       onPress={onClick}
       onLongPress={onLongPress}>
       <ImageBackground
-        source={{uri: contentUrl(item.contentId, item.thumbnail)}}
+        source={{uri: contentUrl(item, 'thumbnail')}}
         style={{
           flex: 1,
           alignItems: 'center',

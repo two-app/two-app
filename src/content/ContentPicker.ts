@@ -6,7 +6,8 @@ import ImagePicker, {
 import RNFS from 'react-native-fs';
 import {compressVideo} from './compression/VideoCompression';
 import {compressImage} from './compression/ImageCompression';
-import {ContentFiles} from './compression/Compression';
+import {ContentFiles, File} from './compression/Compression';
+import {v4 as uuid} from 'uuid';
 
 export type PickedContent = Image & {
   contentId: string;
@@ -34,11 +35,9 @@ const compressContent = async (
 ): Promise<ContentFiles> => {
   const {mime} = content;
   if (mime.startsWith('image')) {
-    console.log('Compressing image:');
-    const x = await compressImage(content.path, content.width, content.height);
-    console.log(x);
-    return x;
+    return compressImage(content.path, content.width, content.height);
   } else if (mime.startsWith('video')) {
+    // @ts-ignore we can refine the type to Video based on the mime check
     return compressVideoContent(content);
   } else {
     throw new Error(`User selected invalid mime '${mime}'`);
@@ -46,8 +45,7 @@ const compressContent = async (
 };
 
 const compressVideoContent = async (content: Video): Promise<ContentFiles> => {
-  // TODO compress a video frame into thumbnail + display picture
-  const {path, width, height} = await compressVideo(
+  const [{path, width, height}, framePath] = await compressVideo(
     content.path,
     content.width,
     content.height,
@@ -55,7 +53,7 @@ const compressVideoContent = async (content: Video): Promise<ContentFiles> => {
 
   const {size} = await RNFS.stat(path);
 
-  const file = {
+  const gallery = {
     path,
     mime: 'video/mp4',
     width,
@@ -63,4 +61,21 @@ const compressVideoContent = async (content: Video): Promise<ContentFiles> => {
     size: parseInt(size, 10),
     duration: (content as Video).duration,
   } as File;
+
+  const {thumbnail, display} = await compressImage(
+    framePath,
+    content.width,
+    content.height,
+  );
+
+  return {
+    contentId: uuid(),
+    thumbnail,
+    display,
+    gallery,
+    contentType: 'video',
+    initialWidth: content.height,
+    initialHeight: content.height,
+    initialSize: content.size,
+  };
 };
