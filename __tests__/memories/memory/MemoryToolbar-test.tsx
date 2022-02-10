@@ -120,15 +120,11 @@ class MemoryToolbarTestBed {
   }
 
   onUploadCancelPick = () => {
-    jest
-      .spyOn(ContentPicker, 'open')
-      .mockImplementation(() => Promise.resolve([]));
+    jest.spyOn(ContentPicker, 'open').mockResolvedValue([]);
   };
 
   onUploadPickContent = (content: ContentFiles) => {
-    jest
-      .spyOn(ContentPicker, 'open')
-      .mockImplementation(() => Promise.resolve([content]));
+    jest.spyOn(ContentPicker, 'open').mockResolvedValue([content]);
   };
 
   pressUploadButton = () => {

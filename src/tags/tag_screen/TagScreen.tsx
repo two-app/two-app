@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, RefreshControl} from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
+import {View, Text, StyleSheet, RefreshControl, FlatList} from 'react-native';
 import type {ConnectedProps} from 'react-redux';
 import {connect} from 'react-redux';
 

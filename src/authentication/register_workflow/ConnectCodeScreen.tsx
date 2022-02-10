@@ -47,13 +47,10 @@ export const ConnectCodeScreen = () => {
   const connectToPartner = (uid: string) => {
     setError('');
     setLoading(true);
+
     AuthenticationService.connectUser(uid)
-      .then((updatedUser: User) => {
-        console.log(
-          `Successfully connected, updated to: ${JSON.stringify(
-            updatedUser,
-          )}. Navigating to HomeScreen.`,
-        );
+      .then((_: User) => {
+        setLoading(false);
         resetNavigate('HomeScreen', navigation);
       })
       .catch(({reason}: ErrorResponse) => {
@@ -64,9 +61,9 @@ export const ConnectCodeScreen = () => {
           refresh();
         } else {
           setError(reason);
+          setLoading(false);
         }
-      })
-      .finally(() => setLoading(false));
+      });
   };
 
   const refresh = () => {

@@ -1,10 +1,16 @@
 import type {ComponentClass} from 'react';
 import {useEffect} from 'react';
-import {View, Text, StyleSheet, Linking} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Linking,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import {useDispatch, useSelector} from 'react-redux';
-import {TouchableOpacity, FlatList} from 'react-native-gesture-handler';
 import Config from 'react-native-config';
 
 import Colors from '../Colors';

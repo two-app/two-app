@@ -1,6 +1,11 @@
-import {Alert, AlertButton, StyleProp, ViewStyle} from 'react-native';
+import {
+  Alert,
+  AlertButton,
+  StyleProp,
+  TouchableOpacity,
+  ViewStyle,
+} from 'react-native';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import pluralize from 'pluralize';
 
 import {Tag} from '../Tag';
