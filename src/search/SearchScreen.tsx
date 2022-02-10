@@ -1,13 +1,13 @@
 import {Text, View} from 'react-native';
-import {StackNavigationProp} from '@react-navigation/stack';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 import {RootStackParamList} from '../../Router';
 import {ScrollContainer} from '../views/View';
 import {Button} from '../forms/Button';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 type SearchScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'LoadingScreen'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'LoadingScreen'>;
 };
 export const SearchScreen = ({navigation}: SearchScreenProps) => {
   return (

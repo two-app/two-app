@@ -18,13 +18,13 @@ const Gateway: AxiosInstance = Axios.create({
 });
 
 const showMethodAndURI = (config: AxiosRequestConfig): string =>
-  `${config.method?.toUpperCase()} ${config.url}`
+  `${config.method?.toUpperCase()} ${config.url}`;
 
 const showReq = (config: AxiosRequestConfig): string =>
   `${showMethodAndURI(config)} -- ${JSON.stringify(config.data ?? {})}`;
 
-const showRes = (req: AxiosRequestConfig, res: any): string =>
-  `${showMethodAndURI(req)} -- ${JSON.stringify(res ?? {})}`;
+const showRes = (req: AxiosRequestConfig, code: number, res: any): string =>
+  `${showMethodAndURI(req)} ${code} -- ${JSON.stringify(res ?? {})}`;
 
 Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
   console.log('>> ' + showReq(config));
@@ -49,11 +49,29 @@ Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
 
 Gateway.interceptors.response.use(
   (response: AxiosResponse<any>): Promise<AxiosResponse<any>> => {
-    console.log('<< ' + showRes(response.config, response.data))
+    const output = showRes(response.config, response.status, response.data);
+    console.log('<< ' + output);
     return Promise.resolve(response);
   },
-  (error: AxiosError<any>): Promise<ErrorResponse> =>
-    Promise.reject(mapErrorResponse(error)),
+  (error: AxiosError<any>): Promise<ErrorResponse> => {
+    if (error.response == null) {
+      const requestOutput = showMethodAndURI(error.config);
+      const reason = ` -- Failed to connect to server at ${Config.API_URL}`;
+      console.error('<< ' + requestOutput + reason);
+      return Promise.reject({
+        status: 500,
+        reason: 'Failed to reach Two.',
+      });
+    } else {
+      const output = showRes(
+        error.config,
+        error.response.status,
+        error.response.data,
+      );
+      console.error('<< ' + output);
+      return Promise.reject(mapErrorResponse(error.response.data));
+    }
+  },
 );
 
 export default Gateway;

@@ -1,6 +1,5 @@
 import {useState, useEffect, useRef} from 'react';
 import {FlatList, RefreshControl, Text, View, StyleSheet} from 'react-native';
-import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 import {connect, ConnectedProps} from 'react-redux';
 
@@ -28,9 +27,10 @@ import {
 import {ContentGallery} from './ContentGallery';
 import {MemoryToolbar} from './MemoryToolbar';
 import {MemoryInteractionModal} from './MemoryInteractionModal';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 type NavigationProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'MemoryScreen'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'MemoryScreen'>;
   route: RouteProp<RootStackParamList, 'MemoryScreen'>;
 };
 

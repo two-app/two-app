@@ -1,6 +1,5 @@
 import {useState} from 'react';
 import {Text, StyleSheet, View} from 'react-native';
-import type {StackNavigationProp} from '@react-navigation/stack';
 import type {RouteProp} from '@react-navigation/native';
 
 import type {RootStackParamList} from '../../../Router';
@@ -16,9 +15,13 @@ import Colors from '../../Colors';
 
 import {ColorList} from './ColorSelection';
 import {v4 as uuid} from 'uuid';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 type TagManagementScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'TagManagementScreen'>;
+  navigation: NativeStackNavigationProp<
+    RootStackParamList,
+    'TagManagementScreen'
+  >;
   route: RouteProp<RootStackParamList, 'TagManagementScreen'>;
 };
 

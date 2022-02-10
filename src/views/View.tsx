@@ -14,7 +14,9 @@ export const Wrapper = ({children}: {children?: React.ReactNode}) => (
   <>
     <StatusBar backgroundColor="white" barStyle="dark-content" />
     <SafeAreaProvider>
-      <SafeAreaView style={{flexGrow: 1}}>{children}</SafeAreaView>
+      <SafeAreaView style={{flexGrow: 1, backgroundColor: 'white'}}>
+        {children}
+      </SafeAreaView>
     </SafeAreaProvider>
   </>
 );

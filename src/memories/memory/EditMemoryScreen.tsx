@@ -1,5 +1,4 @@
 import {useState} from 'react';
-import {StackNavigationProp} from '@react-navigation/stack';
 import {RouteProp} from '@react-navigation/native';
 import {View, Text} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
@@ -19,9 +18,10 @@ import {updateMemory as updateMemoryRequest} from '../MemoryService';
 import {ErrorResponse} from '../../http/Response';
 import {TwoState} from '../../state/reducers';
 import {selectMemory, updateMemory} from '../store';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 type Props = {
-  navigation: StackNavigationProp<RootStackParamList, 'EditMemoryScreen'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'EditMemoryScreen'>;
   route: RouteProp<RootStackParamList, 'EditMemoryScreen'>;
 };
 

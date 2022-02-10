@@ -1,6 +1,5 @@
 import {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, RefreshControl} from 'react-native';
-import type {StackNavigationProp} from '@react-navigation/stack';
 import {FlatList} from 'react-native-gesture-handler';
 import type {ConnectedProps} from 'react-redux';
 import {connect} from 'react-redux';
@@ -23,6 +22,7 @@ import {storeTags} from '../store';
 import {DeleteTagIcon} from './DeleteTag';
 import {EditTagIcon} from './EditTag';
 import {TagDate} from './TagDate';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 const mapStateToProps = (state: TwoState) => ({
   tags: selectTags(state.tags),
@@ -32,7 +32,7 @@ const connector = connect(mapStateToProps);
 type ConnectorProps = ConnectedProps<typeof connector>;
 
 type TagScreenProps = ConnectorProps & {
-  navigation: StackNavigationProp<RootStackParamList, 'TagScreen'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'TagScreen'>;
 };
 
 export const TagScreen = ({tags, dispatch}: TagScreenProps) => {
