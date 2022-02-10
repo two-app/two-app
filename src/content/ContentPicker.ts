@@ -9,16 +9,10 @@ import {compressImage} from './compression/ImageCompression';
 import {ContentFiles, File} from './compression/Compression';
 import {v4 as uuid} from 'uuid';
 
-export type PickedContent = Image & {
-  contentId: string;
-};
-
 export class ContentPicker {
   static open = async (): Promise<ContentFiles[]> => {
     const selectedContent: Image[] = await selectContent();
-    const compressionPromises: Promise<ContentFiles>[] =
-      selectedContent.map(compressContent);
-    return Promise.all(compressionPromises);
+    return Promise.all(selectedContent.map(compressContent));
   };
 }
 

@@ -12,9 +12,11 @@ import type {DeleteContentResponse} from '../../../src/content/ContentService';
 import {clearState, store} from '../../../src/state/reducers';
 import {v4 as uuid} from 'uuid';
 import {storeMemories} from '../../../src/memories/store';
+import {arbContent} from '../../helpers/ContentHelper';
 
 describe('MemoryInteractionModal', () => {
   let tb: MemoryInteractionModalTestBed;
+  const content = arbContent();
 
   describe('With no content selected', () => {
     beforeEach(() => (tb = new MemoryInteractionModalTestBed().build()));
@@ -26,7 +28,7 @@ describe('MemoryInteractionModal', () => {
 
   describe('With content selected', () => {
     beforeEach(() => {
-      tb = new MemoryInteractionModalTestBed().setContent(testContent).build();
+      tb = new MemoryInteractionModalTestBed().setContent(content).build();
     });
 
     test('it should display an image', () => {
@@ -42,7 +44,7 @@ describe('MemoryInteractionModal', () => {
         expect(tb.setMemoryDisplayPictureFn).toHaveBeenCalledTimes(1);
         expect(tb.setMemoryDisplayPictureFn).toHaveBeenCalledWith(
           tb.memory.mid,
-          testContent.contentId,
+          content.contentId,
         );
       });
 
@@ -88,14 +90,14 @@ describe('MemoryInteractionModal', () => {
         expect(tb.deleteContentFn).toHaveBeenCalledTimes(1);
         expect(tb.deleteContentFn).toHaveBeenCalledWith(
           tb.memory.mid,
-          testContent.contentId,
+          content.contentId,
         );
       });
 
       test('it should update the state in redux', async () => {
         // GIVEN the a memory and its associated content
         store.getState().memories.allMemories.push(testMemory);
-        store.getState().memories.content[testMemory.mid] = [testContent];
+        store.getState().memories.content[testMemory.mid] = [content];
         tb.onDeleteMemoryContentResolve();
 
         // WHEN the delete button is pressed
@@ -229,32 +231,4 @@ const testMemory: Memory = {
   imageCount: 0,
   videoCount: 0,
   displayContent: undefined,
-};
-
-const testContent: Content = {
-  contentId: uuid(),
-  contentType: 'image',
-  thumbnail: {
-    contentType: 'image',
-    extension: 'png',
-    height: 100,
-    width: 100,
-    suffix: 'thumbnail',
-  },
-  display: {
-    contentType: 'image',
-    extension: 'png',
-    height: 500,
-    width: 500,
-    suffix: 'display',
-  },
-  gallery: {
-    contentType: 'image',
-    extension: 'png',
-    height: 1000,
-    width: 1000,
-    suffix: 'gallery',
-  },
-  extension: 'png',
-  fileKey: 'abcdefg',
 };

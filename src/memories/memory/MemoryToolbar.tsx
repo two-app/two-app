@@ -1,8 +1,7 @@
-import type {AlertButton} from 'react-native';
+import {AlertButton, TouchableOpacity} from 'react-native';
 import {View, StyleSheet, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
 import type {NavigationProp} from '@react-navigation/native';
 import {CommonActions, useNavigation} from '@react-navigation/native';

@@ -12,7 +12,6 @@ import {SearchScreen} from './src/search/SearchScreen';
 import type {Tag} from './src/tags/Tag';
 import {ProfileScreen} from './src/user/ProfileScreen';
 import {EditMemoryScreen} from './src/memories/memory/EditMemoryScreen';
-import type {PickedContent} from './src/content/ContentPicker';
 import TagScreen from './src/tags/tag_screen/TagScreen';
 import {TagManagementScreen} from './src/tags/tag_management/TagManagementScreen';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -34,7 +33,6 @@ export type RootStackParamList = {
   SearchScreen: undefined;
   ProfileScreen: undefined;
   EditMemoryScreen: {mid: string};
-  ContentUploadScreen: {mid: string; content: PickedContent[]};
   TagScreen: undefined;
 };
 
