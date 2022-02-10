@@ -4,8 +4,8 @@ import {render, fireEvent, waitFor} from '@testing-library/react-native';
 
 import {NewTagButton, TagCard} from '../../src/tags/NewTagButton';
 import type {Tag} from '../../src/tags/Tag';
-import {navigateFn} from '../../src/navigation/__mocks__/RootNavigation';
 import {v4 as uuid} from 'uuid';
+import {mockNavigation} from '../utils/NavigationMocking';
 
 describe('NewTagButton', () => {
   let tb: NewTagButtonTestBed;
@@ -20,10 +20,13 @@ describe('NewTagButton', () => {
 
       fireEvent.press(newTagButton);
 
-      expect(navigateFn).toHaveBeenCalledTimes(1);
-      expect(navigateFn).toHaveBeenCalledWith('TagManagementScreen', {
-        onSubmit: tb.onCreated,
-      });
+      expect(mockNavigation.navigate).toHaveBeenCalledTimes(1);
+      expect(mockNavigation.navigate).toHaveBeenCalledWith(
+        'TagManagementScreen',
+        {
+          onSubmit: tb.onCreated,
+        },
+      );
     });
   });
 });

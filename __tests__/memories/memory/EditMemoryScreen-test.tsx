@@ -1,11 +1,6 @@
 import {Text} from 'react-native';
 import type {RenderAPI, QueryReturn} from '@testing-library/react-native';
-import {
-  render,
-  fireEvent,
-  waitFor,
-  waitForElementToBeRemoved,
-} from '@testing-library/react-native';
+import {render, fireEvent, waitFor} from '@testing-library/react-native';
 import type {ReactTestInstance} from 'react-test-renderer';
 
 import {EditMemoryScreen} from '../../../src/memories/memory/EditMemoryScreen';
@@ -18,6 +13,7 @@ import {storeMemories} from '../../../src/memories/store';
 import {v4 as uuid} from 'uuid';
 import {
   mockNavigation,
+  mockNavigationProps,
   mockRoute,
   resetMockNavigation,
 } from '../../utils/NavigationMocking';
@@ -131,21 +127,9 @@ describe('EditMemoryScreen', () => {
     test('it should navigate to the previous screen', async () => {
       tb.pressSubmitButton();
 
-      await waitFor(() => {
-        if (mockNavigation.goBack.mock.calls.length === 0) {
-          throw new Error('Zero calls');
-        }
-      });
+      await tb.waitForCall(mockNavigation.goBack);
 
       expect(mockNavigation.goBack).toHaveBeenCalledTimes(1);
-    });
-
-    test('it should hide the loading indicator when complete', async () => {
-      tb.pressSubmitButton();
-
-      await waitForElementToBeRemoved(() => tb.queryLoadingScreen());
-
-      expect(tb.queryLoadingScreen()).toBeFalsy();
     });
 
     test('it should display an error for a rejected patch', async () => {
@@ -175,7 +159,7 @@ describe('EditMemoryScreen', () => {
       // WHEN
       tb.pressSubmitButton();
 
-      await waitForElementToBeRemoved(tb.getLoadingScreen);
+      await tb.waitForCall(mockNavigation.goBack);
 
       expect(store.getState().memories.allMemories).toEqual([updatedMemory]);
     });
@@ -265,6 +249,14 @@ class EditMemoryScreenTestBed {
     return this.render.getByA11yHint('Waiting for an action to finish...');
   };
 
+  waitForCall = (fn: jest.Mock<any>): Promise<void> => {
+    return waitFor(() => {
+      if (fn.mock.calls.length === 0) {
+        throw new Error('Zero calls');
+      }
+    });
+  };
+
   build = (): EditMemoryScreenTestBed => {
     resetMockNavigation();
     store.dispatch(clearState());
@@ -273,10 +265,7 @@ class EditMemoryScreenTestBed {
 
     this.render = render(
       <Provider store={store}>
-        <EditMemoryScreen
-          navigation={mockNavigation as any}
-          route={mockRoute as any}
-        />
+        <EditMemoryScreen {...mockNavigationProps()} />
       </Provider>,
     );
     return this;

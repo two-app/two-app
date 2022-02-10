@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {Text, View, Linking} from 'react-native';
-import {useNavigation, CommonActions, useRoute} from '@react-navigation/native';
+import {CommonActions} from '@react-navigation/native';
 import Config from 'react-native-config';
 
 import {LogoHeader} from '../LogoHeader';
@@ -12,12 +12,12 @@ import type {ErrorResponse} from '../../http/Response';
 
 import type {UserRegistration} from './UserRegistrationModel';
 import {AcceptSwitch} from './AcceptSwitch';
-import {Route, Routes} from '../../navigation/RootNavigation';
+import {Screen} from '../../navigation/NavigationUtilities';
 
-export const AcceptTermsScreen = () => {
-  const route = useRoute<Route<'AcceptTermsScreen'>>();
-  const navigation = useNavigation<Routes>();
-
+export const AcceptTermsScreen = ({
+  route,
+  navigation,
+}: Screen<'AcceptTermsScreen'>) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [reg, setReg] = useState<UserRegistration>(
@@ -35,10 +35,13 @@ export const AcceptTermsScreen = () => {
     );
 
   const onSubmit = () => {
+    setLoading(true);
     AuthenticationService.registerUser(reg)
       .then(() => navigateToConnectCodeScreen())
-      .catch((e: ErrorResponse) => setError(e.reason))
-      .finally(() => setLoading(false));
+      .catch((e: ErrorResponse) => {
+        setError(e.reason);
+        setLoading(false);
+      });
   };
 
   return (

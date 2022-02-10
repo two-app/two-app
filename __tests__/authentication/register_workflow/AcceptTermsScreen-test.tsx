@@ -9,6 +9,7 @@ import {AcceptTermsScreen} from '../../../src/authentication/register_workflow/A
 import {clearState, store} from '../../../src/state/reducers';
 import {
   mockNavigation,
+  mockNavigationProps,
   mockRoute,
   resetMockNavigation,
 } from '../../utils/NavigationMocking';
@@ -166,7 +167,7 @@ class AcceptTermsScreenTestBed {
 
     this.render = render(
       <Provider store={store}>
-        <AcceptTermsScreen />
+        <AcceptTermsScreen {...mockNavigationProps()} />
       </Provider>,
     );
 

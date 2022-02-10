@@ -6,8 +6,7 @@ import {SubmitButton} from '../forms/SubmitButton';
 import {ScrollContainer} from '../views/View';
 import {Input} from '../forms/Input';
 import Colors from '../Colors';
-import {resetNavigate} from '../navigation/NavigationUtilities';
-import type {Routes} from '../navigation/RootNavigation';
+import {resetNavigate, Routes} from '../navigation/NavigationUtilities';
 
 import UserRegistrationModel, {
   UserRegistration,

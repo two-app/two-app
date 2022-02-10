@@ -1,10 +1,6 @@
 import {useState} from 'react';
 import {Text, View} from 'react-native';
 import {useDispatch} from 'react-redux';
-import type {NavigationProp} from '@react-navigation/native';
-import {useNavigation} from '@react-navigation/native';
-
-import type {RootStackParamList} from '../../../Router';
 import {SubmitButton} from '../../forms/SubmitButton';
 import {Heading} from '../../home/Heading';
 import type {ErrorResponse} from '../../http/Response';
@@ -23,12 +19,10 @@ import {LocationInput} from './LocationInput';
 import TitleInput from './TitleInput';
 import {v4 as uuid} from 'uuid';
 import Colors from '../../Colors';
+import {Screen} from '../../navigation/NavigationUtilities';
 
-type NavProp = NavigationProp<RootStackParamList, 'NewMemoryScreen'>;
-
-export const NewMemoryScreen = () => {
+export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
   const dispatch = useDispatch();
-  const navigation = useNavigation<NavProp>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setUploadError] = useState<string>();
   const [formState, setFormState] = useState<MemoryMeta>({

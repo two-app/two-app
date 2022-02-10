@@ -14,20 +14,16 @@ import {useDispatch, useSelector} from 'react-redux';
 import Config from 'react-native-config';
 
 import Colors from '../Colors';
-import {resetNavigate} from '../navigation/NavigationUtilities';
+import {resetNavigate, Screen} from '../navigation/NavigationUtilities';
 import {TwoState} from '../state/reducers';
-import {Footer} from '../home/Footer';
-import {Wrapper, NoWrapContainer} from '../views/View';
+import {Container} from '../views/View';
 import {Couple, fetchCouple} from '../couple/CoupleService';
-import {useNavigation} from '@react-navigation/native';
-import {Routes} from '../navigation/RootNavigation';
 import {storeCoupleProfile} from './profile/profile-state';
 import {Profile} from '../couple/Profile';
 
 type CoupleState = Couple | undefined;
 
-export const ProfileScreen = () => {
-  const navigation = useNavigation<Routes>();
+export const ProfileScreen = ({navigation}: Screen<'ProfileScreen'>) => {
   const dispatch = useDispatch();
   const couple = useSelector<TwoState, CoupleState>(
     state => state.profile?.couple,
@@ -91,20 +87,17 @@ export const ProfileScreen = () => {
   );
 
   return (
-    <Wrapper>
-      <NoWrapContainer>
-        <FlatList
-          data={data}
-          ListHeaderComponent={() => listHeader}
-          renderItem={({item}) => <MenuItem {...item} />}
-          ItemSeparatorComponent={() => (
-            <View style={{flex: 1, height: 2, backgroundColor: Colors.LIGHT}} />
-          )}
-          keyExtractor={item => item.text}
-        />
-      </NoWrapContainer>
-      <Footer active="ProfileScreen" />
-    </Wrapper>
+    <Container footer="ProfileScreen">
+      <FlatList
+        data={data}
+        ListHeaderComponent={() => listHeader}
+        renderItem={({item}) => <MenuItem {...item} />}
+        ItemSeparatorComponent={() => (
+          <View style={{flex: 1, height: 2, backgroundColor: Colors.LIGHT}} />
+        )}
+        keyExtractor={item => item.text}
+      />
+    </Container>
   );
 };
 

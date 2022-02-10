@@ -7,30 +7,32 @@ import {FormStyle} from '../memories/new_memory/FormStyles';
 import Colors from '../Colors';
 import {TouchableCard} from '../forms/Card';
 import {Button, ButtonStyles} from '../forms/Button';
-import {getNavigation} from '../navigation/RootNavigation';
 
 import type {Tag} from './Tag';
+import {useNavigation} from '@react-navigation/native';
+import {Routes} from '../navigation/NavigationUtilities';
 
 type NewTagButtonProps = {
   onCreated: (tag: Tag) => void;
   placeholder: string;
 };
 
-export const NewTagButton = ({onCreated, placeholder}: NewTagButtonProps) => (
-  <TouchableCard
-    style={FormStyle.card}
-    onPress={() =>
-      getNavigation().navigate('TagManagementScreen', {
+export const NewTagButton = ({onCreated, placeholder}: NewTagButtonProps) => {
+  const {navigate} = useNavigation<Routes>();
+  return (
+    <TouchableCard
+      style={FormStyle.card}
+      onPress={() => navigate('TagManagementScreen', {
         onSubmit: onCreated,
-      })
-    }
-    a11={{accessibilityLabel: 'Tap to create a new tag'}}>
-    <View style={FormStyle.iconContainer}>
-      <AntIcon name="tago" style={{fontSize: 13, color: Colors.REGULAR}} />
-    </View>
-    <Text style={{color: Colors.REGULAR}}>{placeholder}</Text>
-  </TouchableCard>
-);
+      })}
+      a11={{ accessibilityLabel: 'Tap to create a new tag' }}>
+      <View style={FormStyle.iconContainer}>
+        <AntIcon name="tago" style={{ fontSize: 13, color: Colors.REGULAR }} />
+      </View>
+      <Text style={{ color: Colors.REGULAR }}>{placeholder}</Text>
+    </TouchableCard>
+  );
+};
 
 NewTagButton.defaultProps = {
   placeholder: 'Optional tag, e.g Anniversary or Birthday...',

@@ -378,7 +378,7 @@ PODS:
     - React-RCTText
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.10.2):
+  - RNScreens (3.11.0):
     - React-Core
     - React-RCTImage
   - RNVectorIcons (9.0.0):
@@ -567,7 +567,7 @@ SPEC CHECKSUMS:
   FBLazyVector: 244195e30d63d7f564c55da4410b9a24e8fbceaa
   FBReactNativeSpec: c94002c1d93da3658f4d5119c6994d19961e3d52
   ffmpeg-kit-ios-full-gpl: 486f8176aa796bb97609160292005d7849a69b30
-  ffmpeg-kit-react-native: aa3520f81a217453fb926be88f916e26456b9162
+  ffmpeg-kit-react-native: 03655a7f2d1ede5c465c9ce3ab25817aeac04a8c
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 43737235ae6a21de4f45297f4f73b6420fc2ecb2
   hermes-engine: bf7577d12ac6ccf53ab8b5af3c6ccf0dd8458c5c
@@ -614,7 +614,7 @@ SPEC CHECKSUMS:
   RNImageCropPicker: 448d3c6e923fde3466b49caf3c2457c2a0ba02dd
   RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
   RNReanimated: 1326679461fa5d2399d54c18ca1432ba3e816b9e
-  RNScreens: d6da2b9e29cf523832c2542f47bf1287318b1868
+  RNScreens: fd535547baa4ef8aeaee1a8b1e3ffd17b8df44a4
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815

@@ -3,7 +3,6 @@ import {View, StyleSheet, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import {useDispatch} from 'react-redux';
-import type {NavigationProp} from '@react-navigation/native';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 
 import {MemoryDisplayView} from '../MemoryDisplayView';
@@ -12,10 +11,10 @@ import Colors from '../../Colors';
 import {ContentPicker} from '../../content/ContentPicker';
 import {deleteMemory} from '../MemoryService';
 import {deleteMemory as deleteMemoryFromState, storeContent} from '../store';
-import type {RootStackParamList} from '../../../Router';
 import {ContentFiles} from '../../content/compression/Compression';
 import ContentService from '../../content/ContentService';
 import {Content} from '../../content/ContentModels';
+import {Routes} from '../../navigation/NavigationUtilities';
 
 export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   <View>
@@ -31,10 +30,8 @@ export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   </View>
 );
 
-type NavProp = NavigationProp<RootStackParamList, 'MemoryScreen'>;
-
 const BackButton = () => {
-  const {navigate} = useNavigation<NavProp>();
+  const {navigate} = useNavigation<Routes>();
   return (
     <TouchableOpacity
       accessibilityLabel="Go Back"
@@ -45,7 +42,7 @@ const BackButton = () => {
 };
 
 const EditButton = ({memory}: {memory: Memory}) => {
-  const {navigate} = useNavigation<NavProp>();
+  const {navigate} = useNavigation<Routes>();
   return (
     <TouchableOpacity
       accessibilityLabel="Edit Memory"

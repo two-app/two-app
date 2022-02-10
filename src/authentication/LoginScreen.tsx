@@ -1,13 +1,11 @@
 import {useState} from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
 
 import {ScrollContainer} from '../views/View';
 import Colors from '../Colors';
 import {Input} from '../forms/Input';
 import {SubmitButton} from '../forms/SubmitButton';
 import type {ErrorResponse} from '../http/Response';
-import type {Routes} from '../navigation/RootNavigation';
 
 import {LogoHeader} from './LogoHeader';
 import UserRegistrationModel from './register_workflow/UserRegistrationModel';
@@ -15,16 +13,15 @@ import type {LoginCredentials} from './AuthenticationService';
 import AuthenticationService, {
   areCredentialsValid,
 } from './AuthenticationService';
+import {Screen} from '../navigation/NavigationUtilities';
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}: Screen<'LoginScreen'>) => {
   const [loginCredentials, setLoginCredentials] = useState<LoginCredentials>({
     email: '',
     rawPassword: '',
   });
   const [submitted, setSubmitted] = useState(false);
   const [loginError, setLoginError] = useState<string>();
-
-  const navigation = useNavigation<Routes>();
 
   const login = () => {
     setSubmitted(true);

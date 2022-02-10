@@ -1,20 +1,12 @@
-import {connect} from 'react-redux';
-
-import {NoWrapContainer, Wrapper} from '../views/View';
-
 import {Timeline} from './Timeline';
-import {Footer} from './Footer';
+import {Container} from '../views/View';
 
 const HomeScreen = () => (
-  <Wrapper>
-    <NoWrapContainer>
+  <>
+    <Container footer="HomeScreen">
       <Timeline />
-    </NoWrapContainer>
-    <Footer active="HomeScreen" />
-  </Wrapper>
+    </Container>
+  </>
 );
 
-const mapStateToProps = (state: any) => ({user: state.user});
-
-export default connect(mapStateToProps)(HomeScreen);
 export {HomeScreen};

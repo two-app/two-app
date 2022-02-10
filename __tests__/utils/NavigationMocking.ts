@@ -1,3 +1,7 @@
+import {RouteProp} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import {RootStackParamList} from '../../Router';
+
 export type MockNavigation = {
   navigate: jest.Mock;
   dispatch: jest.Mock;
@@ -26,6 +30,15 @@ export const resetMockNavigation = () => {
   mockNavigation.reset.mockReset().mockName('reset function');
   mockNavigation.goBack.mockReset().mockName('go back function');
 };
+
+export const mockNavigationProps = <T extends keyof RootStackParamList>() =>
+  ({
+    navigation: mockNavigation,
+    route: mockRoute,
+  } as any as {
+    navigation: NativeStackNavigationProp<RootStackParamList, T>;
+    route: RouteProp<RootStackParamList, T>;
+  });
 
 export const setupMockNavigation = () => {
   jest.mock('@react-navigation/native', () => {

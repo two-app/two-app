@@ -7,9 +7,17 @@ import {render} from '@testing-library/react-native';
 import {LoadingScreen} from '../src/LoadingScreen';
 import type {UnconnectedUser, User} from '../src/authentication/UserModel';
 import type {Tokens} from '../src/authentication/AuthenticationModel';
-import {persistor} from '../src/state/reducers';
+import {persistor, store} from '../src/state/reducers';
 
-import {resetMockNavigation} from './utils/NavigationMocking';
+import {
+  mockNavigation,
+  mockNavigationProps,
+  resetMockNavigation,
+} from './utils/NavigationMocking';
+import {Provider} from 'react-redux';
+import {storeUnconnectedUser, storeUser} from '../src/user';
+import {storeTokens} from '../src/authentication/store';
+import {BASE_STATE} from './helpers/StateHelper';
 
 describe('LoadingScreen', () => {
   let tb: LoadingScreenTestBed;
@@ -19,19 +27,21 @@ describe('LoadingScreen', () => {
   describe('With no auth', () => {
     beforeEach(() => tb.build());
 
-    test('state should be cleared non async', () =>
-      expect(tb.clearStateFn).toHaveBeenCalled());
+    test('state should be cleared non async', () => {
+      expect(store.getState()).toEqual(BASE_STATE);
+    });
 
     test('navigates to Register Screen', () =>
-      expect(tb.dispatchFn).toHaveBeenCalledWith(
+      expect(mockNavigation.dispatch).toHaveBeenCalledWith(
         CommonActions.reset({
           index: 0,
           routes: [{name: 'RegisterScreen'}],
         }),
       ));
 
-    test('redux should be persisted to local storage', () =>
-      expect(tb.persistFn).toHaveBeenCalled());
+    test('redux should be persisted to local storage', () => {
+      expect(tb.persistFn).toHaveBeenCalled();
+    });
   });
 
   describe('With Unconnected Auth', () => {
@@ -42,15 +52,19 @@ describe('LoadingScreen', () => {
       accessToken: 'unconnectedAccess',
       refreshToken: 'unconnectedRefresh',
     };
-    beforeEach(() => tb.setUserProp(stubUser).setAuthProp(stubTokens).build());
 
-    test('navigates to Connect Code Screen', () =>
-      expect(tb.dispatchFn).toHaveBeenCalledWith(
+    beforeEach(() =>
+      tb.setUnconnectedUser(stubUser).setTokens(stubTokens).build(),
+    );
+
+    test('navigates to Connect Code Screen', () => {
+      expect(mockNavigation.dispatch).toHaveBeenCalledWith(
         CommonActions.reset({
           index: 0,
           routes: [{name: 'ConnectCodeScreen'}],
         }),
-      ));
+      );
+    });
   });
 
   describe('With Connected Auth', () => {
@@ -59,46 +73,45 @@ describe('LoadingScreen', () => {
       accessToken: 'connectedAccess',
       refreshToken: 'connectedRefresh',
     };
-    beforeEach(() => tb.setUserProp(stubUser).setAuthProp(stubTokens).build());
 
-    test('navigates to Home Screen', () =>
-      expect(tb.dispatchFn).toHaveBeenCalledWith(
+    beforeEach(() => tb.setUser(stubUser).setTokens(stubTokens).build());
+
+    test('navigates to Home Screen', () => {
+      expect(mockNavigation.dispatch).toHaveBeenCalledWith(
         CommonActions.reset({
           index: 0,
           routes: [{name: 'HomeScreen'}],
         }),
-      ));
+      );
+    });
   });
 });
 
 class LoadingScreenTestBed {
-  dispatchFn = jest.fn();
-  clearStateFn = jest.fn();
-  userProp: User | UnconnectedUser | null = null;
-  authProp: Tokens | null = null;
   persistFn = jest.spyOn(persistor, 'persist');
-
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 
-  setUserProp = (user: User | UnconnectedUser) => {
-    this.userProp = user;
+  setUser = (user: User) => {
+    store.dispatch(storeUser(user));
     return this;
   };
 
-  setAuthProp = (auth: Tokens) => {
-    this.authProp = auth;
+  setUnconnectedUser = (user: UnconnectedUser) => {
+    store.dispatch(storeUnconnectedUser(user));
+    return this;
+  };
+
+  setTokens = (auth: Tokens) => {
+    store.dispatch(storeTokens(auth));
     return this;
   };
 
   build = (): LoadingScreenTestBed => {
     resetMockNavigation();
     this.render = render(
-      <LoadingScreen
-        navigation={{dispatch: this.dispatchFn} as any}
-        clearState={this.clearStateFn as any}
-        user={this.userProp as any}
-        auth={this.authProp as any}
-      />,
+      <Provider store={store}>
+        <LoadingScreen {...mockNavigationProps()} />,
+      </Provider>,
     );
     return this;
   };

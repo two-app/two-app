@@ -6,14 +6,14 @@ import Gateway from '../http/Gateway';
 import {store} from '../state/reducers';
 import {storeUser, storeUnconnectedUser} from '../user';
 import type {ErrorResponse} from '../http/Response';
-import {resetNavigate} from '../navigation/NavigationUtilities';
-import {getNavigation} from '../navigation/RootNavigation';
+import {resetNavigate, Routes} from '../navigation/NavigationUtilities';
 
 import {storeTokens} from './store';
 import type {Tokens} from './AuthenticationModel';
 import type {UserRegistration} from './register_workflow/UserRegistrationModel';
 import UserRegistrationModel from './register_workflow/UserRegistrationModel';
 import type {MixedUser, UnconnectedUser, User} from './UserModel';
+import {useNavigation} from '@react-navigation/native';
 
 export type LoginCredentials = {
   email: string;
@@ -49,7 +49,8 @@ const refreshTokens = (): Promise<MixedUser> =>
     .then(r => persistTokens(r.data))
     .catch((error: ErrorResponse) => {
       if (error.status === 401) {
-        resetNavigate('LogoutScreen', getNavigation() as any);
+        const navigation = useNavigation<Routes>();
+        resetNavigate('LogoutScreen', navigation);
       }
 
       return Promise.reject({

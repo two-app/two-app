@@ -48,10 +48,6 @@ jest.mock(
   () => 'TextInput',
 );
 
-jest.mock('./src/navigation/RootNavigation', () =>
-  jest.requireActual('./src/navigation/__mocks__/RootNavigation'),
-);
-
 // https://github.com/software-mansion/react-native-reanimated/issues/205#issuecomment-596119975
 jest.mock('react-native-reanimated', () =>
   jest.requireActual('./node_modules/react-native-reanimated/mock'),
