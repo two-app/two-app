@@ -1,14 +1,7 @@
 import 'react-native-get-random-values';
 import {validate as isUuid} from 'uuid';
 import {useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Share,
-  RefreshControl,
-} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
 import {useSelector} from 'react-redux';
 import HapticFeedback from 'react-native-haptic-feedback';
@@ -16,15 +9,16 @@ import {ScrollContainer} from '../../views/View';
 import {LogoHeader} from '../LogoHeader';
 import Colors from '../../Colors';
 import {Input} from '../../forms/Input';
-import {SubmitButton} from '../../forms/SubmitButton';
 import type {TwoState} from '../../state/reducers';
 import {selectUnconnectedUser} from '../../user';
-import {Button, ButtonStyles} from '../../forms/Button';
 import {resetNavigate, Screen} from '../../navigation/NavigationUtilities';
 import ConnectService from '../../user/ConnectService';
 import type {ErrorResponse} from '../../http/Response';
 import AuthenticationService from '../AuthenticationService';
 import type {UnconnectedUser, User} from '../UserModel';
+import {PrimaryButton} from '../../forms/SubmitButton';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import {HR} from '../../forms/HorizontalRule';
 
 export const ConnectCodeScreen = ({
   navigation,
@@ -75,58 +69,50 @@ export const ConnectCodeScreen = ({
   };
 
   return (
-    <ScrollContainer
-      isLoading={loading}
-      refreshControl={
-        <RefreshControl
-          colors={['#9Bd35A', '#689F38']}
-          refreshing={refreshing}
-          onRefresh={refresh}
-        />
-      }
-      keyboardShouldPersistTaps="always">
-      <LogoHeader heading="Connect Your Partner" />
-      <Text style={styles.subheading}>Thanks for joining us!</Text>
+    <ScrollContainer keyboardShouldPersistTaps="always">
+      <LogoHeader heading="Connect To Your Partner" />
       <Text style={styles.paragraph}>
-        The sign-up process is almost complete. Once your partner has
-        registered, send them your code!
+        Send them your code, or enter theirs below.
       </Text>
 
       <CopyConnectCodeButton code={user.uid} />
 
-      <ShareConnectCodeButton code={user.uid} />
+      <HR />
 
-      <Text style={{...styles.subheading, marginTop: 20}}>
-        Or, enter your partners code...
+      <Text style={{...styles.subheading}}>
+        Partner's Code & Anniversary Date
       </Text>
-      <View style={styles.codeInputContainer}>
-        <Input
-          attributes={{placeholder: 'e.g bWzGl2'}}
-          isValid={isPartnerCodeValid}
-          onChange={setPartnerConnectCode}
-          accessibilityLabel="Enter partner code"
-        />
-        {partnerConnectCode === user.uid && (
-          <Text style={styles.error}>You can't connect with yourself!</Text>
-        )}
-        {error != '' && <Text style={styles.error}>{error}</Text>}
-        <SubmitButton
-          onSubmit={() => connectToPartner(partnerConnectCode)}
-          text="Connect"
-          disabled={!isPartnerCodeValid()}
-          accessibilityLabel="Press to connect"
-        />
-      </View>
 
-      <View style={styles.logoutButtonContainer}>
-        <Button
-          text="logout"
-          onPress={() => resetNavigate('LogoutScreen', navigation)}
-          accessibilityLabel="Tap to logout"
-        />
-      </View>
+      <Input
+        placeholder="Partner's Connect Code"
+        isValid={isUuid}
+        autoCorrect={false}
+        onEmit={cc => console.log(cc)}
+        accessibilityLabel="Enter Partner Code"
+        icon={{provider: IonIcon, name: 'finger-print-outline'}}
+        containerStyle={{marginTop: 20}}
+      />
 
-      <View style={styles.footer} />
+      <Text style={styles.inputHint}>YYYY-MM-DD</Text>
+      <Input
+        placeholder="Anniversary Date"
+        isValid={dob => /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(dob)}
+        onEmit={dob => console.log(dob)}
+        mask={{
+          type: 'datetime',
+          options: {format: 'YYYY-MM-DD'},
+        }}
+        icon={{provider: IonIcon, name: 'calendar-outline'}}
+      />
+
+      {error != '' && <Text style={styles.error}>{error}</Text>}
+
+      <PrimaryButton
+        accessibilityLabel="Press to Connect"
+        style={{marginTop: 20}}
+        disabled={!isPartnerCodeValid()}>
+        Connect to Partner <IonIcon name="heart" />
+      </PrimaryButton>
     </ScrollContainer>
   );
 };
@@ -140,82 +126,38 @@ const CopyConnectCodeButton = ({code}: {code: string}) => {
     setCopied(true);
   };
 
-  const buttonStyle = {
-    ...styles.copyButton,
-    backgroundColor: copied ? Colors.VALID_GREEN : Colors.LIGHT,
-  };
-
-  const textStyle = {
-    ...styles.copyTip,
-    color: copied ? 'white' : Colors.DARK,
-  };
-
-  const codeStyle = {
-    ...styles.code,
-    color: copied ? 'white' : Colors.VERY_DARK,
-  };
+  const buttonColor = copied ? Colors.VALID_GREEN : Colors.LIGHT;
+  const textColor = copied ? 'white' : Colors.REGULAR;
+  const codeColor = copied ? 'white' : Colors.DARK;
 
   return (
     <TouchableOpacity
       onPress={onCopy}
-      style={buttonStyle}
+      style={[styles.copyButton, {backgroundColor: buttonColor}]}
       accessibilityHint="Copy connect code to clipboard"
       accessibilityState={{checked: copied}}>
-      <Text style={{...textStyle, marginBottom: 10}}>Your Code</Text>
+      <Text style={[styles.copyTip, {color: textColor, marginBottom: 10}]}>
+        {copied ? 'Copied!' : 'Tap to Copy'}
+      </Text>
 
-      <Text style={codeStyle}>{code}</Text>
+      <Text style={[styles.code, {color: codeColor}]}>{code}</Text>
 
-      {copied ? (
-        <Text style={{...textStyle, marginTop: 10}}>Copied!</Text>
-      ) : (
-        <Text style={{...textStyle, marginTop: 10}}>Tap to Copy</Text>
-      )}
+      <View style={{marginTop: 10}}>
+        <IonIcon
+          name="finger-print-outline"
+          style={[styles.copyTip, {color: textColor}]}
+          size={20}
+        />
+      </View>
     </TouchableOpacity>
-  );
-};
-
-const ShareConnectCodeButton = ({code}: {code: string}) => {
-  const [shared, setShared] = useState(false);
-
-  const share = () => {
-    Share.share({
-      message: code,
-    }).then(({action}) => setShared(action === Share.sharedAction));
-  };
-
-  const shareButton = (
-    <Button
-      onPress={share}
-      text="Share!"
-      buttonStyle={ButtonStyles.light}
-      pressedButtonStyle={ButtonStyles.lightPressed}
-    />
-  );
-
-  const sharedButton = (
-    <Button
-      onPress={share}
-      text="Shared!"
-      buttonStyle={{backgroundColor: Colors.VALID_GREEN, textColor: 'white'}}
-      pressedButtonStyle={{
-        backgroundColor: Colors.VALID_GREEN_DARK,
-        textColor: 'white',
-      }}
-    />
-  );
-
-  return (
-    <View
-      style={{flexDirection: 'row', justifyContent: 'center', marginTop: 15}}>
-      {shared ? sharedButton : shareButton}
-    </View>
   );
 };
 
 const styles = StyleSheet.create({
   subheading: {
-    marginTop: 20,
-    fontWeight: 'bold',
+    fontWeight: '600',
+    color: Colors.DARK,
+    textAlign: 'center',
   },
   paragraph: {
     marginTop: 10,
@@ -223,6 +165,13 @@ const styles = StyleSheet.create({
   copyButton: {
     marginTop: 20,
     padding: 20,
+  },
+  inputHint: {
+    color: Colors.REGULAR,
+    fontSize: 10,
+    paddingTop: 15,
+    paddingBottom: 5,
+    paddingLeft: 1,
   },
   copyTip: {
     fontWeight: '500',
@@ -233,18 +182,8 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: 'center',
   },
-  codeInputContainer: {
-    marginTop: 5,
-  },
   error: {
     color: Colors.DARK_SALMON,
     marginTop: 10,
-  },
-  logoutButtonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  footer: {
-    marginBottom: 0,
   },
 });

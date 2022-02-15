@@ -9,29 +9,20 @@ import type {ErrorResponse} from '../http/Response';
 import {resetNavigate, Routes} from '../navigation/NavigationUtilities';
 
 import {storeTokens} from './store';
-import type {Tokens} from './AuthenticationModel';
-import type {UserRegistration} from './register_workflow/UserRegistrationModel';
-import UserRegistrationModel from './register_workflow/UserRegistrationModel';
+import type {Tokens, UserRegistration} from './AuthenticationModel';
 import type {MixedUser, UnconnectedUser, User} from './UserModel';
 import {useNavigation} from '@react-navigation/native';
 
 export type LoginCredentials = {
   email: string;
-  rawPassword: string;
+  password: string;
 };
 
-export const areCredentialsValid = ({email, rawPassword}: LoginCredentials) =>
-  UserRegistrationModel.isEmailValid(email) && rawPassword.length > 3;
+const login = (creds: LoginCredentials): Promise<MixedUser> =>
+  Gateway.post<Tokens>('/login', creds).then(r => persistTokens(r.data));
 
-const login = (loginCredentials: LoginCredentials): Promise<MixedUser> =>
-  Gateway.post<Tokens>('/login', loginCredentials).then(r =>
-    persistTokens(r.data),
-  );
-
-const registerUser = (userRegistration: UserRegistration): Promise<MixedUser> =>
-  Gateway.post<Tokens>('/self', userRegistration).then(r =>
-    persistTokens(r.data),
-  );
+const registerUser = (reg: UserRegistration): Promise<MixedUser> =>
+  Gateway.post<Tokens>('/self', reg).then(r => persistTokens(r.data));
 
 const connectUser = (pid: string): Promise<User> =>
   Gateway.post<Tokens>('/couple', {toUser: pid, cid: uuid()}).then(r => {

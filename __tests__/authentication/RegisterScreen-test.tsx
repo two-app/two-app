@@ -7,9 +7,12 @@ import {
 } from '@testing-library/react-native';
 
 import {RegisterScreen} from '../../src/authentication/RegisterScreen';
-import EmailValidator from '../../src/forms/EmailValidator';
 import {UserRegistration} from '../../src/authentication/register_workflow/UserRegistrationModel';
-import {mockNavigation, resetMockNavigation} from '../utils/NavigationMocking';
+import {
+  mockNavigation,
+  mockNavigationProps,
+  resetMockNavigation,
+} from '../utils/NavigationMocking';
 
 describe('RegisterScreen', () => {
   let tb: RegisterScreenTestBed;
@@ -127,14 +130,9 @@ class RegisterScreenTestBed {
     await waitForElementToBeRemoved(this.queryLoadingScreen);
   };
 
-  // mocks
-  mockEmailValid = (valid: boolean) => {
-    EmailValidator.validateEmail = jest.fn().mockReturnValue(valid);
-  };
-
   build = (): RegisterScreenTestBed => {
     resetMockNavigation();
-    this.render = render(<RegisterScreen />);
+    this.render = render(<RegisterScreen {...mockNavigationProps} />);
     return this;
   };
 }

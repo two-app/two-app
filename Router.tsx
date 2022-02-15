@@ -48,8 +48,16 @@ const AppStack = () => (
     }}>
     {/* Workflow */}
     <Stack.Screen name="LogoutScreen" component={LogoutScreen} />
-    <Stack.Screen name="LoginScreen" component={LoginScreen} />
-    <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+    <Stack.Screen
+      name="LoginScreen"
+      component={LoginScreen}
+      options={{animation: 'fade'}}
+    />
+    <Stack.Screen
+      name="RegisterScreen"
+      component={RegisterScreen}
+      options={{animation: 'fade'}}
+    />
     <Stack.Screen name="AcceptTermsScreen" component={AcceptTermsScreen} />
     <Stack.Screen name="ConnectCodeScreen" component={ConnectCodeScreen} />
 

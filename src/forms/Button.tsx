@@ -5,9 +5,9 @@ import {
   Platform,
   TouchableWithoutFeedback,
   View,
-  AccessibilityState,
-  ViewStyle,
   ActivityIndicator,
+  TouchableWithoutFeedbackProps,
+  ViewProps,
 } from 'react-native';
 import HapticFeedback from 'react-native-haptic-feedback';
 
@@ -51,11 +51,8 @@ type ButtonProps = {
   loading?: boolean;
   buttonStyle: ButtonStyle;
   pressedButtonStyle: ButtonStyle;
-  accessibilityHint?: string;
-  accessibilityLabel?: string;
-  accessibilityState?: AccessibilityState;
-  style?: ViewStyle;
-};
+} & TouchableWithoutFeedbackProps &
+  ViewProps;
 
 /**
  * Creates a button with shadow depth and colour feedback, customisable by the
@@ -129,10 +126,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 12,
+    height: 45,
     borderColor: Colors.FADED,
     borderWidth: 0.5,
-    borderRadius: 90,
+    borderRadius: 5,
     marginHorizontal: 3, // Margins used since the card is usually clipped horizontally
     ...Platform.select({
       ios: {
