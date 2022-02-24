@@ -1,6 +1,5 @@
 import {useState} from 'react';
 import {Text, StyleSheet, View} from 'react-native';
-import {SubmitButton} from '../../forms/SubmitButton';
 import {Heading} from '../../home/Heading';
 import type {ErrorResponse} from '../../http/Response';
 import {TagInput} from '../../memories/new_memory/TagInput';
@@ -13,6 +12,7 @@ import Colors from '../../Colors';
 import {ColorList} from './ColorSelection';
 import {v4 as uuid} from 'uuid';
 import {Screen} from '../../navigation/NavigationUtilities';
+import {PrimaryButton} from '../../forms/SubmitButton';
 
 type Mode = {
   type: 'create' | 'edit';
@@ -83,7 +83,6 @@ export const TagManagementScreen = ({
 
       {/* Name Input */}
       <Text style={s.subtitle}>Tag Name</Text>
-      <Text style={s.paragraph}>Pick a short and concise name.</Text>
       <TagInput setTag={setName} initialName={name} />
       {error && (
         <Text
@@ -95,10 +94,6 @@ export const TagManagementScreen = ({
 
       {/* Colour Input */}
       <Text style={s.subtitle}>Tag Color</Text>
-      <Text style={s.paragraph}>
-        Pick a nice color for your tag. This color will highlight the memories
-        the tag belongs to.
-      </Text>
       <ColorList onSelected={setColor} initialColor={initialTag?.color} />
 
       {/* Display a 'Preview' widget if the name & color is present */}
@@ -114,13 +109,14 @@ export const TagManagementScreen = ({
         )}
       </View>
 
-      <SubmitButton
-        onSubmit={onSubmitPress}
-        text={mode.submitText}
-        disabled={name == null}
-        accessibilityHint={mode.submitHint}
+      <PrimaryButton
         accessibilityLabel={mode.submitText}
-      />
+        accessibilityHint={mode.submitHint}
+        onPress={onSubmitPress}
+        disabled={name == null}
+        style={{marginTop: 20}}>
+        {mode.submitText}
+      </PrimaryButton>
     </ScrollContainer>
   );
 };

@@ -17,8 +17,7 @@ import IonIcon from 'react-native-vector-icons/Ionicons';
 import {v4 as uuid} from 'uuid';
 
 import {LogoHeader} from './LogoHeader';
-import {Form, isFormInvalid} from '../forms/Form';
-import F from '../forms/Form';
+import F, {Form} from '../forms/Form';
 import {validateEmail} from '../forms/Validators';
 import AuthenticationService from './AuthenticationService';
 import {MixedUser} from './UserModel';
@@ -176,7 +175,7 @@ export const RegisterScreen = ({navigation}: Screen<'RegisterScreen'>) => {
 
       <PrimaryButton
         accessibilityLabel="Press to Register"
-        disabled={isFormInvalid(form)}
+        disabled={F.isInvalid(form)}
         onPress={register}
         loading={submitted}>
         Join two

@@ -1,50 +1,64 @@
 import {useState, useEffect} from 'react';
-import {Text, StyleSheet, FlatList} from 'react-native';
+import {Text, FlatList, TouchableOpacity, View, ViewProps} from 'react-native';
+import {FakeInput} from '../forms/Input';
 
 import Colors from '../Colors';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
-import {NewTagButton, TagCard} from './NewTagButton';
 import {Tag} from './Tag';
 import {getTags} from './TagService';
 import {TagButton} from './TagButton';
+import {useNavigation} from '@react-navigation/native';
+import {Routes} from '../navigation/NavigationUtilities';
 
-type SelectTagProps = {
+type SelectTagProps = ViewProps & {
   onTagChange: (tag: undefined | Tag) => void;
   initialValue?: Tag;
 };
 
-export const SelectTag = ({onTagChange, initialValue}: SelectTagProps) => {
-  const [selected, setSelected] = useState<Tag | undefined>(initialValue);
+// TODO rename to TagInput
+export const SelectTag = (props: SelectTagProps) => {
+  const [tag, _setTag] = useState<Tag | undefined>(props.initialValue);
   const [availableTags, setAvailableTags] = useState<Tag[]>([]);
+  const navigation = useNavigation<Routes>();
 
   useEffect(() => {
+    // TODO put tags in the redux store
     getTags().then(setAvailableTags);
   }, []);
 
-  // updates internal state and propogates tag
-  const updateSelectedTag = (tag: undefined | Tag) => {
-    setSelected(tag);
-    onTagChange(tag);
-  };
-
-  const tagCreated = (tag: Tag) => {
-    setAvailableTags([tag, ...availableTags]);
-    updateSelectedTag(tag);
+  const setTag = (tag: undefined | Tag) => {
+    _setTag(tag);
+    props.onTagChange(tag);
   };
 
   return (
-    <>
-      {selected != null ? (
-        <TagCard
-          tag={selected}
-          onDeselect={() => updateSelectedTag(undefined)}
+    <View {...props}>
+      <TouchableOpacity
+        onPress={() => {
+          if (tag != null) {
+            setTag(undefined);
+          } else {
+            navigation.navigate('TagManagementScreen', {
+              onSubmit: (newTag: Tag) => {
+                setAvailableTags([newTag, ...availableTags]);
+                setTag(tag);
+              },
+            });
+          }
+        }}>
+        <FakeInput
+          placeholder="Optional tag, e.g Anniversary"
+          value={tag?.name}
+          valid={true}
+          icon={{provider: IonIcon, name: 'pricetag-outline'}}
         />
-      ) : (
-        <NewTagButton onCreated={tagCreated} />
-      )}
+      </TouchableOpacity>
       {availableTags.length > 0 && (
         <>
-          <Text style={s.label}>Or, select from an existing tag...</Text>
+          <Text style={{color: Colors.REGULAR, marginLeft: 5, marginTop: 10}}>
+            Or, select from an existing tag...
+          </Text>
           <FlatList
             showsHorizontalScrollIndicator={false}
             style={{marginTop: 10}}
@@ -54,27 +68,19 @@ export const SelectTag = ({onTagChange, initialValue}: SelectTagProps) => {
             renderItem={({item}) => (
               <TagButton
                 tag={item}
-                onClick={(tag: Tag) => {
-                  if (tag.tid === selected?.tid) {
-                    updateSelectedTag(undefined);
+                onClick={(updated: Tag) => {
+                  if (updated.tid === tag?.tid) {
+                    setTag(undefined);
                   } else {
-                    updateSelectedTag(tag);
+                    setTag(updated);
                   }
                 }}
-                focused={item.tid === selected?.tid}
+                focused={item.tid === tag?.tid}
               />
             )}
           />
         </>
       )}
-    </>
+    </View>
   );
 };
-
-const s = StyleSheet.create({
-  label: {
-    color: Colors.REGULAR,
-    marginLeft: 5,
-    marginTop: 10,
-  },
-});

@@ -9,17 +9,17 @@ import {
 } from '@testing-library/react-native';
 import {Provider} from 'react-redux';
 
-import type {UnconnectedUser} from '../../../src/authentication/UserModel';
-import {ConnectCodeScreen} from '../../../src/authentication/register_workflow/ConnectCodeScreen';
-import type {ErrorResponse} from '../../../src/http/Response';
-import AuthenticationService from '../../../src/authentication/AuthenticationService';
+import type {UnconnectedUser} from '../../src/authentication/UserModel';
+import type {ErrorResponse} from '../../src/http/Response';
+import AuthenticationService from '../../src/authentication/AuthenticationService';
 import {
   mockNavigation,
   mockNavigationProps,
   resetMockNavigation,
-} from '../../utils/NavigationMocking';
-import {clearState, store} from '../../../src/state/reducers';
-import {storeUnconnectedUser} from '../../../src/user';
+} from '../utils/NavigationMocking';
+import {clearState, store} from '../../src/state/reducers';
+import {storeUnconnectedUser} from '../../src/user';
+import {ConnectCodeScreen} from '../../src/authentication/ConnectCodeScreen';
 
 describe('ConnectCodeScreen', () => {
   let tb: ConnectCodeScreenTestBed;

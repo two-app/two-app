@@ -10,10 +10,10 @@ import type {ErrorResponse} from '../http/Response';
 import {LogoHeader} from './LogoHeader';
 import {resetNavigate, Screen} from '../navigation/NavigationUtilities';
 import {PrimaryButton} from '../forms/SubmitButton';
-import {Form, isFormInvalid} from '../forms/Form';
-import F from '../forms/Form';
+import F, {Form} from '../forms/Form';
 import AuthenticationService from './AuthenticationService';
 import {validateEmail} from '../forms/Validators';
+import {MixedUser} from './UserModel';
 
 type LoginForm = {
   email: string;
@@ -31,7 +31,12 @@ export const LoginScreen = ({navigation}: Screen<'LoginScreen'>) => {
   const login = () => {
     setSubmitted(true);
     AuthenticationService.login(F.data(form))
-      .then(() => resetNavigate('LoadingScreen', navigation))
+      .then((user: MixedUser) =>
+        resetNavigate(
+          'pid' in user ? 'ConnectCodeScreen' : 'HomeScreen',
+          navigation,
+        ),
+      )
       .catch((e: ErrorResponse) => {
         setSubmitted(false);
         setError(e.reason);
@@ -68,12 +73,12 @@ export const LoginScreen = ({navigation}: Screen<'LoginScreen'>) => {
         accessibilityLabel="Press to Login"
         onPress={login}
         loading={submitted}
-        disabled={isFormInvalid(form)}
+        disabled={F.isInvalid(form)}
         style={{marginVertical: 20}}>
         Sign In
       </PrimaryButton>
 
-      {error && (
+      {error !== '' && (
         <Text
           style={{color: Colors.DARK_SALMON}}
           accessibilityHint="Login error">

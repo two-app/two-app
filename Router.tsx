@@ -1,8 +1,6 @@
 import {LoginScreen} from './src/authentication/LoginScreen';
 import {RegisterScreen} from './src/authentication/RegisterScreen';
-import {AcceptTermsScreen} from './src/authentication/register_workflow/AcceptTermsScreen';
-import {ConnectCodeScreen} from './src/authentication/register_workflow/ConnectCodeScreen';
-import type {UserRegistration} from './src/authentication/register_workflow/UserRegistrationModel';
+import {ConnectCodeScreen} from './src/authentication/ConnectCodeScreen';
 import {HomeScreen} from './src/home/HomeScreen';
 import {LoadingScreen} from './src/LoadingScreen';
 import {LogoutScreen} from './src/LogoutScreen';
@@ -21,7 +19,6 @@ export type RootStackParamList = {
   LogoutScreen: undefined;
   LoginScreen: undefined;
   RegisterScreen: undefined;
-  AcceptTermsScreen: {userRegistration: UserRegistration};
   ConnectCodeScreen: undefined;
   HomeScreen: undefined;
   NewMemoryScreen: undefined;
@@ -58,7 +55,6 @@ const AppStack = () => (
       component={RegisterScreen}
       options={{animation: 'fade'}}
     />
-    <Stack.Screen name="AcceptTermsScreen" component={AcceptTermsScreen} />
     <Stack.Screen name="ConnectCodeScreen" component={ConnectCodeScreen} />
 
     {/* Top Level Screens */}

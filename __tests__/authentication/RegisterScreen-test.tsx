@@ -7,7 +7,6 @@ import {
 } from '@testing-library/react-native';
 
 import {RegisterScreen} from '../../src/authentication/RegisterScreen';
-import {UserRegistration} from '../../src/authentication/register_workflow/UserRegistrationModel';
 import {
   mockNavigation,
   mockNavigationProps,
@@ -132,7 +131,7 @@ class RegisterScreenTestBed {
 
   build = (): RegisterScreenTestBed => {
     resetMockNavigation();
-    this.render = render(<RegisterScreen {...mockNavigationProps} />);
+    this.render = render(<RegisterScreen {...mockNavigationProps()} />);
     return this;
   };
 }

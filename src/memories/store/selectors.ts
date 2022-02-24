@@ -12,7 +12,7 @@ export const selectMemory = (memoryState: MemoryState, mid: string): Memory => {
   return memoryState.allMemories.find(m => m.mid === mid)!;
 };
 
-export const selectMemoryContent = (
+export const selectContent = (
   memoryState: MemoryState,
   mid: string,
 ): Content[] => {

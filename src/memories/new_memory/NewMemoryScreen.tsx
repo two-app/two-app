@@ -1,41 +1,48 @@
-import {useState} from 'react';
-import {Text, View} from 'react-native';
+import {useRef, useState} from 'react';
+import {Input, FakeInput} from '../../forms/Input';
+import {PrimaryButton} from '../../forms/SubmitButton';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import {Text, TouchableOpacity} from 'react-native';
 import {useDispatch} from 'react-redux';
-import {SubmitButton} from '../../forms/SubmitButton';
+import {v4 as uuid} from 'uuid';
 import {Heading} from '../../home/Heading';
 import type {ErrorResponse} from '../../http/Response';
 import {SelectTag} from '../../tags/SelectTag';
 import {ScrollContainer} from '../../views/View';
-import {
-  isMemoryDescriptionValid,
-  createMemory,
-  getMemory,
-} from '../MemoryService';
+import {createMemory, getMemory} from '../MemoryService';
 import type {Memory, MemoryMeta} from '../MemoryModels';
 import {insertMemory} from '../store';
 
-import {DateTimePicker} from './DateInput';
-import {LocationInput} from './LocationInput';
-import TitleInput from './TitleInput';
-import {v4 as uuid} from 'uuid';
 import Colors from '../../Colors';
 import {Screen} from '../../navigation/NavigationUtilities';
+import F, {Form} from '../../forms/Form';
+import {DateInputModal, DateInputModalHandle} from './DateInput';
+import moment from 'moment';
+
+type MemoryForm = {
+  title: string;
+  location: string;
+  occurredAt?: Date;
+  tid?: string;
+};
 
 export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setUploadError] = useState<string>();
-  const [formState, setFormState] = useState<MemoryMeta>({
-    mid: uuid(),
-    title: '',
-    location: '',
-    occurredAt: new Date(),
-    tid: undefined,
-    displayContentId: undefined,
+  const [form, setForm] = useState<Form<MemoryForm>>({
+    title: F.str,
+    location: F.str,
+    occurredAt: [undefined, true],
+    tid: [undefined, true],
   });
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+  const dispatch = useDispatch();
+
+  // Date selection, e.g Februrary 23, 2022, 6:37 PM
+  const datePicker = useRef<DateInputModalHandle>();
+  const [_date, _] = form.occurredAt;
+  const date = _date == null ? undefined : moment(_date).format('LLL');
 
   const storeAndNavigate = (m: Memory): void => {
-    setLoading(false);
     dispatch(insertMemory(m));
     navigation.reset({
       index: 1,
@@ -49,19 +56,26 @@ export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
     });
   };
 
-  const onError = (e: ErrorResponse): void => {
-    setLoading(false);
-    setUploadError(e.reason);
-  };
-
   const createNewMemory = () => {
-    setLoading(true);
-    createMemory(formState)
+    setSubmitted(true);
+    const onError = (e: ErrorResponse) => {
+      setSubmitted(false);
+      setError(e.reason);
+    };
+
+    const data = F.data(form);
+    const meta: MemoryMeta = {
+      ...data,
+      occurredAt: data.occurredAt ?? new Date(),
+      mid: uuid(),
+    };
+
+    createMemory(meta)
       .then(storeAndNavigate)
       .catch((e: ErrorResponse) => {
         if (e.status === 409) {
           // Memory already  exists, perform reset
-          getMemory(formState.mid).then(storeAndNavigate).catch(onError);
+          getMemory(meta.mid).then(storeAndNavigate).catch(onError);
         } else {
           onError(e);
         }
@@ -69,39 +83,72 @@ export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
   };
 
   return (
-    <ScrollContainer isLoading={loading}>
-      <View>
-        <Heading>New Memory</Heading>
+    <ScrollContainer keyboardShouldPersistTaps="handled">
+      <Heading>New Memory</Heading>
 
-        <TitleInput setTitle={title => setFormState({...formState, title})} />
-        <LocationInput
-          setLocation={location => setFormState({...formState, location})}
-        />
-        <DateTimePicker
-          setDateTime={occurredAt => setFormState({...formState, occurredAt})}
-          initialValue={formState.occurredAt}
-        />
-        <SelectTag
-          onTagChange={tag => setFormState({...formState, tid: tag?.tid})}
-        />
+      <Input
+        placeholder="Title of your new memory"
+        isValid={title => title.length > 0}
+        onEmit={title => setForm({...form, title})}
+        blurOnSubmit={false}
+        autoCapitalize="words"
+        accessibilityLabel="Enter Memory Title"
+        icon={{provider: IonIcon, name: 'brush-outline'}}
+        containerStyle={{marginTop: 20}}
+      />
 
-        <SubmitButton
-          onSubmit={createNewMemory}
-          text="Create Memory"
-          disabled={!isMemoryDescriptionValid(formState)}
-          accessibilityHint="Create a new memory"
-          accessibilityLabel="Create a new memory"
-        />
+      <Input
+        placeholder="Where it took place"
+        isValid={location => location.length > 0}
+        onEmit={location => setForm({...form, location})}
+        blurOnSubmit={true}
+        autoCapitalize="words"
+        accessibilityLabel="Enter Memory Title"
+        icon={{provider: IonIcon, name: 'location-outline'}}
+        containerStyle={{marginTop: 20}}
+      />
 
-        {error != null && (
-          <Text
-            style={{color: Colors.DARK_SALMON}}
-            accessibilityHint={error}
-            accessibilityLabel="Something went wrong creating your memory.">
-            {error}
-          </Text>
-        )}
-      </View>
+      <TouchableOpacity
+        onPress={() => datePicker.current?.openDatePicker()}
+        style={{marginTop: 20}}>
+        <FakeInput
+          placeholder="When it took place"
+          icon={{provider: IonIcon, name: 'calendar-outline'}}
+          value={date}
+          valid={true}
+        />
+      </TouchableOpacity>
+
+      <DateInputModal
+        initialValue={new Date()}
+        maximumDate={new Date()}
+        onSelected={date => setForm({...form, occurredAt: [date, true]})}
+        // @ts-ignore
+        ref={datePicker}
+      />
+
+      <SelectTag
+        style={{marginTop: 20}}
+        onTagChange={t => setForm({...form, tid: [t?.tid, true]})}
+      />
+
+      <PrimaryButton
+        accessibilityLabel="Create a new Memory"
+        onPress={createNewMemory}
+        loading={submitted}
+        disabled={F.isInvalid(form)}
+        style={{marginTop: 20}}>
+        Create Memory
+      </PrimaryButton>
+
+      {error != '' && (
+        <Text
+          style={{color: Colors.DARK_SALMON}}
+          accessibilityHint={error}
+          accessibilityLabel="Something went wrong creating your memory.">
+          {error}
+        </Text>
+      )}
     </ScrollContainer>
   );
 };

@@ -10,7 +10,7 @@ import {TwoState} from '../../state/reducers';
 import {
   selectMemory,
   updateMemory,
-  selectMemoryContent,
+  selectContent,
   storeContent,
 } from '../store';
 import {getContent} from '../../content/ContentService';
@@ -29,10 +29,9 @@ import {Screen} from '../../navigation/NavigationUtilities';
 
 export const MemoryScreen = ({route}: Screen<'MemoryScreen'>) => {
   const dispatch = useDispatch();
-  const mid = route.params.mid;
-  const memory = useSelector((s: TwoState) => selectMemory(s.memories, mid));
-  const content = useSelector((s: TwoState) =>
-    selectMemoryContent(s.memories, mid),
+  const {mid} = route.params;
+  const [memory, content] = useSelector<TwoState, [Memory, Content[]]>(
+    ({memories}) => [selectMemory(memories, mid), selectContent(memories, mid)],
   );
 
   const [refreshing, setRefreshing] = useState<boolean>(false);

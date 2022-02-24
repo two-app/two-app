@@ -1,49 +1,49 @@
-import 'react-native-get-random-values';
 import {validate as isUuid} from 'uuid';
 import {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
 import {useSelector} from 'react-redux';
 import HapticFeedback from 'react-native-haptic-feedback';
-import {ScrollContainer} from '../../views/View';
-import {LogoHeader} from '../LogoHeader';
-import Colors from '../../Colors';
-import {Input} from '../../forms/Input';
-import type {TwoState} from '../../state/reducers';
-import {selectUnconnectedUser} from '../../user';
-import {resetNavigate, Screen} from '../../navigation/NavigationUtilities';
-import ConnectService from '../../user/ConnectService';
-import type {ErrorResponse} from '../../http/Response';
-import AuthenticationService from '../AuthenticationService';
-import type {UnconnectedUser, User} from '../UserModel';
-import {PrimaryButton} from '../../forms/SubmitButton';
+import {ScrollContainer} from '../views/View';
+import {LogoHeader} from './LogoHeader';
+import Colors from '../Colors';
+import {Input} from '../forms/Input';
+import type {TwoState} from '../state/reducers';
+import {selectUnconnectedUser} from '../user';
+import {resetNavigate, Screen} from '../navigation/NavigationUtilities';
+import ConnectService from '../user/ConnectService';
+import type {ErrorResponse} from '../http/Response';
+import AuthenticationService from './AuthenticationService';
+import type {UnconnectedUser, User} from './UserModel';
+import {PrimaryButton} from '../forms/SubmitButton';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import {HR} from '../../forms/HorizontalRule';
+import {HR} from '../forms/HorizontalRule';
+import F, {Form} from '../forms/Form';
+
+type ConnectForm = {
+  cc: string;
+  anniversary: string;
+};
 
 export const ConnectCodeScreen = ({
   navigation,
 }: Screen<'ConnectCodeScreen'>) => {
+  const [form, setForm] = useState<Form<ConnectForm>>({
+    cc: F.str,
+    anniversary: F.str,
+  });
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string>();
+  const [refreshing, setRefreshing] = useState(false);
+
   const user: UnconnectedUser = useSelector((state: TwoState) =>
     selectUnconnectedUser(state.user),
   );
 
-  const [partnerConnectCode, setPartnerConnectCode] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string>('');
-  const [refreshing, setRefreshing] = useState(false);
-
-  const isPartnerCodeValid = (): boolean =>
-    isUuid(partnerConnectCode) && partnerConnectCode !== user.uid;
-
-  const connectToPartner = (uid: string) => {
-    setError('');
-    setLoading(true);
-
-    AuthenticationService.connectUser(uid)
-      .then((_: User) => {
-        setLoading(false);
-        resetNavigate('HomeScreen', navigation);
-      })
+  const connectToPartner = () => {
+    setSubmitted(true);
+    AuthenticationService.connectUser(F.data(form).cc)
+      .then((_: User) => resetNavigate('HomeScreen', navigation))
       .catch(({reason}: ErrorResponse) => {
         if (
           reason === 'User already has a partner.' ||
@@ -52,28 +52,27 @@ export const ConnectCodeScreen = ({
           refresh();
         } else {
           setError(reason);
-          setLoading(false);
+          setSubmitted(false);
         }
       });
   };
 
   const refresh = () => {
-    setError('');
     setRefreshing(true);
     ConnectService.checkConnection()
       .then((isConnected: boolean) => {
         if (isConnected) resetNavigate('HomeScreen', navigation);
       })
-      .catch((e: ErrorResponse) => setError(e.reason))
-      .finally(() => setRefreshing(false));
+      .catch((e: ErrorResponse) => {
+        setError(e.reason);
+        setRefreshing(false);
+      });
   };
 
   return (
     <ScrollContainer keyboardShouldPersistTaps="always">
       <LogoHeader heading="Connect To Your Partner" />
-      <Text style={styles.paragraph}>
-        Send them your code, or enter theirs below.
-      </Text>
+      <Text>Send them your code, or enter theirs below.</Text>
 
       <CopyConnectCodeButton code={user.uid} />
 
@@ -85,9 +84,9 @@ export const ConnectCodeScreen = ({
 
       <Input
         placeholder="Partner's Connect Code"
+        onEmit={cc => setForm({...form, cc})}
         isValid={isUuid}
         autoCorrect={false}
-        onEmit={cc => console.log(cc)}
         accessibilityLabel="Enter Partner Code"
         icon={{provider: IonIcon, name: 'finger-print-outline'}}
         containerStyle={{marginTop: 20}}
@@ -96,8 +95,8 @@ export const ConnectCodeScreen = ({
       <Text style={styles.inputHint}>YYYY-MM-DD</Text>
       <Input
         placeholder="Anniversary Date"
-        isValid={dob => /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(dob)}
-        onEmit={dob => console.log(dob)}
+        onEmit={anniversary => setForm({...form, anniversary})}
+        isValid={date => /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(date)}
         mask={{
           type: 'datetime',
           options: {format: 'YYYY-MM-DD'},
@@ -109,10 +108,17 @@ export const ConnectCodeScreen = ({
 
       <PrimaryButton
         accessibilityLabel="Press to Connect"
-        style={{marginTop: 20}}
-        disabled={!isPartnerCodeValid()}>
+        submitted={submitted}
+        onPress={connectToPartner}
+        disabled={F.isInvalid(form)}>
         Connect to Partner <IonIcon name="heart" />
       </PrimaryButton>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate('LogoutScreen')}
+        style={{marginTop: 40}}>
+        <Text style={{color: Colors.REGULAR, fontWeight: '500'}}>Logout</Text>
+      </TouchableOpacity>
     </ScrollContainer>
   );
 };
