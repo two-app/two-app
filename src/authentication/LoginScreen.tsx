@@ -31,12 +31,14 @@ export const LoginScreen = ({navigation}: Screen<'LoginScreen'>) => {
   const login = () => {
     setSubmitted(true);
     AuthenticationService.login(F.data(form))
-      .then((user: MixedUser) =>
-        resetNavigate(
-          'pid' in user ? 'ConnectCodeScreen' : 'HomeScreen',
+      .then((user: MixedUser) => {
+        console.log('got user');
+        console.log(user);
+        return resetNavigate(
+          'pid' in user ? 'HomeScreen' : 'ConnectCodeScreen',
           navigation,
-        ),
-      )
+        );
+      })
       .catch((e: ErrorResponse) => {
         setSubmitted(false);
         setError(e.reason);

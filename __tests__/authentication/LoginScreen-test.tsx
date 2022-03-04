@@ -1,11 +1,7 @@
 import {Text} from 'react-native';
 import type {ReactTestInstance} from 'react-test-renderer';
-import type {QueryReturn, RenderAPI} from '@testing-library/react-native';
-import {
-  waitForElementToBeRemoved,
-  fireEvent,
-  render,
-} from '@testing-library/react-native';
+import {RenderAPI, waitFor} from '@testing-library/react-native';
+import {fireEvent, render} from '@testing-library/react-native';
 
 import {LoginScreen} from '../../src/authentication/LoginScreen';
 import AuthenticationService from '../../src/authentication/AuthenticationService';
@@ -15,6 +11,9 @@ import {
   mockNavigationProps,
   resetMockNavigation,
 } from '../utils/NavigationMocking';
+import {MixedUser} from '../../src/authentication/UserModel';
+import {v4 as uuid} from 'uuid';
+import {CommonActions} from '@react-navigation/native';
 
 describe('LoginScreen', () => {
   let tb: LoginScreenTestBed;
@@ -70,16 +69,18 @@ describe('LoginScreen', () => {
   });
 
   describe('On Valid Login', () => {
-    test('it should navigate to the home screen', async () => {
+    test('it should navigate to the connect code screen', async () => {
       tb.setEmailInput('user@two.date');
       tb.setPasswordInput('SoMePassWord');
 
       await tb.pressSubmit();
 
-      expect(mockNavigation.reset).toHaveBeenCalledWith({
-        index: 0,
-        routes: [{name: 'LoadingScreen'}],
-      });
+      expect(mockNavigation.dispatch).toHaveBeenCalledWith(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'ConnectCodeScreen'}],
+        }),
+      );
     });
   });
 
@@ -103,27 +104,28 @@ class LoginScreenTestBed {
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 
   constructor() {
-    this.onLoginResolve();
+    this.onLoginResolve({
+      uid: uuid(),
+    });
   }
 
   // elements
-  submitButton = () => this.render.getByA11yLabel('Press to login');
-  emailInput = () => this.render.getByA11yLabel('Enter your email');
-  passwordInput = () => this.render.getByA11yLabel('Enter your password');
+  submitButton = () => this.render.getByA11yLabel('Press to Login');
+  emailInput = () => this.render.getByA11yLabel('Email');
+  passwordInput = () => this.render.getByA11yLabel('Password');
   registerButton = () => this.render.getByA11yLabel('Register a new account');
 
   // queries
   isSubmitEnabled = (): boolean =>
     !this.submitButton().props.accessibilityState.disabled;
 
-  queryLoadingScreen = (): QueryReturn => {
-    return this.render.queryByA11yHint('Waiting for an action to finish...');
-  };
+  isSubmitted = (): boolean =>
+    this.submitButton().props.accessibilityState.busy;
 
   // events
   pressSubmit = async () => {
     fireEvent.press(this.submitButton());
-    await waitForElementToBeRemoved(this.queryLoadingScreen);
+    await waitFor(() => !this.isSubmitted());
   };
   setEmailInput = (e: string) => this.setInput(this.emailInput(), e);
   setPasswordInput = (p: string) => this.setInput(this.passwordInput(), p);
@@ -137,7 +139,7 @@ class LoginScreenTestBed {
   // request/response mocks
   private loginSpy = jest.spyOn(AuthenticationService, 'login');
 
-  onLoginResolve = () => this.loginSpy.mockResolvedValue({} as any);
+  onLoginResolve = (user: MixedUser) => this.loginSpy.mockResolvedValue(user);
   onLoginReject = (e: ErrorResponse) => this.loginSpy.mockRejectedValue(e);
 
   build = (): LoginScreenTestBed => {

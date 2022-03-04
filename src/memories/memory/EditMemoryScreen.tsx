@@ -66,8 +66,6 @@ export const EditMemoryScreen = ({
       });
   };
 
-  console.log(submitted);
-
   return (
     <ScrollContainer>
       <Heading>Edit Memory</Heading>
