@@ -54,11 +54,7 @@ export function useForm<T>(_form: Form<T>): [
   (u: UpdateInPlace<T>) => void, // helper to update the form using es6 k/v syntax
 ] {
   const [form, setForm] = useState<Form<T>>(_form);
-
-  const update = useCallback((u: UpdateInPlace<T>): void => {
-    setForm({...form, ...u});
-  }, []);
-
+  const update = (u: UpdateInPlace<T>): void => setForm({...form, ...u});
   return [form, data(form), setForm, update];
 }
 

@@ -52,6 +52,7 @@ export const EditMemoryScreen = ({
   const dispatch = useDispatch();
 
   const submitEdit = () => {
+    console.log('Submitting an edit');
     setSubmitted(true);
 
     updateMemoryRequest({...data, mid: memory.mid})
@@ -65,6 +66,8 @@ export const EditMemoryScreen = ({
       });
   };
 
+  console.log(submitted);
+
   return (
     <ScrollContainer>
       <Heading>Edit Memory</Heading>
@@ -73,7 +76,7 @@ export const EditMemoryScreen = ({
         placeholder="Title of your new memory"
         initialValue={data.title}
         isValid={title => title.length > 0}
-        onEmit={title => updForm({title})}
+        onEmit={title => updForm({ title })}
         blurOnSubmit={false}
         autoCapitalize="words"
         accessibilityLabel="Enter Memory Title"
@@ -88,7 +91,7 @@ export const EditMemoryScreen = ({
         onEmit={location => updForm({location})}
         blurOnSubmit={true}
         autoCapitalize="words"
-        accessibilityLabel="Enter Memory Title"
+        accessibilityLabel="Enter Memory Location"
         icon={{provider: IonIcon, name: 'location-outline'}}
         containerStyle={{marginTop: 20}}
       />
