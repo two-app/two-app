@@ -62,6 +62,8 @@ type Payload = {
  * Stores the tokens in the redux store, and returns the inferred user object from the access token.
  */
 const persistTokens = (tokens: Tokens): User | UnconnectedUser => {
+  console.log('persisting tokens');
+  console.log(tokens);
   store.dispatch(storeTokens(tokens));
   const payload: Payload = decode(tokens.accessToken);
 
