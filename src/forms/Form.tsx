@@ -57,7 +57,6 @@ export function useForm<T>(_form: Form<T>): [
 
   const update = useCallback((u: UpdateInPlace<T>): void => {
     setForm({...form, ...u});
-    console.log(form);
   }, []);
 
   return [form, data(form), setForm, update];

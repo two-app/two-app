@@ -12,6 +12,8 @@ import {
   mockNavigationProps,
   resetMockNavigation,
 } from '../utils/NavigationMocking';
+import {CommonActions} from '@react-navigation/native';
+import {store} from '../../src/state/reducers';
 
 describe('RegisterScreen', () => {
   let tb: RegisterScreenTestBed;
@@ -45,6 +47,7 @@ describe('RegisterScreen', () => {
         });
 
         // THEN the submit button should be disabled
+        expect(tb.canSubmit()).toEqual(false);
       },
     );
 
@@ -57,7 +60,6 @@ describe('RegisterScreen', () => {
       'Input Email with value %s should be valid: %s',
       (email: string, expectedToBeValid: boolean) => {
         // GIVEN
-        tb.mockEmailValid(expectedToBeValid);
         const input = tb.render.getByA11yLabel('Email');
 
         // WHEN
@@ -73,15 +75,15 @@ describe('RegisterScreen', () => {
   });
 
   describe('Valid form', () => {
-    test('Pressing submit should navigate to AcceptTermsScreen', () => {
+    beforeEach(() => {
       // GIVEN
       const inputs = [
         ['First Name', 'Paul'],
         ['Last Name', 'Atreides'],
         ['Email', 'paul@arrakis.com'],
         ['Password', 'P?4Ot2ONz:IJO&%U'],
+        ['Date of Birth', '1997-08-21'],
       ];
-      tb.mockEmailValid(true);
 
       // WHEN
       inputs.forEach(([label, text]) => {
@@ -91,20 +93,22 @@ describe('RegisterScreen', () => {
       });
 
       tb.pressSubmit();
+    });
 
-      expect(mockNavigation.navigate).toHaveBeenCalledWith(
-        'AcceptTermsScreen',
-        {
-          userRegistration: {
-            ...new UserRegistration(),
-            email: 'paul@arrakis.com',
-            firstName: 'Paul',
-            lastName: 'Atreides',
-            password: 'P?4Ot2ONz:IJO&%U',
-            uid: expect.any(String),
-          },
-        },
+    test('it should navigate to the ConnectCodeScreen', () => {
+      expect(mockNavigation.dispatch).toHaveBeenCalledWith(
+        CommonActions.reset({
+          index: 0,
+          routes: [{name: 'ConnectCodeScreen'}],
+        }),
       );
+    });
+
+    test('it should persist the tokens', () => {
+      expect(store.getState().auth).toEqual({
+        accessToken: '',
+        refreshToken: '',
+      });
     });
   });
 });
@@ -116,17 +120,18 @@ class RegisterScreenTestBed {
   submitButton = () => this.render.getByA11yLabel('Press to Register');
 
   // queries
-  isSubmitEnabled = (): boolean =>
-    !this.submitButton().props.accessibilityState.disabled;
+  canSubmit = (): boolean => {
+    return !this.submitButton().props.accessibilityState.disabled;
+  };
 
-  queryLoadingScreen = (): QueryReturn => {
-    return this.render.queryByA11yHint('Waiting for an action to finish...');
+  isLoading = (): QueryReturn => {
+    return this.submitButton().props.accessibilityState.busy;
   };
 
   // events
   pressSubmit = async () => {
     fireEvent.press(this.submitButton());
-    await waitForElementToBeRemoved(this.queryLoadingScreen);
+    await waitForElementToBeRemoved(this.isLoading);
   };
 
   build = (): RegisterScreenTestBed => {

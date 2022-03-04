@@ -11,12 +11,10 @@ import {TextInputMask, TextInputMaskProps} from 'react-native-masked-text';
 import {Icon} from 'react-native-vector-icons/Icon';
 
 import Colors from '../Colors';
+import {Validated} from './Form';
 
-type ValidatedString = [string, boolean];
-
-type InputProps = TextInputProps & {
+type PartialInputProps = TextInputProps & {
   initialValue?: string;
-  onEmit: (e: ValidatedString) => void;
   isValid?: (value: string) => boolean;
   icon?: {
     name: string;
@@ -25,6 +23,9 @@ type InputProps = TextInputProps & {
   mask?: TextInputMaskProps;
   containerStyle?: ViewStyle;
 };
+
+type NonEditableInputProps = PartialInputProps;
+type InputProps = PartialInputProps & {onEmit: (e: Validated<string>) => void};
 
 export const Input = forwardRef((props: InputProps, ref) => {
   const [value, setValue] = useState<string>(props.initialValue ?? '');
@@ -86,6 +87,20 @@ export const Input = forwardRef((props: InputProps, ref) => {
   );
 });
 
+export const NonEditableInput = forwardRef(
+  (props: NonEditableInputProps, ref) => {
+    return (
+      <Input
+        editable={false}
+        pointerEvents="none"
+        onEmit={() => {}}
+        {...props}
+        ref={ref}
+      />
+    );
+  },
+);
+
 type FakeInputProps = {
   placeholder: string;
   value?: string;
@@ -121,15 +136,11 @@ export const FakeInput = (props: FakeInputProps) => {
   }
 
   return (
-    <View style={[styles.container, props.containerStyle]}>
+    <View style={[styles.container, containerStyle]}>
       <View style={[styles.input, focusStyle]}>{DataComponent}</View>
       <View style={[focusStyle, styles.iconContainer]}>
-        {props.icon != null && (
-          <props.icon.provider
-            name={props.icon.name}
-            size={15}
-            color={focusStyle.color}
-          />
+        {icon != null && (
+          <icon.provider name={icon.name} size={15} color={focusStyle.color} />
         )}
       </View>
     </View>

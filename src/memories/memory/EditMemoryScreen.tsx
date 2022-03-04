@@ -41,11 +41,6 @@ export const EditMemoryScreen = ({
     tid: [memory.tag?.tid, true],
   });
 
-  console.log('****');
-  console.log(form);
-  console.log(data);
-  console.log('-----');
-
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
 

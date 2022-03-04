@@ -20,15 +20,19 @@ type StyledButtonProps = BaseButtonProps & {
   pressedColor: string;
 };
 
-type XButtonProps = BaseButtonProps & {
-  children: string;
+type PrimaryButtonProps = BaseButtonProps & {
+  children: React.ReactNode;
 };
 
-export const PrimaryButton = (props: XButtonProps) => (
+export const PrimaryButton = (props: PrimaryButtonProps) => (
   <StyledButton
     {...props}
     pressedColor={Colors.DARK_SALMON}
-    color={Colors.SALMON}>
+    color={Colors.SALMON}
+    accessibilityState={{
+      busy: props.loading,
+      disabled: props.disabled ?? false,
+    }}>
     <Text
       style={{
         color: 'white',

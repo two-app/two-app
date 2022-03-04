@@ -1,5 +1,5 @@
 import {useRef, useState} from 'react';
-import {Input, FakeInput} from '../../forms/Input';
+import {Input, NonEditableInput} from '../../forms/Input';
 import {PrimaryButton} from '../../forms/SubmitButton';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {Text, TouchableOpacity} from 'react-native';
@@ -110,12 +110,12 @@ export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
 
       <TouchableOpacity
         onPress={() => datePicker.current?.openDatePicker()}
-        style={{marginTop: 20}}>
-        <FakeInput
+        style={{marginTop: 20, zIndex: 999}}>
+        <NonEditableInput
+          editable={false}
           placeholder="When it took place"
           icon={{provider: IonIcon, name: 'calendar-outline'}}
           value={date}
-          valid={true}
         />
       </TouchableOpacity>
 

@@ -34,7 +34,6 @@ export const ConnectCodeScreen = ({
   });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string>();
-  const [refreshing, setRefreshing] = useState(false);
 
   const user: UnconnectedUser = useSelector((state: TwoState) =>
     selectUnconnectedUser(state.user),
@@ -58,21 +57,23 @@ export const ConnectCodeScreen = ({
   };
 
   const refresh = () => {
-    setRefreshing(true);
+    setSubmitted(true);
     ConnectService.checkConnection()
       .then((isConnected: boolean) => {
         if (isConnected) resetNavigate('HomeScreen', navigation);
       })
       .catch((e: ErrorResponse) => {
         setError(e.reason);
-        setRefreshing(false);
+        setSubmitted(false);
       });
   };
 
   return (
     <ScrollContainer keyboardShouldPersistTaps="always">
       <LogoHeader heading="Connect To Your Partner" />
-      <Text>Send them your code, or enter theirs below.</Text>
+      <Text style={{marginTop: 10}}>
+        Send your code, or enter theirs below.
+      </Text>
 
       <CopyConnectCodeButton code={user.uid} />
 
@@ -84,10 +85,10 @@ export const ConnectCodeScreen = ({
 
       <Input
         placeholder="Partner's Connect Code"
+        accessibilityLabel="Partner Code"
         onEmit={cc => setForm({...form, cc})}
         isValid={isUuid}
         autoCorrect={false}
-        accessibilityLabel="Enter Partner Code"
         icon={{provider: IonIcon, name: 'finger-print-outline'}}
         containerStyle={{marginTop: 20}}
       />
@@ -95,6 +96,7 @@ export const ConnectCodeScreen = ({
       <Text style={styles.inputHint}>YYYY-MM-DD</Text>
       <Input
         placeholder="Anniversary Date"
+        accessibilityLabel='Anniversary Date'
         onEmit={anniversary => setForm({...form, anniversary})}
         isValid={date => /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(date)}
         mask={{
@@ -107,14 +109,15 @@ export const ConnectCodeScreen = ({
       {error != '' && <Text style={styles.error}>{error}</Text>}
 
       <PrimaryButton
-        accessibilityLabel="Press to Connect"
-        submitted={submitted}
+        accessibilityLabel="Connect to Partner"
+        loading={submitted}
         onPress={connectToPartner}
         disabled={F.isInvalid(form)}>
         Connect to Partner <IonIcon name="heart" />
       </PrimaryButton>
 
       <TouchableOpacity
+        accessibilityLabel='Logout'
         onPress={() => navigation.navigate('LogoutScreen')}
         style={{marginTop: 40}}>
         <Text style={{color: Colors.REGULAR, fontWeight: '500'}}>Logout</Text>

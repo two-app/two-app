@@ -139,6 +139,7 @@ export const RegisterScreen = ({navigation}: Screen<'RegisterScreen'>) => {
       <Text style={styles.inputHint}>YYYY-MM-DD</Text>
       <Input
         placeholder="Date of Birth"
+        accessibilityLabel="Date of Birth"
         isValid={dob => /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(dob)}
         onEmit={dob => setForm({...form, dob})}
         mask={{
