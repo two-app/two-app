@@ -103,7 +103,7 @@ export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
         onEmit={location => setForm({...form, location})}
         blurOnSubmit={true}
         autoCapitalize="words"
-        accessibilityLabel="Enter Memory Title"
+        accessibilityLabel="Enter Memory Location"
         icon={{provider: IonIcon, name: 'location-outline'}}
         containerStyle={{marginTop: 20}}
       />
