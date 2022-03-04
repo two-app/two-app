@@ -76,7 +76,7 @@ export const EditMemoryScreen = ({
         placeholder="Title of your new memory"
         initialValue={data.title}
         isValid={title => title.length > 0}
-        onEmit={title => updForm({ title })}
+        onEmit={title => updForm({title})}
         blurOnSubmit={false}
         autoCapitalize="words"
         accessibilityLabel="Enter Memory Title"

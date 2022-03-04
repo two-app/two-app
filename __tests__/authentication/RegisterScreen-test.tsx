@@ -15,7 +15,7 @@ import {
 import {CommonActions} from '@react-navigation/native';
 import {store} from '../../src/state/reducers';
 import AuthenticationService from '../../src/authentication/AuthenticationService';
-import { ErrorResponse } from '../../src/http/Response';
+import {ErrorResponse} from '../../src/http/Response';
 
 describe('RegisterScreen', () => {
   let tb: RegisterScreenTestBed;
@@ -94,11 +94,13 @@ describe('RegisterScreen', () => {
         fireEvent(input, 'onBlur');
       });
 
-      const termsSwitch = tb.render.getByA11yLabel('Accept Terms and Conditions');
+      const termsSwitch = tb.render.getByA11yLabel(
+        'Accept Terms and Conditions',
+      );
       fireEvent(termsSwitch, 'onValueChange', true);
     });
 
-    describe("when registration succeeds", () => {
+    describe('when registration succeeds', () => {
       beforeEach(() => {
         tb.whenRegisterResolve();
         tb.pressSubmit();
@@ -114,16 +116,16 @@ describe('RegisterScreen', () => {
       });
     });
 
-    describe("when registration fails", () => {
+    describe('when registration fails', () => {
       const error: ErrorResponse = {
-        reason: "Registration Failed For Some Reason",
-        status: 400
+        reason: 'Registration Failed For Some Reason',
+        status: 400,
       };
 
       beforeEach(() => {
         tb.whenRegisterReject(error);
         tb.pressSubmit();
-      })
+      });
 
       test('it should stop showing the loading indicator', () => {
         expect(tb.isLoading()).toEqual(false);
@@ -132,7 +134,7 @@ describe('RegisterScreen', () => {
       test('it should display the error', () => {
         tb.render.getByText(error.reason);
       });
-    })
+    });
   });
 });
 
@@ -160,8 +162,8 @@ class RegisterScreenTestBed {
   // mocks
   whenRegisterResolve = () => {
     AuthenticationService.registerUser = jest.fn().mockResolvedValue({
-      accessToken: "",
-      refreshToken: ""
+      accessToken: '',
+      refreshToken: '',
     });
   };
 

@@ -96,7 +96,7 @@ export const ConnectCodeScreen = ({
       <Text style={styles.inputHint}>YYYY-MM-DD</Text>
       <Input
         placeholder="Anniversary Date"
-        accessibilityLabel='Anniversary Date'
+        accessibilityLabel="Anniversary Date"
         onEmit={anniversary => setForm({...form, anniversary})}
         isValid={date => /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(date)}
         mask={{
@@ -117,7 +117,7 @@ export const ConnectCodeScreen = ({
       </PrimaryButton>
 
       <TouchableOpacity
-        accessibilityLabel='Logout'
+        accessibilityLabel="Logout"
         onPress={() => navigation.navigate('LogoutScreen')}
         style={{marginTop: 40}}>
         <Text style={{color: Colors.REGULAR, fontWeight: '500'}}>Logout</Text>

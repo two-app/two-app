@@ -1,11 +1,7 @@
 import {Text} from 'react-native';
 import {v4 as uuid} from 'uuid';
 import type {RenderAPI} from '@testing-library/react-native';
-import {
-  waitFor,
-  fireEvent,
-  render,
-} from '@testing-library/react-native';
+import {waitFor, fireEvent, render} from '@testing-library/react-native';
 import {Provider} from 'react-redux';
 
 import type {UnconnectedUser} from '../../src/authentication/UserModel';
@@ -19,7 +15,7 @@ import {
 import {clearState, store} from '../../src/state/reducers';
 import {storeUnconnectedUser} from '../../src/user';
 import {ConnectCodeScreen} from '../../src/authentication/ConnectCodeScreen';
-import { CommonActions } from '@react-navigation/native';
+import {CommonActions} from '@react-navigation/native';
 
 describe('ConnectCodeScreen', () => {
   let tb: ConnectCodeScreenTestBed;
@@ -59,7 +55,7 @@ describe('ConnectCodeScreen', () => {
   describe('When entered code is valid', () => {
     beforeEach(() => {
       tb.setPartnerCode(uuid());
-      tb.setAnniversary("2020-09-25");
+      tb.setAnniversary('2020-09-25');
     });
 
     test('enables submit', () => {
@@ -92,8 +88,8 @@ describe('ConnectCodeScreen', () => {
         expect(mockNavigation.dispatch).toHaveBeenCalledWith(
           CommonActions.reset({
             index: 0,
-            routes: [{name: 'HomeScreen'}]
-          })
+            routes: [{name: 'HomeScreen'}],
+          }),
         );
       });
     });
@@ -112,7 +108,7 @@ describe('ConnectCodeScreen', () => {
         tb.pressSubmit();
 
         await waitFor(() => !tb.isSubmitted());
-      
+
         expect(tb.isSubmitted()).toEqual(false);
       });
 
@@ -137,7 +133,8 @@ class ConnectCodeScreenTestBed {
   codeInput = () => this.render.getByA11yLabel('Partner Code');
   anniversaryInput = () => this.render.getByA11yLabel('Anniversary Date');
 
-  copyButton = () => this.render.getByA11yHint('Copy connect code to clipboard');
+  copyButton = () =>
+    this.render.getByA11yHint('Copy connect code to clipboard');
   submitButton = () => this.render.getByA11yLabel('Connect to Partner');
 
   // queries
@@ -152,11 +149,10 @@ class ConnectCodeScreenTestBed {
 
   // events
   setPartnerCode = (pid: string) => fireEvent(this.codeInput(), 'onEmit', pid);
-  setAnniversary = (date: string) => fireEvent(this.anniversaryInput(), 'onEmit', date);
+  setAnniversary = (date: string) =>
+    fireEvent(this.anniversaryInput(), 'onEmit', date);
 
-  pressLogout = () => fireEvent.press(
-    this.render.getByA11yLabel('Logout')
-  );
+  pressLogout = () => fireEvent.press(this.render.getByA11yLabel('Logout'));
   pressSubmit = () => fireEvent.press(this.submitButton());
 
   // mocks

@@ -157,7 +157,7 @@ export const RegisterScreen = ({navigation}: Screen<'RegisterScreen'>) => {
           <Switch
             style={styles.switch}
             value={form.acceptedTerms[0] as boolean}
-            accessibilityLabel='Accept Terms and Conditions'
+            accessibilityLabel="Accept Terms and Conditions"
             onValueChange={checked =>
               setForm({
                 ...form,
