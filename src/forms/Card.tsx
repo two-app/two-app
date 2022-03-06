@@ -106,17 +106,3 @@ const s = StyleSheet.create({
     }),
   },
 });
-
-export const CardMeta = {
-  style: Platform.select({
-    ios: {
-      shadowColor: Colors.DARK,
-      shadowOffset: {width: 0, height: 2},
-      shadowOpacity: 0.14,
-      shadowRadius: 3,
-    },
-    android: {
-      elevation: 3,
-    },
-  }),
-};

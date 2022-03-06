@@ -20,7 +20,7 @@ type SelectTagProps = ViewProps & {
 export const SelectTag = (props: SelectTagProps) => {
   const [tag, _setTag] = useState<Tag | undefined>(props.initialValue);
   const [availableTags, setAvailableTags] = useState<Tag[]>([]);
-  const navigation = useNavigation<Routes>();
+  const {navigate} = useNavigation<Routes>();
 
   useEffect(() => {
     // TODO put tags in the redux store
@@ -39,7 +39,7 @@ export const SelectTag = (props: SelectTagProps) => {
           if (tag != null) {
             setTag(undefined);
           } else {
-            navigation.navigate('TagManagementScreen', {
+            navigate('TagManagementScreen', {
               onSubmit: (newTag: Tag) => {
                 setAvailableTags([newTag, ...availableTags]);
                 setTag(tag);

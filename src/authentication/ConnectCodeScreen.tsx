@@ -176,9 +176,6 @@ const styles = StyleSheet.create({
     color: Colors.DARK,
     textAlign: 'center',
   },
-  paragraph: {
-    marginTop: 10,
-  },
   copyButton: {
     marginTop: 20,
     padding: 20,

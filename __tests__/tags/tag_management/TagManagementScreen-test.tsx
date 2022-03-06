@@ -1,10 +1,6 @@
 import {Text} from 'react-native';
 import type {RenderAPI, QueryReturn} from '@testing-library/react-native';
-import {
-  render,
-  fireEvent,
-  waitFor,
-} from '@testing-library/react-native';
+import {render, fireEvent, waitFor} from '@testing-library/react-native';
 
 import * as TagService from '../../../src/tags/TagService';
 import type {Tag, TagDescription} from '../../../src/tags/Tag';
