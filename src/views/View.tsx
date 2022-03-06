@@ -3,8 +3,7 @@ import {View, ViewProps, ScrollViewProps, StatusBar} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {RootStackParamList} from '../../Router';
 import {Footer} from '../home/Footer';
-import SafeAreaView from 'react-native-safe-area-view';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native';
 
 import LoadingView from './LoadingView';
 
@@ -37,11 +36,9 @@ type Container = {
 export const Wrapper = ({children}: {children?: React.ReactNode}) => (
   <>
     <StatusBar backgroundColor="white" barStyle="dark-content" />
-    <SafeAreaProvider>
-      <SafeAreaView style={{flexGrow: 1, backgroundColor: 'white'}}>
-        {children}
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <SafeAreaView style={{flexGrow: 1, backgroundColor: 'white'}}>
+      {children}
+    </SafeAreaView>
   </>
 );
 
