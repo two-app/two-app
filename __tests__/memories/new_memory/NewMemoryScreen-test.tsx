@@ -1,9 +1,8 @@
 import {
   fireEvent,
-  QueryReturn,
   render,
   RenderAPI,
-  waitForElementToBeRemoved,
+  waitFor,
 } from '@testing-library/react-native';
 import {Platform, Text} from 'react-native';
 import {Provider} from 'react-redux';
@@ -143,9 +142,9 @@ class NewMemoryScreenTestBed {
   }
 
   // elements
-  submitButton = () => this.render.getByA11yLabel('Create a new memory');
-  titleInput = () => this.render.getByA11yLabel('Set Title');
-  locationInput = () => this.render.getByA11yLabel('Set Location');
+  submitButton = () => this.render.getByA11yLabel('Create a new Memory');
+  titleInput = () => this.render.getByA11yLabel('Enter Memory Title');
+  locationInput = () => this.render.getByA11yLabel('Enter Memory Location');
   dateTimeInput = () => this.render.getByA11yLabel('Set the Date and Time');
   datePicker = () => this.render.getByA11yLabel('Pick the Date');
   timePicker = () => this.render.getByA11yLabel('Pick the Time');
@@ -154,9 +153,8 @@ class NewMemoryScreenTestBed {
   isSubmitEnabled = (): boolean =>
     !this.submitButton().props.accessibilityState.disabled;
 
-  queryLoadingScreen = (): QueryReturn => {
-    return this.render.queryByA11yHint('Waiting for an action to finish...');
-  };
+  isSubmitted = (): boolean =>
+    this.submitButton().props.accessibilityState.busy;
 
   // events
   private setInput = (input: ReactTestInstance, text: string) => {
@@ -174,7 +172,7 @@ class NewMemoryScreenTestBed {
 
   pressSubmit = async () => {
     fireEvent.press(this.submitButton());
-    await waitForElementToBeRemoved(this.queryLoadingScreen);
+    await waitFor(this.isSubmitted);
   };
 
   // request/response mocks

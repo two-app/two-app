@@ -1,15 +1,16 @@
 import {Text} from 'react-native';
-import type {QueryReturn, RenderAPI} from '@testing-library/react-native';
-import {
-  waitForElementToBeRemoved,
-  fireEvent,
-  render,
-} from '@testing-library/react-native';
+import {RenderAPI, waitFor} from '@testing-library/react-native';
+import {fireEvent, render} from '@testing-library/react-native';
 
 import {RegisterScreen} from '../../src/authentication/RegisterScreen';
-import EmailValidator from '../../src/forms/EmailValidator';
-import {UserRegistration} from '../../src/authentication/register_workflow/UserRegistrationModel';
-import {mockNavigation, resetMockNavigation} from '../utils/NavigationMocking';
+import {
+  mockNavigation,
+  mockNavigationProps,
+  resetMockNavigation,
+} from '../utils/NavigationMocking';
+import {CommonActions} from '@react-navigation/native';
+import AuthenticationService from '../../src/authentication/AuthenticationService';
+import {ErrorResponse} from '../../src/http/Response';
 
 describe('RegisterScreen', () => {
   let tb: RegisterScreenTestBed;
@@ -18,7 +19,7 @@ describe('RegisterScreen', () => {
 
   describe('Form Validation', () => {
     const cases: Array<[string, string, boolean]> = [
-      ['First Name', 'a', false],
+      ['First Name', 'a', true],
       ['First Name', 'abc', true],
       ['Last Name', 'x', false],
       ['Last Name', 'xyz', true],
@@ -34,8 +35,8 @@ describe('RegisterScreen', () => {
         const input = tb.render.getByA11yLabel(label);
 
         // WHEN
-        fireEvent.changeText(input, text);
-        fireEvent(input, 'blur');
+        fireEvent(input, 'onChangeText', text);
+        fireEvent(input, 'onBlur');
 
         // THEN the input should be invalid
         expect(input.props.accessibilityValue).toEqual({
@@ -43,6 +44,7 @@ describe('RegisterScreen', () => {
         });
 
         // THEN the submit button should be disabled
+        expect(tb.canSubmit()).toEqual(false);
       },
     );
 
@@ -55,12 +57,11 @@ describe('RegisterScreen', () => {
       'Input Email with value %s should be valid: %s',
       (email: string, expectedToBeValid: boolean) => {
         // GIVEN
-        tb.mockEmailValid(expectedToBeValid);
         const input = tb.render.getByA11yLabel('Email');
 
         // WHEN
-        fireEvent.changeText(input, email);
-        fireEvent(input, 'blur');
+        fireEvent(input, 'onChangeText', email);
+        fireEvent(input, 'onBlur');
 
         // THEN
         expect(input.props.accessibilityValue).toEqual({
@@ -71,38 +72,57 @@ describe('RegisterScreen', () => {
   });
 
   describe('Valid form', () => {
-    test('Pressing submit should navigate to AcceptTermsScreen', () => {
+    beforeEach(() => {
       // GIVEN
       const inputs = [
         ['First Name', 'Paul'],
         ['Last Name', 'Atreides'],
         ['Email', 'paul@arrakis.com'],
         ['Password', 'P?4Ot2ONz:IJO&%U'],
+        ['Date of Birth', '1997-08-21'],
       ];
-      tb.mockEmailValid(true);
 
       // WHEN
       inputs.forEach(([label, text]) => {
         const input = tb.render.getByA11yLabel(label);
-        fireEvent.changeText(input, text);
-        fireEvent(input, 'blur');
+        fireEvent(input, 'onChangeText', text);
+        fireEvent(input, 'onBlur');
       });
 
-      tb.pressSubmit();
-
-      expect(mockNavigation.navigate).toHaveBeenCalledWith(
-        'AcceptTermsScreen',
-        {
-          userRegistration: {
-            ...new UserRegistration(),
-            email: 'paul@arrakis.com',
-            firstName: 'Paul',
-            lastName: 'Atreides',
-            password: 'P?4Ot2ONz:IJO&%U',
-            uid: expect.any(String),
-          },
-        },
+      const termsSwitch = tb.render.getByA11yLabel(
+        'Accept Terms and Conditions',
       );
+      fireEvent(termsSwitch, 'onValueChange', true);
+    });
+
+    describe('when registration succeeds', () => {
+      test('it should navigate to the ConnectCodeScreen', async () => {
+        tb.whenRegisterResolve();
+
+        await tb.pressSubmit();
+
+        expect(mockNavigation.dispatch).toHaveBeenCalledWith(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'ConnectCodeScreen'}],
+          }),
+        );
+      });
+    });
+
+    describe('when registration fails', () => {
+      const error: ErrorResponse = {
+        reason: 'Registration Failed For Some Reason',
+        status: 400,
+      };
+
+      test('it should display the error', async () => {
+        tb.whenRegisterReject(error);
+
+        await tb.pressSubmit();
+
+        tb.render.getByText(error.reason);
+      });
     });
   });
 });
@@ -114,27 +134,35 @@ class RegisterScreenTestBed {
   submitButton = () => this.render.getByA11yLabel('Press to Register');
 
   // queries
-  isSubmitEnabled = (): boolean =>
-    !this.submitButton().props.accessibilityState.disabled;
+  canSubmit = (): boolean => {
+    return !this.submitButton().props.accessibilityState.disabled;
+  };
 
-  queryLoadingScreen = (): QueryReturn => {
-    return this.render.queryByA11yHint('Waiting for an action to finish...');
+  isLoading = (): boolean => {
+    return this.submitButton().props.accessibilityState.busy;
   };
 
   // events
   pressSubmit = async () => {
     fireEvent.press(this.submitButton());
-    await waitForElementToBeRemoved(this.queryLoadingScreen);
+    await waitFor(() => !this.isLoading());
   };
 
   // mocks
-  mockEmailValid = (valid: boolean) => {
-    EmailValidator.validateEmail = jest.fn().mockReturnValue(valid);
+  whenRegisterResolve = () => {
+    AuthenticationService.registerUser = jest.fn().mockResolvedValue({
+      accessToken: '',
+      refreshToken: '',
+    });
+  };
+
+  whenRegisterReject = (error: ErrorResponse) => {
+    AuthenticationService.registerUser = jest.fn().mockRejectedValue(error);
   };
 
   build = (): RegisterScreenTestBed => {
     resetMockNavigation();
-    this.render = render(<RegisterScreen />);
+    this.render = render(<RegisterScreen {...mockNavigationProps()} />);
     return this;
   };
 }

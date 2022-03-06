@@ -1,114 +1,137 @@
-import {useState} from 'react';
-import {View, Text} from 'react-native';
+import {useRef, useState} from 'react';
+import {Text, TouchableOpacity} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {useDispatch, useSelector} from 'react-redux';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
-import {Memory, MemoryMeta} from '../MemoryModels';
+import {Memory} from '../MemoryModels';
 import {ScrollContainer} from '../../views/View';
-import TitleInput from '../new_memory/TitleInput';
 import {Heading} from '../../home/Heading';
-import {SubmitButton} from '../../forms/SubmitButton';
-import {DateTimePicker} from '../new_memory/DateInput';
-import {LocationInput} from '../new_memory/LocationInput';
+import {PrimaryButton} from '../../forms/SubmitButton';
+import {DateInputModal, DateInputModalHandle} from '../new_memory/DateInput';
 import {SelectTag} from '../../tags/SelectTag';
-import {Tag} from '../../tags/Tag';
 import {updateMemory as updateMemoryRequest} from '../MemoryService';
 import {ErrorResponse} from '../../http/Response';
 import {TwoState} from '../../state/reducers';
 import {selectMemory, updateMemory} from '../store';
 import {Screen} from '../../navigation/NavigationUtilities';
+import F, {useForm} from '../../forms/Form';
+import {Input, NonEditableInput} from '../../forms/Input';
+import moment from 'moment';
 
-const isValidUpdate = (memory: Memory, form: MemoryMeta): boolean => {
-  const titleDiff = memory.title !== form.title;
-  const locationDiff = memory.location !== form.location;
-  const dateDiff = memory.occurredAt !== form.occurredAt;
-  const tagDiff = memory.tag?.tid !== form.tid;
-
-  const isDiff = titleDiff || locationDiff || dateDiff || tagDiff;
-  const isTitleValid = form.title != null && form.title.length > 0;
-  const isLocationValid = form.location != null && form.location.length > 0;
-
-  return isDiff && isTitleValid && isLocationValid;
+type EditMemoryForm = {
+  title: string;
+  location: string;
+  occurredAt: Date;
+  tid?: string;
 };
 
 export const EditMemoryScreen = ({
   navigation,
   route,
 }: Screen<'EditMemoryScreen'>) => {
-  const dispatch = useDispatch();
   const memory: Memory = useSelector<TwoState, Memory>(state =>
     selectMemory(state.memories, route.params.mid),
   );
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
-  const [formState, setFormState] = useState<MemoryMeta>({
-    mid: memory.mid,
-    title: memory.title,
-    location: memory.location,
-    occurredAt: memory.occurredAt,
-    tid: memory.tag?.tid,
+  const [form, data, , updForm] = useForm<EditMemoryForm>({
+    title: [memory.title, true],
+    location: [memory.location, true],
+    occurredAt: [memory.occurredAt, true],
+    tid: [memory.tag?.tid, true],
   });
 
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+
+  // Date selection, e.g Februrary 23, 2022, 6:37 PM
+  const datePicker = useRef<DateInputModalHandle>();
+  const [_date] = form.occurredAt;
+  const date = moment(_date);
+
+  const dispatch = useDispatch();
+
   const submitEdit = () => {
-    setLoading(true);
-    updateMemoryRequest(formState)
+    setSubmitted(true);
+
+    updateMemoryRequest({...data, mid: memory.mid})
       .then((updatedMemory: Memory) => {
         dispatch(updateMemory({mid: memory.mid, memory: updatedMemory}));
         navigation.goBack();
       })
       .catch((e: ErrorResponse) => {
         setError(e.reason);
-        setLoading(false);
+        setSubmitted(false);
       });
   };
 
   return (
-    <ScrollContainer isLoading={loading}>
-      <View>
-        <Heading>Edit Memory</Heading>
+    <ScrollContainer>
+      <Heading>Edit Memory</Heading>
 
-        <TitleInput
-          setTitle={(title: string) => setFormState({...formState, title})}
-          initialValue={formState.title}
-          placeholder="Memory title..."
+      <Input
+        placeholder="Title of your new memory"
+        value={data.title}
+        isValid={title => title.length > 0}
+        onEmit={title => updForm({title})}
+        blurOnSubmit={false}
+        autoCapitalize="words"
+        accessibilityLabel="Enter Memory Title"
+        icon={{provider: IonIcon, name: 'brush-outline'}}
+        containerStyle={{marginTop: 20}}
+      />
+
+      <Input
+        placeholder="Where it took place"
+        value={data.location}
+        isValid={location => location.length > 0}
+        onEmit={location => updForm({location})}
+        blurOnSubmit={true}
+        autoCapitalize="words"
+        accessibilityLabel="Enter Memory Location"
+        icon={{provider: IonIcon, name: 'location-outline'}}
+        containerStyle={{marginTop: 20}}
+      />
+
+      <TouchableOpacity
+        onPress={() => datePicker.current?.openDatePicker()}
+        style={{marginTop: 20}}>
+        <NonEditableInput
+          placeholder="When it took place"
+          icon={{provider: IonIcon, name: 'calendar-outline'}}
+          value={date.format('LLL')}
+          isValid={() => true}
         />
+      </TouchableOpacity>
 
-        <LocationInput
-          setLocation={(location: string) =>
-            setFormState({...formState, location})
-          }
-          initialValue={formState.location}
-        />
+      <DateInputModal
+        initialValue={new Date()}
+        maximumDate={new Date()}
+        onSelected={date => updForm({occurredAt: [date, true]})}
+        // @ts-ignore
+        ref={datePicker}
+      />
 
-        <DateTimePicker
-          setDateTime={(occurredAt: Date) =>
-            setFormState({...formState, occurredAt})
-          }
-          initialValue={formState.occurredAt}
-        />
+      <SelectTag
+        style={{marginTop: 20}}
+        onTagChange={t => updForm({tid: [t?.tid, true]})}
+        initialValue={memory.tag}
+      />
 
-        <SelectTag
-          onTagChange={(tag: undefined | Tag) =>
-            setFormState({...formState, tid: tag?.tid})
-          }
-          initialValue={memory?.tag}
-        />
+      <PrimaryButton
+        accessibilityLabel="Update Memory"
+        onPress={submitEdit}
+        disabled={F.isInvalid(form)}
+        loading={submitted}
+        style={{marginTop: 20}}>
+        Update Memory
+      </PrimaryButton>
 
-        <SubmitButton
-          onSubmit={submitEdit}
-          text="Update Memory"
-          disabled={!isValidUpdate(memory, formState)}
-          accessibilityHint="Updates the memory with the newly entered values."
-          accessibilityLabel="Update Memory"
-        />
-
-        <Text
-          style={{color: Colors.DARK_SALMON}}
-          accessibilityHint="The error encountered with the edit.">
-          {error}
-        </Text>
-      </View>
+      <Text
+        style={{color: Colors.DARK_SALMON}}
+        accessibilityHint="The error encountered with the edit.">
+        {error}
+      </Text>
     </ScrollContainer>
   );
 };

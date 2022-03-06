@@ -13,12 +13,12 @@ type EditTagIconProps = {
 };
 
 export const EditTagIcon = ({tag, onUpdated, style}: EditTagIconProps) => {
-  const edit = () => {
-    useNavigation<Routes>().navigate('TagManagementScreen', {
+  const {navigate} = useNavigation<Routes>();
+  const edit = () =>
+    navigate('TagManagementScreen', {
       initialTag: tag,
       onSubmit: onUpdated,
     });
-  };
 
   return (
     <TouchableOpacity

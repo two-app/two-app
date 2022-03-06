@@ -1,5 +1,5 @@
 const Colors = {
-  SALMON: '#EE7674',
+  SALMON: '#eb5754',
   DARK_SALMON: '#ed615f',
   LIGHT: 'rgba(0, 0, 0, 0.1)',
   FADED: 'rgba(0, 0, 0, 0.2)',

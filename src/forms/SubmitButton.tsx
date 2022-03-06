@@ -1,83 +1,81 @@
-import {View, Keyboard} from 'react-native';
-
+import {useState} from 'react';
+import {
+  ActivityIndicator,
+  Text,
+  TouchableWithoutFeedbackProps,
+  View,
+  ViewStyle,
+} from 'react-native';
+import {TouchableWithoutFeedback} from 'react-native';
 import Colors from '../Colors';
 
-import {Button} from './Button';
-
-type DisabledButtonProps = {
-  text: string;
-  accessibilityLabel?: string;
+type BaseButtonProps = TouchableWithoutFeedbackProps & {
+  loading?: boolean;
+  loadingColor?: string;
+  viewStyle?: ViewStyle;
 };
 
-type EnabledButtonProps = DisabledButtonProps & {
-  onSubmit: () => any;
-  accessibilityHint?: string;
+type StyledButtonProps = BaseButtonProps & {
+  color: string;
+  pressedColor: string;
 };
 
-type SubmitButtonProps = EnabledButtonProps & {
-  disabled?: boolean;
+type PrimaryButtonProps = BaseButtonProps & {
+  children: React.ReactNode;
 };
 
-export const SubmitButton = ({
-  text,
-  onSubmit,
-  disabled = false,
-  accessibilityHint,
-  accessibilityLabel,
-}: SubmitButtonProps) => (
-  <View style={{marginVertical: 25}}>
-    {disabled ? (
-      <DisabledSubmitButton
-        text={text}
-        accessibilityLabel={accessibilityLabel}
-      />
-    ) : (
-      <EnabledSubmitButton
-        onSubmit={() => {
-          Keyboard.dismiss();
-          onSubmit();
-        }}
-        text={text}
-        accessibilityLabel={accessibilityLabel}
-        accessibilityHint={accessibilityHint}
-      />
-    )}
-  </View>
+export const PrimaryButton = (props: PrimaryButtonProps) => (
+  <StyledButton
+    {...props}
+    pressedColor={Colors.DARK_SALMON}
+    color={Colors.SALMON}
+    accessibilityState={{
+      busy: props.loading,
+      disabled: props.disabled ?? false,
+    }}>
+    <Text
+      style={{
+        color: 'white',
+        fontWeight: '600',
+        fontFamily: 'Montserrat-SemiBold',
+      }}>
+      {props.children}
+    </Text>
+  </StyledButton>
 );
 
-const DisabledSubmitButton = ({
-  text,
-  accessibilityLabel,
-}: DisabledButtonProps) => {
-  const style = {backgroundColor: 'white', textColor: Colors.FADED};
+export const StyledButton = (props: StyledButtonProps) => {
+  const [pressed, setPressed] = useState(false);
   return (
-    <Button
-      onPress={() => Keyboard.dismiss()}
-      text={text}
-      buttonStyle={style}
-      pressedButtonStyle={style}
-      accessibilityLabel={accessibilityLabel}
-      accessibilityState={{disabled: true}}
+    <BaseButton
+      onPressIn={() => setPressed(true)}
+      onPressOut={() => setPressed(false)}
+      viewStyle={{
+        height: 45,
+        backgroundColor: pressed ? props.pressedColor : props.color,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+      {...props}
     />
   );
 };
 
-const EnabledSubmitButton = ({
-  text,
-  onSubmit,
-  accessibilityHint,
-  accessibilityLabel,
-}: EnabledButtonProps) => (
-  <Button
-    onPress={onSubmit}
-    text={text}
-    buttonStyle={{backgroundColor: Colors.VALID_GREEN, textColor: 'white'}}
-    pressedButtonStyle={{
-      backgroundColor: Colors.VALID_GREEN_DARK,
-      textColor: 'white',
-    }}
-    accessibilityLabel={accessibilityLabel}
-    accessibilityHint={accessibilityHint}
-    accessibilityState={{disabled: false}}
-  />
+export const BaseButton = (props: BaseButtonProps) => {
+  const loadingColor = props.loadingColor ?? 'white';
+
+  return (
+    <View style={props.style}>
+      <TouchableWithoutFeedback {...props}>
+        <View style={[{flexDirection: 'row'}, props.viewStyle]}>
+          {props.children}
+          {props.loading && <ButtonLoadingIndicator color={loadingColor} />}
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
+  );
+};
+
+const ButtonLoadingIndicator = ({color}: {color: string}) => (
+  <ActivityIndicator color={color} style={{marginLeft: 10}} size="small" />
 );

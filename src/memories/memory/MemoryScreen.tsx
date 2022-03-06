@@ -1,4 +1,4 @@
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect} from 'react';
 import {FlatList, RefreshControl, Text, View, StyleSheet} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -10,7 +10,7 @@ import {TwoState} from '../../state/reducers';
 import {
   selectMemory,
   updateMemory,
-  selectMemoryContent,
+  selectContent,
   storeContent,
 } from '../store';
 import {getContent} from '../../content/ContentService';
@@ -29,43 +29,26 @@ import {Screen} from '../../navigation/NavigationUtilities';
 
 export const MemoryScreen = ({route}: Screen<'MemoryScreen'>) => {
   const dispatch = useDispatch();
-  const mid = route.params.mid;
-  const memory = useSelector((s: TwoState) => selectMemory(s.memories, mid));
-  const content = useSelector((s: TwoState) =>
-    selectMemoryContent(s.memories, mid),
+  const {mid} = route.params;
+  const [memory, content] = useSelector<TwoState, [Memory, Content[]]>(
+    ({memories}) => [selectMemory(memories, mid), selectContent(memories, mid)],
   );
 
   const [refreshing, setRefreshing] = useState<boolean>(false);
-  const hasMounted = useRef<boolean>(false);
-  useEffect(() => {
-    hasMounted.current = true;
-  }, []);
 
   const refreshMemory = () => {
     Promise.all([getMemory(memory.mid), getContent(memory.mid)])
       .then((result: [Memory, Content[]]) => {
-        const [updatedMemory, updatedContent] = result;
-        dispatch(updateMemory({mid: updatedMemory.mid, memory: updatedMemory}));
-        dispatch(
-          storeContent({mid: updatedMemory.mid, content: updatedContent}),
-        );
+        const [memory, content] = result;
+        dispatch(updateMemory({mid: memory.mid, memory}));
+        dispatch(storeContent({mid: memory.mid, content}));
       })
       .finally(() => setRefreshing(false));
   };
 
   useEffect(() => {
-    getContent(memory.mid).then(newContent => {
-      dispatch(storeContent({mid: memory.mid, content: newContent}));
-    });
+    refreshMemory();
   }, []);
-
-  // TODO fix this piece of shit
-  // refresh entire memory on content change (update, delete)
-  useEffect(() => {
-    if (hasMounted) {
-      refreshMemory();
-    }
-  }, [JSON.stringify(content)]);
 
   return (
     <Container>

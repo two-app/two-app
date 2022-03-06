@@ -12,10 +12,6 @@ describe('Input', () => {
     expect(tb.getInputValue()).toEqual('');
   });
 
-  test('applies supplied attributes', () => {
-    expect(tb.input().props.placeholder).toEqual(tb.attributes.placeholder);
-  });
-
   test('maintains the input value', () => {
     expect(tb.getInputValue()).toEqual('');
 
@@ -27,7 +23,7 @@ describe('Input', () => {
   test('emits the changed value', () => {
     tb.setInputValue('New Value');
 
-    expect(tb.onChange).toHaveBeenCalledWith('New Value');
+    expect(tb.onChange).toHaveBeenCalledWith(['New Value', true]);
   });
 
   test('checks if input is valid', () => {
@@ -53,7 +49,6 @@ describe('Input', () => {
 class InputTestBed {
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 
-  attributes = {placeholder: 'Test Placeholder'};
   isValid: () => boolean = () => true;
   onChange = jest.fn();
   inputLabel = 'Test Input Label';
@@ -73,10 +68,8 @@ class InputTestBed {
   build = (): InputTestBed => {
     this.render = render(
       <Input
-        attributes={this.attributes}
         isValid={this.isValid}
-        onChange={this.onChange}
-        label={this.inputLabel}
+        onEmit={this.onChange}
         accessibilityLabel="Test Input"
       />,
     );

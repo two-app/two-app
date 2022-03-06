@@ -1,86 +1,88 @@
 import {useState} from 'react';
 import {Text, View, TouchableOpacity} from 'react-native';
+import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import {ScrollContainer} from '../views/View';
 import Colors from '../Colors';
 import {Input} from '../forms/Input';
-import {SubmitButton} from '../forms/SubmitButton';
 import type {ErrorResponse} from '../http/Response';
 
 import {LogoHeader} from './LogoHeader';
-import UserRegistrationModel from './register_workflow/UserRegistrationModel';
-import type {LoginCredentials} from './AuthenticationService';
-import AuthenticationService, {
-  areCredentialsValid,
-} from './AuthenticationService';
-import {Screen} from '../navigation/NavigationUtilities';
+import {resetNavigate, Screen} from '../navigation/NavigationUtilities';
+import {PrimaryButton} from '../forms/SubmitButton';
+import F, {Form} from '../forms/Form';
+import AuthenticationService from './AuthenticationService';
+import {validateEmail} from '../forms/Validators';
+import {MixedUser} from './UserModel';
 
-const LoginScreen = ({navigation}: Screen<'LoginScreen'>) => {
-  const [loginCredentials, setLoginCredentials] = useState<LoginCredentials>({
-    email: '',
-    rawPassword: '',
+type LoginForm = {
+  email: string;
+  password: string;
+};
+
+export const LoginScreen = ({navigation}: Screen<'LoginScreen'>) => {
+  const [form, setForm] = useState<Form<LoginForm>>({
+    email: F.str,
+    password: F.str,
   });
   const [submitted, setSubmitted] = useState(false);
-  const [loginError, setLoginError] = useState<string>();
+  const [error, setError] = useState<string>();
 
   const login = () => {
     setSubmitted(true);
-    AuthenticationService.login(loginCredentials)
-      .then(() =>
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'LoadingScreen'}],
-        }),
-      )
+    AuthenticationService.login(F.data(form))
+      .then((user: MixedUser) => {
+        return resetNavigate(
+          'pid' in user ? 'HomeScreen' : 'ConnectCodeScreen',
+          navigation,
+        );
+      })
       .catch((e: ErrorResponse) => {
         setSubmitted(false);
-        setLoginError(e.reason);
-      })
-      .finally(() => setSubmitted(false));
+        setError(e.reason);
+      });
   };
 
   return (
-    <ScrollContainer isLoading={submitted} keyboardShouldPersistTaps="always">
+    <ScrollContainer keyboardShouldPersistTaps="always">
       <LogoHeader heading="Sign In" />
 
       <Input
-        attributes={{
-          placeholder: 'you@email.com',
-          autoCompleteType: 'email',
-          autoCapitalize: 'none',
-        }}
-        isValid={UserRegistrationModel.isEmailValid}
-        label={'Email'}
-        onChange={email => setLoginCredentials({...loginCredentials, email})}
-        accessibilityLabel="Enter your email"
+        placeholder="Email Address"
+        onEmit={email => setForm({...form, email})}
+        isValid={validateEmail}
+        autoComplete="email"
+        autoCapitalize="none"
+        accessibilityLabel="Email"
+        icon={{provider: IonIcon, name: 'mail-outline'}}
+        containerStyle={{marginTop: 20}}
       />
 
       <Input
-        attributes={{
-          placeholder: 'Secure Password',
-          autoCompleteType: 'password',
-          secureTextEntry: true,
-        }}
-        isValid={UserRegistrationModel.isPasswordValid}
-        label={'Password'}
-        onChange={password =>
-          setLoginCredentials({...loginCredentials, rawPassword: password})
-        }
-        accessibilityLabel="Enter your password"
+        placeholder="Secure Password"
+        onEmit={password => setForm({...form, password})}
+        isValid={password => password.length >= 6}
+        autoComplete="password"
+        secureTextEntry={true}
+        accessibilityLabel="Password"
+        icon={{provider: IonIcon, name: 'lock-closed-outline'}}
+        containerStyle={{marginTop: 20}}
       />
 
-      <SubmitButton
-        text="Sign In"
-        onSubmit={login}
-        disabled={!areCredentialsValid(loginCredentials)}
-        accessibilityLabel="Press to login"
-      />
+      <PrimaryButton
+        accessibilityLabel="Press to Login"
+        onPress={login}
+        loading={submitted}
+        disabled={F.isInvalid(form)}
+        style={{marginVertical: 20}}>
+        Sign In
+      </PrimaryButton>
 
-      {loginError && (
+      {error !== '' && (
         <Text
           style={{color: Colors.DARK_SALMON}}
           accessibilityHint="Login error">
-          {loginError}
+          {error}
         </Text>
       )}
 
@@ -103,5 +105,3 @@ const LoginScreen = ({navigation}: Screen<'LoginScreen'>) => {
     </ScrollContainer>
   );
 };
-
-export {LoginScreen};

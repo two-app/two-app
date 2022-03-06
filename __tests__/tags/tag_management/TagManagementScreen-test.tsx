@@ -1,12 +1,6 @@
 import {Text} from 'react-native';
 import type {RenderAPI, QueryReturn} from '@testing-library/react-native';
-import {
-  render,
-  fireEvent,
-  waitFor,
-  waitForElementToBeRemoved,
-} from '@testing-library/react-native';
-import type {ReactTestInstance} from 'react-test-renderer';
+import {render, fireEvent, waitFor} from '@testing-library/react-native';
 
 import * as TagService from '../../../src/tags/TagService';
 import type {Tag, TagDescription} from '../../../src/tags/Tag';
@@ -77,7 +71,7 @@ describe('TagManagementScreen - Create Mode', () => {
 
     test('it should show a loading indicator', () => {
       tb.pressCreateButton();
-      expect(tb.getLoadingScreen()).toBeTruthy();
+      expect(tb.isLoading()).toEqual(true);
     });
 
     test('it should navigate to the previous screen', async () => {
@@ -97,10 +91,7 @@ describe('TagManagementScreen - Create Mode', () => {
 
     test('it should hide the loading indicator when complete', async () => {
       tb.pressCreateButton();
-
-      await waitForElementToBeRemoved(() => tb.queryLoadingScreen());
-
-      expect(tb.queryLoadingScreen()).toBeFalsy();
+      await waitFor(() => !tb.isLoading());
     });
 
     test('it should display an error for a rejected patch', async () => {
@@ -224,12 +215,9 @@ class TagManagementScreenTestBed {
     return submit.props.accessibilityState.disabled === false;
   };
 
-  queryLoadingScreen = (): QueryReturn => {
-    return this.render.queryByA11yHint('Waiting for an action to finish...');
-  };
-
-  getLoadingScreen = (): ReactTestInstance => {
-    return this.render.getByA11yHint('Waiting for an action to finish...');
+  isLoading = (): QueryReturn => {
+    const submit = this.render.getByA11yLabel('Create Tag');
+    return submit.props.accessibilityState.busy;
   };
 
   build = (): TagManagementScreenTestBed => {

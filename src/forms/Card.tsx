@@ -66,7 +66,7 @@ const AndroidTouchableCard = ({
     <TouchableWithoutFeedback
       {...a11}
       onPressIn={() => {
-        animateOpacity(0.8);
+        animateOpacity(0.9);
         HapticFeedback.trigger('selection', {enableVibrateFallback: false});
       }}
       onPress={() => onPress && onPress()}
@@ -87,17 +87,17 @@ const s = StyleSheet.create({
     overflow: 'visible',
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 12,
+    height: 50,
+    padding: 15,
     backgroundColor: 'white',
-    borderColor: Colors.FADED,
-    borderWidth: 0.5,
+    borderColor: 'rgba(0, 0, 0, 0.2)',
+    borderWidth: 1,
     borderRadius: 5,
-    marginHorizontal: 3, // Margins used since the card is usually clipped horizontally
     ...Platform.select({
       ios: {
         shadowColor: Colors.DARK,
-        shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 0.22,
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.15,
         shadowRadius: 3,
       },
       android: {

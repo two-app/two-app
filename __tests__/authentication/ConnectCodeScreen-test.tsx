@@ -1,25 +1,21 @@
 import {Text} from 'react-native';
 import {v4 as uuid} from 'uuid';
-import type {QueryReturn, RenderAPI} from '@testing-library/react-native';
-import {
-  waitFor,
-  waitForElementToBeRemoved,
-  fireEvent,
-  render,
-} from '@testing-library/react-native';
+import type {RenderAPI} from '@testing-library/react-native';
+import {waitFor, fireEvent, render} from '@testing-library/react-native';
 import {Provider} from 'react-redux';
 
-import type {UnconnectedUser} from '../../../src/authentication/UserModel';
-import {ConnectCodeScreen} from '../../../src/authentication/register_workflow/ConnectCodeScreen';
-import type {ErrorResponse} from '../../../src/http/Response';
-import AuthenticationService from '../../../src/authentication/AuthenticationService';
+import type {UnconnectedUser} from '../../src/authentication/UserModel';
+import type {ErrorResponse} from '../../src/http/Response';
+import AuthenticationService from '../../src/authentication/AuthenticationService';
 import {
   mockNavigation,
   mockNavigationProps,
   resetMockNavigation,
-} from '../../utils/NavigationMocking';
-import {clearState, store} from '../../../src/state/reducers';
-import {storeUnconnectedUser} from '../../../src/user';
+} from '../utils/NavigationMocking';
+import {clearState, store} from '../../src/state/reducers';
+import {storeUnconnectedUser} from '../../src/user';
+import {ConnectCodeScreen} from '../../src/authentication/ConnectCodeScreen';
+import {CommonActions} from '@react-navigation/native';
 
 describe('ConnectCodeScreen', () => {
   let tb: ConnectCodeScreenTestBed;
@@ -27,8 +23,7 @@ describe('ConnectCodeScreen', () => {
 
   test('pressing logout should navigate to the LogoutScreen', () => {
     tb.pressLogout();
-
-    expect(mockNavigation.dispatch).toHaveBeenCalledTimes(1);
+    expect(mockNavigation.navigate).toHaveBeenCalledWith('LogoutScreen');
   });
 
   test('submit should be disabled by default', () => {
@@ -58,16 +53,21 @@ describe('ConnectCodeScreen', () => {
   });
 
   describe('When entered code is valid', () => {
-    beforeEach(() => tb.setPartnerCode(uuid()));
+    beforeEach(() => {
+      tb.setPartnerCode(uuid());
+      tb.setAnniversary('2020-09-25');
+    });
 
-    test('enables submit', () => expect(tb.isSubmitEnabled()).toBe(true));
+    test('enables submit', () => {
+      expect(tb.isSubmitEnabled()).toBe(true);
+    });
 
     test('displays loading view on submit', () => {
       tb.whenConnectResolve();
 
       tb.pressSubmit();
 
-      expect(tb.queryLoadingScreen()).toBeTruthy();
+      expect(tb.isSubmitted()).toEqual(true);
     });
 
     test('it delegates to the AuthenticationService', () => {
@@ -79,13 +79,18 @@ describe('ConnectCodeScreen', () => {
     });
 
     describe('On successful connect', () => {
-      test('hides loading view', async () => {
+      test('navigates to the HomeScreen', async () => {
         tb.whenConnectResolve();
 
         tb.pressSubmit();
+        await waitFor(() => !tb.isSubmitted());
 
-        await waitForElementToBeRemoved(tb.queryLoadingScreen);
-        expect(tb.queryLoadingScreen()).toBeFalsy();
+        expect(mockNavigation.dispatch).toHaveBeenCalledWith(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: 'HomeScreen'}],
+          }),
+        );
       });
     });
 
@@ -99,11 +104,12 @@ describe('ConnectCodeScreen', () => {
         tb.whenConnectReject(error);
       });
 
-      test('hides loading view 2', async () => {
+      test('hides loading view', async () => {
         tb.pressSubmit();
 
-        await waitForElementToBeRemoved(tb.queryLoadingScreen);
-        expect(tb.queryLoadingScreen()).toBeFalsy();
+        await waitFor(() => !tb.isSubmitted());
+
+        expect(tb.isSubmitted()).toEqual(false);
       });
 
       test('displays error message', async () => {
@@ -124,12 +130,12 @@ class ConnectCodeScreenTestBed {
   }
 
   // elements
+  codeInput = () => this.render.getByA11yLabel('Partner Code');
+  anniversaryInput = () => this.render.getByA11yLabel('Anniversary Date');
+
   copyButton = () =>
     this.render.getByA11yHint('Copy connect code to clipboard');
-  logoutButton = () => this.render.getByA11yLabel('Tap to logout');
-
-  codeInput = () => this.render.getByA11yLabel('Enter partner code');
-  submitButton = () => this.render.getByA11yLabel('Press to connect');
+  submitButton = () => this.render.getByA11yLabel('Connect to Partner');
 
   // queries
   isSubmitEnabled = (): boolean =>
@@ -138,12 +144,15 @@ class ConnectCodeScreenTestBed {
   isPartnerCodeValid = (): boolean =>
     this.codeInput().props.accessibilityValue === 'Valid entry';
 
-  queryLoadingScreen = (): QueryReturn =>
-    this.render.queryByA11yHint('Waiting for an action to finish...');
+  isSubmitted = (): boolean =>
+    this.submitButton().props.accessibilityState.busy;
 
   // events
-  setPartnerCode = (pid: string) => fireEvent.changeText(this.codeInput(), pid);
-  pressLogout = () => fireEvent.press(this.logoutButton());
+  setPartnerCode = (pid: string) => fireEvent(this.codeInput(), 'onEmit', pid);
+  setAnniversary = (date: string) =>
+    fireEvent(this.anniversaryInput(), 'onEmit', date);
+
+  pressLogout = () => fireEvent.press(this.render.getByA11yLabel('Logout'));
   pressSubmit = () => fireEvent.press(this.submitButton());
 
   // mocks

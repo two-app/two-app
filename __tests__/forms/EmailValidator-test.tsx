@@ -1,4 +1,4 @@
-import EmailValidator from '../../src/forms/EmailValidator';
+import {validateEmail} from '../../src/forms/Validators';
 
 describe('validateEmail', () => {
   test('it should succeed with a valid email', () =>
@@ -15,6 +15,5 @@ describe('validateEmail', () => {
 
   test('it should fail for an empty input', () => expectEmail('').toBe(false));
 
-  const expectEmail = (email: string) =>
-    expect(EmailValidator.validateEmail(email));
+  const expectEmail = (email: string) => expect(validateEmail(email));
 });

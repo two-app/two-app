@@ -1,7 +1,6 @@
 import {Text} from 'react-native';
-import type {RenderAPI, QueryReturn} from '@testing-library/react-native';
+import type {RenderAPI} from '@testing-library/react-native';
 import {render, fireEvent, waitFor} from '@testing-library/react-native';
-import type {ReactTestInstance} from 'react-test-renderer';
 
 import {EditMemoryScreen} from '../../../src/memories/memory/EditMemoryScreen';
 import type {Memory, MemoryMeta} from '../../../src/memories/MemoryModels';
@@ -24,11 +23,6 @@ describe('EditMemoryScreen', () => {
   let tb: EditMemoryScreenTestBed;
 
   beforeEach(() => (tb = new EditMemoryScreenTestBed().build()));
-
-  test('the submit button should be disabled by default', () => {
-    const submit = tb.render.getByA11yLabel('Update Memory');
-    expect(submit.props.accessibilityState).toEqual({disabled: true});
-  });
 
   describe('Modifying the Title', () => {
     test('it should enable the submit button', () => {
@@ -66,12 +60,6 @@ describe('EditMemoryScreen', () => {
       expect(tb.isSubmitButtonEnabled()).toBe(true);
     });
 
-    test('removing and readding the tag should disable the button', () => {
-      tb.selectTag(tb.selectedTag.name); // deselect
-      tb.selectTag(tb.selectedTag.name); // reselect
-      expect(tb.isSubmitButtonEnabled()).toBe(false);
-    });
-
     test('submitting a deselected tag should pass value -1 for tag id', () => {
       // GIVEN
       const expected: MemoryMeta = {
@@ -107,7 +95,6 @@ describe('EditMemoryScreen', () => {
         title: 'New Title',
         location: 'New Location',
         tid: tb.otherTag.tid,
-        displayContentId: undefined,
       };
 
       // WHEN
@@ -119,9 +106,10 @@ describe('EditMemoryScreen', () => {
 
     test('it should show a loading indicator', () => {
       tb.updateMemory.mockReturnValue(new Promise(() => {}));
+
       tb.pressSubmitButton();
 
-      expect(tb.getLoadingScreen()).toBeTruthy();
+      expect(tb.isSubmitted()).toBe(true);
     });
 
     test('it should navigate to the previous screen', async () => {
@@ -214,16 +202,15 @@ class EditMemoryScreenTestBed {
   };
 
   setTitleInput = (title: string) => {
-    const input = this.render.getByA11yLabel('Set Title');
-    fireEvent.changeText(input, title);
-    fireEvent(input, 'blur');
+    const input = this.render.getByA11yLabel('Enter Memory Title');
+    fireEvent(input, 'onChangeText', title);
+    fireEvent(input, 'onBlur');
   };
 
-  setLocationInput = (location: string): EditMemoryScreenTestBed => {
-    const input = this.render.getByA11yLabel('Set Location');
-    fireEvent.changeText(input, location);
-    fireEvent(input, 'blur');
-    return this;
+  setLocationInput = (location: string) => {
+    const input = this.render.getByA11yLabel('Enter Memory Location');
+    fireEvent(input, 'onChangeText', location);
+    fireEvent(input, 'onBlur');
   };
 
   selectTag = (tagName: string) => {
@@ -241,12 +228,9 @@ class EditMemoryScreenTestBed {
     return submit.props.accessibilityState.disabled === false;
   };
 
-  queryLoadingScreen = (): QueryReturn => {
-    return this.render.queryByA11yHint('Waiting for an action to finish...');
-  };
-
-  getLoadingScreen = (): ReactTestInstance => {
-    return this.render.getByA11yHint('Waiting for an action to finish...');
+  isSubmitted = (): boolean => {
+    const submit = this.render.getByA11yLabel('Update Memory');
+    return submit.props.accessibilityState.busy === true;
   };
 
   waitForCall = (fn: jest.Mock<any>): Promise<void> => {

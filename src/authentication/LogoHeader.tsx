@@ -15,12 +15,13 @@ const styles = StyleSheet.create({
     fontSize: 50,
     fontWeight: 'bold',
     textAlign: 'center',
-    paddingTop: 20,
+    paddingTop: 10,
     paddingBottom: 20,
   },
   heading: {
     fontSize: 25,
-    fontWeight: 'bold',
+    fontWeight: '700',
     color: Colors.DARK,
+    fontFamily: 'Montserrat-SemiBold',
   },
 });

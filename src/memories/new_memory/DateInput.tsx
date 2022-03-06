@@ -1,103 +1,82 @@
-import {useState} from 'react';
-import {Keyboard, Text, View, Platform} from 'react-native';
-import AntIcon from 'react-native-vector-icons/AntDesign';
+import {forwardRef, useImperativeHandle, useState} from 'react';
+import {Platform} from 'react-native';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 
-import Colors from '../../Colors';
-import {TouchableCard} from '../../forms/Card';
-
-import {FormStyle} from './FormStyles';
-
-type DateTimePickerProps = {
-  setDateTime: (datetime: Date) => void;
-  initialValue?: Date;
-  placeholder?: string;
+type DateInputModalProps = {
+  initialValue: Date;
+  onSelected: (date: Date) => void;
+  maximumDate?: Date;
 };
 
-/**
- * Utility for the user to select a date and time.
- * On iOS, there is no native datetime picker, so a two-step modal is used. The intermediary 'date' value
- * is stored as the `pickerValue`.
- */
-export const DateTimePicker = ({
-  setDateTime,
-  initialValue = new Date(),
-  placeholder = 'When it took place...',
-}: DateTimePickerProps) => {
-  const [isVisible, setVisibility] = useState(false);
-  const [pickerValue, setPickerValue] = useState<Date>();
-  const [date, setDate] = useState<Date>(initialValue);
-  const [selecting, setSelecting] = useState<'date' | 'time'>('date');
+export type DateInputModalHandle = {
+  openDatePicker: () => void;
+};
 
-  const openPicker = () => {
-    Keyboard.dismiss();
-    setVisibility(true);
-  };
+export const DateInputModal = forwardRef<
+  DateInputModalHandle,
+  DateInputModalProps
+>((props, ref) => {
+  const [visible, setVisible] = useState(false);
+  const [mode, setMode] = useState<'date' | 'time'>('date');
+  const [date, setDate] = useState<Date>(props.initialValue);
 
   const reset = () => {
-    setVisibility(false);
-    setSelecting('date');
-    setPickerValue(undefined);
+    setVisible(false);
+    setMode('date');
+    setDate(props.initialValue);
   };
 
-  const updateDate = (newDate: Date) => {
-    setDate(newDate);
-    setDateTime(newDate);
+  const emit = (date: Date) => {
+    props.onSelected(date);
     reset();
   };
 
-  return (
-    <>
-      <TouchableCard
-        a11={{accessibilityLabel: 'Set the Date and Time'}}
-        style={FormStyle.card}
-        onPress={openPicker}>
-        <View style={FormStyle.iconContainer}>
-          <AntIcon
-            name={'calendar'}
-            style={{fontSize: 13, color: Colors.REGULAR}}
-          />
-        </View>
-        {date == null && (
-          <Text style={{color: Colors.REGULAR}}>{placeholder}</Text>
-        )}
-        {date != null && (
-          <Text style={{color: Colors.DARK}}>{moment(date).format('LLL')}</Text>
-        )}
-      </TouchableCard>
-      {Platform.OS === 'android' ? (
-        <DateTimePickerModal
-          accessibilityLabel="Pick the Date"
-          isVisible={isVisible}
-          maximumDate={new Date()}
-          mode="datetime"
-          onConfirm={updateDate}
-          onCancel={reset}
-        />
-      ) : (
-        <DateTimePickerModal
-          accessibilityLabel={
-            selecting === 'date' ? 'Pick the Date' : 'Pick the Time'
+  useImperativeHandle(ref, () => ({
+    openDatePicker: () => setVisible(true),
+  }));
+
+  const commonProps = {
+    isVisible: visible,
+    maximumDate: props.maximumDate,
+    mode: mode,
+    onCancel: reset,
+  };
+
+  /**
+   * iOS only supports selecting a date or a time, not both simultaneously.
+   * In this case, select the date with a two-step process, by storing the
+   * date first in state, then prompt the user for a time.
+   */
+  if (Platform.OS === 'ios') {
+    const label = mode === 'date' ? 'Pick the Date' : 'Pick the Time';
+    const confirmation = mode === 'date' ? 'Set Date' : 'Set Time';
+    return (
+      <DateTimePickerModal
+        {...commonProps}
+        accessibilityLabel={label}
+        confirmTextIOS={confirmation}
+        onConfirm={(selectedDate: Date) => {
+          if (mode === 'date') {
+            // if in date mode, simply set the value & change mode to 'time'
+            setDate(selectedDate);
+            setMode('time');
+          } else {
+            // else merge the previously selected date and the selected time
+            const onlyDate = moment(date).format('YYYY-MM-DD');
+            const onlyTime = moment(selectedDate).format('HH:mm:00');
+            emit(moment(`${onlyDate} ${onlyTime}`).toDate());
           }
-          isVisible={isVisible}
-          maximumDate={new Date()}
-          mode={selecting}
-          confirmTextIOS={selecting === 'date' ? 'Set Date' : 'Set Time'}
-          onConfirm={(selectedDate: Date) => {
-            if (selecting === 'date') {
-              setPickerValue(selectedDate);
-              setSelecting('time');
-            } else {
-              const onlyDate = moment(pickerValue).format('YYYY-MM-DD');
-              const onlyTime = moment(selectedDate).format('HH:mm:00');
-              const datetime = moment(`${onlyDate} ${onlyTime}`);
-              updateDate(datetime.toDate());
-            }
-          }}
-          onCancel={reset}
-        />
-      )}
-    </>
+        }}
+      />
+    );
+  }
+
+  return (
+    <DateTimePickerModal
+      {...commonProps}
+      accessibilityLabel="Pick the Date"
+      onConfirm={emit}
+    />
   );
-};
+});
