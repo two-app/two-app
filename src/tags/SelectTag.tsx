@@ -1,6 +1,5 @@
 import {useState, useEffect} from 'react';
 import {Text, FlatList, TouchableOpacity, View, ViewProps} from 'react-native';
-import {FakeInput} from '../forms/Input';
 
 import Colors from '../Colors';
 import IonIcon from 'react-native-vector-icons/Ionicons';
@@ -10,6 +9,7 @@ import {getTags} from './TagService';
 import {TagButton} from './TagButton';
 import {useNavigation} from '@react-navigation/native';
 import {Routes} from '../navigation/NavigationUtilities';
+import {NonEditableInput} from '../forms/Input';
 
 type SelectTagProps = ViewProps & {
   onTagChange: (tag: undefined | Tag) => void;
@@ -47,10 +47,10 @@ export const SelectTag = (props: SelectTagProps) => {
             });
           }
         }}>
-        <FakeInput
+        <NonEditableInput
           placeholder="Optional tag, e.g Anniversary"
           value={tag?.name}
-          valid={true}
+          isValid={() => true}
           icon={{provider: IonIcon, name: 'pricetag-outline'}}
         />
       </TouchableOpacity>

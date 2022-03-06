@@ -16,7 +16,7 @@ import {TwoState} from '../../state/reducers';
 import {selectMemory, updateMemory} from '../store';
 import {Screen} from '../../navigation/NavigationUtilities';
 import F, {useForm} from '../../forms/Form';
-import {FakeInput, Input} from '../../forms/Input';
+import {Input, NonEditableInput} from '../../forms/Input';
 import moment from 'moment';
 
 type EditMemoryForm = {
@@ -52,7 +52,6 @@ export const EditMemoryScreen = ({
   const dispatch = useDispatch();
 
   const submitEdit = () => {
-    console.log('Submitting an edit');
     setSubmitted(true);
 
     updateMemoryRequest({...data, mid: memory.mid})
@@ -97,11 +96,11 @@ export const EditMemoryScreen = ({
       <TouchableOpacity
         onPress={() => datePicker.current?.openDatePicker()}
         style={{marginTop: 20}}>
-        <FakeInput
+        <NonEditableInput
           placeholder="When it took place"
           icon={{provider: IonIcon, name: 'calendar-outline'}}
           value={date}
-          valid={true}
+          isValid={() => true}
         />
       </TouchableOpacity>
 

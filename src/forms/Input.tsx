@@ -5,7 +5,6 @@ import {
   TextInputProps,
   View,
   ViewStyle,
-  Text,
 } from 'react-native';
 import {TextInputMask, TextInputMaskProps} from 'react-native-masked-text';
 import {Icon} from 'react-native-vector-icons/Icon';
@@ -101,56 +100,9 @@ export const NonEditableInput = forwardRef(
   },
 );
 
-type FakeInputProps = {
-  placeholder: string;
-  value?: string;
-  valid: boolean;
-  icon?: {
-    name: string;
-    provider: typeof Icon;
-  };
-  containerStyle?: ViewStyle;
-};
-
-export const FakeInput = (props: FakeInputProps) => {
-  const {value, valid, icon, containerStyle} = props;
-  let focusStyle;
-
-  if (value == null || value == '') {
-    focusStyle = styles.unfocused;
-  } else if (valid) {
-    focusStyle = styles.valid;
-  } else {
-    focusStyle = styles.invalid;
-  }
-
-  let DataComponent: ReactElement;
-
-  if (value == null || value == '') {
-    // Create a placeholder
-    DataComponent = (
-      <Text style={{color: PLACEHOLDER_COLOR}}>{props.placeholder}</Text>
-    );
-  } else {
-    DataComponent = <Text style={focusStyle}>{value}</Text>;
-  }
-
-  return (
-    <View style={[styles.container, containerStyle]}>
-      <View style={[styles.input, focusStyle]}>{DataComponent}</View>
-      <View style={[focusStyle, styles.iconContainer]}>
-        {icon != null && (
-          <icon.provider name={icon.name} size={15} color={focusStyle.color} />
-        )}
-      </View>
-    </View>
-  );
-};
-
 const HEIGHT = 50;
 const BORDER_WIDTH = 1;
 const BORDER_RADIUS = 5;
-const PLACEHOLDER_COLOR = 'rgba(0, 0, 0.0980392, 0.5)';
 const FONT_SIZE = 14;
 
 const styles = StyleSheet.create({
