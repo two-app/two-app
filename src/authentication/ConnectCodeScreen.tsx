@@ -1,4 +1,5 @@
 import {validate as isUuid} from 'uuid';
+import {v4 as uuid} from 'uuid';
 import {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
@@ -19,9 +20,10 @@ import {PrimaryButton} from '../forms/SubmitButton';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {HR} from '../forms/HorizontalRule';
 import F, {Form} from '../forms/Form';
+import moment from 'moment';
 
 type ConnectForm = {
-  cc: string;
+  toUser: string;
   anniversary: string;
 };
 
@@ -29,7 +31,7 @@ export const ConnectCodeScreen = ({
   navigation,
 }: Screen<'ConnectCodeScreen'>) => {
   const [form, setForm] = useState<Form<ConnectForm>>({
-    cc: F.str,
+    toUser: F.str,
     anniversary: F.str,
   });
   const [submitted, setSubmitted] = useState(false);
@@ -41,7 +43,8 @@ export const ConnectCodeScreen = ({
 
   const connectToPartner = () => {
     setSubmitted(true);
-    AuthenticationService.connectUser(F.data(form).cc)
+    const data = F.data(form);
+    AuthenticationService.connectUser({...data, cid: uuid()})
       .then((_: User) => resetNavigate('HomeScreen', navigation))
       .catch(({reason}: ErrorResponse) => {
         if (
@@ -86,7 +89,7 @@ export const ConnectCodeScreen = ({
       <Input
         placeholder="Partner's Connect Code"
         accessibilityLabel="Partner Code"
-        onEmit={cc => setForm({...form, cc})}
+        onEmit={toUser => setForm({...form, toUser})}
         isValid={isUuid}
         autoCorrect={false}
         icon={{provider: IonIcon, name: 'finger-print-outline'}}
@@ -98,7 +101,12 @@ export const ConnectCodeScreen = ({
         placeholder="Anniversary Date"
         accessibilityLabel="Anniversary Date"
         onEmit={anniversary => setForm({...form, anniversary})}
-        isValid={date => /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(date)}
+        isValid={dob => {
+          const m = moment(dob, 'YYYY-MM-DD', true);
+          return m.isValid() && m.year() <= new Date().getFullYear();
+        }}
+        returnKeyType="done"
+        keyboardType="numeric"
         mask={{
           type: 'datetime',
           options: {format: 'YYYY-MM-DD'},

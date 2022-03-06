@@ -18,6 +18,7 @@ import {Screen} from '../../navigation/NavigationUtilities';
 import F, {Form} from '../../forms/Form';
 import {DateInputModal, DateInputModalHandle} from './DateInput';
 import moment from 'moment';
+import {TextInput} from 'react-native-gesture-handler';
 
 type MemoryForm = {
   title: string;
@@ -40,7 +41,7 @@ export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
   // Date selection, e.g Februrary 23, 2022, 6:37 PM
   const datePicker = useRef<DateInputModalHandle>();
   const [_date, _] = form.occurredAt;
-  const date = _date == null ? undefined : moment(_date).format('LLL');
+  const date = moment(_date);
 
   const storeAndNavigate = (m: Memory): void => {
     dispatch(insertMemory(m));
@@ -66,7 +67,7 @@ export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
     const data = F.data(form);
     const meta: MemoryMeta = {
       ...data,
-      occurredAt: data.occurredAt ?? new Date(),
+      occurredAt: date.toDate(),
       mid: uuid(),
     };
 
@@ -82,6 +83,8 @@ export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
       });
   };
 
+  const locationInput = useRef<TextInput>();
+
   return (
     <ScrollContainer keyboardShouldPersistTaps="handled">
       <Heading>New Memory</Heading>
@@ -89,6 +92,7 @@ export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
       <Input
         placeholder="Title of your new memory"
         isValid={title => title.length > 0}
+        onSubmitEditing={() => locationInput.current?.focus()}
         onEmit={title => setForm({...form, title})}
         blurOnSubmit={false}
         autoCapitalize="words"
@@ -106,6 +110,7 @@ export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
         accessibilityLabel="Enter Memory Location"
         icon={{provider: IonIcon, name: 'location-outline'}}
         containerStyle={{marginTop: 20}}
+        ref={locationInput}
       />
 
       <TouchableOpacity
@@ -115,7 +120,9 @@ export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
           editable={false}
           placeholder="When it took place"
           icon={{provider: IonIcon, name: 'calendar-outline'}}
-          value={date}
+          initialValue={new Date().toString()}
+          value={date.format('LLL')}
+          isValid={() => true}
         />
       </TouchableOpacity>
 

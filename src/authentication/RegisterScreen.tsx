@@ -78,6 +78,9 @@ export const RegisterScreen = ({navigation}: Screen<'RegisterScreen'>) => {
         placeholder="First Name"
         isValid={firstName => firstName.length > 0}
         onSubmitEditing={() => lastNameInput.current?.focus()}
+        returnKeyType="next"
+        autoCorrect={false}
+        autoComplete="name-given"
         onEmit={firstName => setForm({...form, firstName})}
         blurOnSubmit={false}
         autoCapitalize="words"
@@ -90,8 +93,11 @@ export const RegisterScreen = ({navigation}: Screen<'RegisterScreen'>) => {
         placeholder="Last Name"
         isValid={lastName => lastName.length > 1}
         onSubmitEditing={() => emailInput.current?.focus()}
+        returnKeyType="next"
         onEmit={lastName => setForm({...form, lastName})}
         blurOnSubmit={false}
+        autoCorrect={false}
+        autoComplete="name-family"
         autoCapitalize="words"
         accessibilityLabel="Last Name"
         icon={{provider: IonIcon, name: 'person-outline'}}
@@ -103,6 +109,7 @@ export const RegisterScreen = ({navigation}: Screen<'RegisterScreen'>) => {
         placeholder="Email Address"
         isValid={email => validateEmail(email)}
         onSubmitEditing={() => passwordInput.current?.focus()}
+        returnKeyType="next"
         onEmit={email => setForm({...form, email})}
         blurOnSubmit={false}
         autoComplete="email"
@@ -119,6 +126,7 @@ export const RegisterScreen = ({navigation}: Screen<'RegisterScreen'>) => {
         isValid={password => password.length >= 6}
         // @ts-ignore
         onSubmitEditing={() => dobInput.current?._inputElement?.focus()}
+        returnKeyType="next"
         onEmit={password => setForm({...form, password})}
         blurOnSubmit={false}
         autoComplete="password"
