@@ -25,6 +25,7 @@ import {ErrorResponse} from '../http/Response';
 import {TextInputMask} from 'react-native-masked-text';
 import {UserRegistration} from './AuthenticationModel';
 import {HR} from '../forms/HorizontalRule';
+import moment from 'moment';
 
 type RegisterForm = {
   firstName: string;
@@ -76,10 +77,8 @@ export const RegisterScreen = ({navigation}: Screen<'RegisterScreen'>) => {
       <Input
         placeholder="First Name"
         isValid={firstName => firstName.length > 0}
-        onEmit={firstName => {
-          setForm({...form, firstName});
-          lastNameInput.current?.focus();
-        }}
+        onSubmitEditing={() => lastNameInput.current?.focus()}
+        onEmit={firstName => setForm({...form, firstName})}
         blurOnSubmit={false}
         autoCapitalize="words"
         accessibilityLabel="First Name"
@@ -90,10 +89,8 @@ export const RegisterScreen = ({navigation}: Screen<'RegisterScreen'>) => {
       <Input
         placeholder="Last Name"
         isValid={lastName => lastName.length > 1}
-        onEmit={lastName => {
-          setForm({...form, lastName});
-          emailInput.current?.focus();
-        }}
+        onSubmitEditing={() => emailInput.current?.focus()}
+        onEmit={lastName => setForm({...form, lastName})}
         blurOnSubmit={false}
         autoCapitalize="words"
         accessibilityLabel="Last Name"
@@ -105,10 +102,8 @@ export const RegisterScreen = ({navigation}: Screen<'RegisterScreen'>) => {
       <Input
         placeholder="Email Address"
         isValid={email => validateEmail(email)}
-        onEmit={email => {
-          setForm({...form, email});
-          passwordInput.current?.focus();
-        }}
+        onSubmitEditing={() => passwordInput.current?.focus()}
+        onEmit={email => setForm({...form, email})}
         blurOnSubmit={false}
         autoComplete="email"
         autoCapitalize="none"
@@ -122,11 +117,9 @@ export const RegisterScreen = ({navigation}: Screen<'RegisterScreen'>) => {
       <Input
         placeholder="Secure Password"
         isValid={password => password.length >= 6}
-        onEmit={password => {
-          setForm({...form, password});
-          // @ts-ignore
-          dobInput.current?._inputElement?.focus();
-        }}
+        // @ts-ignore
+        onSubmitEditing={() => dobInput.current?._inputElement?.focus()}
+        onEmit={password => setForm({...form, password})}
         blurOnSubmit={false}
         autoComplete="password"
         secureTextEntry={true}
@@ -140,8 +133,14 @@ export const RegisterScreen = ({navigation}: Screen<'RegisterScreen'>) => {
       <Input
         placeholder="Date of Birth"
         accessibilityLabel="Date of Birth"
-        isValid={dob => /[0-9]{4}-[0-9]{2}-[0-9]{2}/.test(dob)}
+        isValid={dob => {
+          const m = moment(dob, 'YYYY-MM-DD', true);
+          const y = new Date().getFullYear() - 13;
+          return m.isValid() && m.year() <= y;
+        }}
         onEmit={dob => setForm({...form, dob})}
+        returnKeyType="done"
+        keyboardType="numeric"
         mask={{
           type: 'datetime',
           options: {format: 'YYYY-MM-DD'},

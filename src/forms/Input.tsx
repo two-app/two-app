@@ -50,7 +50,6 @@ export const Input = forwardRef((props: InputProps, ref) => {
   const commonProps: TextInputProps = {
     value,
     onChangeText: setValue,
-    onSubmitEditing: emit,
     onBlur: emit,
     onFocus: () => setFocused(true),
     style: [styles.input, focusedStyle],
