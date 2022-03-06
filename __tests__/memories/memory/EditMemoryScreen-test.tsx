@@ -1,7 +1,6 @@
 import {Text} from 'react-native';
-import type {RenderAPI, QueryReturn} from '@testing-library/react-native';
+import type {RenderAPI} from '@testing-library/react-native';
 import {render, fireEvent, waitFor} from '@testing-library/react-native';
-import type {ReactTestInstance} from 'react-test-renderer';
 
 import {EditMemoryScreen} from '../../../src/memories/memory/EditMemoryScreen';
 import type {Memory, MemoryMeta} from '../../../src/memories/MemoryModels';

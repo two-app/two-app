@@ -13,7 +13,6 @@ import {
   resetMockNavigation,
 } from '../utils/NavigationMocking';
 import {CommonActions} from '@react-navigation/native';
-import {store} from '../../src/state/reducers';
 import AuthenticationService from '../../src/authentication/AuthenticationService';
 import {ErrorResponse} from '../../src/http/Response';
 
