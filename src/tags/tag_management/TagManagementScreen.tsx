@@ -77,7 +77,7 @@ export const TagManagementScreen = ({
   };
 
   return (
-    <ScrollContainer isLoading={loading}>
+    <ScrollContainer>
       <Heading>{mode.heading}</Heading>
       <Text style={s.paragraph}>Tags are used to group memories.</Text>
 
@@ -114,6 +114,7 @@ export const TagManagementScreen = ({
         accessibilityHint={mode.submitHint}
         onPress={onSubmitPress}
         disabled={name == null}
+        loading={loading}
         style={{marginTop: 20}}>
         {mode.submitText}
       </PrimaryButton>

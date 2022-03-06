@@ -1,10 +1,6 @@
 import {Text} from 'react-native';
-import type {QueryReturn, RenderAPI} from '@testing-library/react-native';
-import {
-  waitForElementToBeRemoved,
-  fireEvent,
-  render,
-} from '@testing-library/react-native';
+import {RenderAPI, waitFor} from '@testing-library/react-native';
+import {fireEvent, render} from '@testing-library/react-native';
 
 import {RegisterScreen} from '../../src/authentication/RegisterScreen';
 import {
@@ -100,12 +96,11 @@ describe('RegisterScreen', () => {
     });
 
     describe('when registration succeeds', () => {
-      beforeEach(() => {
+      test('it should navigate to the ConnectCodeScreen', async () => {
         tb.whenRegisterResolve();
-        tb.pressSubmit();
-      });
 
-      test('it should navigate to the ConnectCodeScreen', () => {
+        await tb.pressSubmit();
+
         expect(mockNavigation.dispatch).toHaveBeenCalledWith(
           CommonActions.reset({
             index: 0,
@@ -121,16 +116,11 @@ describe('RegisterScreen', () => {
         status: 400,
       };
 
-      beforeEach(() => {
+      test('it should display the error', async () => {
         tb.whenRegisterReject(error);
-        tb.pressSubmit();
-      });
 
-      test('it should stop showing the loading indicator', () => {
-        expect(tb.isLoading()).toEqual(false);
-      });
+        await tb.pressSubmit();
 
-      test('it should display the error', () => {
         tb.render.getByText(error.reason);
       });
     });
@@ -148,14 +138,14 @@ class RegisterScreenTestBed {
     return !this.submitButton().props.accessibilityState.disabled;
   };
 
-  isLoading = (): QueryReturn => {
+  isLoading = (): boolean => {
     return this.submitButton().props.accessibilityState.busy;
   };
 
   // events
   pressSubmit = async () => {
     fireEvent.press(this.submitButton());
-    await waitForElementToBeRemoved(this.isLoading);
+    await waitFor(() => !this.isLoading());
   };
 
   // mocks

@@ -32,8 +32,6 @@ export const LoginScreen = ({navigation}: Screen<'LoginScreen'>) => {
     setSubmitted(true);
     AuthenticationService.login(F.data(form))
       .then((user: MixedUser) => {
-        console.log('got user');
-        console.log(user);
         return resetNavigate(
           'pid' in user ? 'HomeScreen' : 'ConnectCodeScreen',
           navigation,

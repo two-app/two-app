@@ -27,6 +27,7 @@ const TagInput = ({setTag, initialName}: TagInputProps) => {
         <TextInput
           accessibilityLabel="Set Tag Name"
           autoFocus={true}
+          autoCapitalize="words"
           placeholder="Tag, e.g Anniversary or Birthday..."
           placeholderTextColor={Colors.REGULAR}
           style={{color: Colors.DARK, flex: 1, paddingVertical: 0}}

@@ -117,10 +117,8 @@ export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
         onPress={() => datePicker.current?.openDatePicker()}
         style={{marginTop: 20, zIndex: 999}}>
         <NonEditableInput
-          editable={false}
           placeholder="When it took place"
           icon={{provider: IonIcon, name: 'calendar-outline'}}
-          initialValue={new Date().toString()}
           value={date.format('LLL')}
           isValid={() => true}
         />

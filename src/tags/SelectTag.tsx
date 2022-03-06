@@ -49,9 +49,9 @@ export const SelectTag = (props: SelectTagProps) => {
         }}>
         <NonEditableInput
           placeholder="Optional tag, e.g Anniversary"
+          icon={{provider: IonIcon, name: 'pricetag-outline'}}
           value={tag?.name}
           isValid={() => true}
-          icon={{provider: IonIcon, name: 'pricetag-outline'}}
         />
       </TouchableOpacity>
       {availableTags.length > 0 && (

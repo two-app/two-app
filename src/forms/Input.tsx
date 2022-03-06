@@ -1,4 +1,4 @@
-import {forwardRef, ReactElement, useState} from 'react';
+import {forwardRef, ReactElement, useEffect, useState} from 'react';
 import {
   StyleSheet,
   TextInput,
@@ -13,7 +13,6 @@ import Colors from '../Colors';
 import {Validated} from './Form';
 
 type PartialInputProps = TextInputProps & {
-  initialValue?: string;
   isValid?: (value: string) => boolean;
   icon?: {
     name: string;
@@ -27,7 +26,7 @@ type NonEditableInputProps = PartialInputProps;
 type InputProps = PartialInputProps & {onEmit: (e: Validated<string>) => void};
 
 export const Input = forwardRef((props: InputProps, ref) => {
-  const [value, setValue] = useState<string>(props.initialValue ?? '');
+  const [value, setValue] = useState<string>(props.value ?? '');
   const [valid, setValid] = useState<boolean>(true);
   const [focused, setFocused] = useState<boolean>(false);
   let focusedStyle;
@@ -39,6 +38,10 @@ export const Input = forwardRef((props: InputProps, ref) => {
   } else {
     focusedStyle = valid ? styles.valid : styles.invalid;
   }
+
+  useEffect(() => {
+    setValue(props.value ?? '');
+  }, [props.value]);
 
   const emit = () => {
     setFocused(false);

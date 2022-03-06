@@ -47,7 +47,7 @@ export const EditMemoryScreen = ({
   // Date selection, e.g Februrary 23, 2022, 6:37 PM
   const datePicker = useRef<DateInputModalHandle>();
   const [_date] = form.occurredAt;
-  const date = _date == null ? undefined : moment(_date).format('LLL');
+  const date = moment(_date);
 
   const dispatch = useDispatch();
 
@@ -71,7 +71,7 @@ export const EditMemoryScreen = ({
 
       <Input
         placeholder="Title of your new memory"
-        initialValue={data.title}
+        value={data.title}
         isValid={title => title.length > 0}
         onEmit={title => updForm({title})}
         blurOnSubmit={false}
@@ -83,7 +83,7 @@ export const EditMemoryScreen = ({
 
       <Input
         placeholder="Where it took place"
-        initialValue={data.location}
+        value={data.location}
         isValid={location => location.length > 0}
         onEmit={location => updForm({location})}
         blurOnSubmit={true}
@@ -99,7 +99,7 @@ export const EditMemoryScreen = ({
         <NonEditableInput
           placeholder="When it took place"
           icon={{provider: IonIcon, name: 'calendar-outline'}}
-          value={date}
+          value={date.format('LLL')}
           isValid={() => true}
         />
       </TouchableOpacity>
