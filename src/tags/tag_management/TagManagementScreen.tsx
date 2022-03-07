@@ -13,6 +13,7 @@ import {ColorList} from './ColorSelection';
 import {v4 as uuid} from 'uuid';
 import {Screen} from '../../navigation/NavigationUtilities';
 import {PrimaryButton} from '../../forms/SubmitButton';
+import {useTagStore} from '../TagStore';
 
 type Mode = {
   type: 'create' | 'edit';
@@ -44,6 +45,8 @@ export const TagManagementScreen = ({
   route,
 }: Screen<'TagManagementScreen'>) => {
   const {onSubmit, initialTag} = route.params;
+  const tagStore = useTagStore();
+
   const mode: Mode = getMode(initialTag);
   const tid: string = initialTag?.tid ?? uuid();
 
@@ -63,6 +66,7 @@ export const TagManagementScreen = ({
     const handleResponse = (promise: Promise<Tag>) => {
       promise
         .then((createdTag: Tag) => {
+          tagStore.add(createdTag);
           onSubmit(createdTag);
           navigation.goBack();
         })

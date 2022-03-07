@@ -1,18 +1,10 @@
 import {useState, useEffect} from 'react';
 import {FlatList, RefreshControl, Text, View, StyleSheet} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 
 import {Memory} from '../MemoryModels';
 import {Container} from '../../views/View';
 import {getMemory} from '../MemoryService';
 import Colors from '../../Colors';
-import {TwoState} from '../../state/reducers';
-import {
-  selectMemory,
-  updateMemory,
-  selectContent,
-  storeContent,
-} from '../store';
 import {getContent} from '../../content/ContentService';
 import {Content} from '../../content/ContentModels';
 
@@ -26,22 +18,25 @@ import {ContentGallery} from './ContentGallery';
 import {MemoryToolbar} from './MemoryToolbar';
 import {MemoryInteractionModal} from './MemoryInteractionModal';
 import {Screen} from '../../navigation/NavigationUtilities';
+import {useMemoryStore} from '../MemoryStore';
+import {useContentStore} from '../../content/ContentStore';
 
 export const MemoryScreen = ({route}: Screen<'MemoryScreen'>) => {
-  const dispatch = useDispatch();
   const {mid} = route.params;
-  const [memory, content] = useSelector<TwoState, [Memory, Content[]]>(
-    ({memories}) => [selectMemory(memories, mid), selectContent(memories, mid)],
-  );
+  const memoryStore = useMemoryStore();
+  const contentStore = useContentStore();
+
+  const memory = memoryStore.select(mid)!!;
+  const content = contentStore.select(mid);
 
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   const refreshMemory = () => {
-    Promise.all([getMemory(memory.mid), getContent(memory.mid)])
+    Promise.all([getMemory(mid), getContent(mid)])
       .then((result: [Memory, Content[]]) => {
         const [memory, content] = result;
-        dispatch(updateMemory({mid: memory.mid, memory}));
-        dispatch(storeContent({mid: memory.mid, content}));
+        memoryStore.update(memory);
+        contentStore.set(mid, content);
       })
       .finally(() => setRefreshing(false));
   };

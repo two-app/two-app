@@ -2,7 +2,6 @@ import {AlertButton, TouchableOpacity} from 'react-native';
 import {View, StyleSheet, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
-import {useDispatch} from 'react-redux';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 
 import {MemoryDisplayView} from '../MemoryDisplayView';
@@ -10,11 +9,12 @@ import type {Memory} from '../MemoryModels';
 import Colors from '../../Colors';
 import {ContentPicker} from '../../content/ContentPicker';
 import {deleteMemory} from '../MemoryService';
-import {deleteMemory as deleteMemoryFromState, storeContent} from '../store';
 import {ContentFiles} from '../../content/compression/Compression';
 import ContentService from '../../content/ContentService';
 import {Content} from '../../content/ContentModels';
 import {Routes} from '../../navigation/NavigationUtilities';
+import {useMemoryStore} from '../MemoryStore';
+import {useContentStore} from '../../content/ContentStore';
 
 export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   <View>
@@ -55,13 +55,11 @@ const EditButton = ({memory}: {memory: Memory}) => {
 
 export const UploadContentButton = ({memory}: {memory: Memory}) => {
   const {mid} = memory;
-  const dispatch = useDispatch();
+  const contentStore = useContentStore();
 
   const uploadContent = (files: ContentFiles[]) =>
     Promise.all(files.map(f => ContentService.uploadContent(mid, f))).then(
-      (content: Content[]) => {
-        dispatch(storeContent({mid, content}));
-      },
+      (content: Content[]) => contentStore.add(mid, content),
     );
 
   return (
@@ -75,8 +73,8 @@ export const UploadContentButton = ({memory}: {memory: Memory}) => {
 };
 
 export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
-  const dispatch = useDispatch();
   const nav = useNavigation();
+  const memoryStore = useMemoryStore();
 
   let message = `Delete '${memory.title}'`;
   if (memory.imageCount + memory.videoCount > 0) {
@@ -90,6 +88,7 @@ export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
       style: 'destructive',
       onPress: async () => {
         await deleteMemory(memory.mid);
+        memoryStore.remove(memory.mid);
 
         nav.dispatch(
           // reset as state will no longer exist
@@ -98,7 +97,6 @@ export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
             routes: [{name: 'HomeScreen'}],
           }),
         );
-        dispatch(deleteMemoryFromState({mid: memory.mid}));
       },
     };
 

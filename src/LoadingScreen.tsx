@@ -1,21 +1,15 @@
 import {useEffect} from 'react';
 import {Text} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 import {CommonActions} from '@react-navigation/native';
 
 import {ScrollContainer} from './views/View';
-import type {TwoState} from './state/reducers';
-import {clearState, persistor} from './state/reducers';
-import {UserState} from './user';
-import {AuthState} from './authentication/store';
-import {Screen} from './navigation/NavigationUtilities';
+import {Route, Screen} from './navigation/NavigationUtilities';
+import {useAuthStore} from './authentication/AuthenticationStore';
 
-const LoadingScreen = ({navigation}: Screen<'LoadingScreen'>) => {
-  const dispatch = useDispatch();
-  const user: UserState | undefined = useSelector((s: TwoState) => s.user);
-  const auth: AuthState | undefined = useSelector((s: TwoState) => s.auth);
+export const LoadingScreen = ({navigation}: Screen<'LoadingScreen'>) => {
+  const authStore = useAuthStore();
 
-  const nav = (route: string) => {
+  const nav = (route: Route) => {
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
@@ -25,14 +19,12 @@ const LoadingScreen = ({navigation}: Screen<'LoadingScreen'>) => {
   };
 
   useEffect(() => {
-    if (user != null && auth != null) {
-      // user and auth tokens are present, user is either in connect or connected phase of workflow
-      user.pid != null ? nav('HomeScreen') : nav('ConnectCodeScreen');
+    if (authStore.tokens != null && authStore.user != null) {
+      // User and auth tokens are present, user is either in connect or connected phase of workflow
+      authStore.user.connected ? nav('HomeScreen') : nav('ConnectCodeScreen');
     } else {
-      // clearing state to ensure user is in clean startup
-      dispatch(clearState());
-      persistor.persist();
-      nav('RegisterScreen');
+      // Navigate to logout screen to clear state and refresh
+      nav('LogoutScreen');
     }
   }, []);
 
@@ -42,8 +34,6 @@ const LoadingScreen = ({navigation}: Screen<'LoadingScreen'>) => {
     </ScrollContainer>
   );
 };
-
-export {LoadingScreen};
 
 export class LoadingStatus {
   loading: boolean;

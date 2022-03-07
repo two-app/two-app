@@ -8,16 +8,13 @@ import * as TagService from '../../../src/tags/TagService';
 import type {Tag} from '../../../src/tags/Tag';
 import * as MemoryService from '../../../src/memories/MemoryService';
 import type {ErrorResponse} from '../../../src/http/Response';
-import {storeMemories} from '../../../src/memories/store';
 import {v4 as uuid} from 'uuid';
 import {
   mockNavigation,
   mockNavigationProps,
   mockRoute,
-  resetMockNavigation,
 } from '../../utils/NavigationMocking';
-import {store, clearState} from '../../../src/state/reducers';
-import {Provider} from 'react-redux';
+import {useMemoryStore} from '../../../src/memories/MemoryStore';
 
 describe('EditMemoryScreen', () => {
   let tb: EditMemoryScreenTestBed;
@@ -140,7 +137,7 @@ describe('EditMemoryScreen', () => {
       expect(errorText).toBeTruthy();
     });
 
-    test('it should dispatch the updated memory to redux', async () => {
+    test('it should store the updated memory in state', async () => {
       const updatedMemory: Memory = {...tb.memory, title: 'brand new title'};
       tb.onPatchResolve(updatedMemory);
 
@@ -149,7 +146,7 @@ describe('EditMemoryScreen', () => {
 
       await tb.waitForCall(mockNavigation.goBack);
 
-      expect(store.getState().memories.allMemories).toEqual([updatedMemory]);
+      expect(useMemoryStore.getState().all).toEqual([updatedMemory]);
     });
   });
 });
@@ -242,16 +239,10 @@ class EditMemoryScreenTestBed {
   };
 
   build = (): EditMemoryScreenTestBed => {
-    resetMockNavigation();
-    store.dispatch(clearState());
-    store.dispatch(storeMemories([this.memory]));
+    useMemoryStore.setState({all: [this.memory]});
     mockRoute.params.mid = this.memory.mid;
 
-    this.render = render(
-      <Provider store={store}>
-        <EditMemoryScreen {...mockNavigationProps()} />
-      </Provider>,
-    );
+    this.render = render(<EditMemoryScreen {...mockNavigationProps()} />);
     return this;
   };
 }

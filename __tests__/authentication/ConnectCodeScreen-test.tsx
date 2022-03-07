@@ -2,20 +2,19 @@ import {Text} from 'react-native';
 import {v4 as uuid} from 'uuid';
 import type {RenderAPI} from '@testing-library/react-native';
 import {waitFor, fireEvent, render} from '@testing-library/react-native';
-import {Provider} from 'react-redux';
 
-import type {UnconnectedUser} from '../../src/authentication/UserModel';
+import type {
+  MixedUser,
+  UnconnectedUser,
+} from '../../src/authentication/UserModel';
 import type {ErrorResponse} from '../../src/http/Response';
 import AuthenticationService from '../../src/authentication/AuthenticationService';
-import {
-  mockNavigation,
-  mockNavigationProps,
-  resetMockNavigation,
-} from '../utils/NavigationMocking';
-import {clearState, store} from '../../src/state/reducers';
-import {storeUnconnectedUser} from '../../src/user';
+import {mockNavigation, mockNavigationProps} from '../utils/NavigationMocking';
 import {ConnectCodeScreen} from '../../src/authentication/ConnectCodeScreen';
 import {CommonActions} from '@react-navigation/native';
+import {useAuthStore} from '../../src/authentication/AuthenticationStore';
+import {Tokens} from '../../src/authentication/AuthenticationModel';
+import jwtEncode from 'jwt-encode';
 
 describe('ConnectCodeScreen', () => {
   let tb: ConnectCodeScreenTestBed;
@@ -164,17 +163,20 @@ class ConnectCodeScreenTestBed {
     AuthenticationService.connectUser = jest.fn().mockRejectedValue(error);
   };
 
+  setUser = (user: MixedUser) => {
+    const token: string = jwtEncode(user, '');
+    this.setTokens({accessToken: token, refreshToken: token});
+    return this;
+  };
+
+  setTokens = (auth: Tokens) => {
+    useAuthStore.getState().set(auth);
+    return this;
+  };
+
   build = (): ConnectCodeScreenTestBed => {
-    resetMockNavigation();
-
-    store.dispatch(clearState());
-    store.dispatch(storeUnconnectedUser(this.user));
-
-    this.render = render(
-      <Provider store={store}>
-        <ConnectCodeScreen {...mockNavigationProps()} />
-      </Provider>,
-    );
+    this.setUser(this.user);
+    this.render = render(<ConnectCodeScreen {...mockNavigationProps()} />);
     return this;
   };
 }

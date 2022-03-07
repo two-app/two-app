@@ -2,20 +2,16 @@ import type {RenderAPI} from '@testing-library/react-native';
 import {fireEvent, render, waitFor} from '@testing-library/react-native';
 import type {AlertButton} from 'react-native';
 import {Alert, Text} from 'react-native';
-import {Provider} from 'react-redux';
 import {CommonActions} from '@react-navigation/native';
 
 import type {Memory} from '../../../src/memories/MemoryModels';
 import * as MemoryService from '../../../src/memories/MemoryService';
 import {MemoryToolbar} from '../../../src/memories/memory/MemoryToolbar';
-import {
-  mockNavigation,
-  resetMockNavigation,
-} from '../../utils/NavigationMocking';
-import {persistor, store} from '../../../src/state/reducers';
+import {mockNavigation} from '../../utils/NavigationMocking';
 import {ContentPicker} from '../../../src/content/ContentPicker';
 import {v4 as uuid} from 'uuid';
 import {ContentFiles} from '../../../src/content/compression/Compression';
+import {useMemoryStore} from '../../../src/memories/MemoryStore';
 
 describe('MemoryToolbar', () => {
   let tb: MemoryToolbarTestBed;
@@ -69,7 +65,7 @@ describe('MemoryToolbar', () => {
     it('should delete the memory', async () => {
       // GIVEN global state holds one current memory
       tb.onDeleteMemoryDelete();
-      expect(store.getState().memories.allMemories).toEqual([tb.memory]);
+      expect(useMemoryStore.getState().all).toEqual([tb.memory]);
 
       // WHEN
       tb.pressDeleteButton();
@@ -88,7 +84,7 @@ describe('MemoryToolbar', () => {
       });
 
       expect(tb.deleteMemoryFn).toHaveBeenCalledWith(tb.memory.mid);
-      expect(store.getState().memories.allMemories).toEqual([]);
+      expect(useMemoryStore.getState().all).toEqual([]);
     });
   });
 });
@@ -97,12 +93,10 @@ class MemoryToolbarTestBed {
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 
   deleteMemoryFn: jest.SpyInstance<Promise<void>, [string]>;
-  dispatch: jest.SpyInstance<void, []>;
   memory: Memory;
 
   constructor() {
     this.deleteMemoryFn = jest.spyOn(MemoryService, 'deleteMemory').mockClear();
-    this.dispatch = jest.spyOn(persistor, 'persist').mockClear();
     this.memory = {
       mid: uuid(),
       occurredAt: new Date(),
@@ -115,8 +109,7 @@ class MemoryToolbarTestBed {
       tag: undefined,
     };
 
-    store.getState().memories.allMemories.length = 0;
-    store.getState().memories.allMemories.push(this.memory);
+    useMemoryStore.setState({all: [this.memory]});
   }
 
   onUploadCancelPick = () => {
@@ -154,13 +147,7 @@ class MemoryToolbarTestBed {
   };
 
   build = (): MemoryToolbarTestBed => {
-    resetMockNavigation();
-    this.render = render(
-      <Provider store={store}>
-        <MemoryToolbar memory={this.memory} />
-      </Provider>,
-    );
-
+    this.render = render(<MemoryToolbar memory={this.memory} />);
     return this;
   };
 }

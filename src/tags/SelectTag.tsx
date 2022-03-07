@@ -10,6 +10,7 @@ import {TagButton} from './TagButton';
 import {useNavigation} from '@react-navigation/native';
 import {Routes} from '../navigation/NavigationUtilities';
 import {NonEditableInput} from '../forms/Input';
+import {useTagStore} from './TagStore';
 
 type SelectTagProps = ViewProps & {
   onTagChange: (tag: undefined | Tag) => void;
@@ -19,12 +20,11 @@ type SelectTagProps = ViewProps & {
 // TODO rename to TagInput
 export const SelectTag = (props: SelectTagProps) => {
   const [tag, _setTag] = useState<Tag | undefined>(props.initialValue);
-  const [availableTags, setAvailableTags] = useState<Tag[]>([]);
+  const tagStore = useTagStore();
   const {navigate} = useNavigation<Routes>();
 
   useEffect(() => {
-    // TODO put tags in the redux store
-    getTags().then(setAvailableTags);
+    getTags().then(tagStore.setAll);
   }, []);
 
   const setTag = (tag: undefined | Tag) => {
@@ -39,12 +39,7 @@ export const SelectTag = (props: SelectTagProps) => {
           if (tag != null) {
             setTag(undefined);
           } else {
-            navigate('TagManagementScreen', {
-              onSubmit: (newTag: Tag) => {
-                setAvailableTags([newTag, ...availableTags]);
-                setTag(tag);
-              },
-            });
+            navigate('TagManagementScreen', {onSubmit: setTag});
           }
         }}>
         <NonEditableInput
@@ -54,7 +49,7 @@ export const SelectTag = (props: SelectTagProps) => {
           isValid={() => true}
         />
       </TouchableOpacity>
-      {availableTags.length > 0 && (
+      {tagStore.all.length > 0 && (
         <>
           <Text style={{color: Colors.REGULAR, marginLeft: 5, marginTop: 10}}>
             Or, select from an existing tag...
@@ -63,7 +58,7 @@ export const SelectTag = (props: SelectTagProps) => {
             showsHorizontalScrollIndicator={false}
             style={{marginTop: 10}}
             horizontal={true}
-            data={availableTags}
+            data={tagStore.all}
             keyExtractor={tag => tag.name}
             renderItem={({item}) => (
               <TagButton

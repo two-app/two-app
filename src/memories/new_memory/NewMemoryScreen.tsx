@@ -3,7 +3,6 @@ import {Input, NonEditableInput} from '../../forms/Input';
 import {PrimaryButton} from '../../forms/SubmitButton';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {Text, TouchableOpacity} from 'react-native';
-import {useDispatch} from 'react-redux';
 import {v4 as uuid} from 'uuid';
 import {Heading} from '../../home/Heading';
 import type {ErrorResponse} from '../../http/Response';
@@ -11,7 +10,6 @@ import {SelectTag} from '../../tags/SelectTag';
 import {ScrollContainer} from '../../views/View';
 import {createMemory, getMemory} from '../MemoryService';
 import type {Memory, MemoryMeta} from '../MemoryModels';
-import {insertMemory} from '../store';
 
 import Colors from '../../Colors';
 import {Screen} from '../../navigation/NavigationUtilities';
@@ -19,6 +17,7 @@ import F, {Form} from '../../forms/Form';
 import {DateInputModal, DateInputModalHandle} from './DateInput';
 import moment from 'moment';
 import {TextInput} from 'react-native-gesture-handler';
+import {useMemoryStore} from '../MemoryStore';
 
 type MemoryForm = {
   title: string;
@@ -36,7 +35,7 @@ export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
   });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
-  const dispatch = useDispatch();
+  const memoryStore = useMemoryStore();
 
   // Date selection, e.g Februrary 23, 2022, 6:37 PM
   const datePicker = useRef<DateInputModalHandle>();
@@ -44,7 +43,7 @@ export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
   const date = moment(_date);
 
   const storeAndNavigate = (m: Memory): void => {
-    dispatch(insertMemory(m));
+    memoryStore.add(m);
     navigation.reset({
       index: 1,
       routes: [

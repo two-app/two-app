@@ -3,11 +3,7 @@ import {RenderAPI, waitFor} from '@testing-library/react-native';
 import {fireEvent, render} from '@testing-library/react-native';
 
 import {RegisterScreen} from '../../src/authentication/RegisterScreen';
-import {
-  mockNavigation,
-  mockNavigationProps,
-  resetMockNavigation,
-} from '../utils/NavigationMocking';
+import {mockNavigation, mockNavigationProps} from '../utils/NavigationMocking';
 import {CommonActions} from '@react-navigation/native';
 import AuthenticationService from '../../src/authentication/AuthenticationService';
 import {ErrorResponse} from '../../src/http/Response';
@@ -161,7 +157,6 @@ class RegisterScreenTestBed {
   };
 
   build = (): RegisterScreenTestBed => {
-    resetMockNavigation();
     this.render = render(<RegisterScreen {...mockNavigationProps()} />);
     return this;
   };

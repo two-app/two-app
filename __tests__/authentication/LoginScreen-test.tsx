@@ -6,11 +6,7 @@ import {fireEvent, render} from '@testing-library/react-native';
 import {LoginScreen} from '../../src/authentication/LoginScreen';
 import AuthenticationService from '../../src/authentication/AuthenticationService';
 import type {ErrorResponse} from '../../src/http/Response';
-import {
-  mockNavigation,
-  mockNavigationProps,
-  resetMockNavigation,
-} from '../utils/NavigationMocking';
+import {mockNavigation, mockNavigationProps} from '../utils/NavigationMocking';
 import {MixedUser} from '../../src/authentication/UserModel';
 import {v4 as uuid} from 'uuid';
 import {CommonActions} from '@react-navigation/native';
@@ -143,7 +139,6 @@ class LoginScreenTestBed {
   onLoginReject = (e: ErrorResponse) => this.loginSpy.mockRejectedValue(e);
 
   build = (): LoginScreenTestBed => {
-    resetMockNavigation();
     this.render = render(<LoginScreen {...mockNavigationProps()} />);
     return this;
   };

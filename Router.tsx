@@ -61,17 +61,17 @@ const AppStack = () => (
     <Stack.Screen
       name="HomeScreen"
       component={HomeScreen}
-      options={{animation: 'none'}}
+      options={{animation: 'fade'}}
     />
     <Stack.Screen
       name="TagScreen"
       component={TagScreen}
-      options={{animation: 'none'}}
+      options={{animation: 'fade'}}
     />
     <Stack.Screen
       name="ProfileScreen"
       component={ProfileScreen}
-      options={{animation: 'none'}}
+      options={{animation: 'fade'}}
     />
 
     {/* Utility */}

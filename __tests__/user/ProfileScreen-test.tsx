@@ -7,15 +7,8 @@ import {v4 as uuid} from 'uuid';
 
 import {ProfileScreen} from '../../src/user/ProfileScreen';
 import * as CoupleService from '../../src/couple/CoupleService';
-import {
-  mockNavigation,
-  mockNavigationProps,
-  resetMockNavigation,
-} from '../utils/NavigationMocking';
-import {clearState, store} from '../../src/state/reducers';
-import {storeCoupleProfile} from '../../src/user/profile/profile-state';
+import {mockNavigation, mockNavigationProps} from '../utils/NavigationMocking';
 import {Couple} from '../../src/couple/CoupleService';
-import {Provider} from 'react-redux';
 
 const mockOpenURLFn = jest.fn().mockResolvedValue({});
 
@@ -160,15 +153,8 @@ class PartnerScreenTestBed {
     this.fetchCoupleSpy.mockResolvedValueOnce(couple);
 
   build = (): PartnerScreenTestBed => {
-    resetMockNavigation();
-    store.dispatch(clearState());
-    store.dispatch(storeCoupleProfile(this.couple));
     mockOpenURLFn.mockClear();
-    this.render = render(
-      <Provider store={store}>
-        <ProfileScreen {...mockNavigationProps()} />
-      </Provider>,
-    );
+    this.render = render(<ProfileScreen {...mockNavigationProps()} />);
     return this;
   };
 }

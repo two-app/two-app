@@ -1,7 +1,5 @@
 import {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, RefreshControl, FlatList} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-
 import Colors from '../../Colors';
 import {Container} from '../../views/View';
 import {Heading} from '../../home/Heading';
@@ -10,17 +8,14 @@ import type {Tag} from '../Tag';
 import {NewTagButton} from '../NewTagButton';
 import {LoadingStatus} from '../../LoadingScreen';
 import type {ErrorResponse} from '../../http/Response';
-import type {TwoState} from '../../state/reducers';
-import {persistor} from '../../state/reducers';
-import {storeTags} from '../store';
 
 import {DeleteTagIcon} from './DeleteTag';
 import {EditTagIcon} from './EditTag';
 import {TagDate} from './TagDate';
+import {useTagStore} from '../TagStore';
 
 export const TagScreen = () => {
-  const dispatch = useDispatch();
-  const tags: Tag[] = useSelector((s: TwoState) => s.tags.allTags);
+  const {all: tags, setAll: setTags} = useTagStore();
 
   const [loadingStatus, setLoadingStatus] = useState<LoadingStatus>(
     new LoadingStatus(true, false),
@@ -31,9 +26,8 @@ export const TagScreen = () => {
 
     TagService.getTags()
       .then(async (tags: Tag[]) => {
-        dispatch(storeTags(tags));
+        setTags(tags);
         setLoadingStatus(loadingStatus.endLoading());
-        persistor.persist();
       })
       .catch((e: ErrorResponse) => {
         setLoadingStatus(loadingStatus.endLoading(e.reason));
@@ -127,22 +121,14 @@ const EmptyTagsComponent = ({
   loadingStatus,
 }: {
   loadingStatus: LoadingStatus;
-}) => {
-  if (loadingStatus.loading) {
-    return null;
-  }
-
-  return (
-    <>
-      <Text style={{textAlign: 'center', color: Colors.REGULAR, marginTop: 40}}>
-        {loadingStatus.error != null
-          ? 'Sorry, we were unable to load your tags.\nPlease try again soon.'
-          : // eslint-disable-next-line max-len
-            'Tags are used to group closely related memories together. Think "21st Birthday", or "Wedding". Try creating one now!'}
-      </Text>
-    </>
-  );
-};
+}) => (
+  <Text style={{textAlign: 'center', color: Colors.REGULAR, marginTop: 40}}>
+    {loadingStatus.error != null
+      ? 'Sorry, we were unable to load your tags.\nPlease try again soon.'
+      : // eslint-disable-next-line max-len
+        'Tags are used to group closely related memories together. Think "21st Birthday", or "Wedding". Try creating one now!'}
+  </Text>
+);
 
 const s = StyleSheet.create({
   label: {

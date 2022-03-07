@@ -24,16 +24,11 @@ NativeModules.ImageCropPicker = {
 };
 
 import mockAsyncStorage from '@react-native-community/async-storage/jest/async-storage-mock';
-import {setupMockNavigation} from './__tests__/utils/NavigationMocking';
+import {
+  resetMockNavigation,
+  setupMockNavigation,
+} from './__tests__/utils/NavigationMocking';
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
-
-jest.mock('redux-persist', () => {
-  const real = jest.requireActual('redux-persist');
-  return {
-    ...real,
-    persistReducer: jest.fn().mockImplementation((_, reducers) => reducers),
-  };
-});
 
 // https://github.com/facebook/react-native/issues/27721
 jest.mock(
@@ -68,3 +63,6 @@ jest.mock('react-native-keyboard-aware-scroll-view', () => {
 });
 
 setupMockNavigation();
+global.beforeEach(() => {
+  resetMockNavigation();
+});

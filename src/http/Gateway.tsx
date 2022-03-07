@@ -6,8 +6,7 @@ import type {
 } from 'axios';
 import Axios from 'axios';
 import Config from 'react-native-config';
-
-import {store} from '../state/reducers';
+import {useAuthStore} from '../authentication/AuthenticationStore';
 
 import type {ErrorResponse} from './Response';
 import {mapErrorResponse} from './Response';
@@ -30,18 +29,20 @@ Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
   console.log('>> ' + showReq(config));
   config.headers = config.headers ?? {};
 
-  if (config.url === '/self' && config.method === 'post') {
+  if (
+    (config.url === '/self' || config.url === '/login') &&
+    config.method === 'post'
+  ) {
+    console.log('not appending JWT');
     return config;
   }
 
+  const token = useAuthStore.getState().tokens!!;
+
   if (config.url === '/refresh' && config.method === 'post') {
-    // apply Refresh JWT to outgoing request
-    const token = store.getState().auth?.refreshToken;
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `Bearer ${token.refreshToken}`;
   } else {
-    // apply Access JWT to outgoing request
-    const token = store.getState().auth?.accessToken;
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `Bearer ${token.accessToken}`;
   }
 
   return config;
