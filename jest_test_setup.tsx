@@ -30,14 +30,6 @@ import {
 } from './__tests__/utils/NavigationMocking';
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
 
-jest.mock('redux-persist', () => {
-  const real = jest.requireActual('redux-persist');
-  return {
-    ...real,
-    persistReducer: jest.fn().mockImplementation((_, reducers) => reducers),
-  };
-});
-
 // https://github.com/facebook/react-native/issues/27721
 jest.mock(
   'react-native/Libraries/Components/Touchable/TouchableOpacity',
