@@ -137,7 +137,7 @@ describe('EditMemoryScreen', () => {
       expect(errorText).toBeTruthy();
     });
 
-    test('it should dispatch the updated memory to redux', async () => {
+    test('it should store the updated memory in state', async () => {
       const updatedMemory: Memory = {...tb.memory, title: 'brand new title'};
       tb.onPatchResolve(updatedMemory);
 

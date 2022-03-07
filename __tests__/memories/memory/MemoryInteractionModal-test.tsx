@@ -62,7 +62,7 @@ describe('MemoryInteractionModal', () => {
           }
         });
 
-        // THEN the redux state should be updated to the latest memory
+        // THEN the state should be updated to the latest memory
         expect(useMemoryStore.getState().all).toEqual([updatedMemory]);
       });
 
@@ -92,7 +92,7 @@ describe('MemoryInteractionModal', () => {
         );
       });
 
-      test('it should update the state in redux', async () => {
+      test('it should update the state', async () => {
         // GIVEN the a memory and its associated content
         useMemoryStore.getState().add(testMemory);
         //store.getState().memories.content[testMemory.mid] = [content];
