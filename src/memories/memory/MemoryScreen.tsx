@@ -14,12 +14,12 @@ import {
   TouchableVideoCell,
   chunkToRows,
 } from './Grid';
-import {ContentGallery} from './ContentGallery';
 import {MemoryToolbar} from './MemoryToolbar';
 import {MemoryInteractionModal} from './MemoryInteractionModal';
-import {Screen} from '../../navigation/NavigationUtilities';
+import {Routes, Screen} from '../../navigation/NavigationUtilities';
 import {useMemoryStore} from '../MemoryStore';
 import {useContentStore} from '../../content/ContentStore';
+import {useNavigation} from '@react-navigation/native';
 
 export const MemoryScreen = ({route}: Screen<'MemoryScreen'>) => {
   const {mid} = route.params;
@@ -73,15 +73,19 @@ const ContentGrid = ({
   refreshing,
   onRefresh,
 }: ContentGridProps) => {
-  const [galleryIndex, setGalleryIndex] = useState<number | null>(null);
   const [modalIndex, setModalIndex] = useState<number | undefined>();
   const numberOfColumns = 4;
   const rows = chunkToRows(data, numberOfColumns);
 
   useEffect(() => {
-    setGalleryIndex(null);
     setModalIndex(undefined);
   }, [JSON.stringify(data)]);
+
+  const {navigate} = useNavigation<Routes>();
+
+  const openMedia = (index: number) => {
+    navigate('MediaScreen', {index, mid: memory.mid});
+  };
 
   return (
     <>
@@ -89,11 +93,6 @@ const ContentGrid = ({
         memory={memory}
         content={data[modalIndex!]}
         onClose={() => setModalIndex(undefined)}
-      />
-      <ContentGallery
-        content={data}
-        index={galleryIndex}
-        onClose={() => setGalleryIndex(null)}
       />
       <FlatList
         showsVerticalScrollIndicator={false}
@@ -109,14 +108,14 @@ const ContentGrid = ({
               return content.contentType === 'image' ? (
                 <TouchableImageCell
                   item={content}
-                  onClick={() => setGalleryIndex(childIndex)}
+                  onClick={() => openMedia(childIndex)}
                   onLongPress={() => setModalIndex(childIndex)}
                   key={content.contentId}
                 />
               ) : (
                 <TouchableVideoCell
                   item={content}
-                  onClick={() => setGalleryIndex(childIndex)}
+                  onClick={() => openMedia(childIndex)}
                   onLongPress={() => setModalIndex(childIndex)}
                   key={content.contentId}
                 />

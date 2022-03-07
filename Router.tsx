@@ -12,7 +12,9 @@ import {ProfileScreen} from './src/user/ProfileScreen';
 import {EditMemoryScreen} from './src/memories/memory/EditMemoryScreen';
 import {TagScreen} from './src/tags/tag_screen/TagScreen';
 import {TagManagementScreen} from './src/tags/tag_management/TagManagementScreen';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
+import {MediaScreen} from './src/content/MediaScreen';
+import {Platform} from 'react-native';
 
 export type RootStackParamList = {
   LoadingScreen: undefined;
@@ -31,29 +33,38 @@ export type RootStackParamList = {
   ProfileScreen: undefined;
   EditMemoryScreen: {mid: string};
   TagScreen: undefined;
+  MediaScreen: {
+    index: number;
+    mid: string;
+  };
 };
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createSharedElementStackNavigator();
+
+// @ts-ignore
+const forFade = ({current}) => ({
+  cardStyle: {
+    opacity: current.progress,
+  },
+});
 
 const AppStack = () => (
   <Stack.Navigator
     initialRouteName="LoadingScreen"
     screenOptions={{
       headerShown: false,
-      gestureEnabled: true,
-      fullScreenGestureEnabled: true,
     }}>
     {/* Workflow */}
     <Stack.Screen name="LogoutScreen" component={LogoutScreen} />
     <Stack.Screen
       name="LoginScreen"
       component={LoginScreen}
-      options={{animation: 'fade'}}
+      options={{cardStyleInterpolator: forFade}}
     />
     <Stack.Screen
       name="RegisterScreen"
       component={RegisterScreen}
-      options={{animation: 'fade'}}
+      options={{cardStyleInterpolator: forFade}}
     />
     <Stack.Screen name="ConnectCodeScreen" component={ConnectCodeScreen} />
 
@@ -61,17 +72,17 @@ const AppStack = () => (
     <Stack.Screen
       name="HomeScreen"
       component={HomeScreen}
-      options={{animation: 'fade'}}
+      options={{cardStyleInterpolator: forFade}}
     />
     <Stack.Screen
       name="TagScreen"
       component={TagScreen}
-      options={{animation: 'fade'}}
+      options={{cardStyleInterpolator: forFade}}
     />
     <Stack.Screen
       name="ProfileScreen"
       component={ProfileScreen}
-      options={{animation: 'fade'}}
+      options={{cardStyleInterpolator: forFade}}
     />
 
     {/* Utility */}
@@ -79,7 +90,7 @@ const AppStack = () => (
     <Stack.Screen
       name="SearchScreen"
       component={SearchScreen}
-      options={{animation: 'slide_from_bottom'}}
+      options={{cardStyleInterpolator: forFade}}
     />
 
     {/* Memories */}
@@ -89,6 +100,23 @@ const AppStack = () => (
 
     {/* Tags */}
     <Stack.Screen name="TagManagementScreen" component={TagManagementScreen} />
+
+    {/* Media/Content */}
+    <Stack.Screen
+      name="MediaScreen"
+      component={MediaScreen}
+      sharedElements={(route, _, showing) => {
+        const {index} = route.params;
+        if (Platform.OS !== 'ios' && !showing) {
+          return [];
+        }
+        return [`${index}`];
+      }}
+      options={{
+        cardStyleInterpolator: forFade,
+        gestureEnabled: false,
+      }}
+    />
   </Stack.Navigator>
 );
 
