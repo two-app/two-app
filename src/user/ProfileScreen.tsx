@@ -10,27 +10,21 @@ import {
 } from 'react-native';
 import EvilIcon from 'react-native-vector-icons/EvilIcons';
 import Feather from 'react-native-vector-icons/Feather';
-import {useDispatch, useSelector} from 'react-redux';
 import Config from 'react-native-config';
 
 import Colors from '../Colors';
 import {resetNavigate, Screen} from '../navigation/NavigationUtilities';
-import {TwoState} from '../state/reducers';
 import {Container} from '../views/View';
-import {Couple, fetchCouple} from '../couple/CoupleService';
-import {storeCoupleProfile} from './profile/profile-state';
+import {fetchCouple} from '../couple/CoupleService';
 import {Profile} from '../couple/Profile';
-
-type CoupleState = Couple | undefined;
+import {useProfileStore} from './ProfileStore';
 
 export const ProfileScreen = ({navigation}: Screen<'ProfileScreen'>) => {
-  const dispatch = useDispatch();
-  const couple = useSelector<TwoState, CoupleState>(
-    state => state.profile?.couple,
-  );
+  const profileStore = useProfileStore();
+  const couple = profileStore.couple;
 
   useEffect(() => {
-    fetchCouple().then(couple => dispatch(storeCoupleProfile(couple)));
+    fetchCouple().then(couple => useProfileStore.setState({couple}));
   }, []);
 
   const data: MenuItemProps[] = [

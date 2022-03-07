@@ -1,7 +1,6 @@
 import {useRef, useState} from 'react';
 import {Text, TouchableOpacity} from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {useDispatch, useSelector} from 'react-redux';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 
 import {Memory} from '../MemoryModels';
@@ -12,12 +11,11 @@ import {DateInputModal, DateInputModalHandle} from '../new_memory/DateInput';
 import {SelectTag} from '../../tags/SelectTag';
 import {updateMemory as updateMemoryRequest} from '../MemoryService';
 import {ErrorResponse} from '../../http/Response';
-import {TwoState} from '../../state/reducers';
-import {selectMemory, updateMemory} from '../store';
 import {Screen} from '../../navigation/NavigationUtilities';
 import F, {useForm} from '../../forms/Form';
 import {Input, NonEditableInput} from '../../forms/Input';
 import moment from 'moment';
+import {useMemoryStore} from '../MemoryStore';
 
 type EditMemoryForm = {
   title: string;
@@ -30,9 +28,8 @@ export const EditMemoryScreen = ({
   navigation,
   route,
 }: Screen<'EditMemoryScreen'>) => {
-  const memory: Memory = useSelector<TwoState, Memory>(state =>
-    selectMemory(state.memories, route.params.mid),
-  );
+  const memoryStore = useMemoryStore();
+  const memory = memoryStore.all.find(m => m.mid === route.params.mid)!!;
 
   const [form, data, , updForm] = useForm<EditMemoryForm>({
     title: [memory.title, true],
@@ -49,14 +46,12 @@ export const EditMemoryScreen = ({
   const [_date] = form.occurredAt;
   const date = moment(_date);
 
-  const dispatch = useDispatch();
-
   const submitEdit = () => {
     setSubmitted(true);
 
     updateMemoryRequest({...data, mid: memory.mid})
       .then((updatedMemory: Memory) => {
-        dispatch(updateMemory({mid: memory.mid, memory: updatedMemory}));
+        memoryStore.update(updatedMemory);
         navigation.goBack();
       })
       .catch((e: ErrorResponse) => {

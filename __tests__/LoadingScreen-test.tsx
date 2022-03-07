@@ -5,19 +5,15 @@ import type {RenderAPI} from '@testing-library/react-native';
 import {render} from '@testing-library/react-native';
 
 import {LoadingScreen} from '../src/LoadingScreen';
-import type {UnconnectedUser, User} from '../src/authentication/UserModel';
+import type {
+  MixedUser,
+  UnconnectedUser,
+  User,
+} from '../src/authentication/UserModel';
 import type {Tokens} from '../src/authentication/AuthenticationModel';
-import {persistor, store} from '../src/state/reducers';
-
-import {
-  mockNavigation,
-  mockNavigationProps,
-  resetMockNavigation,
-} from './utils/NavigationMocking';
-import {Provider} from 'react-redux';
-import {storeUnconnectedUser, storeUser} from '../src/user';
-import {storeTokens} from '../src/authentication/store';
-import {BASE_STATE} from './helpers/StateHelper';
+import {mockNavigation, mockNavigationProps} from './utils/NavigationMocking';
+import {useAuthStore} from '../src/authentication/AuthenticationStore';
+import jwtEncode from 'jwt-encode';
 
 describe('LoadingScreen', () => {
   let tb: LoadingScreenTestBed;
@@ -27,35 +23,22 @@ describe('LoadingScreen', () => {
   describe('With no auth', () => {
     beforeEach(() => tb.build());
 
-    test('state should be cleared non async', () => {
-      expect(store.getState()).toEqual(BASE_STATE);
-    });
-
-    test('navigates to Register Screen', () =>
+    test('navigates to LogoutScreen', () => {
       expect(mockNavigation.dispatch).toHaveBeenCalledWith(
         CommonActions.reset({
           index: 0,
-          routes: [{name: 'RegisterScreen'}],
+          routes: [{name: 'LogoutScreen'}],
         }),
-      ));
-
-    test('redux should be persisted to local storage', () => {
-      expect(tb.persistFn).toHaveBeenCalled();
+      );
     });
   });
 
   describe('With Unconnected Auth', () => {
-    const stubUser: UnconnectedUser = {
+    const user: UnconnectedUser = {
       uid: uuid(),
     };
-    const stubTokens: Tokens = {
-      accessToken: 'unconnectedAccess',
-      refreshToken: 'unconnectedRefresh',
-    };
 
-    beforeEach(() =>
-      tb.setUnconnectedUser(stubUser).setTokens(stubTokens).build(),
-    );
+    beforeEach(() => tb.setUser(user).build());
 
     test('navigates to Connect Code Screen', () => {
       expect(mockNavigation.dispatch).toHaveBeenCalledWith(
@@ -68,13 +51,9 @@ describe('LoadingScreen', () => {
   });
 
   describe('With Connected Auth', () => {
-    const stubUser: User = {uid: uuid(), pid: uuid(), cid: uuid()};
-    const stubTokens: Tokens = {
-      accessToken: 'connectedAccess',
-      refreshToken: 'connectedRefresh',
-    };
+    const user: User = {uid: uuid(), pid: uuid(), cid: uuid()};
 
-    beforeEach(() => tb.setUser(stubUser).setTokens(stubTokens).build());
+    beforeEach(() => tb.setUser(user).build());
 
     test('navigates to Home Screen', () => {
       expect(mockNavigation.dispatch).toHaveBeenCalledWith(
@@ -88,31 +67,21 @@ describe('LoadingScreen', () => {
 });
 
 class LoadingScreenTestBed {
-  persistFn = jest.spyOn(persistor, 'persist');
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 
-  setUser = (user: User) => {
-    store.dispatch(storeUser(user));
-    return this;
-  };
-
-  setUnconnectedUser = (user: UnconnectedUser) => {
-    store.dispatch(storeUnconnectedUser(user));
+  setUser = (user: MixedUser) => {
+    const token: string = jwtEncode(user, '');
+    this.setTokens({accessToken: token, refreshToken: token});
     return this;
   };
 
   setTokens = (auth: Tokens) => {
-    store.dispatch(storeTokens(auth));
+    useAuthStore.getState().set(auth);
     return this;
   };
 
   build = (): LoadingScreenTestBed => {
-    resetMockNavigation();
-    this.render = render(
-      <Provider store={store}>
-        <LoadingScreen {...mockNavigationProps()} />,
-      </Provider>,
-    );
+    this.render = render(<LoadingScreen {...mockNavigationProps()} />);
     return this;
   };
 }

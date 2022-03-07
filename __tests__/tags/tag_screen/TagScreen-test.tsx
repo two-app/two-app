@@ -1,14 +1,13 @@
 import type {RenderAPI} from '@testing-library/react-native';
 import {fireEvent, render, waitFor} from '@testing-library/react-native';
 import {Alert, Text} from 'react-native';
-import {Provider} from 'react-redux';
 
 import type {Tag} from '../../../src/tags/Tag';
 import {TagScreen} from '../../../src/tags/tag_screen/TagScreen';
 import * as TagService from '../../../src/tags/TagService';
-import {store} from '../../../src/state/reducers';
 import {v4 as uuid} from 'uuid';
 import {mockNavigation} from '../../utils/NavigationMocking';
+import {useTagStore} from '../../../src/tags/TagStore';
 
 describe('TagScreen', () => {
   let tb: TagScreenTestBed;
@@ -40,8 +39,8 @@ describe('TagScreen', () => {
 
     it('should display the resolved tag names', async () => {
       tb.onGetTagsResolve(tags);
-
       tb.build();
+
       await waitFor(() =>
         tb.render.getAllByA11yLabel('A tag owned by the couple'),
       );
@@ -49,6 +48,17 @@ describe('TagScreen', () => {
       for (const name of names) {
         tb.render.getByText(name);
       }
+    });
+
+    test('it should store them in the tag store', async () => {
+      tb.onGetTagsResolve(tags);
+      tb.build();
+
+      await waitFor(() =>
+        tb.render.getAllByA11yLabel('A tag owned by the couple'),
+      );
+
+      expect(useTagStore.getState().all).toEqual(tags);
     });
   });
 
@@ -132,11 +142,7 @@ class TagScreenTestBed {
   };
 
   build = (): TagScreenTestBed => {
-    this.render = render(
-      <Provider store={store}>
-        <TagScreen />
-      </Provider>,
-    );
+    this.render = render(<TagScreen />);
     return this;
   };
 }

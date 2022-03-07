@@ -24,7 +24,10 @@ NativeModules.ImageCropPicker = {
 };
 
 import mockAsyncStorage from '@react-native-community/async-storage/jest/async-storage-mock';
-import {setupMockNavigation} from './__tests__/utils/NavigationMocking';
+import {
+  resetMockNavigation,
+  setupMockNavigation,
+} from './__tests__/utils/NavigationMocking';
 jest.mock('@react-native-community/async-storage', () => mockAsyncStorage);
 
 jest.mock('redux-persist', () => {
@@ -68,3 +71,6 @@ jest.mock('react-native-keyboard-aware-scroll-view', () => {
 });
 
 setupMockNavigation();
+global.beforeEach(() => {
+  resetMockNavigation();
+});

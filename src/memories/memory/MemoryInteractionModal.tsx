@@ -1,8 +1,6 @@
 import {Text, View, StyleSheet} from 'react-native';
 import {useState, useEffect} from 'react';
 import NativeModal from 'react-native-modal';
-import {useDispatch} from 'react-redux';
-import {PayloadAction} from 'typesafe-actions';
 
 import {
   setMemoryDisplayPicture,
@@ -11,11 +9,12 @@ import {
 import {ButtonStyles, Button} from '../../forms/Button';
 import Colors from '../../Colors';
 import {ErrorResponse} from '../../http/Response';
-import {updateMemory, deleteContent as deleteContentReducer} from '../store';
 import {Memory} from '../MemoryModels';
 import {Content} from '../../content/ContentModels';
 
 import {ImageCell} from './Grid';
+import {useMemoryStore} from '../MemoryStore';
+import {useContentStore} from '../../content/ContentStore';
 
 type MemoryInteractionModalProps = {
   memory: Memory;
@@ -44,7 +43,6 @@ export const MemoryInteractionModal = ({
   content,
   onClose,
 }: MemoryInteractionModalProps) => {
-  const dispatch = useDispatch();
   const [loading, setLoading] = useState<ButtonLoading>(noLoading);
   const [error, setError] = useState<string>('');
   const [modal, setModal] = useState<ModalData>({
@@ -53,17 +51,19 @@ export const MemoryInteractionModal = ({
   });
 
   useEffect(() => setModal({content, isVisible: content != null}), [content]);
+  const memoryStore = useMemoryStore();
+  const contentStore = useContentStore();
 
   const closeModal = () => {
     setModal({...modal, isVisible: false});
     setLoading(noLoading);
   };
 
-  const dispatchAfterClosed = (action: PayloadAction<string, any>) => {
+  const dispatchAfterClosed = (action: () => void) => {
     setModal({
       ...modal,
       isVisible: false,
-      afterCloseFn: () => dispatch(action),
+      afterCloseFn: action,
     });
   };
 
@@ -71,9 +71,7 @@ export const MemoryInteractionModal = ({
     setLoading({...loading, setDisplayPicture: true});
     setMemoryDisplayPicture(memory.mid, contentId)
       .then((updatedMemory: Memory) =>
-        dispatchAfterClosed(
-          updateMemory({mid: memory.mid, memory: updatedMemory}),
-        ),
+        dispatchAfterClosed(() => memoryStore.update(updatedMemory)),
       )
       .catch((e: ErrorResponse) => setError(e.reason))
       .finally(() => setLoading(noLoading));
@@ -83,7 +81,7 @@ export const MemoryInteractionModal = ({
     setLoading({...loading, deleteContent: true});
     deleteContent(memory.mid, contentId)
       .then(() =>
-        dispatchAfterClosed(deleteContentReducer({mid: memory.mid, contentId})),
+        dispatchAfterClosed(() => contentStore.delete(memory.mid, contentId)),
       )
       .catch((e: ErrorResponse) => setError(e.reason))
       .finally(() => setLoading(noLoading));

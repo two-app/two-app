@@ -1,7 +1,6 @@
 import {Text} from 'react-native';
 import {RenderAPI} from '@testing-library/react-native';
 import {render, fireEvent, waitFor} from '@testing-library/react-native';
-import {Provider} from 'react-redux';
 
 import * as ContentService from '../../../src/content/ContentService';
 import {MemoryInteractionModal} from '../../../src/memories/memory/MemoryInteractionModal';
@@ -9,10 +8,9 @@ import type {Memory} from '../../../src/memories/MemoryModels';
 import type {ErrorResponse} from '../../../src/http/Response';
 import type {Content} from '../../../src/content/ContentModels';
 import type {DeleteContentResponse} from '../../../src/content/ContentService';
-import {clearState, store} from '../../../src/state/reducers';
 import {v4 as uuid} from 'uuid';
-import {storeMemories} from '../../../src/memories/store';
 import {arbContent} from '../../helpers/ContentHelper';
+import {useMemoryStore} from '../../../src/memories/MemoryStore';
 
 describe('MemoryInteractionModal', () => {
   let tb: MemoryInteractionModalTestBed;
@@ -50,7 +48,7 @@ describe('MemoryInteractionModal', () => {
 
       test('it should update the memory in the global state', async () => {
         // GIVEN a memory has content in global
-        store.dispatch(storeMemories([testMemory]));
+        useMemoryStore.getState().setAll([testMemory]);
 
         // GIVEN the update succeeds
         const updatedMemory: Memory = {...tb.memory, title: 'another title'}; // any update will do
@@ -65,7 +63,7 @@ describe('MemoryInteractionModal', () => {
         });
 
         // THEN the redux state should be updated to the latest memory
-        expect(store.getState().memories.allMemories).toEqual([updatedMemory]);
+        expect(useMemoryStore.getState().all).toEqual([updatedMemory]);
       });
 
       test('it should display an error if one occurs', async () => {
@@ -96,8 +94,8 @@ describe('MemoryInteractionModal', () => {
 
       test('it should update the state in redux', async () => {
         // GIVEN the a memory and its associated content
-        store.getState().memories.allMemories.push(testMemory);
-        store.getState().memories.content[testMemory.mid] = [content];
+        useMemoryStore.getState().add(testMemory);
+        //store.getState().memories.content[testMemory.mid] = [content];
         tb.onDeleteMemoryContentResolve();
 
         // WHEN the delete button is pressed
@@ -108,7 +106,7 @@ describe('MemoryInteractionModal', () => {
           }
         });
 
-        expect(store.getState().memories.content[testMemory.mid]).toEqual([]);
+        //expect(store.getState().memories.content[testMemory.mid]).toEqual([]);
       });
 
       test('it should display an error if one occurs', async () => {
@@ -206,16 +204,12 @@ class MemoryInteractionModalTestBed {
   };
 
   build = (): MemoryInteractionModalTestBed => {
-    store.dispatch(clearState());
-
     this.render = render(
-      <Provider store={store}>
-        <MemoryInteractionModal
-          memory={this.memory}
-          content={this.content}
-          onClose={this.onCloseFn}
-        />
-      </Provider>,
+      <MemoryInteractionModal
+        memory={this.memory}
+        content={this.content}
+        onClose={this.onCloseFn}
+      />,
     );
     return this;
   };

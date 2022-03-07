@@ -20,10 +20,7 @@ export const resetNavigate = (
 };
 
 export type Routes = NavigationProp<RootStackParamList>;
-export type Route<T extends keyof RootStackParamList> = RouteProp<
-  RootStackParamList,
-  T
->;
+export type Route = keyof RootStackParamList;
 
 export type Screen<T extends keyof RootStackParamList> = {
   navigation: NativeStackNavigationProp<RootStackParamList, T>;

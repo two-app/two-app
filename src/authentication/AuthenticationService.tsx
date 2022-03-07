@@ -1,16 +1,13 @@
 import 'react-native-get-random-values';
-import decode from 'jwt-decode';
 
 import Gateway from '../http/Gateway';
-import {store} from '../state/reducers';
-import {storeUser, storeUnconnectedUser} from '../user';
 import type {ErrorResponse} from '../http/Response';
 import {resetNavigate, Routes} from '../navigation/NavigationUtilities';
 
-import {storeTokens} from './store';
 import type {Tokens, UserRegistration} from './AuthenticationModel';
 import type {MixedUser, UnconnectedUser, User} from './UserModel';
 import {useNavigation} from '@react-navigation/native';
+import {useAuthStore} from './AuthenticationStore';
 
 export type LoginCredentials = {
   email: string;
@@ -57,28 +54,8 @@ const refreshTokens = (): Promise<MixedUser> =>
       });
     });
 
-type Payload = {
-  uid: string;
-  pid?: string;
-  cid?: string;
-};
-
-/**
- * Stores the tokens in the redux store, and returns the inferred user object from the access token.
- */
 const persistTokens = (tokens: Tokens): User | UnconnectedUser => {
-  store.dispatch(storeTokens(tokens));
-  const payload: Payload = decode(tokens.accessToken);
-
-  if (payload.pid != null && payload.cid != null) {
-    const user: User = {uid: payload.uid, pid: payload.pid, cid: payload.cid};
-    store.dispatch(storeUser(user));
-    return user;
-  } else {
-    const user: UnconnectedUser = {uid: payload.uid};
-    store.dispatch(storeUnconnectedUser(user));
-    return user;
-  }
+  return useAuthStore.getState().set(tokens);
 };
 
 export default {login, registerUser, refreshTokens, connectUser};

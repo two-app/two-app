@@ -7,12 +7,11 @@ import {Routes} from '../navigation/NavigationUtilities';
 import {MemoryDisplayView} from './MemoryDisplayView';
 import type {Memory} from './MemoryModels';
 import {getMemories} from './MemoryService';
-import {selectAllMemories, storeMemories} from './store';
+import {useMemoryStore} from './MemoryStore';
 
 export const MemoryTimelineComponent = (): TimelineComponent<Memory> => ({
   fetch: getMemories,
-  select: selectAllMemories,
-  dispatcher: storeMemories,
+  store: useMemoryStore.getState,
   render: memory => <MemoryItem memory={memory} />,
   key: memory => `memory-${memory.mid}`,
 });

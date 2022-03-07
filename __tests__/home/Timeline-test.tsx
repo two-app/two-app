@@ -1,25 +1,20 @@
 import type {RenderAPI} from '@testing-library/react-native';
 import {fireEvent, render, waitFor} from '@testing-library/react-native';
 import {Text} from 'react-native';
-import {Provider} from 'react-redux';
 
 import * as MemoryService from '../../src/memories/MemoryService';
 import * as TagService from '../../src/tags/TagService';
 import {Timeline} from '../../src/home/Timeline';
 import type {Memory} from '../../src/memories/MemoryModels';
-import {store} from '../../src/state/reducers';
 import type {Tag} from '../../src/tags/Tag';
-import {mockNavigation, resetMockNavigation} from '../utils/NavigationMocking';
+import {mockNavigation} from '../utils/NavigationMocking';
 import type {TimelineType} from '../../src/home/TimelineConstants';
 import {v4 as uuid} from 'uuid';
 
 describe('Timeline', () => {
   let tb: TimelineTestBed;
 
-  beforeEach(() => {
-    tb = new TimelineTestBed();
-    resetMockNavigation();
-  });
+  beforeEach(() => (tb = new TimelineTestBed()));
 
   const testTag: Tag = {
     tid: uuid(),
@@ -148,11 +143,7 @@ class TimelineTestBed {
   };
 
   build = (): TimelineTestBed => {
-    this.render = render(
-      <Provider store={store}>
-        <Timeline />
-      </Provider>,
-    );
+    this.render = render(<Timeline />);
     return this;
   };
 }

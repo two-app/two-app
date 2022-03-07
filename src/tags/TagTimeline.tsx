@@ -2,14 +2,13 @@ import {TouchableOpacity, Text} from 'react-native';
 
 import {TimelineComponent} from '../home/TimelineConstants';
 
-import {selectAllTags, storeTags} from './store';
 import {Tag} from './Tag';
 import {getTags} from './TagService';
+import {useTagStore} from './TagStore';
 
 export const GroupedTimelineComponent = (): TimelineComponent<Tag> => ({
   fetch: getTags,
-  select: selectAllTags,
-  dispatcher: storeTags,
+  store: useTagStore.getState,
   render: tag => <TagItem tag={tag} />,
   key: tag => `tag-${tag.tid}`,
 });

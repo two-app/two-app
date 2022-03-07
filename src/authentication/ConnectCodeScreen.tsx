@@ -3,24 +3,22 @@ import {v4 as uuid} from 'uuid';
 import {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
-import {useSelector} from 'react-redux';
 import HapticFeedback from 'react-native-haptic-feedback';
 import {ScrollContainer} from '../views/View';
 import {LogoHeader} from './LogoHeader';
 import Colors from '../Colors';
 import {Input} from '../forms/Input';
-import type {TwoState} from '../state/reducers';
-import {selectUnconnectedUser} from '../user';
 import {resetNavigate, Screen} from '../navigation/NavigationUtilities';
 import ConnectService from '../user/ConnectService';
 import type {ErrorResponse} from '../http/Response';
 import AuthenticationService from './AuthenticationService';
-import type {UnconnectedUser, User} from './UserModel';
+import type {User} from './UserModel';
 import {PrimaryButton} from '../forms/SubmitButton';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import {HR} from '../forms/HorizontalRule';
 import F, {Form} from '../forms/Form';
 import moment from 'moment';
+import {useAuthStore} from './AuthenticationStore';
 
 type ConnectForm = {
   toUser: string;
@@ -37,9 +35,7 @@ export const ConnectCodeScreen = ({
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string>();
 
-  const user: UnconnectedUser = useSelector((state: TwoState) =>
-    selectUnconnectedUser(state.user),
-  );
+  const authStore = useAuthStore();
 
   const connectToPartner = () => {
     setSubmitted(true);
@@ -78,7 +74,7 @@ export const ConnectCodeScreen = ({
         Send your code, or enter theirs below.
       </Text>
 
-      <CopyConnectCodeButton code={user.uid} />
+      <CopyConnectCodeButton code={authStore.user!.uid} />
 
       <HR />
 

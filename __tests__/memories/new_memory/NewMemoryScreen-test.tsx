@@ -5,21 +5,19 @@ import {
   waitFor,
 } from '@testing-library/react-native';
 import {Platform, Text} from 'react-native';
-import {Provider} from 'react-redux';
 import {ReactTestInstance} from 'react-test-renderer';
 import {NewMemoryScreen} from '../../../src/memories/new_memory/NewMemoryScreen';
-import {clearState, store} from '../../../src/state/reducers';
 import {Tag} from '../../../src/tags/Tag';
 import * as TagService from '../../../src/tags/TagService';
 import * as MemoryService from '../../../src/memories/MemoryService';
 import {
   mockNavigation,
   mockNavigationProps,
-  resetMockNavigation,
 } from '../../utils/NavigationMocking';
 import {Memory, MemoryMeta} from '../../../src/memories/MemoryModels';
 import {ErrorResponse} from '../../../src/http/Response';
 import {v4 as uuid} from 'uuid';
+import {useMemoryStore} from '../../../src/memories/MemoryStore';
 
 describe('NewMemoryScreen', () => {
   let tb: NewMemoryScreenTestBed;
@@ -56,7 +54,8 @@ describe('NewMemoryScreen', () => {
           {name: 'MemoryScreen', params: {mid: testMemory.mid}},
         ],
       });
-      expect(store.getState().memories.allMemories).toEqual([testMemory]);
+
+      expect(useMemoryStore.getState().all).toEqual([testMemory]);
     });
 
     test('it should retrieve the memory on 409 conflict', async () => {
@@ -83,7 +82,8 @@ describe('NewMemoryScreen', () => {
           {name: 'MemoryScreen', params: {mid: testMemory.mid}},
         ],
       });
-      expect(store.getState().memories.allMemories).toEqual([testMemory]);
+
+      expect(useMemoryStore.getState().all).toEqual([testMemory]);
     });
 
     test('it should display errors', async () => {
@@ -172,7 +172,7 @@ class NewMemoryScreenTestBed {
 
   pressSubmit = async () => {
     fireEvent.press(this.submitButton());
-    await waitFor(this.isSubmitted);
+    return waitFor(() => mockNavigation.reset.mock.calls.length > 0);
   };
 
   // request/response mocks
@@ -191,14 +191,7 @@ class NewMemoryScreenTestBed {
 
   build = (): NewMemoryScreenTestBed => {
     Platform.OS = 'ios';
-    resetMockNavigation();
-    store.dispatch(clearState());
-
-    this.render = render(
-      <Provider store={store}>
-        <NewMemoryScreen {...mockNavigationProps()} />
-      </Provider>,
-    );
+    this.render = render(<NewMemoryScreen {...mockNavigationProps()} />);
     return this;
   };
 }

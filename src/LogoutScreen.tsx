@@ -1,22 +1,21 @@
 import {useEffect} from 'react';
-import {Text} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {useAuthStore} from './authentication/AuthenticationStore';
+import {useContentStore} from './content/ContentStore';
+import {useMemoryStore} from './memories/MemoryStore';
 
-import {clearState, persistor} from './state/reducers';
 import {resetNavigate, Screen} from './navigation/NavigationUtilities';
+import {useTagStore} from './tags/TagStore';
+import {useProfileStore} from './user/ProfileStore';
 
-const LogoutScreen = ({navigation}: Screen<'LogoutScreen'>) => {
-  const dispatch = useDispatch();
+export const LogoutScreen = ({navigation}: Screen<'LogoutScreen'>) => {
   useEffect(() => {
-    dispatch(clearState());
-    persistor.persist();
+    useMemoryStore.setState({all: []});
+    useContentStore.setState({memoryContent: {}});
+    useProfileStore.setState({couple: undefined});
+    useTagStore.setState({all: []});
+    useAuthStore.setState({tokens: undefined, user: undefined});
     resetNavigate('LoginScreen', navigation);
   }, []);
 
-  return (
-    <>
-      <Text>Logging you out...</Text>
-    </>
-  );
+  return <></>;
 };
-export {LogoutScreen};
