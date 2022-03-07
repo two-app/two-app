@@ -41,6 +41,7 @@ export type RootStackParamList = {
 
 const Stack = createSharedElementStackNavigator();
 
+// @ts-ignore
 const forFade = ({current}) => ({
   cardStyle: {
     opacity: current.progress,

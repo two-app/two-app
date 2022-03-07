@@ -21,7 +21,6 @@
     "@react-navigation/native-stack": "^6.0.11",
     "@react-navigation/stack": "^6.1.1",
     "@testing-library/react-native": "^9.0.0",
-    "@types/": "react-navigation/stack",
     "@types/jest": "^27.4.0",
     "@types/jwt-encode": "^1.0.0",
     "@types/lodash": "^4.14.178",
@@ -32,7 +31,6 @@
     "@types/react-native-video": "^5.0.12",
     "@types/react-test-renderer": "^17.0.1",
     "@types/uuid": "^8.3.4",
-    "add": "^2.0.6",
     "axios": "^0.24.0",
     "ffmpeg-kit-react-native": "^4.5.0",
     "form-data": "^4.0.0",
@@ -49,7 +47,6 @@
     "react-native-config": "^1.4.5",
     "react-native-fast-image": "^8.5.11",
     "react-native-fs": "^2.18.0",
-    "react-native-gallery-toolkit": "^1.0.0-alpha.1.2",
     "react-native-gesture-handler": "^2.2.0",
     "react-native-get-random-values": "^1.7.2",
     "react-native-haptic-feedback": "^1.13.0",
@@ -73,7 +70,6 @@
     "typescript": "^4.5.5",
     "utility-types": "^3.10.0",
     "uuid": "^8.3.2",
-    "yarn": "^1.22.17",
     "zustand": "^3.7.1"
   },
   "devDependencies": {
