@@ -1,95 +1,9 @@
 import {createRef, useEffect, useState} from 'react';
-import {
-  Animated,
-  Modal,
-  View,
-  ActivityIndicator,
-  StatusBar,
-  useWindowDimensions,
-} from 'react-native';
+import {Animated, View, ActivityIndicator} from 'react-native';
 import Image from 'react-native-fast-image';
-import ImageViewer from 'react-native-image-zoom-viewer';
 import Video from 'react-native-video';
 
 import {Content, contentUrl} from '../../content/ContentModels';
-
-type ContentGalleryProps = {
-  content: Content[];
-  index: number | null;
-  onClose: () => void;
-};
-
-export const ContentGallery = ({
-  content,
-  index,
-  onClose,
-}: ContentGalleryProps) => {
-  const [currentIndex, setCurrentIndex] = useState(index);
-  useEffect(() => setCurrentIndex(index), [index]);
-
-  const closeGallery = () => {
-    setCurrentIndex(null);
-    onClose();
-  };
-
-  const {width, height} = useWindowDimensions();
-  const urls = content.map((c, idx) => {
-    const url = contentUrl(c, 'gallery');
-
-    if (c.contentType === 'image') {
-      const g = c.gallery;
-      return {url, props: {index: idx}, width: g.width, height: g.height};
-    } else {
-      return {
-        url,
-        props: {index: idx},
-        width, // TODO check if using the video width/height works
-        height,
-      };
-    }
-  });
-
-  return (
-    <Modal
-      visible={index != null}
-      transparent={true}
-      onDismiss={closeGallery}
-      animated={true}
-      animationType="fade"
-      onRequestClose={closeGallery}>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={'black'}
-        animated={true}
-      />
-      <ImageViewer
-        backgroundColor="rgba(0, 0, 0, 0.5)"
-        enablePreload={true}
-        menuContext={false}
-        enableSwipeDown={true}
-        saveToLocalByLongPress={false}
-        onSwipeDown={closeGallery}
-        onCancel={closeGallery}
-        // @ts-ignore
-        index={index}
-        onChange={newIndex => setCurrentIndex(newIndex || 0)}
-        imageUrls={urls}
-        renderImage={({index: idx}: {index: number}) => {
-          const renderContent = content[idx];
-
-          return renderContent.contentType === 'video' ? (
-            <ProgressiveVideo
-              content={renderContent}
-              isActive={currentIndex === idx}
-            />
-          ) : (
-            <ProgressiveImage content={renderContent} />
-          );
-        }}
-      />
-    </Modal>
-  );
-};
 
 type ProgressiveImage = {
   content: Content;
