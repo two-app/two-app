@@ -29,7 +29,7 @@ export const LoadingScreen = ({navigation}: Screen<'LoadingScreen'>) => {
     }
   }, [hasHydrated]);
 
-  return <View style={{flex: 1}}/>
+  return <View style={{flex: 1}} />;
 };
 
 export class LoadingStatus {

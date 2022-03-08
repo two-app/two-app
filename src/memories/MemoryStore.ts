@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import create from 'zustand';
 import {persist} from 'zustand/middleware';
-import { TimelineDataStore } from '../timelines/UseTimelineHook';
+import {TimelineDataStore} from '../timelines/UseTimelineHook';
 import {Memory} from './MemoryModels';
 
 export type MemoryState = TimelineDataStore<Memory> & {

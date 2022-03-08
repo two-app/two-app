@@ -21,7 +21,7 @@ describe('LoadingScreen', () => {
   beforeEach(() => (tb = new LoadingScreenTestBed()));
 
   describe('With no auth', () => {
-    beforeEach(() => tb.build());
+    beforeEach(() => tb.clearUser().build());
 
     test('navigates to LogoutScreen', () => {
       expect(mockNavigation.dispatch).toHaveBeenCalledWith(
@@ -69,6 +69,15 @@ describe('LoadingScreen', () => {
 class LoadingScreenTestBed {
   render: RenderAPI = render(<Text>Not Implemented</Text>);
 
+  clearUser = () => {
+    useAuthStore.setState({
+      tokens: undefined,
+      user: undefined,
+      hasHydrated: true,
+    });
+    return this;
+  };
+
   setUser = (user: MixedUser) => {
     const token: string = jwtEncode(user, '');
     this.setTokens({accessToken: token, refreshToken: token});
@@ -77,6 +86,7 @@ class LoadingScreenTestBed {
 
   setTokens = (auth: Tokens) => {
     useAuthStore.getState().set(auth);
+    useAuthStore.getState().setHydrate(true);
     return this;
   };
 

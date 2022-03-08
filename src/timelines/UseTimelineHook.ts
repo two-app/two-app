@@ -1,6 +1,6 @@
 import {ReactElement, useEffect, useState} from 'react';
 import {ListRenderItem} from 'react-native';
-import { UseBoundStore } from 'zustand';
+import {UseBoundStore} from 'zustand';
 import {MemoryTimelineComponent} from '../memories/MemoryTimeline';
 import {GroupedTimelineComponent} from '../tags/TagTimeline';
 
@@ -47,19 +47,13 @@ export const useTimeline = (initialTimeline: Timeline): UseTimelineHook => {
   // Listen for changes in Zustand state, storing it as React state
   const [data, setData] = useState(store.getState().all);
   store.subscribe(state => setData(state.all));
-  
-  const fetch = () => component.fetch().then(data => store.getState().setAll(data));
+
+  const fetch = () =>
+    component.fetch().then(data => store.getState().setAll(data));
 
   useEffect(() => {
-      fetch(); // perform initial lookup
+    fetch(); // perform initial lookup
   }, [timeline]);
 
-  return [
-    data,
-    fetch,
-    timeline,
-    setTimeline,
-    component.render,
-    component.key,
-  ];
+  return [data, fetch, timeline, setTimeline, component.render, component.key];
 };

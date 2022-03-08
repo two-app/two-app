@@ -11,7 +11,7 @@ import {
   GridIcon,
 } from '../memories/MemoryHeaderIcons';
 import {Routes} from '../navigation/NavigationUtilities';
-import { Timeline } from '../timelines/UseTimelineHook';
+import {Timeline} from '../timelines/UseTimelineHook';
 
 import {Heading} from './Heading';
 
