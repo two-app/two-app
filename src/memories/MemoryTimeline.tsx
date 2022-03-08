@@ -11,7 +11,7 @@ import {useMemoryStore} from './MemoryStore';
 
 export const MemoryTimelineComponent = (): TimelineComponent<Memory> => ({
   fetch: getMemories,
-  store: useMemoryStore.getState,
+  store: useMemoryStore,
   render: memory => <MemoryItem memory={memory} />,
   key: memory => `memory-${memory.mid}`,
 });

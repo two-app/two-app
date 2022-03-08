@@ -1,14 +1,12 @@
-import {useEffect} from 'react';
 import {Text} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
 
 import {ScrollContainer} from './views/View';
 import {Route, Screen} from './navigation/NavigationUtilities';
 import {useAuthStore} from './authentication/AuthenticationStore';
+import {useEffect} from 'react';
 
 export const LoadingScreen = ({navigation}: Screen<'LoadingScreen'>) => {
-  const authStore = useAuthStore();
-
   const nav = (route: Route) => {
     navigation.dispatch(
       CommonActions.reset({
@@ -18,15 +16,19 @@ export const LoadingScreen = ({navigation}: Screen<'LoadingScreen'>) => {
     );
   };
 
+  const {user, tokens, hasHydrated} = useAuthStore();
+
   useEffect(() => {
-    if (authStore.tokens != null && authStore.user != null) {
-      // User and auth tokens are present, user is either in connect or connected phase of workflow
-      authStore.user.connected ? nav('HomeScreen') : nav('ConnectCodeScreen');
-    } else {
-      // Navigate to logout screen to clear state and refresh
-      nav('LogoutScreen');
+    if (hasHydrated) {
+      if (tokens != null && user != null) {
+        // User and auth tokens are present, user is either in connect or connected phase of workflow
+        user.connected ? nav('HomeScreen') : nav('ConnectCodeScreen');
+      } else {
+        // Navigate to logout screen to clear state and refresh
+        nav('LogoutScreen');
+      }
     }
-  }, []);
+  }, [hasHydrated]);
 
   return (
     <ScrollContainer>
