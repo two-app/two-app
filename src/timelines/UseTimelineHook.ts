@@ -48,8 +48,9 @@ export const useTimeline = (initialTimeline: Timeline): UseTimelineHook => {
   const [data, setData] = useState(store.getState().all);
   store.subscribe(state => setData(state.all));
 
-  const fetch = () =>
-    component.fetch().then(data => store.getState().setAll(data));
+  const fetch = () => component.fetch().then(
+    data => store.getState().setAll(data)
+  );
 
   useEffect(() => {
     fetch(); // perform initial lookup
