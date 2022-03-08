@@ -1,15 +1,15 @@
 import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native';
 
-import type {TimelineComponent} from '../home/TimelineConstants';
 import {Routes} from '../navigation/NavigationUtilities';
+import { TimelineComponent } from '../timelines/UseTimelineHook';
 
 import {MemoryDisplayView} from './MemoryDisplayView';
 import type {Memory} from './MemoryModels';
 import {getMemories} from './MemoryService';
-import {useMemoryStore} from './MemoryStore';
+import {MemoryState, useMemoryStore} from './MemoryStore';
 
-export const MemoryTimelineComponent = (): TimelineComponent<Memory> => ({
+export const MemoryTimelineComponent = (): TimelineComponent<Memory, MemoryState> => ({
   fetch: getMemories,
   store: useMemoryStore,
   render: memory => <MemoryItem memory={memory} />,

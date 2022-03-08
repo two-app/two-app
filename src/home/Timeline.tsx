@@ -6,9 +6,9 @@ import {useTimeline} from '../timelines/UseTimelineHook';
 import {TimelineHeader} from './TimelineHeader';
 
 export const Timeline = () => {
+  const [refreshing, setRefreshing] = useState(false);
   const [data, refresh, timeline, setTimeline, render, key] =
     useTimeline('timeline');
-  const [refreshing, setRefreshing] = useState(false);
 
   return (
     <FlatList

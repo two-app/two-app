@@ -1,7 +1,6 @@
-import {Text} from 'react-native';
+import {View} from 'react-native';
 import {CommonActions} from '@react-navigation/native';
 
-import {ScrollContainer} from './views/View';
 import {Route, Screen} from './navigation/NavigationUtilities';
 import {useAuthStore} from './authentication/AuthenticationStore';
 import {useEffect} from 'react';
@@ -30,11 +29,7 @@ export const LoadingScreen = ({navigation}: Screen<'LoadingScreen'>) => {
     }
   }, [hasHydrated]);
 
-  return (
-    <ScrollContainer>
-      <Text>Loading...</Text>
-    </ScrollContainer>
-  );
+  return <View style={{flex: 1}}/>
 };
 
 export class LoadingStatus {

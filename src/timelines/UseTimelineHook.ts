@@ -1,12 +1,24 @@
-import {useState} from 'react';
+import {ReactElement, useEffect, useState} from 'react';
 import {ListRenderItem} from 'react-native';
-import {TimelineComponent} from '../home/TimelineConstants';
+import { UseBoundStore } from 'zustand';
 import {MemoryTimelineComponent} from '../memories/MemoryTimeline';
 import {GroupedTimelineComponent} from '../tags/TagTimeline';
 
-type Timeline = 'timeline' | 'grouped' | 'grid';
+export type Timeline = 'timeline' | 'grouped' | 'grid';
 
-const timelines: Record<Timeline, () => TimelineComponent<any>> = {
+export type TimelineDataStore<T> = {
+  all: T[];
+  setAll: (t: T[]) => void;
+};
+
+export type TimelineComponent<Item extends object, State extends object> = {
+  fetch: () => Promise<Array<Item>>;
+  store: UseBoundStore<State>;
+  render: (item: Item) => ReactElement;
+  key: (item: Item) => string;
+};
+
+const timelines: Record<Timeline, () => TimelineComponent<any, any>> = {
   timeline: MemoryTimelineComponent,
   grouped: GroupedTimelineComponent,
   grid: MemoryTimelineComponent,
@@ -30,12 +42,20 @@ type UseTimelineHook = [
 export const useTimeline = (initialTimeline: Timeline): UseTimelineHook => {
   const [timeline, setTimeline] = useState(initialTimeline);
   const component = timelines[timeline]();
-  const store = component.store();
+  const {store} = component;
 
-  const fetch = () => component.fetch().then(store.setAll);
+  // Listen for changes in Zustand state, storing it as React state
+  const [data, setData] = useState(store.getState().all);
+  store.subscribe(state => setData(state.all));
+  
+  const fetch = () => component.fetch().then(data => store.getState().setAll(data));
+
+  useEffect(() => {
+      fetch(); // perform initial lookup
+  }, [timeline]);
 
   return [
-    store.all,
+    data,
     fetch,
     timeline,
     setTimeline,

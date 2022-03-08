@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import create from 'zustand';
 import {persist} from 'zustand/middleware';
-import {TimelineDataStore} from '../home/TimelineConstants';
+import { TimelineDataStore } from '../timelines/UseTimelineHook';
 import {Tag} from './Tag';
 
 export type TagState = TimelineDataStore<Tag> & {

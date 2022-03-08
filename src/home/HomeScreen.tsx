@@ -1,13 +1,8 @@
 import {Timeline} from './Timeline';
 import {Container} from '../views/View';
 
-export const HomeScreen = () => {
-  console.log('Hello, Home Screen');
-  return (
-    <>
-      <Container footer="HomeScreen">
-        <Timeline />
-      </Container>
-    </>
-  );
-};
+export const HomeScreen = () => (
+  <Container footer="HomeScreen">
+    <Timeline />
+  </Container>
+);
