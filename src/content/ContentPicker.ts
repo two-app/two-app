@@ -52,7 +52,7 @@ const compressVideoContent = async (content: Video): Promise<ContentFiles> => {
     mime: 'video/mp4',
     width,
     height,
-    size: parseInt(size, 10),
+    size,
     duration: (content as Video).duration,
   } as File;
 
