@@ -5,10 +5,10 @@ import {Text} from 'react-native';
 import * as MemoryService from '../../src/memories/MemoryService';
 import * as TagService from '../../src/tags/TagService';
 import {Timeline} from '../../src/home/Timeline';
+import type {Timeline as TimelineType} from '../../src/timelines/UseTimelineHook';
 import type {Memory} from '../../src/memories/MemoryModels';
 import type {Tag} from '../../src/tags/Tag';
 import {mockNavigation} from '../utils/NavigationMocking';
-import type {TimelineType} from '../../src/home/TimelineConstants';
 import {v4 as uuid} from 'uuid';
 
 describe('Timeline', () => {

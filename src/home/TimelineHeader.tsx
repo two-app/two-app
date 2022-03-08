@@ -11,13 +11,13 @@ import {
   GridIcon,
 } from '../memories/MemoryHeaderIcons';
 import {Routes} from '../navigation/NavigationUtilities';
+import {Timeline} from '../timelines/UseTimelineHook';
 
 import {Heading} from './Heading';
-import {TimelineType} from './TimelineConstants';
 
 export type TimelineHeaderProps = {
-  selected: TimelineType;
-  onSelected: (selected: TimelineType) => void;
+  selected: Timeline;
+  onSelected: (selected: Timeline) => void;
 };
 
 export const TimelineHeader = ({selected, onSelected}: TimelineHeaderProps) => {

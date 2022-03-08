@@ -39,7 +39,7 @@ export type RootStackParamList = {
   };
 };
 
-const Stack = createSharedElementStackNavigator();
+const Stack = createSharedElementStackNavigator<RootStackParamList>();
 
 // @ts-ignore
 const forFade = ({current}) => ({

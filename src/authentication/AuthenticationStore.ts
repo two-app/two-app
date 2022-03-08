@@ -9,6 +9,9 @@ export type AuthState = {
   tokens?: Tokens;
   user?: MixedUser & {connected: boolean};
   set: (tokens: Tokens) => MixedUser;
+
+  hasHydrated: boolean;
+  setHydrate: (_hasHydrated: boolean) => void;
 };
 
 export const useAuthStore = create<AuthState>(
@@ -21,10 +24,15 @@ export const useAuthStore = create<AuthState>(
         set({tokens, user: {...user, connected: 'cid' in user}});
         return user;
       },
+      hasHydrated: false,
+      setHydrate: (hasHydrated: boolean) => set({hasHydrated}),
     }),
     {
       name: 'auth-storage',
       getStorage: () => AsyncStorage,
+      onRehydrateStorage: () => state => {
+        state?.setHydrate(true);
+      },
     },
   ),
 );
