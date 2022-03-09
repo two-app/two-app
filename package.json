@@ -46,7 +46,7 @@
     "react-native-awesome-gallery": "^0.2.6",
     "react-native-config": "^1.4.5",
     "react-native-fast-image": "^8.5.11",
-    "react-native-fs": "^2.18.0",
+    "react-native-fs": "^2.19.0",
     "react-native-gesture-handler": "^2.2.0",
     "react-native-get-random-values": "^1.7.2",
     "react-native-haptic-feedback": "^1.13.0",
@@ -74,6 +74,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.5",
+    "@babel/preset-env": "^7.16.11",
     "@babel/preset-typescript": "^7.16.7",
     "@babel/runtime": "^7.17.2",
     "@react-native-community/eslint-config": "^3.0.1",
