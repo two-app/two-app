@@ -15,6 +15,7 @@ import {Content} from '../../content/ContentModels';
 import {Routes} from '../../navigation/NavigationUtilities';
 import {useMemoryStore} from '../MemoryStore';
 import {useContentStore} from '../../content/ContentStore';
+import {InProgressUpload, useUploadStore} from '../../content/UploadStore';
 
 export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   <View>
@@ -56,11 +57,43 @@ const EditButton = ({memory}: {memory: Memory}) => {
 export const UploadContentButton = ({memory}: {memory: Memory}) => {
   const {mid} = memory;
   const contentStore = useContentStore();
+  const uploadStore = useUploadStore();
 
-  const uploadContent = (files: ContentFiles[]) =>
-    Promise.all(files.map(f => ContentService.uploadContent(mid, f))).then(
-      (content: Content[]) => contentStore.add(mid, content),
+  const uploadContent = (files: ContentFiles[]) => {
+    const uploads: Record<string, InProgressUpload> = files.reduce(
+      (acc, file): Record<string, InProgressUpload> => ({
+        ...acc,
+        [file.contentId]: {
+          fileURI: file.display.path,
+          failed: false,
+          percent: 0,
+        },
+      }),
+      {},
     );
+
+    // Store the live uploads for the modal display
+    uploadStore.setUploads(mid, uploads);
+
+    const uploadPromises = files.map((file: ContentFiles) =>
+      ContentService.uploadContent(mid, file)
+        .then((content: Content) => {
+          contentStore.add(mid, [content]); // TODO make this accept just 1
+          uploadStore.setFinished(file.contentId, true);
+        })
+        .catch(e => {
+          console.error(`Failed to upload content to mid ${mid}: `, e);
+          uploadStore.setFinished(file.contentId, false);
+        }),
+    );
+
+    // Once all uploads complete, clear the state
+    Promise.all(uploadPromises).finally(() => uploadStore.clear());
+
+    //Promise.all(files.map(f => ContentService.uploadContent(mid, f))).then(
+    //  (content: Content[]) => contentStore.add(mid, content)
+    //);
+  };
 
   return (
     <TouchableOpacity

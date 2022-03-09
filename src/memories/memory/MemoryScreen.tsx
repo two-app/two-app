@@ -7,6 +7,7 @@ import {getMemory} from '../MemoryService';
 import Colors from '../../Colors';
 import {getContent} from '../../content/ContentService';
 import {Content} from '../../content/ContentModels';
+import {ContentUploadModal} from '../../content/ContentUploadModal';
 
 import {
   GridRow,
@@ -56,6 +57,8 @@ export const MemoryScreen = ({route}: Screen<'MemoryScreen'>) => {
           refreshMemory();
         }}
       />
+
+      <ContentUploadModal mid={memory.mid} />
     </Container>
   );
 };
