@@ -18,7 +18,7 @@ import {useContentStore} from '../../content/ContentStore';
 import {InProgressUpload, useUploadStore} from '../../content/UploadStore';
 
 export const MemoryToolbar = ({memory}: {memory: Memory}) => (
-  <View>
+  <View style={{marginBottom: 10}}>
     <View style={styles.toolbar}>
       <BackButton />
       <View style={styles.toolbarGroup}>
@@ -87,8 +87,7 @@ export const UploadContentButton = ({memory}: {memory: Memory}) => {
         }),
     );
 
-    // Once all uploads complete, clear the state
-    //Promise.all(uploadPromises).finally(() => uploadStore.clear());
+    Promise.all(uploadPromises).finally(() => console.log('Finished upload.'));
   };
 
   return (
@@ -117,7 +116,6 @@ export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
       style: 'destructive',
       onPress: async () => {
         await deleteMemory(memory.mid);
-        memoryStore.remove(memory.mid);
 
         nav.dispatch(
           // reset as state will no longer exist
@@ -126,6 +124,8 @@ export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
             routes: [{name: 'HomeScreen'}],
           }),
         );
+
+        memoryStore.remove(memory.mid);
       },
     };
 
