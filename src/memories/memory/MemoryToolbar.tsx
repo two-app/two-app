@@ -88,11 +88,7 @@ export const UploadContentButton = ({memory}: {memory: Memory}) => {
     );
 
     // Once all uploads complete, clear the state
-    Promise.all(uploadPromises).finally(() => uploadStore.clear());
-
-    //Promise.all(files.map(f => ContentService.uploadContent(mid, f))).then(
-    //  (content: Content[]) => contentStore.add(mid, content)
-    //);
+    //Promise.all(uploadPromises).finally(() => uploadStore.clear());
   };
 
   return (

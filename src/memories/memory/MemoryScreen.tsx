@@ -77,7 +77,7 @@ const ContentGrid = ({
   onRefresh,
 }: ContentGridProps) => {
   const [modalIndex, setModalIndex] = useState<number | undefined>();
-  const numberOfColumns = 4;
+  const numberOfColumns = 3;
   const rows = chunkToRows(data, numberOfColumns);
 
   useEffect(() => {
