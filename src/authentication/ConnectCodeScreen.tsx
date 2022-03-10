@@ -80,7 +80,6 @@ export const ConnectCodeScreen = ({
 
   return (
     <ScrollContainer
-      keyboardShouldPersistTaps="always"
       refreshControl={
         <RefreshControl
           colors={['#9Bd35A', '#689F38']}

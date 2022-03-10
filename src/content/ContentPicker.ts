@@ -8,6 +8,7 @@ import {compressVideo} from './compression/VideoCompression';
 import {compressImage} from './compression/ImageCompression';
 import {ContentFiles, File} from './compression/Compression';
 import {v4 as uuid} from 'uuid';
+import {Alert, Linking} from 'react-native';
 
 export class ContentPicker {
   static open = async (): Promise<ContentFiles[]> => {
@@ -17,12 +18,37 @@ export class ContentPicker {
 }
 
 const selectContent = async (): Promise<Image[]> => {
-  const content: Image | Image[] = await ImagePicker.openPicker({
+  return ImagePicker.openPicker({
     multiple: true,
     maxFiles: 15,
-  });
+  })
+    .then(content => (Array.isArray(content) ? content : [content]))
+    .catch(({message}: Error) => {
+      console.log(message);
+      if (message.includes('User did not grant library permission')) {
+        console.log(Alert);
+        console.log(Alert.alert);
+        Alert.alert(
+          'Photo Permissions',
+          'Please give Two permission to access your photos to upload.',
+          [
+            {
+              text: 'Open Settings',
+              style: 'default',
+              onPress: () => {
+                Linking.openSettings();
+              },
+            },
+            {
+              text: 'No thanks',
+              style: 'cancel',
+            },
+          ],
+        );
+      }
 
-  return Array.isArray(content) ? content : [content];
+      return [];
+    });
 };
 
 const compressContent = async (

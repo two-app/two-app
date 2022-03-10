@@ -44,7 +44,7 @@ export const LoginScreen = ({navigation}: Screen<'LoginScreen'>) => {
   };
 
   return (
-    <ScrollContainer keyboardShouldPersistTaps="always">
+    <ScrollContainer>
       <LogoHeader heading="Sign In" />
 
       <Input

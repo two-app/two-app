@@ -11,6 +11,8 @@ import {
   TagsIcon,
   VideoIcon,
 } from '../forms/Icons';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useMemo, useState} from 'react';
 
 export const MemoryLocation = ({location}: {location: string}) => (
   <IconContainer>
@@ -19,12 +21,21 @@ export const MemoryLocation = ({location}: {location: string}) => (
   </IconContainer>
 );
 
-export const MemoryDate = ({date}: {date: Date}) => (
-  <IconContainer>
-    <TextContainer padRight>{moment(date).fromNow()}</TextContainer>
-    <DateIcon color={Colors.REGULAR} size={20} />
-  </IconContainer>
-);
+export const MemoryDate = ({date}: {date: Date}) => {
+  const [fromNow, setFromNow] = useState(true);
+  const parsed = useMemo(() => moment(date), []);
+
+  return (
+    <TouchableOpacity onPress={() => setFromNow(!fromNow)}>
+      <IconContainer>
+        <TextContainer padRight>
+          {fromNow ? parsed.fromNow() : parsed.calendar()}
+        </TextContainer>
+        <DateIcon color={Colors.REGULAR} size={20} />
+      </IconContainer>
+    </TouchableOpacity>
+  );
+};
 
 export const MemoryImageCount = ({pictureCount}: {pictureCount: number}) => (
   <IconContainer>

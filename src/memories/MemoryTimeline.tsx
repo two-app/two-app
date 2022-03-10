@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 
 import {Routes} from '../navigation/NavigationUtilities';
 import {TimelineComponent} from '../timelines/UseTimelineHook';
@@ -26,7 +26,9 @@ const MemoryItem = ({memory}: {memory: Memory}) => {
       accessibilityLabel={`Open memory '${memory.title}'`}
       style={{marginTop: 10, marginBottom: 20}}
       onPress={() => navigate('MemoryScreen', {mid: memory.mid})}>
-      <MemoryDisplayView memory={memory} />
+      <View pointerEvents="none">
+        <MemoryDisplayView memory={memory} />
+      </View>
     </TouchableOpacity>
   );
 };
