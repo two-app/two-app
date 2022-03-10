@@ -3,7 +3,7 @@
   "extends": [
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
-    "plugin:react-hooks/all",
+    "plugin:react-hooks/recommended",
     "plugin:react-native/all",
     "prettier"
   ],

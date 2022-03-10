@@ -14,7 +14,7 @@ export const MemoryTimelineComponent = (): TimelineComponent<
   MemoryState
 > => ({
   fetch: getMemories,
-  store: useMemoryStore,
+  useStore: useMemoryStore,
   render: memory => <MemoryItem memory={memory} />,
   key: memory => `memory-${memory.mid}`,
 });

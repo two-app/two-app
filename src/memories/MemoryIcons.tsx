@@ -1,52 +1,36 @@
-import {StyleSheet, Text, View} from 'react-native';
-import IonIcon from 'react-native-vector-icons/Ionicons';
+import {Text, View} from 'react-native';
 import moment from 'moment';
 
 import Colors from '../Colors';
 import {DisplayTag} from '../tags/TagButton';
 import {Tag} from '../tags/Tag';
+import {
+  DateIcon,
+  ImageIcon,
+  LocationIcon,
+  TagsIcon,
+  VideoIcon,
+} from '../forms/Icons';
 
 export const MemoryLocation = ({location}: {location: string}) => (
-  <View style={c.icon}>
-    <IonIcon name="navigate-circle-outline" color={Colors.REGULAR} size={20} />
-
-    <Text
-      style={{
-        color: Colors.REGULAR,
-        fontFamily: 'Montserrat-Medium',
-        marginLeft: 5,
-      }}>
-      {location}
-    </Text>
-  </View>
+  <IconContainer>
+    <LocationIcon color={Colors.REGULAR} size={20} />
+    <TextContainer>{location}</TextContainer>
+  </IconContainer>
 );
 
 export const MemoryDate = ({date}: {date: Date}) => (
-  <View style={c.icon}>
-    <Text
-      style={{
-        marginRight: 5,
-        color: Colors.REGULAR,
-        fontFamily: 'Montserrat-Medium',
-      }}>
-      {moment(date).fromNow()}
-    </Text>
-    <IonIcon name="calendar-outline" color={Colors.REGULAR} size={20} />
-  </View>
+  <IconContainer>
+    <TextContainer padRight>{moment(date).fromNow()}</TextContainer>
+    <DateIcon color={Colors.REGULAR} size={20} />
+  </IconContainer>
 );
 
 export const MemoryImageCount = ({pictureCount}: {pictureCount: number}) => (
-  <View style={c.icon}>
-    <IonIcon name="image-outline" color={Colors.REGULAR} size={20} />
-    <Text
-      style={{
-        marginLeft: 5,
-        color: Colors.REGULAR,
-        fontFamily: 'Montserrat-Medium',
-      }}>
-      {pictureCount}
-    </Text>
-  </View>
+  <IconContainer>
+    <ImageIcon color={Colors.REGULAR} size={20} />
+    <TextContainer>{pictureCount}</TextContainer>
+  </IconContainer>
 );
 
 export const MemoryVideoCount = ({
@@ -56,56 +40,41 @@ export const MemoryVideoCount = ({
   videoCount: number;
   pad?: boolean;
 }) => (
-  <View style={c.icon}>
-    <IonIcon
-      name="aperture-outline"
-      {...iconArguments}
+  <IconContainer>
+    <VideoIcon
+      color={Colors.REGULAR}
+      size={20}
       style={[{marginLeft: pad ? 10 : 0}]}
     />
-    <Text
-      style={{
-        marginLeft: 5,
-        color: Colors.REGULAR,
-        fontFamily: 'Montserrat-Medium',
-      }}>
-      {videoCount}
-    </Text>
-  </View>
+    <TextContainer>{videoCount}</TextContainer>
+  </IconContainer>
 );
 
 export const MemoryTag = ({tag}: {tag: Tag}) => (
-  <View style={c.icon}>
+  <IconContainer>
     <DisplayTag tag={tag} />
-    <IonIcon
-      name="pricetags-outline"
-      size={17}
-      color={Colors.REGULAR}
-      style={[s.iconRight, {transform: [{rotateY: '180deg'}]}]}
-    />
-  </View>
+    <TagsIcon size={17} color={Colors.REGULAR} style={{marginLeft: 5}} />
+  </IconContainer>
 );
 
-const iconArguments = {
-  size: 20,
-  color: Colors.REGULAR,
-};
+const IconContainer = ({children}: {children: React.ReactNode}) => (
+  <View style={{flexDirection: 'row', alignItems: 'center'}}>{children}</View>
+);
 
-const c = StyleSheet.create({
-  icon: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-});
-
-const s = StyleSheet.create({
-  text: {
-    color: Colors.REGULAR,
-    fontFamily: 'Montserrat-SemiBold',
-  },
-  iconRight: {
-    marginLeft: 5,
-  },
-  iconLeft: {
-    marginRight: 5,
-  },
-});
+const TextContainer = ({
+  padRight,
+  children,
+}: {
+  padRight?: boolean;
+  children: string | number;
+}) => (
+  <Text
+    style={{
+      color: Colors.REGULAR,
+      fontFamily: 'Montserrat-Medium',
+      marginLeft: padRight ? 0 : 5,
+      marginRight: padRight ? 5 : 0,
+    }}>
+    {children}
+  </Text>
+);
