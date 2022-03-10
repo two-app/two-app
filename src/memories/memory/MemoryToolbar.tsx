@@ -65,8 +65,8 @@ export const UploadContentButton = ({memory}: {memory: Memory}) => {
         ...acc,
         [file.contentId]: {
           fileURI: file.display.path,
-          failed: false,
-          percent: 0,
+          finished: false,
+          controller: new AbortController(),
         },
       }),
       {},
@@ -76,7 +76,11 @@ export const UploadContentButton = ({memory}: {memory: Memory}) => {
     uploadStore.setUploads(mid, uploads);
 
     const uploadPromises = files.map((file: ContentFiles) =>
-      ContentService.uploadContent(mid, file)
+      ContentService.uploadContent(
+        mid,
+        file,
+        uploads[file.contentId].controller,
+      )
         .then((content: Content) => {
           contentStore.add(mid, [content]); // TODO make this accept just 1
           uploadStore.setFinished(file.contentId, true);

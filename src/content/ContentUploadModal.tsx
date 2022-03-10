@@ -60,11 +60,12 @@ const _ContentUploadModal = () => {
   }, [complete]);
 
   const onCancel = () => {
-    if (cancelMode === 'Close') {
-      uploadStore.clear();
-    } else {
+    if (cancelMode === 'Cancel') {
       // iterate over the unfinished uploads & cancel them
+      uploads.filter(u => !u.finished).forEach(u => u.controller.abort());
     }
+
+    uploadStore.clear();
   };
 
   return (

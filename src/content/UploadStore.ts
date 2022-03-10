@@ -7,6 +7,8 @@ export type InProgressUpload = {
   finished: boolean;
   // upload has finished without error
   succeeded: boolean;
+  // axios abort controller for cancellation
+  controller: AbortController;
 };
 
 export type UploadState = {
@@ -29,10 +31,12 @@ export const useUploadStore = create<UploadState>((set, get) => ({
     set({uploads: {mid, inProgress}});
   },
   setFinished: (contentId: string, succeeded: boolean) => {
-    const uploads = get().uploads!!;
-    uploads.inProgress[contentId].finished = true;
-    uploads.inProgress[contentId].succeeded = succeeded;
-    set({uploads});
+    const uploads = get().uploads;
+    if (uploads != null) {
+      uploads.inProgress[contentId].finished = true;
+      uploads.inProgress[contentId].succeeded = succeeded;
+      set({uploads});
+    }
   },
   clear: () => set({uploads: undefined}),
 }));
