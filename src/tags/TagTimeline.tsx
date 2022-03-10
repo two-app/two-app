@@ -10,7 +10,7 @@ export const GroupedTimelineComponent = (): TimelineComponent<
   TagState
 > => ({
   fetch: getTags,
-  store: useTagStore,
+  useStore: useTagStore,
   render: tag => <TagItem tag={tag} />,
   key: tag => `tag-${tag.tid}`,
 });
