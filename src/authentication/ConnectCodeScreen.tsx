@@ -1,7 +1,13 @@
 import {validate as isUuid} from 'uuid';
 import {v4 as uuid} from 'uuid';
 import {useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  RefreshControl,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Clipboard from '@react-native-community/clipboard';
 import HapticFeedback from 'react-native-haptic-feedback';
 import {ScrollContainer} from '../views/View';
@@ -33,6 +39,7 @@ export const ConnectCodeScreen = ({
     anniversary: F.str,
   });
   const [submitted, setSubmitted] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string>();
 
   const authStore = useAuthStore();
@@ -56,19 +63,34 @@ export const ConnectCodeScreen = ({
   };
 
   const refresh = () => {
-    setSubmitted(true);
     ConnectService.checkConnection()
       .then((isConnected: boolean) => {
-        if (isConnected) resetNavigate('HomeScreen', navigation);
+        if (isConnected) {
+          resetNavigate('HomeScreen', navigation);
+        } else {
+          setRefreshing(false);
+        }
       })
       .catch((e: ErrorResponse) => {
         setError(e.reason);
         setSubmitted(false);
+        setRefreshing(false);
       });
   };
 
   return (
-    <ScrollContainer keyboardShouldPersistTaps="always">
+    <ScrollContainer
+      keyboardShouldPersistTaps="always"
+      refreshControl={
+        <RefreshControl
+          colors={['#9Bd35A', '#689F38']}
+          refreshing={refreshing}
+          onRefresh={() => {
+            setRefreshing(true);
+            refresh();
+          }}
+        />
+      }>
       <LogoHeader heading="Connect To Your Partner" />
       <Text style={{marginTop: 10}}>
         Send your code, or enter theirs below.
