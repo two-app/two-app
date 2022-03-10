@@ -85,7 +85,7 @@ export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
   const locationInput = useRef<TextInput>();
 
   return (
-    <ScrollContainer keyboardShouldPersistTaps="handled">
+    <ScrollContainer>
       <Heading>New Memory</Heading>
 
       <Input

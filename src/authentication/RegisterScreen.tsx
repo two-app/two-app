@@ -71,7 +71,7 @@ export const RegisterScreen = ({navigation}: Screen<'RegisterScreen'>) => {
   const dobInput = useRef<TextInputMask>();
 
   return (
-    <ScrollContainer keyboardShouldPersistTaps="handled">
+    <ScrollContainer>
       <LogoHeader heading="Create Account" />
 
       <Input
