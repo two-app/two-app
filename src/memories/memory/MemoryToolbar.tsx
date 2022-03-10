@@ -15,9 +15,10 @@ import {Content} from '../../content/ContentModels';
 import {Routes} from '../../navigation/NavigationUtilities';
 import {useMemoryStore} from '../MemoryStore';
 import {useContentStore} from '../../content/ContentStore';
+import {InProgressUpload, useUploadStore} from '../../content/UploadStore';
 
 export const MemoryToolbar = ({memory}: {memory: Memory}) => (
-  <View>
+  <View style={{marginBottom: 10}}>
     <View style={styles.toolbar}>
       <BackButton />
       <View style={styles.toolbarGroup}>
@@ -56,11 +57,42 @@ const EditButton = ({memory}: {memory: Memory}) => {
 export const UploadContentButton = ({memory}: {memory: Memory}) => {
   const {mid} = memory;
   const contentStore = useContentStore();
+  const uploadStore = useUploadStore();
 
-  const uploadContent = (files: ContentFiles[]) =>
-    Promise.all(files.map(f => ContentService.uploadContent(mid, f))).then(
-      (content: Content[]) => contentStore.add(mid, content),
+  const uploadContent = (files: ContentFiles[]) => {
+    const uploads: Record<string, InProgressUpload> = files.reduce(
+      (acc, file): Record<string, InProgressUpload> => ({
+        ...acc,
+        [file.contentId]: {
+          fileURI: file.display.path,
+          finished: false,
+          controller: new AbortController(),
+        },
+      }),
+      {},
     );
+
+    // Store the live uploads for the modal display
+    uploadStore.setUploads(mid, uploads);
+
+    const uploadPromises = files.map((file: ContentFiles) =>
+      ContentService.uploadContent(
+        mid,
+        file,
+        uploads[file.contentId].controller,
+      )
+        .then((content: Content) => {
+          contentStore.add(mid, [content]); // TODO make this accept just 1
+          uploadStore.setFinished(file.contentId, true);
+        })
+        .catch(e => {
+          console.error(`Failed to upload content to mid ${mid}: `, e);
+          uploadStore.setFinished(file.contentId, false);
+        }),
+    );
+
+    Promise.all(uploadPromises).finally(() => console.log('Finished upload.'));
+  };
 
   return (
     <TouchableOpacity
@@ -88,7 +120,6 @@ export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
       style: 'destructive',
       onPress: async () => {
         await deleteMemory(memory.mid);
-        memoryStore.remove(memory.mid);
 
         nav.dispatch(
           // reset as state will no longer exist
@@ -97,6 +128,8 @@ export const DeleteMemoryButton = ({memory}: {memory: Memory}) => {
             routes: [{name: 'HomeScreen'}],
           }),
         );
+
+        memoryStore.remove(memory.mid);
       },
     };
 

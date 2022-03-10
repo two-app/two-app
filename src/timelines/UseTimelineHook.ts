@@ -13,7 +13,7 @@ export type TimelineDataStore<T> = {
 
 export type TimelineComponent<Item extends object, State extends object> = {
   fetch: () => Promise<Array<Item>>;
-  store: UseBoundStore<State>;
+  useStore: UseBoundStore<State>;
   render: (item: Item) => ReactElement;
   key: (item: Item) => string;
 };
@@ -39,21 +39,42 @@ type UseTimelineHook = [
   (item: any) => string,
 ];
 
+type ManagedComponentState = {
+  comp: TimelineComponent<any, any>;
+  data: any[];
+};
+
 export const useTimeline = (initialTimeline: Timeline): UseTimelineHook => {
   const [timeline, setTimeline] = useState(initialTimeline);
-  const component = timelines[timeline]();
-  const {store} = component;
+  const [{comp, data}, setCompData] = useState<ManagedComponentState>({
+    comp: timelines[timeline](),
+    data: [],
+  });
 
-  // Listen for changes in Zustand state, storing it as React state
-  const [data, setData] = useState(store.getState().all);
-  store.subscribe(state => setData(state.all));
-
-  const fetch = () =>
-    component.fetch().then(data => store.getState().setAll(data));
+  const createRefresh = (component: TimelineComponent<any, any>) => {
+    return () =>
+      component.fetch().then(data => setCompData({comp: component, data}));
+  };
 
   useEffect(() => {
-    fetch(); // perform initial lookup
+    // synchronously set the component + empty cached data while we load
+    const comp = timelines[timeline]();
+    const data = comp.useStore.getState().all;
+    setCompData({comp, data});
+
+    // asynchronously retrieve the updated data
+    comp.fetch().then(data => {
+      comp.useStore.setState({all: data});
+      setCompData({comp, data});
+    });
   }, [timeline]);
 
-  return [data, fetch, timeline, setTimeline, component.render, component.key];
+  return [
+    data,
+    createRefresh(comp),
+    timeline,
+    setTimeline,
+    comp.render,
+    comp.key,
+  ];
 };

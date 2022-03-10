@@ -7,6 +7,7 @@ import {getMemory} from '../MemoryService';
 import Colors from '../../Colors';
 import {getContent} from '../../content/ContentService';
 import {Content} from '../../content/ContentModels';
+import {ContentUploadModal} from '../../content/ContentUploadModal';
 
 import {
   GridRow,
@@ -19,17 +20,34 @@ import {MemoryInteractionModal} from './MemoryInteractionModal';
 import {Routes, Screen} from '../../navigation/NavigationUtilities';
 import {useMemoryStore} from '../MemoryStore';
 import {useContentStore} from '../../content/ContentStore';
-import {useNavigation} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
-export const MemoryScreen = ({route}: Screen<'MemoryScreen'>) => {
-  const {mid} = route.params;
+export const MemoryScreen = ({navigation, route}: Screen<'MemoryScreen'>) => {
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   const memoryStore = useMemoryStore();
   const contentStore = useContentStore();
+  const {mid} = route.params;
 
-  const memory = memoryStore.select(mid)!!;
+  const memory = memoryStore.select(mid);
   const content = contentStore.select(mid);
 
-  const [refreshing, setRefreshing] = useState<boolean>(false);
+  useEffect(() => {
+    if (memory != null) {
+      refreshMemory();
+    }
+  }, []);
+
+  if (memory == null) {
+    navigation.dispatch(
+      // reset as state will no longer exist
+      CommonActions.reset({
+        index: 0,
+        routes: [{name: 'HomeScreen'}],
+      }),
+    );
+
+    return null;
+  }
 
   const refreshMemory = () => {
     Promise.all([getMemory(mid), getContent(mid)])
@@ -40,10 +58,6 @@ export const MemoryScreen = ({route}: Screen<'MemoryScreen'>) => {
       })
       .finally(() => setRefreshing(false));
   };
-
-  useEffect(() => {
-    refreshMemory();
-  }, []);
 
   return (
     <Container>
@@ -56,6 +70,8 @@ export const MemoryScreen = ({route}: Screen<'MemoryScreen'>) => {
           refreshMemory();
         }}
       />
+
+      <ContentUploadModal mid={mid} />
     </Container>
   );
 };
@@ -74,7 +90,7 @@ const ContentGrid = ({
   onRefresh,
 }: ContentGridProps) => {
   const [modalIndex, setModalIndex] = useState<number | undefined>();
-  const numberOfColumns = 4;
+  const numberOfColumns = 3;
   const rows = chunkToRows(data, numberOfColumns);
 
   useEffect(() => {

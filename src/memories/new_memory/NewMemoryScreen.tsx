@@ -97,6 +97,7 @@ export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
         autoCapitalize="words"
         accessibilityLabel="Enter Memory Title"
         icon={{provider: IonIcon, name: 'brush-outline'}}
+        autoFocus={true}
         containerStyle={{marginTop: 20}}
       />
 
