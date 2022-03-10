@@ -16,8 +16,8 @@ const Gateway: AxiosInstance = Axios.create({
   timeout: 30000,
 });
 
-const showMethodAndURI = (config: AxiosRequestConfig): string =>
-  `${config.method?.toUpperCase()} ${config.url}`;
+const showMethodAndURI = (config?: AxiosRequestConfig): string =>
+  `${config?.method?.toUpperCase()} ${config?.url}`;
 
 const showReq = (config: AxiosRequestConfig): string =>
   `${showMethodAndURI(config)} -- ${JSON.stringify(config.data ?? {})}`;

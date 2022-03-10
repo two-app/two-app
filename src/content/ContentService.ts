@@ -20,6 +20,7 @@ export const setMemoryDisplayPicture = (
 export const uploadContent = (
   mid: string,
   content: ContentFiles,
+  controller: AbortController,
 ): Promise<Content> => {
   const {thumbnail, display, gallery} = content;
   const form = new FormData();
@@ -52,6 +53,7 @@ export const uploadContent = (
       'x-do-not-trace': 'x-do-not-trace',
       'Content-Type': 'multipart/form-data',
     },
+    signal: controller.signal,
   }).then(r => r.data);
 };
 
