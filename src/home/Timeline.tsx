@@ -19,7 +19,7 @@ export const Timeline = () => {
         <TimelineHeader selected={timeline} onSelected={setTimeline} />
       )}
       renderItem={({item}) => render(item)}
-      keyExtractor={key}
+      keyExtractor={item => key(item)}
       refreshControl={
         <RefreshControl
           colors={['#9Bd35A', '#689F38']}

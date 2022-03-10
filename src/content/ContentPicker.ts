@@ -19,6 +19,7 @@ export class ContentPicker {
 const selectContent = async (): Promise<Image[]> => {
   const content: Image | Image[] = await ImagePicker.openPicker({
     multiple: true,
+    maxFiles: 15,
   });
 
   return Array.isArray(content) ? content : [content];
@@ -52,7 +53,7 @@ const compressVideoContent = async (content: Video): Promise<ContentFiles> => {
     mime: 'video/mp4',
     width,
     height,
-    size: parseInt(size, 10),
+    size,
     duration: (content as Video).duration,
   } as File;
 

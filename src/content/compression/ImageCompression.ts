@@ -22,7 +22,7 @@ export const compressImage = async (
     contentType: 'image',
     initialWidth: width,
     initialHeight: height,
-    initialSize: parseInt(image.size, 10),
+    initialSize: image.size,
     thumbnail: thumb,
     display: disp,
     gallery: gall,

@@ -21,8 +21,6 @@ export const MediaScreen = ({navigation, route}: Screen<'MediaScreen'>) => {
   const contentStore = useContentStore();
   const content = contentStore.select(mid);
 
-  goBack();
-
   return (
     <View style={{flex: 1}}>
       <Gallery
@@ -45,7 +43,6 @@ const renderItem = ({
   item,
   setImageDimensions,
 }: RenderItemInfo<{uri: string}>) => {
-  console.log('rendering inf ast image');
   return (
     <SharedElement id={`${index}`} style={StyleSheet.absoluteFillObject}>
       <FastImage
