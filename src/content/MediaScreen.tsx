@@ -67,7 +67,7 @@ const renderVideo = (info: RenderItemInfo<Content>, active: boolean) => {
   }, [active]);
 
   return (
-    <View style={{flex: 1}} key={uri}>
+    <View style={{flex: 1}}>
       {isBuffering && (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
           <ActivityIndicator color="white" size="large" />

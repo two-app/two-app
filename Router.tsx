@@ -12,9 +12,8 @@ import {ProfileScreen} from './src/user/ProfileScreen';
 import {EditMemoryScreen} from './src/memories/memory/EditMemoryScreen';
 import {TagScreen} from './src/tags/tag_screen/TagScreen';
 import {TagManagementScreen} from './src/tags/tag_management/TagManagementScreen';
-import {createSharedElementStackNavigator} from 'react-navigation-shared-element';
 import {MediaScreen} from './src/content/MediaScreen';
-import {Platform} from 'react-native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
   LoadingScreen: undefined;
@@ -39,7 +38,7 @@ export type RootStackParamList = {
   };
 };
 
-const Stack = createSharedElementStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 // @ts-ignore
 const fade = ({current}) => ({
@@ -59,12 +58,12 @@ const AppStack = () => (
     <Stack.Screen
       name="LoginScreen"
       component={LoginScreen}
-      options={{cardStyleInterpolator: fade}}
+      options={{animation: 'fade'}}
     />
     <Stack.Screen
       name="RegisterScreen"
       component={RegisterScreen}
-      options={{cardStyleInterpolator: fade}}
+      options={{animation: 'fade'}}
     />
     <Stack.Screen name="ConnectCodeScreen" component={ConnectCodeScreen} />
 
@@ -72,17 +71,17 @@ const AppStack = () => (
     <Stack.Screen
       name="HomeScreen"
       component={HomeScreen}
-      options={{cardStyleInterpolator: fade}}
+      options={{animation: 'fade'}}
     />
     <Stack.Screen
       name="TagScreen"
       component={TagScreen}
-      options={{cardStyleInterpolator: fade}}
+      options={{animation: 'fade'}}
     />
     <Stack.Screen
       name="ProfileScreen"
       component={ProfileScreen}
-      options={{cardStyleInterpolator: fade}}
+      options={{animation: 'fade'}}
     />
 
     {/* Utility */}
@@ -90,7 +89,7 @@ const AppStack = () => (
     <Stack.Screen
       name="SearchScreen"
       component={SearchScreen}
-      options={{cardStyleInterpolator: fade}}
+      options={{animation: 'fade'}}
     />
 
     {/* Memories */}
@@ -106,25 +105,8 @@ const AppStack = () => (
       name="MediaScreen"
       component={MediaScreen}
       options={{
-        cardStyleInterpolator: ({current: {progress}}) => {
-          const opacity = progress.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, 1],
-            extrapolate: 'clamp',
-          });
-          return {cardStyle: {opacity}};
-        },
+        animation: 'fade',
         gestureEnabled: false,
-        cardStyle: {
-          backgroundColor: 'transparent',
-        },
-      }}
-      sharedElements={(route, _, showing) => {
-        const {index} = route.params;
-        if (Platform.OS !== 'ios' && !showing) {
-          return [];
-        }
-        return [`${index}`];
       }}
     />
   </Stack.Navigator>
