@@ -79,7 +79,7 @@ export const TouchableImageCell = ({item, onClick, onLongPress}: CellProps) => (
       onPress={onClick}
       onLongPress={onLongPress}>
       <Image
-        source={{uri: contentUrl(item, 'thumbnail')}}
+        source={{uri: contentUrl(item, 'display')}}
         style={{flex: 1, backgroundColor: Colors.DARK}}
       />
     </TouchableOpacity>

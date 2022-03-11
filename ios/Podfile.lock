@@ -341,20 +341,20 @@ PODS:
     - SDWebImageWebPCoder (~> 0.8.4)
   - RNFS (2.19.0):
     - React-Core
-  - RNGestureHandler (2.2.0):
+  - RNGestureHandler (1.10.3):
     - React-Core
-  - RNImageCropPicker (0.37.2):
-    - React-Core
-    - React-RCTImage
-    - RNImageCropPicker/QBImagePickerController (= 0.37.2)
-    - TOCropViewController
-  - RNImageCropPicker/QBImagePickerController (0.37.2):
+  - RNImageCropPicker (0.37.3):
     - React-Core
     - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.37.3)
     - TOCropViewController
-  - RNReactNativeHapticFeedback (1.13.0):
+  - RNImageCropPicker/QBImagePickerController (0.37.3):
     - React-Core
-  - RNReanimated (2.3.1):
+    - React-RCTImage
+    - TOCropViewController
+  - RNReactNativeHapticFeedback (1.13.1):
+    - React-Core
+  - RNReanimated (2.4.1):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -619,10 +619,10 @@ SPEC CHECKSUMS:
   RNDateTimePicker: 1dd15d7ed1ab7d999056bc77879a42920d139c12
   RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
   RNFS: fc610f78fdf8bfc89a9e5cc2f898519f4dba1002
-  RNGestureHandler: bf572f552ea324acd5b5464b8d30755b2d8c1de6
-  RNImageCropPicker: 448d3c6e923fde3466b49caf3c2457c2a0ba02dd
-  RNReactNativeHapticFeedback: b83bfb4b537bdd78eb4f6ffe63c6884f7b049ead
-  RNReanimated: 1326679461fa5d2399d54c18ca1432ba3e816b9e
+  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNImageCropPicker: 44e2807bc410741f35d4c45b6586aedfe3da39d2
+  RNReactNativeHapticFeedback: 4085973f5a38b40d3c6793a3ee5724773eae045e
+  RNReanimated: 32c91e28f5780937b8efc07ddde1bab8d373fe0b
   RNScreens: 40a2cb40a02a609938137a1e0acfbf8fc9eebf19
   RNSharedElement: eb7d506733952d58634f34c82ec17e82f557e377
   RNVectorIcons: 7923e585eaeb139b9f4531d25a125a1500162a0b

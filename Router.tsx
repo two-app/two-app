@@ -42,7 +42,7 @@ export type RootStackParamList = {
 const Stack = createSharedElementStackNavigator<RootStackParamList>();
 
 // @ts-ignore
-const forFade = ({current}) => ({
+const fade = ({current}) => ({
   cardStyle: {
     opacity: current.progress,
   },
@@ -59,12 +59,12 @@ const AppStack = () => (
     <Stack.Screen
       name="LoginScreen"
       component={LoginScreen}
-      options={{cardStyleInterpolator: forFade}}
+      options={{cardStyleInterpolator: fade}}
     />
     <Stack.Screen
       name="RegisterScreen"
       component={RegisterScreen}
-      options={{cardStyleInterpolator: forFade}}
+      options={{cardStyleInterpolator: fade}}
     />
     <Stack.Screen name="ConnectCodeScreen" component={ConnectCodeScreen} />
 
@@ -72,17 +72,17 @@ const AppStack = () => (
     <Stack.Screen
       name="HomeScreen"
       component={HomeScreen}
-      options={{cardStyleInterpolator: forFade}}
+      options={{cardStyleInterpolator: fade}}
     />
     <Stack.Screen
       name="TagScreen"
       component={TagScreen}
-      options={{cardStyleInterpolator: forFade}}
+      options={{cardStyleInterpolator: fade}}
     />
     <Stack.Screen
       name="ProfileScreen"
       component={ProfileScreen}
-      options={{cardStyleInterpolator: forFade}}
+      options={{cardStyleInterpolator: fade}}
     />
 
     {/* Utility */}
@@ -90,7 +90,7 @@ const AppStack = () => (
     <Stack.Screen
       name="SearchScreen"
       component={SearchScreen}
-      options={{cardStyleInterpolator: forFade}}
+      options={{cardStyleInterpolator: fade}}
     />
 
     {/* Memories */}
@@ -105,16 +105,26 @@ const AppStack = () => (
     <Stack.Screen
       name="MediaScreen"
       component={MediaScreen}
+      options={{
+        cardStyleInterpolator: ({current: {progress}}) => {
+          const opacity = progress.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 1],
+            extrapolate: 'clamp',
+          });
+          return {cardStyle: {opacity}};
+        },
+        gestureEnabled: false,
+        cardStyle: {
+          backgroundColor: 'transparent',
+        },
+      }}
       sharedElements={(route, _, showing) => {
         const {index} = route.params;
         if (Platform.OS !== 'ios' && !showing) {
           return [];
         }
         return [`${index}`];
-      }}
-      options={{
-        cardStyleInterpolator: forFade,
-        gestureEnabled: false,
       }}
     />
   </Stack.Navigator>

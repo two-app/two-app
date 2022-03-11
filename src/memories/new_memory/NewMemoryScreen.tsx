@@ -2,7 +2,7 @@ import {useRef, useState} from 'react';
 import {Input, NonEditableInput} from '../../forms/Input';
 import {PrimaryButton} from '../../forms/SubmitButton';
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import {Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity, TextInput} from 'react-native';
 import {v4 as uuid} from 'uuid';
 import {Heading} from '../../home/Heading';
 import type {ErrorResponse} from '../../http/Response';
@@ -16,7 +16,6 @@ import {Screen} from '../../navigation/NavigationUtilities';
 import F, {Form} from '../../forms/Form';
 import {DateInputModal, DateInputModalHandle} from './DateInput';
 import moment from 'moment';
-import {TextInput} from 'react-native-gesture-handler';
 import {useMemoryStore} from '../MemoryStore';
 
 type MemoryForm = {

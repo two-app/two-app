@@ -1,11 +1,11 @@
-import {StyleSheet, View} from 'react-native';
+import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {Screen} from '../navigation/NavigationUtilities';
 import Gallery, {RenderItemInfo} from 'react-native-awesome-gallery';
 import {useContentStore} from './ContentStore';
-import {contentUrl} from './ContentModels';
-import {useCallback} from 'react';
-import {SharedElement} from 'react-navigation-shared-element';
+import {Content, contentUrl} from './ContentModels';
+import {createRef, useCallback, useEffect, useState} from 'react';
 import FastImage from 'react-native-fast-image';
+import Video from 'react-native-video';
 
 export const MediaScreen = ({navigation, route}: Screen<'MediaScreen'>) => {
   const {setParams, goBack, isFocused} = navigation;
@@ -24,36 +24,67 @@ export const MediaScreen = ({navigation, route}: Screen<'MediaScreen'>) => {
   return (
     <View style={{flex: 1}}>
       <Gallery
-        data={content.map(c => ({uri: contentUrl(c, 'gallery')}))}
-        keyExtractor={item => item.uri}
-        renderItem={renderItem}
+        data={content}
+        keyExtractor={item => item.contentId}
+        renderItem={info =>
+          info.item.contentType === 'image'
+            ? renderImage(info)
+            : renderVideo(info, info.index === index)
+        }
         onIndexChange={onIndexChange}
         initialIndex={index}
-        onSwipeToClose={() => {
-          console.log('ONSwipeToClose');
-          goBack();
-        }}
+        onSwipeToClose={() => goBack()}
       />
     </View>
   );
 };
 
-const renderItem = ({
-  index,
-  item,
-  setImageDimensions,
-}: RenderItemInfo<{uri: string}>) => {
+const renderImage = ({item, setImageDimensions}: RenderItemInfo<Content>) => {
+  const uri = contentUrl(item, 'gallery');
+  setImageDimensions({width: item.gallery.width, height: item.gallery.height});
+
   return (
-    <SharedElement id={`${index}`} style={StyleSheet.absoluteFillObject}>
-      <FastImage
-        source={{uri: item.uri}}
-        style={StyleSheet.absoluteFillObject}
-        resizeMode={FastImage.resizeMode.contain}
-        onLoad={e => {
-          const {width, height} = e.nativeEvent;
-          setImageDimensions({width, height});
-        }}
+    <FastImage
+      source={{uri}}
+      style={StyleSheet.absoluteFillObject}
+      resizeMode={FastImage.resizeMode.contain}
+    />
+  );
+};
+
+const renderVideo = (info: RenderItemInfo<Content>, active: boolean) => {
+  const {item, setImageDimensions} = info;
+  const uri = contentUrl(item, 'gallery');
+  setImageDimensions({width: item.gallery.width, height: item.gallery.height});
+
+  const [isBuffering, setBuffering] = useState(true);
+  const player = createRef<Video>();
+
+  useEffect(() => {
+    if (active) {
+      player.current?.seek(0);
+    }
+  }, [active]);
+
+  return (
+    <View style={{flex: 1}} key={uri}>
+      {isBuffering && (
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+          <ActivityIndicator color="white" size="large" />
+        </View>
+      )}
+      <Video
+        ref={player}
+        controls={true}
+        paused={!active}
+        muted={!active}
+        repeat={true}
+        source={{uri}}
+        onError={console.log}
+        resizeMode="contain"
+        onLoad={() => setBuffering(false)}
+        style={{flex: isBuffering ? 0 : 1}}
       />
-    </SharedElement>
+    </View>
   );
 };
