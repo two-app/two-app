@@ -30,23 +30,23 @@ export const compressImage = async (
 };
 
 const thumbnail = async (input: string): Promise<File> => {
-  const output = RNFS.TemporaryDirectoryPath + uuid() + '.png';
-  const sized = await resize(input, output, 100, 100, 'cover');
+  const output = RNFS.TemporaryDirectoryPath + uuid() + '.jpeg';
+  const sized = await resize(input, output, 1280, 720, 'cover');
   console.log(`Thumbnail ${sized.width}x${sized.height} - ${sized.size} bytes`);
   return sized;
 };
 
 const display = async (input: string): Promise<File> => {
-  const output = RNFS.TemporaryDirectoryPath + uuid() + '.png';
-  const sized = await resize(input, output, 400, 400, 'cover');
-  console.log(`Thumbnail ${sized.width}x${sized.height} - ${sized.size} bytes`);
+  const output = RNFS.TemporaryDirectoryPath + uuid() + '.jpeg';
+  const sized = await resize(input, output, 1920, 1080, 'cover');
+  console.log(`Display ${sized.width}x${sized.height} - ${sized.size} bytes`);
   return sized;
 };
 
 const gallery = async (input: string): Promise<File> => {
-  const output = RNFS.TemporaryDirectoryPath + uuid() + '.png';
-  const sized = await resize(input, output, 1080, 720, 'contain');
-  console.log(`Thumbnail ${sized.width}x${sized.height} - ${sized.size} bytes`);
+  const output = RNFS.TemporaryDirectoryPath + uuid() + '.jpeg';
+  const sized = await resize(input, output, 2560, 1440, 'contain');
+  console.log(`Gallery ${sized.width}x${sized.height} - ${sized.size} bytes`);
   return sized;
 };
 
@@ -61,21 +61,19 @@ const resize = async (
     input,
     x,
     y,
-    'PNG',
-    100,
+    'JPEG',
+    80,
     undefined,
     output,
     undefined,
     {mode, onlyScaleDown: true},
   );
 
-  console.log(`${width}x${height} - ${size}`);
-
   return {
     width,
     height,
     path: uri,
-    mime: 'image/png',
+    mime: 'image/jpeg',
     size,
     duration: undefined,
   };

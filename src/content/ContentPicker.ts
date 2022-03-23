@@ -21,6 +21,7 @@ const selectContent = async (): Promise<Image[]> => {
   return ImagePicker.openPicker({
     multiple: true,
     maxFiles: 15,
+    compressVideoPreset: 'HighestQuality',
   })
     .then(content => (Array.isArray(content) ? content : [content]))
     .catch(({message}: Error) => {
