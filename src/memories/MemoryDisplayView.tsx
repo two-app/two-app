@@ -44,7 +44,7 @@ const MemoryDisplayPicture = ({content}: {content: Content}) => (
   <View style={s.image}>
     <Image
       style={{width: '100%', height: '100%'}}
-      source={{uri: contentUrl(content, 'display')}}
+      source={{uri: contentUrl(content, 'thumbnail')}}
     />
   </View>
 );

@@ -26,7 +26,7 @@ export const uploadContent = (
   const form = new FormData();
 
   form.append('thumbnail', {
-    name: 'thumbnail.png',
+    name: 'thumbnail',
     type: thumbnail.mime,
     uri: thumbnail.path,
   });
