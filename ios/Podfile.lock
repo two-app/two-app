@@ -341,7 +341,7 @@ PODS:
     - SDWebImageWebPCoder (~> 0.8.4)
   - RNFS (2.19.0):
     - React-Core
-  - RNGestureHandler (1.10.3):
+  - RNGestureHandler (2.3.2):
     - React-Core
   - RNImageCropPicker (0.37.3):
     - React-Core
@@ -619,7 +619,7 @@ SPEC CHECKSUMS:
   RNDateTimePicker: f05b097067dbe708a011b5b6fb51ecba8b491079
   RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
   RNFS: fc610f78fdf8bfc89a9e5cc2f898519f4dba1002
-  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNGestureHandler: 6e757e487a4834e7280e98e9bac66d2d9c575e9c
   RNImageCropPicker: 44e2807bc410741f35d4c45b6586aedfe3da39d2
   RNReactNativeHapticFeedback: 4085973f5a38b40d3c6793a3ee5724773eae045e
   RNReanimated: 32c91e28f5780937b8efc07ddde1bab8d373fe0b

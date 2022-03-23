@@ -1,4 +1,4 @@
-import {Text, View} from 'react-native';
+import {Text, View, TouchableOpacity} from 'react-native';
 import moment from 'moment';
 
 import Colors from '../Colors';
@@ -11,7 +11,6 @@ import {
   TagsIcon,
   VideoIcon,
 } from '../forms/Icons';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useMemo, useState} from 'react';
 
 export const MemoryLocation = ({location}: {location: string}) => (
