@@ -5,8 +5,9 @@ import {
   StyleSheet,
   Text,
   View,
+  FlatList,
+  TouchableOpacity,
 } from 'react-native';
-import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Colors from '../Colors';
