@@ -78,7 +78,7 @@ const compressVideoCmd = (
     'libx264',
     // Scale width/height
     '-vf',
-    vertical ? 'scale=-2:2560' : 'scale=2560:-2"',
+    vertical ? 'scale=-2:2560' : 'scale=2560:-2',
     // output
     output,
   ].reduce((l, r) => l + ' ' + r, '');
