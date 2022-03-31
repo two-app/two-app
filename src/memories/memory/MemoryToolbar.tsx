@@ -91,7 +91,7 @@ export const UploadContentButton = ({memory}: {memory: Memory}) => {
         }),
     );
 
-    Promise.all(uploadPromises).finally(() => console.log('Finished upload.'));
+    Promise.all(uploadPromises);
   };
 
   return (

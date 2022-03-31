@@ -9,9 +9,9 @@ PODS:
     - React-Core (= 0.67.3)
     - React-jsi (= 0.67.3)
     - ReactCommon/turbomodule/core (= 0.67.3)
-  - ffmpeg-kit-ios-full-gpl (4.5)
-  - ffmpeg-kit-react-native/full-gpl (4.5.0):
-    - ffmpeg-kit-ios-full-gpl (= 4.5)
+  - ffmpeg-kit-ios-full-gpl (4.5.1)
+  - ffmpeg-kit-react-native/full-gpl (4.5.1):
+    - ffmpeg-kit-ios-full-gpl (= 4.5.1)
     - React-Core
   - fmt (6.2.1)
   - glog (0.3.5)
@@ -575,8 +575,8 @@ SPEC CHECKSUMS:
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
   FBLazyVector: 808f741ddb0896a20e5b98cc665f5b3413b072e2
   FBReactNativeSpec: 94473205b8741b61402e8c51716dea34aa3f5b2f
-  ffmpeg-kit-ios-full-gpl: 486f8176aa796bb97609160292005d7849a69b30
-  ffmpeg-kit-react-native: 03655a7f2d1ede5c465c9ce3ab25817aeac04a8c
+  ffmpeg-kit-ios-full-gpl: 9eb5c2e17ba5dea1b1b83cff35b54918b683b67f
+  ffmpeg-kit-react-native: f07dd13b146f9bdef9e2639ab68c9e3ddeedc099
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 85ecdd10ee8d8ec362ef519a6a45ff9aa27b2e85
   hermes-engine: bf7577d12ac6ccf53ab8b5af3c6ccf0dd8458c5c
@@ -633,4 +633,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 06b62afb210c3442207ae9ca96bd9c9b673c74be
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
