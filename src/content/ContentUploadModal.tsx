@@ -11,7 +11,7 @@ import {
 import Modal from 'react-native-modal';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import Colors from '../Colors';
-import {useUploadStore} from './UploadStore';
+import {InProgressUpload, useUploadStore} from './UploadStore';
 
 type ContentUploadModalProps = {
   mid: string;
@@ -19,6 +19,9 @@ type ContentUploadModalProps = {
 
 export const ContentUploadModal = ({mid}: ContentUploadModalProps) => {
   const uploadStore = useUploadStore();
+  useEffect(() => {
+    uploadStore.setUploads('', {});
+  }, []);
   const isVisible = uploadStore.uploads?.mid === mid;
 
   return (
@@ -38,32 +41,20 @@ const _ContentUploadModal = () => {
   const uploadStore = useUploadStore();
 
   const inProgress = uploadStore.uploads!.inProgress;
-  const uploads = Object.keys(inProgress).map(id => inProgress[id]);
+  const total = Object.keys(inProgress).length;
 
-  const total = uploads.length;
-  const complete: boolean = uploads.every(u => u.finished);
-  const succeeded = uploads.reduce(
-    (acc, u) => (u.finished && u.succeeded ? acc + 1 : acc),
-    0,
-  );
-  const failed = uploads.reduce(
-    (acc, u) => (u.finished && !u.succeeded ? acc + 1 : acc),
-    0,
-  );
-
-  const cancelMode: CancelMode = failed > 0 ? 'Close' : 'Cancel';
+  const {processing, uploading, succeeded, failed} =
+    uploadStore.groupByStatus();
+  const complete = succeeded.length + failed.length === total;
+  const cancelMode: CancelMode = failed.length > 0 ? 'Close' : 'Cancel';
 
   useEffect(() => {
-    if (complete && succeeded === total) {
-      // Upload succeeded, clear the upload queue
-      uploadStore.clear();
-    }
+    if (succeeded.length === total) uploadStore.clear();
   }, [complete]);
 
   const onCancel = () => {
     if (cancelMode === 'Cancel') {
-      // iterate over the unfinished uploads & cancel them
-      uploads.filter(u => !u.finished).forEach(u => u.controller.abort());
+      uploading.forEach(u => u.controller?.abort());
     }
 
     uploadStore.clear();
@@ -77,46 +68,76 @@ const _ContentUploadModal = () => {
         {complete || <ActivityIndicator size="small" color="black" />}
       </View>
 
+      {processing.length > 0 && (
+        <InProgressDisplay inProgress={processing}>
+          Processing
+        </InProgressDisplay>
+      )}
+
+      {uploading.length > 0 && (
+        <InProgressDisplay inProgress={uploading}>Uploading</InProgressDisplay>
+      )}
+
+      {succeeded.length > 0 && (
+        <InProgressDisplay inProgress={succeeded}>Completed</InProgressDisplay>
+      )}
+
+      {failed.length > 0 && (
+        <InProgressDisplay inProgress={failed}>Failed</InProgressDisplay>
+      )}
+
       {/* num completed/failed progress indicator */}
-      <View style={{flexDirection: 'row', marginTop: 5}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          marginVertical: 5,
+          justifyContent: 'center',
+        }}>
         <Text style={{color: Colors.REGULAR, fontSize: 13}}>
-          {succeeded}/{total} Complete
+          {succeeded.length}/{total} Uploaded
         </Text>
-        {failed > 0 && (
+        {failed.length > 0 && (
           <Text
             style={{color: Colors.DARK_SALMON, fontSize: 13, marginLeft: 10}}>
-            {failed}/{total} Failed
+            {failed.length}/{total} Failed
           </Text>
         )}
       </View>
 
-      {/* in progress upload thumbnails & close/cancel button */}
-      <View style={[s.spacedRow, {alignItems: 'center'}]}>
-        <FlatList
-          data={uploads}
-          horizontal={true}
-          renderItem={({item}) => (
-            <ImageBackground
-              source={{uri: item.fileURI, cache: 'only-if-cached'}}
-              style={{backgroundColor: item.finished ? 'black' : 'white'}}
-              imageStyle={{
-                opacity: item.finished && item.succeeded ? 1 : 0.7,
-              }}>
-              <View style={s.image}>
-                {item.finished && !item.succeeded && (
-                  <IonIcon name="close-outline" color="white" size={40} />
-                )}
-              </View>
-            </ImageBackground>
-          )}
-          ItemSeparatorComponent={Separator}
-          style={{marginVertical: 20}}
-        />
+      <TouchableOpacity style={s.close} onPress={onCancel}>
+        <Text style={{color: Colors.REGULAR}}>{cancelMode}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
 
-        <TouchableOpacity style={s.close} onPress={onCancel}>
-          <Text style={{color: Colors.REGULAR}}>{cancelMode}</Text>
-        </TouchableOpacity>
-      </View>
+const InProgressDisplay = ({
+  inProgress,
+  children,
+}: {
+  inProgress: InProgressUpload[];
+  children: string;
+}) => {
+  return (
+    <View>
+      <Text style={{fontWeight: '500', marginTop: 10}}>{children}</Text>
+      <FlatList
+        data={inProgress}
+        horizontal={true}
+        renderItem={({item}) => (
+          <ImageBackground
+            source={{uri: item.fileURI, cache: 'only-if-cached'}}
+            onError={e => console.error(e.nativeEvent.error)}>
+            <View style={s.image}>
+              {item.status === 'failed' && (
+                <IonIcon name="close-outline" color="white" size={40} />
+              )}
+            </View>
+          </ImageBackground>
+        )}
+        ItemSeparatorComponent={Separator}
+        style={{marginVertical: 10}}
+      />
     </View>
   );
 };
@@ -151,9 +172,10 @@ const s = StyleSheet.create({
   },
   close: {
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    padding: 10,
     borderRadius: 5,
-    marginLeft: 10,
+    padding: 15,
+    alignItems: 'center',
+    marginVertical: 10,
   },
 });
 

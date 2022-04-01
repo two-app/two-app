@@ -18,7 +18,6 @@ export const compressImage = async (
   ]);
 
   return {
-    contentId: uuid(),
     contentType: 'image',
     initialWidth: width,
     initialHeight: height,

@@ -10,7 +10,6 @@ import {MemoryToolbar} from '../../../src/memories/memory/MemoryToolbar';
 import {mockNavigation} from '../../utils/NavigationMocking';
 import {ContentPicker} from '../../../src/content/ContentPicker';
 import {v4 as uuid} from 'uuid';
-import {ContentFiles} from '../../../src/content/compression/Compression';
 import {useMemoryStore} from '../../../src/memories/MemoryStore';
 
 describe('MemoryToolbar', () => {
@@ -113,11 +112,7 @@ class MemoryToolbarTestBed {
   }
 
   onUploadCancelPick = () => {
-    jest.spyOn(ContentPicker, 'open').mockResolvedValue([]);
-  };
-
-  onUploadPickContent = (content: ContentFiles) => {
-    jest.spyOn(ContentPicker, 'open').mockResolvedValue([content]);
+    jest.spyOn(ContentPicker, 'open').mockResolvedValue();
   };
 
   pressUploadButton = () => {

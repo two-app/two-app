@@ -1,14 +1,14 @@
 import create from 'zustand';
 
+export type UploadStatus = 'processing' | 'uploading' | 'succeeded' | 'failed';
+
 export type InProgressUpload = {
   // on-device URI for the file being uploaded
   fileURI: string;
-  // upload has finished
-  finished: boolean;
-  // upload has finished without error
-  succeeded: boolean;
+  // stage
+  status: 'processing' | 'uploading' | 'succeeded' | 'failed';
   // axios abort controller for cancellation
-  controller: AbortController;
+  controller?: AbortController;
 };
 
 export type UploadState = {
@@ -21,8 +21,15 @@ export type UploadState = {
     mid: string,
     inProgress: Record<string, InProgressUpload>,
   ) => void;
-  setFinished: (contentId: string, succeeded: boolean) => void;
+  setStatus: (
+    contentId: string,
+    status: UploadStatus,
+    controller?: AbortController,
+  ) => void;
   clear: () => void;
+
+  // selectors
+  groupByStatus: () => Record<UploadStatus, InProgressUpload[]>;
 };
 
 export const useUploadStore = create<UploadState>((set, get) => ({
@@ -30,13 +37,34 @@ export const useUploadStore = create<UploadState>((set, get) => ({
   setUploads: (mid: string, inProgress: Record<string, InProgressUpload>) => {
     set({uploads: {mid, inProgress}});
   },
-  setFinished: (contentId: string, succeeded: boolean) => {
+  setStatus: (
+    contentId: string,
+    status: UploadStatus,
+    controller?: AbortController,
+  ) => {
     const uploads = get().uploads;
     if (uploads != null) {
-      uploads.inProgress[contentId].finished = true;
-      uploads.inProgress[contentId].succeeded = succeeded;
+      uploads.inProgress[contentId].status = status;
+      uploads.inProgress[contentId].controller = controller;
       set({uploads});
     }
   },
   clear: () => set({uploads: undefined}),
+  groupByStatus: (): Record<UploadStatus, InProgressUpload[]> => {
+    const {inProgress} = get().uploads!;
+    const contentIds = Object.keys(inProgress);
+    const grouped: Record<UploadStatus, InProgressUpload[]> = {
+      processing: [],
+      uploading: [],
+      succeeded: [],
+      failed: [],
+    };
+
+    for (const contentId of contentIds) {
+      const upload = inProgress[contentId];
+      grouped[upload.status].push(upload);
+    }
+
+    return grouped;
+  },
 }));

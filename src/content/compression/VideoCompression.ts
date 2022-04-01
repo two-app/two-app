@@ -2,6 +2,14 @@ import {FFmpegKit, FFprobeKit} from 'ffmpeg-kit-react-native';
 import {v4 as uuid} from 'uuid';
 import RNFS from 'react-native-fs';
 import {Compression} from './Compression';
+import {Platform} from 'react-native';
+
+export const extractFrame = async (file: string): Promise<string> => {
+  const path = RNFS.TemporaryDirectoryPath + uuid() + '.jpeg';
+  const frame = extractFrameCmd(file, path);
+  await execute(frame);
+  return path;
+};
 
 /**
  * @returns a tuple of the video compression and path to the extracted frame
@@ -14,9 +22,8 @@ export const compressVideo = async (
   const path = RNFS.TemporaryDirectoryPath + uuid() + '.mp4';
   const framePath = RNFS.TemporaryDirectoryPath + uuid() + '.jpeg';
 
+  const compress = compressVideoCmd(originalPath, path, ogWidth, ogHeight);
   const frame = extractFrameCmd(originalPath, framePath);
-  const compress = compressVideoCmd(originalPath, path, ogHeight > ogWidth);
-
   const getDimensions = getDimensionsCmd(path);
 
   await execute(compress);
@@ -60,28 +67,52 @@ const executeProbe = (command: string): Promise<string> => {
   return _exec(command, FFprobeKit);
 };
 
-const FPS = 60;
-
 const compressVideoCmd = (
   input: string,
   output: string,
-  vertical: boolean,
-): string =>
-  [
+  width: number,
+  height: number,
+): string => {
+  const scale = width > height ? '1280:-1' : '-1:1280';
+
+  if (Platform.OS === 'ios') {
+    return compressVideoIOS(input, output, scale);
+  }
+
+  return [
     '-i',
     input,
-    // Configure FPS at 60
-    '-r',
-    FPS.toString(),
-    // Codec Type: H264
-    '-c:v',
+    '-vcodec',
     'libx264',
-    // Scale width/height
+    '-crf',
+    '26',
+    '-rc-lookahead',
+    '20',
+    // Crop so width/height are even numbers
     '-vf',
-    vertical ? 'scale=-2:2560' : 'scale=2560:-2',
+    `'scale=${scale}'`,
     // output
     output,
   ].reduce((l, r) => l + ' ' + r, '');
+};
+
+const compressVideoIOS = (
+  input: string,
+  output: string,
+  scale: string,
+): string => {
+  return [
+    '-i',
+    input,
+    '-c:v',
+    'h264_videotoolbox',
+    '-b:v',
+    '3000k',
+    '-vf',
+    `'scale=${scale}'`,
+    output,
+  ].reduce((l, r) => l + ' ' + r, '');
+};
 
 const extractFrameCmd = (input: string, output: string): string =>
   [

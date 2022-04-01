@@ -44,6 +44,7 @@ const extractExtension = (path: string): string => {
 
 export const contentFilesToContent = (
   mid: string,
+  contentId: string,
   files: ContentFiles,
 ): Content => {
   const sizedContent = (type: SizedContentName, file: File): SizedContent => ({
@@ -60,7 +61,7 @@ export const contentFilesToContent = (
   const now = new Date();
 
   return {
-    contentId: files.contentId,
+    contentId,
     mid,
     contentType: files.contentType,
     initialWidth: files.initialWidth,
