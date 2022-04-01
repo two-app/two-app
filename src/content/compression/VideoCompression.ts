@@ -2,7 +2,14 @@ import {FFmpegKit, FFprobeKit} from 'ffmpeg-kit-react-native';
 import {v4 as uuid} from 'uuid';
 import RNFS from 'react-native-fs';
 import {Compression} from './Compression';
-import { Platform } from 'react-native';
+import {Platform} from 'react-native';
+
+export const extractFrame = async (file: string): Promise<string> => {
+  const path = RNFS.TemporaryDirectoryPath + uuid() + '.jpeg';
+  const frame = extractFrameCmd(file, path);
+  await execute(frame);
+  return path;
+};
 
 /**
  * @returns a tuple of the video compression and path to the extracted frame
@@ -27,11 +34,6 @@ export const compressVideo = async (
     .trim()
     .split('x')
     .map(s => parseInt(s));
-
-  console.log("\n\n\n\n\n\n");
-  console.log("Finished compression");
-  console.log("Got final dimensions");
-  console.log(`${ogWidth}x${ogHeight} ====> ${width}x${height}`);
 
   return [{width, height, path}, framePath];
 };
@@ -65,7 +67,12 @@ const executeProbe = (command: string): Promise<string> => {
   return _exec(command, FFprobeKit);
 };
 
-const compressVideoCmd = (input: string, output: string, width: number, height: number): string => {
+const compressVideoCmd = (
+  input: string,
+  output: string,
+  width: number,
+  height: number,
+): string => {
   const scale = width > height ? '1280:-1' : '-1:1280';
 
   if (Platform.OS === 'ios') {
@@ -89,7 +96,11 @@ const compressVideoCmd = (input: string, output: string, width: number, height: 
   ].reduce((l, r) => l + ' ' + r, '');
 };
 
-const compressVideoIOS = (input: string, output: string, scale: string): string => {
+const compressVideoIOS = (
+  input: string,
+  output: string,
+  scale: string,
+): string => {
   return [
     '-i',
     input,
@@ -99,9 +110,9 @@ const compressVideoIOS = (input: string, output: string, scale: string): string 
     '3000k',
     '-vf',
     `'scale=${scale}'`,
-    output
+    output,
   ].reduce((l, r) => l + ' ' + r, '');
-}
+};
 
 const extractFrameCmd = (input: string, output: string): string =>
   [

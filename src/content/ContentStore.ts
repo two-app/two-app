@@ -8,7 +8,7 @@ export type ContentState = {
   memoryContent: Record<string, Content[]>;
   select: (mid: string) => Content[];
   set: (mid: string, content: Content[]) => void;
-  add: (mid: string, content: Content[]) => void;
+  add: (mid: string, content: Content) => void;
   delete: (mid: string, contentId: string) => void;
 };
 
@@ -22,10 +22,10 @@ export const useContentStore = create<ContentState>(
         memoryContent[mid] = content;
         set({memoryContent});
       },
-      add: (mid: string, content: Content[]) => {
+      add: (mid: string, content: Content) => {
         const {select, set} = get();
         const existingContent = select(mid);
-        set(mid, existingContent.concat(content));
+        set(mid, [...existingContent, content]);
       },
       delete: (mid: string, contentId: string) => {
         const {select, set} = get();

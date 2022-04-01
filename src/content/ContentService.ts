@@ -19,6 +19,7 @@ export const setMemoryDisplayPicture = (
  */
 export const uploadContent = (
   mid: string,
+  contentId: string,
   content: ContentFiles,
   controller: AbortController,
 ): Promise<Content> => {
@@ -43,7 +44,10 @@ export const uploadContent = (
     uri: gallery.path,
   });
 
-  form.append('form', JSON.stringify(contentFilesToContent(mid, content)));
+  form.append(
+    'form',
+    JSON.stringify(contentFilesToContent(mid, contentId, content)),
+  );
 
   console.log(`Uploading content to mid ${mid}: ${JSON.stringify(form)}`);
 

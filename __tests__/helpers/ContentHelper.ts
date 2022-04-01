@@ -15,8 +15,7 @@ export const arbFile = (): File => ({
   duration: undefined,
 });
 
-export const arbContentFile = (contentId?: string): ContentFiles => ({
-  contentId: contentId ?? uuid(),
+export const arbContentFile = (): ContentFiles => ({
   contentType: 'image',
   initialHeight: 500,
   initialWidth: 500,

@@ -11,7 +11,6 @@ export type File = {
 };
 
 export type ContentFiles = {
-  contentId: string;
   thumbnail: File;
   display: File;
   gallery: File;

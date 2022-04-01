@@ -4,16 +4,62 @@ import ImagePicker, {
   Video,
 } from 'react-native-image-crop-picker';
 import RNFS from 'react-native-fs';
-import {compressVideo} from './compression/VideoCompression';
+import {compressVideo, extractFrame} from './compression/VideoCompression';
 import {compressImage} from './compression/ImageCompression';
 import {ContentFiles, File} from './compression/Compression';
-import {v4 as uuid} from 'uuid';
 import {Alert, Linking} from 'react-native';
+import {v4 as uuid} from 'uuid';
+import {InProgressUpload, useUploadStore} from './UploadStore';
+import ContentService from './ContentService';
+import {Content} from './ContentModels';
+import {useContentStore} from './ContentStore';
 
 export class ContentPicker {
-  static open = async (): Promise<ContentFiles[]> => {
+  static open = async (mid: string): Promise<void> => {
     const selectedContent: Image[] = await selectContent();
-    return Promise.all(selectedContent.map(compressContent));
+
+    // Generate content IDs for each
+    const identifiedContent = selectedContent.map(content => ({
+      ...content,
+      contentId: uuid(),
+    }));
+
+    // Store the files in the upload store in processing state
+    const uploadStore = useUploadStore.getState();
+    const contentStore = useContentStore.getState();
+    const uploads: Record<string, InProgressUpload> = {};
+
+    for (const content of identifiedContent) {
+      const path = await getThumbnailURI(content);
+      uploads[content.contentId] = {
+        fileURI: path,
+        status: 'processing',
+      };
+    }
+
+    uploadStore.setUploads(mid, uploads);
+
+    // Compress the content, then upload
+    identifiedContent.forEach(async raw => {
+      const {contentId} = raw;
+      const compressed = await compressContent(raw);
+      const controller = new AbortController();
+      uploadStore.setStatus(contentId, 'uploading', controller);
+
+      try {
+        const content: Content = await ContentService.uploadContent(
+          mid,
+          contentId,
+          compressed,
+          controller,
+        );
+
+        contentStore.add(mid, content);
+        uploadStore.setStatus(contentId, 'succeeded');
+      } catch {
+        uploadStore.setStatus(contentId, 'failed');
+      }
+    });
   };
 }
 
@@ -25,10 +71,7 @@ const selectContent = async (): Promise<Image[]> => {
   })
     .then(content => (Array.isArray(content) ? content : [content]))
     .catch(({message}: Error) => {
-      console.log(message);
       if (message.includes('User did not grant library permission')) {
-        console.log(Alert);
-        console.log(Alert.alert);
         Alert.alert(
           'Photo Permissions',
           'Please give Two permission to access your photos to upload.',
@@ -50,6 +93,17 @@ const selectContent = async (): Promise<Image[]> => {
 
       return [];
     });
+};
+
+const getThumbnailURI = async (content: ImageOrVideo): Promise<string> => {
+  const {mime, path} = content;
+  if (mime.startsWith('image')) {
+    return path;
+  } else if (mime.startsWith('video')) {
+    return extractFrame(path);
+  } else {
+    return Promise.reject('Unsupported file format ' + mime);
+  }
 };
 
 const compressContent = async (
@@ -91,7 +145,6 @@ const compressVideoContent = async (content: Video): Promise<ContentFiles> => {
   );
 
   return {
-    contentId: uuid(),
     thumbnail,
     display,
     gallery,

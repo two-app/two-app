@@ -9,13 +9,8 @@ import type {Memory} from '../MemoryModels';
 import Colors from '../../Colors';
 import {ContentPicker} from '../../content/ContentPicker';
 import {deleteMemory} from '../MemoryService';
-import {ContentFiles} from '../../content/compression/Compression';
-import ContentService from '../../content/ContentService';
-import {Content} from '../../content/ContentModels';
 import {Routes} from '../../navigation/NavigationUtilities';
 import {useMemoryStore} from '../MemoryStore';
-import {useContentStore} from '../../content/ContentStore';
-import {InProgressUpload, useUploadStore} from '../../content/UploadStore';
 
 export const MemoryToolbar = ({memory}: {memory: Memory}) => (
   <View style={{marginBottom: 10}}>
@@ -55,50 +50,11 @@ const EditButton = ({memory}: {memory: Memory}) => {
 };
 
 export const UploadContentButton = ({memory}: {memory: Memory}) => {
-  const {mid} = memory;
-  const contentStore = useContentStore();
-  const uploadStore = useUploadStore();
-
-  const uploadContent = (files: ContentFiles[]) => {
-    const uploads: Record<string, InProgressUpload> = files.reduce(
-      (acc, file): Record<string, InProgressUpload> => ({
-        ...acc,
-        [file.contentId]: {
-          fileURI: file.display.path,
-          finished: false,
-          controller: new AbortController(),
-        },
-      }),
-      {},
-    );
-
-    // Store the live uploads for the modal display
-    uploadStore.setUploads(mid, uploads);
-
-    const uploadPromises = files.map((file: ContentFiles) =>
-      ContentService.uploadContent(
-        mid,
-        file,
-        uploads[file.contentId].controller,
-      )
-        .then((content: Content) => {
-          contentStore.add(mid, [content]); // TODO make this accept just 1
-          uploadStore.setFinished(file.contentId, true);
-        })
-        .catch(e => {
-          console.error(`Failed to upload content to mid ${mid}: `, e);
-          uploadStore.setFinished(file.contentId, false);
-        }),
-    );
-
-    Promise.all(uploadPromises);
-  };
-
   return (
     <TouchableOpacity
       accessibilityLabel="Upload Content"
       style={styles.icon}
-      onPress={() => ContentPicker.open().then(uploadContent)}>
+      onPress={() => ContentPicker.open(memory.mid)}>
       <Icon name="plussquareo" size={25} color={Colors.DARK} />
     </TouchableOpacity>
   );
