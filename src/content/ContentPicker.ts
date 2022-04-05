@@ -10,12 +10,17 @@ import {ContentFiles, File} from './compression/Compression';
 import {Alert, Linking} from 'react-native';
 import {v4 as uuid} from 'uuid';
 import {InProgressUpload, useUploadStore} from './UploadStore';
-import ContentService from './ContentService';
+import ContentService, {setDisplay} from './ContentService';
 import {Content} from './ContentModels';
 import {useContentStore} from './ContentStore';
+import {getMemory} from '../memories/MemoryService';
+import {useMemoryStore} from '../memories/MemoryStore';
 
 export class ContentPicker {
-  static open = async (mid: string): Promise<void> => {
+  static open = async (
+    mid: string,
+    setDisplayImage: boolean,
+  ): Promise<void> => {
     const selectedContent: Image[] = await selectContent();
 
     // Generate content IDs for each
@@ -27,6 +32,8 @@ export class ContentPicker {
     // Store the files in the upload store in processing state
     const uploadStore = useUploadStore.getState();
     const contentStore = useContentStore.getState();
+    const memoryStore = useMemoryStore.getState();
+
     const uploads: Record<string, InProgressUpload> = {};
 
     for (const content of identifiedContent) {
@@ -40,7 +47,7 @@ export class ContentPicker {
     uploadStore.setUploads(mid, uploads);
 
     // Compress the content, then upload
-    identifiedContent.forEach(async raw => {
+    const promises = identifiedContent.map(async raw => {
       const {contentId} = raw;
       const compressed = await compressContent(raw);
       const controller = new AbortController();
@@ -58,6 +65,16 @@ export class ContentPicker {
         uploadStore.setStatus(contentId, 'succeeded');
       } catch {
         uploadStore.setStatus(contentId, 'failed');
+      }
+    });
+
+    Promise.all(promises).then(async () => {
+      if (setDisplayImage && identifiedContent[0] != null) {
+        const memory = await setDisplay(mid, identifiedContent[0].contentId);
+        memoryStore.update(memory);
+      } else {
+        const memory = await getMemory(mid);
+        memoryStore.update(memory);
       }
     });
   };

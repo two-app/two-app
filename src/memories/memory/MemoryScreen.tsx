@@ -31,6 +31,9 @@ export const MemoryScreen = ({navigation, route}: Screen<'MemoryScreen'>) => {
   const memory = memoryStore.select(mid);
   const content = contentStore.select(mid);
 
+  console.log('rerendering');
+  console.log(memory);
+
   useEffect(() => {
     if (memory != null) {
       refreshMemory();
