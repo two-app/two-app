@@ -2,10 +2,7 @@ import {Text, View, StyleSheet} from 'react-native';
 import {useState, useEffect} from 'react';
 import NativeModal from 'react-native-modal';
 
-import {
-  setMemoryDisplayPicture,
-  deleteContent,
-} from '../../content/ContentService';
+import {deleteContent, setDisplay} from '../../content/ContentService';
 import {ButtonStyles, Button} from '../../forms/Button';
 import Colors from '../../Colors';
 import {ErrorResponse} from '../../http/Response';
@@ -15,6 +12,7 @@ import {Content} from '../../content/ContentModels';
 import {ImageCell} from './Grid';
 import {useMemoryStore} from '../MemoryStore';
 import {useContentStore} from '../../content/ContentStore';
+import {getMemory, updateMemory} from '../MemoryService';
 
 type MemoryInteractionModalProps = {
   memory: Memory;
@@ -67,14 +65,12 @@ export const MemoryInteractionModal = ({
     });
   };
 
-  const updateDisplayPicture = (contentId: string) => {
+  const updateDisplayPicture = async (contentId: string) => {
     setLoading({...loading, setDisplayPicture: true});
-    setMemoryDisplayPicture(memory.mid, contentId)
-      .then((updatedMemory: Memory) =>
-        dispatchAfterClosed(() => memoryStore.update(updatedMemory)),
-      )
-      .catch((e: ErrorResponse) => setError(e.reason))
-      .finally(() => setLoading(noLoading));
+    await setDisplay(memory.mid, contentId).catch((e: ErrorResponse) => setError(e.reason));
+    const updated = await getMemory(memory.mid);
+    dispatchAfterClosed(() => memoryStore.update(updated));
+    setLoading(noLoading);
   };
 
   const deleteContentThenUpdate = (contentId: string) => {

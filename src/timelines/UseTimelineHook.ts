@@ -51,21 +51,22 @@ export const useTimeline = (initialTimeline: Timeline): UseTimelineHook => {
     data: [],
   });
 
-  const createRefresh = (component: TimelineComponent<any, any>) => {
-    return () =>
-      component.fetch().then(data => setCompData({comp: component, data}));
-  };
+  const createRefresh = (component: TimelineComponent<any, any>) => () =>
+    component.fetch().then(data => setCompData({comp: component, data}));
 
   useEffect(() => {
+    comp.useStore.destroy();
     // synchronously set the component + empty cached data while we load
-    const comp = timelines[timeline]();
-    const data = comp.useStore.getState().all;
-    setCompData({comp, data});
+    const newComp = timelines[timeline]();
+    const data = newComp.useStore.getState().all;
+    setCompData({comp: newComp, data});
+
+    newComp.useStore.subscribe(data => setCompData({comp: newComp, data: data.all}));
 
     // asynchronously retrieve the updated data
-    comp.fetch().then(data => {
-      comp.useStore.setState({all: data});
-      setCompData({comp, data});
+    newComp.fetch().then(data => {
+      newComp.useStore.setState({all: data});
+      setCompData({comp: newComp, data});
     });
   }, [timeline]);
 

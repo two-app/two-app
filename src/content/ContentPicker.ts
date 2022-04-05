@@ -13,6 +13,8 @@ import {InProgressUpload, useUploadStore} from './UploadStore';
 import ContentService from './ContentService';
 import {Content} from './ContentModels';
 import {useContentStore} from './ContentStore';
+import { getMemory } from '../memories/MemoryService';
+import { useMemoryStore } from '../memories/MemoryStore';
 
 export class ContentPicker {
   static open = async (mid: string): Promise<void> => {
@@ -27,6 +29,8 @@ export class ContentPicker {
     // Store the files in the upload store in processing state
     const uploadStore = useUploadStore.getState();
     const contentStore = useContentStore.getState();
+    const memoryStore = useMemoryStore.getState();
+
     const uploads: Record<string, InProgressUpload> = {};
 
     for (const content of identifiedContent) {
@@ -40,7 +44,7 @@ export class ContentPicker {
     uploadStore.setUploads(mid, uploads);
 
     // Compress the content, then upload
-    identifiedContent.forEach(async raw => {
+    const promises = identifiedContent.map(async raw => {
       const {contentId} = raw;
       const compressed = await compressContent(raw);
       const controller = new AbortController();
@@ -60,6 +64,11 @@ export class ContentPicker {
         uploadStore.setStatus(contentId, 'failed');
       }
     });
+
+    Promise.all(promises).then(async () => {
+      const memory = await getMemory(mid);
+      memoryStore.update(memory);
+    })
   };
 }
 

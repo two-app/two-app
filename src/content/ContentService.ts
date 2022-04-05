@@ -1,17 +1,7 @@
 import Gateway from '../http/Gateway';
-import {Memory} from '../memories/MemoryModels';
-import {getMemory} from '../memories/MemoryService';
 
 import {Content, contentFilesToContent} from './ContentModels';
 import {ContentFiles} from './compression/Compression';
-
-export const setMemoryDisplayPicture = (
-  mid: string,
-  displayId: string,
-): Promise<Memory> => {
-  const patch = {displayContentId: displayId};
-  return Gateway.patch(`/memory/${mid}`, patch).then(() => getMemory(mid));
-};
 
 /**
  * @param mid the memory id
@@ -61,6 +51,9 @@ export const uploadContent = (
   }).then(r => r.data);
 };
 
+export const setDisplay = (mid: string, contentId: string): Promise<void> =>
+  Gateway.post<void>(`/memory/${mid}/display/${contentId}`).then(r => r.data);
+
 export const getContent = (mid: string): Promise<Content[]> =>
   Gateway.get<Content[]>(`/memory/${mid}/content`).then(r => r.data);
 
@@ -78,7 +71,6 @@ export const deleteContent = async (
 };
 
 export default {
-  setMemoryDisplayPicture,
   uploadContent,
   getContent,
   deleteContent,
