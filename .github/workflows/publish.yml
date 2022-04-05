@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v1
         with:
-          node-version: '12'
+          node-version: '16'
 
       - uses: c-hive/gha-yarn-cache@v1
 
@@ -94,7 +94,7 @@ jobs:
       - name: Setup Node v12
         uses: actions/setup-node@v1
         with:
-          node-version: '12'
+          node-version: '16'
 
       - uses: c-hive/gha-yarn-cache@v1
 
