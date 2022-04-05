@@ -54,7 +54,9 @@ export const UploadContentButton = ({memory}: {memory: Memory}) => {
     <TouchableOpacity
       accessibilityLabel="Upload Content"
       style={styles.icon}
-      onPress={() => ContentPicker.open(memory.mid)}>
+      onPress={() =>
+        ContentPicker.open(memory.mid, memory.displayContent == null)
+      }>
       <Icon name="plussquareo" size={25} color={Colors.DARK} />
     </TouchableOpacity>
   );

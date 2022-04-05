@@ -39,8 +39,8 @@ describe('MemoryInteractionModal', () => {
       test('it should send a request with the content id', () => {
         tb.pressUpdateDisplayContentButton();
 
-        expect(tb.setMemoryDisplayPictureFn).toHaveBeenCalledTimes(1);
-        expect(tb.setMemoryDisplayPictureFn).toHaveBeenCalledWith(
+        expect(tb.setDisplayFn).toHaveBeenCalledTimes(1);
+        expect(tb.setDisplayFn).toHaveBeenCalledWith(
           tb.memory.mid,
           content.contentId,
         );
@@ -131,10 +131,7 @@ class MemoryInteractionModalTestBed {
   memory: Memory = testMemory;
   content?: Content;
   onCloseFn: jest.Mock;
-  setMemoryDisplayPictureFn: jest.SpyInstance<
-    Promise<Memory>,
-    [string, string]
-  >;
+  setDisplayFn: jest.SpyInstance<Promise<Memory>, [string, string]>;
   deleteContentFn: jest.SpyInstance<
     Promise<DeleteContentResponse>,
     [string, string]
@@ -144,10 +141,7 @@ class MemoryInteractionModalTestBed {
     this.content = undefined;
     this.onCloseFn = jest.fn();
 
-    this.setMemoryDisplayPictureFn = jest.spyOn(
-      ContentService,
-      'setMemoryDisplayPicture',
-    );
+    this.setDisplayFn = jest.spyOn(ContentService, 'setDisplay');
 
     this.deleteContentFn = jest.spyOn(ContentService, 'deleteContent');
 
@@ -163,14 +157,14 @@ class MemoryInteractionModalTestBed {
   onSetMemoryDisplayPictureResolve = (
     memory: Memory,
   ): MemoryInteractionModalTestBed => {
-    this.setMemoryDisplayPictureFn.mockResolvedValue(memory);
+    this.setDisplayFn.mockResolvedValue(memory);
     return this;
   };
 
   onSetMemoryDisplayPictureReject = (
     e: ErrorResponse,
   ): MemoryInteractionModalTestBed => {
-    this.setMemoryDisplayPictureFn.mockRejectedValue(e);
+    this.setDisplayFn.mockRejectedValue(e);
     return this;
   };
 

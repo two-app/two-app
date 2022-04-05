@@ -13,32 +13,30 @@ import {
 } from './MemoryIcons';
 import {Memory} from './MemoryModels';
 
-export const MemoryDisplayView = ({memory}: {memory: Memory}) => (
-  <View>
-    <Text style={s.heading}>{memory.title}</Text>
-    <View style={s.spacedRow}>
-      <MemoryLocation location={memory.location} />
-      <MemoryDate date={memory.occurredAt} />
-    </View>
-    <View style={s.spacedRow}>
-      <View style={{flexDirection: 'row'}}>
-        {memory.imageCount > 0 && (
-          <MemoryImageCount pictureCount={memory.imageCount} />
-        )}
-        {memory.videoCount > 0 && (
-          <MemoryVideoCount
-            videoCount={memory.videoCount}
-            pad={memory.imageCount > 0}
-          />
-        )}
+export const MemoryDisplayView = ({memory}: {memory: Memory}) => {
+  const {title, location, occurredAt, imageCount, videoCount, tag} = memory;
+  return (
+    <View>
+      <Text style={s.heading}>{title}</Text>
+      <View style={s.spacedRow}>
+        <MemoryLocation location={location} />
+        <MemoryDate date={occurredAt} />
       </View>
-      {memory.tag != null && <MemoryTag tag={memory.tag} />}
+      <View style={s.spacedRow}>
+        <View style={{flexDirection: 'row'}}>
+          {imageCount > 0 && <MemoryImageCount pictureCount={imageCount} />}
+          {videoCount > 0 && (
+            <MemoryVideoCount videoCount={videoCount} pad={imageCount > 0} />
+          )}
+        </View>
+        {tag != null && <MemoryTag tag={tag} />}
+      </View>
+      {memory.displayContent != null && (
+        <MemoryDisplayPicture content={memory.displayContent} />
+      )}
     </View>
-    {memory.displayContent != null && (
-      <MemoryDisplayPicture content={memory.displayContent} />
-    )}
-  </View>
-);
+  );
+};
 
 const MemoryDisplayPicture = ({content}: {content: Content}) => (
   <View style={s.image}>
@@ -64,6 +62,6 @@ const s = StyleSheet.create({
   image: {
     flexDirection: 'row',
     height: 200,
-    marginTop: 10,
+    marginTop: 15,
   },
 });

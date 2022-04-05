@@ -10,14 +10,17 @@ import {ContentFiles, File} from './compression/Compression';
 import {Alert, Linking} from 'react-native';
 import {v4 as uuid} from 'uuid';
 import {InProgressUpload, useUploadStore} from './UploadStore';
-import ContentService from './ContentService';
+import ContentService, {setDisplay} from './ContentService';
 import {Content} from './ContentModels';
 import {useContentStore} from './ContentStore';
 import {getMemory} from '../memories/MemoryService';
 import {useMemoryStore} from '../memories/MemoryStore';
 
 export class ContentPicker {
-  static open = async (mid: string): Promise<void> => {
+  static open = async (
+    mid: string,
+    setDisplayImage: boolean,
+  ): Promise<void> => {
     const selectedContent: Image[] = await selectContent();
 
     // Generate content IDs for each
@@ -66,8 +69,13 @@ export class ContentPicker {
     });
 
     Promise.all(promises).then(async () => {
-      const memory = await getMemory(mid);
-      memoryStore.update(memory);
+      if (setDisplayImage && identifiedContent[0] != null) {
+        const memory = await setDisplay(mid, identifiedContent[0].contentId);
+        memoryStore.update(memory);
+      } else {
+        const memory = await getMemory(mid);
+        memoryStore.update(memory);
+      }
     });
   };
 }

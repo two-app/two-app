@@ -17,12 +17,18 @@ type ContentUploadModalProps = {
   mid: string;
 };
 
+/**
+ * The ContentUploadModal is a simple modal display that previews the
+ * data in the UploadStore. It does not perform any HTTP requests itself.
+ * @see ContentPicker for the upload logic.
+ */
 export const ContentUploadModal = ({mid}: ContentUploadModalProps) => {
   const uploadStore = useUploadStore();
+  const isVisible = uploadStore.uploads?.mid === mid;
+
   useEffect(() => {
     uploadStore.setUploads('', {});
   }, []);
-  const isVisible = uploadStore.uploads?.mid === mid;
 
   return (
     <Modal

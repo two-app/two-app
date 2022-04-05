@@ -12,7 +12,6 @@ import {Content} from '../../content/ContentModels';
 import {ImageCell} from './Grid';
 import {useMemoryStore} from '../MemoryStore';
 import {useContentStore} from '../../content/ContentStore';
-import {getMemory, updateMemory} from '../MemoryService';
 
 type MemoryInteractionModalProps = {
   memory: Memory;
@@ -67,11 +66,9 @@ export const MemoryInteractionModal = ({
 
   const updateDisplayPicture = async (contentId: string) => {
     setLoading({...loading, setDisplayPicture: true});
-    await setDisplay(memory.mid, contentId).catch((e: ErrorResponse) =>
-      setError(e.reason),
-    );
-    const updated = await getMemory(memory.mid);
-    dispatchAfterClosed(() => memoryStore.update(updated));
+    await setDisplay(memory.mid, contentId)
+      .then(updated => dispatchAfterClosed(() => memoryStore.update(updated)))
+      .catch((e: ErrorResponse) => setError(e.reason));
     setLoading(noLoading);
   };
 
