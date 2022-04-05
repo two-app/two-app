@@ -67,7 +67,9 @@ export const MemoryInteractionModal = ({
 
   const updateDisplayPicture = async (contentId: string) => {
     setLoading({...loading, setDisplayPicture: true});
-    await setDisplay(memory.mid, contentId).catch((e: ErrorResponse) => setError(e.reason));
+    await setDisplay(memory.mid, contentId).catch((e: ErrorResponse) =>
+      setError(e.reason),
+    );
     const updated = await getMemory(memory.mid);
     dispatchAfterClosed(() => memoryStore.update(updated));
     setLoading(noLoading);

@@ -13,8 +13,8 @@ import {InProgressUpload, useUploadStore} from './UploadStore';
 import ContentService from './ContentService';
 import {Content} from './ContentModels';
 import {useContentStore} from './ContentStore';
-import { getMemory } from '../memories/MemoryService';
-import { useMemoryStore } from '../memories/MemoryStore';
+import {getMemory} from '../memories/MemoryService';
+import {useMemoryStore} from '../memories/MemoryStore';
 
 export class ContentPicker {
   static open = async (mid: string): Promise<void> => {
@@ -68,7 +68,7 @@ export class ContentPicker {
     Promise.all(promises).then(async () => {
       const memory = await getMemory(mid);
       memoryStore.update(memory);
-    })
+    });
   };
 }
 

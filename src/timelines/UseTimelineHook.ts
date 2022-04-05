@@ -46,36 +46,40 @@ type ManagedComponentState = {
 
 export const useTimeline = (initialTimeline: Timeline): UseTimelineHook => {
   const [timeline, setTimeline] = useState(initialTimeline);
-  const [{comp, data}, setCompData] = useState<ManagedComponentState>({
-    comp: timelines[timeline](),
-    data: [],
-  });
+  const [{comp: _comp, data: _data}, setCompData] =
+    useState<ManagedComponentState>({
+      comp: timelines[timeline](),
+      data: [],
+    });
 
   const createRefresh = (component: TimelineComponent<any, any>) => () =>
     component.fetch().then(data => setCompData({comp: component, data}));
 
   useEffect(() => {
-    comp.useStore.destroy();
+    // Remove active listeners for the timeline
+    _comp.useStore.destroy();
+
     // synchronously set the component + empty cached data while we load
-    const newComp = timelines[timeline]();
-    const data = newComp.useStore.getState().all;
-    setCompData({comp: newComp, data});
+    const comp = timelines[timeline]();
+    const data = comp.useStore.getState().all;
+    setCompData({comp, data});
 
-    newComp.useStore.subscribe(data => setCompData({comp: newComp, data: data.all}));
+    // subscribe to changes to rerender the timeline
+    comp.useStore.subscribe(({all}) => setCompData({comp, data: all}));
 
-    // asynchronously retrieve the updated data
-    newComp.fetch().then(data => {
-      newComp.useStore.setState({all: data});
-      setCompData({comp: newComp, data});
+    // asynchronously fetch & set the latest data
+    comp.fetch().then(data => {
+      comp.useStore.setState({all: data});
+      setCompData({comp, data});
     });
   }, [timeline]);
 
   return [
-    data,
-    createRefresh(comp),
+    _data,
+    createRefresh(_comp),
     timeline,
     setTimeline,
-    comp.render,
-    comp.key,
+    _comp.render,
+    _comp.key,
   ];
 };
