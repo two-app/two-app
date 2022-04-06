@@ -40,9 +40,9 @@
     "moment": "^2.29.1",
     "pluralize": "^8.0.0",
     "prop-types": "^15.8.1",
-    "react": "17.0.2",
-    "react-dom": "^17.0.2",
-    "react-native": "0.67.3",
+    "react": "18.0.0",
+    "react-dom": "^18.0.0",
+    "react-native": "0.68.0",
     "react-native-awesome-gallery": "^0.3.4",
     "react-native-config": "^1.4.5",
     "react-native-fast-image": "^8.5.11",
@@ -85,8 +85,8 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-react-native": "^4.0.0",
     "jest": "^27.5.1",
-    "metro-react-native-babel-preset": "^0.69.1",
-    "prettier": "2.5.1",
-    "react-test-renderer": "17.0.2"
+    "metro-react-native-babel-preset": "^0.70.0",
+    "prettier": "2.6.2",
+    "react-test-renderer": "18.0.0"
   }
 }
