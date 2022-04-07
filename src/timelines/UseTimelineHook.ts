@@ -46,6 +46,7 @@ type ManagedComponentState = {
 
 export const useTimeline = (initialTimeline: Timeline): UseTimelineHook => {
   const [timeline, setTimeline] = useState(initialTimeline);
+  const [_unsubscribe, setUnsubscribe] = useState<() => void>(() => () => {});
   const [{comp: _comp, data: _data}, setCompData] =
     useState<ManagedComponentState>({
       comp: timelines[timeline](),
@@ -57,7 +58,7 @@ export const useTimeline = (initialTimeline: Timeline): UseTimelineHook => {
 
   useEffect(() => {
     // Remove active listeners for the timeline
-    _comp.useStore.destroy();
+    _unsubscribe();
 
     // synchronously set the component + empty cached data while we load
     const comp = timelines[timeline]();
@@ -65,7 +66,10 @@ export const useTimeline = (initialTimeline: Timeline): UseTimelineHook => {
     setCompData({comp, data});
 
     // subscribe to changes to rerender the timeline
-    comp.useStore.subscribe(({all}) => setCompData({comp, data: all}));
+    const unsubscribe = comp.useStore.subscribe(({all}) =>
+      setCompData({comp, data: all}),
+    );
+    setUnsubscribe(() => unsubscribe);
 
     // asynchronously fetch & set the latest data
     comp.fetch().then(data => {

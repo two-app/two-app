@@ -68,15 +68,15 @@ export class ContentPicker {
       }
     });
 
-    Promise.all(promises).then(async () => {
-      if (setDisplayImage && identifiedContent[0] != null) {
-        const memory = await setDisplay(mid, identifiedContent[0].contentId);
-        memoryStore.update(memory);
-      } else {
-        const memory = await getMemory(mid);
-        memoryStore.update(memory);
-      }
-    });
+    await Promise.all(promises);
+
+    if (setDisplayImage && identifiedContent[0] != null) {
+      const memory = await setDisplay(mid, identifiedContent[0].contentId);
+      memoryStore.update(memory);
+    } else {
+      const memory = await getMemory(mid);
+      memoryStore.update(memory);
+    }
   };
 }
 

@@ -44,7 +44,6 @@ export const NewMemoryScreen = ({navigation}: Screen<'NewMemoryScreen'>) => {
   const storeAndNavigate = (m: Memory): void => {
     memoryStore.add(m);
     navigation.reset({
-      index: 1,
       routes: [
         {name: 'HomeScreen'},
         {
