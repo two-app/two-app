@@ -53,10 +53,13 @@ export const uploadContent = (
   }).then(r => r.data);
 };
 
-export const setDisplay = (mid: string, contentId: string): Promise<Memory> =>
-  Gateway.post<void>(`/memory/${mid}/display/${contentId}`).then(() =>
-    getMemory(mid),
-  );
+export const setDisplay = async (
+  mid: string,
+  contentId: string,
+): Promise<Memory> => {
+  await Gateway.post<void>(`/memory/${mid}/display/${contentId}`);
+  return await getMemory(mid);
+};
 
 export const getContent = (mid: string): Promise<Content[]> =>
   Gateway.get<Content[]>(`/memory/${mid}/content`).then(r => r.data);

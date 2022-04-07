@@ -24,25 +24,19 @@ import {CommonActions, useNavigation} from '@react-navigation/native';
 
 export const MemoryScreen = ({navigation, route}: Screen<'MemoryScreen'>) => {
   const [refreshing, setRefreshing] = useState<boolean>(false);
+  const {mid} = route.params;
   const memoryStore = useMemoryStore();
   const contentStore = useContentStore();
-  const {mid} = route.params;
 
   const memory = memoryStore.select(mid);
   const content = contentStore.select(mid);
 
-  console.log('rerendering');
-  console.log(memory);
-
   useEffect(() => {
-    if (memory != null) {
-      refreshMemory();
-    }
+    if (memory != null) refreshMemory();
   }, []);
 
   if (memory == null) {
     navigation.dispatch(
-      // reset as state will no longer exist
       CommonActions.reset({
         index: 0,
         routes: [{name: 'HomeScreen'}],
