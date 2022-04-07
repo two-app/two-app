@@ -48,7 +48,6 @@ describe('NewMemoryScreen', () => {
       // THEN it should store the state and navigate
       expect(tb.createMemorySpy).toHaveBeenCalledTimes(1);
       expect(mockNavigation.reset).toHaveBeenCalledWith({
-        index: 1,
         routes: [
           {name: 'HomeScreen'},
           {name: 'MemoryScreen', params: {mid: testMemory.mid}},
@@ -76,7 +75,6 @@ describe('NewMemoryScreen', () => {
 
       // THEN it should store and navigate
       expect(mockNavigation.reset).toHaveBeenCalledWith({
-        index: 1,
         routes: [
           {name: 'HomeScreen'},
           {name: 'MemoryScreen', params: {mid: testMemory.mid}},
