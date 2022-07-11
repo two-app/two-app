@@ -1652,10 +1652,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/clipboard/-/clipboard-1.5.1.tgz#32abb3ea2eb91ee3f9c5fb1d32d5783253c9fabe"
   integrity sha512-AHAmrkLEH5UtPaDiRqoULERHh3oNv7Dgs0bTC0hO5Z2GdNokAMPT5w8ci8aMcRemcwbtdHjxChgtjbeA38GBdA==
 
-"@react-native-community/datetimepicker@^6.1.2":
-  version "6.1.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-6.1.2.tgz#a897291bc8ff2394f922721f40692c812f9145a0"
-  integrity sha512-4D21x4eywCY2Ex4BI6tQhUEOOKSruz9uPbGK0azGKZap/etoiPtH3nuG56ACtpmUlu5d1R9zzTlumr02dp39hA==
+"@react-native-community/datetimepicker@^6.2.0":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-6.2.0.tgz#50bc629e70e4030c48205c01efbc65a8f35d82d4"
+  integrity sha512-w1ZS+wYO3qSASliRp+B7mPphOhtVm++rhSbj1WsgXdgLgDXSkDxpMnAXXQu9M0XdcgBwVJ6wDExeIwuzU5Jtfg==
   dependencies:
     invariant "^2.2.4"
 
@@ -6738,10 +6738,10 @@ react-native-gesture-handler@^2.3.2:
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
-react-native-get-random-values@^1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/react-native-get-random-values/-/react-native-get-random-values-1.7.2.tgz#60a9b6497d22e713779b71139f016a5fcec7ac04"
-  integrity sha512-28KRYGpIG/upV8+k/qFA+TwGW+yGjmtOHaCduJHpOQK1QUTyhiA6E2IgL4UvvU2dybeCTYFmUi9wcEQ0GiWe5g==
+react-native-get-random-values@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-get-random-values/-/react-native-get-random-values-1.8.0.tgz#1cb4bd4bd3966a356e59697b8f372999fe97cb16"
+  integrity sha512-H/zghhun0T+UIJLmig3+ZuBCvF66rdbiWUfRSNS6kv5oDSpa1ZiVyvRWtuPesQpT8dXj+Bv7WJRQOUP+5TB1sA==
   dependencies:
     fast-base64-decode "^1.0.0"
 
