@@ -6508,10 +6508,10 @@ react-native-animatable@1.3.3:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-awesome-gallery@^0.3.4:
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/react-native-awesome-gallery/-/react-native-awesome-gallery-0.3.4.tgz#d452a3efa7591ca81ccccc14bbe64f0b4c1cabc1"
-  integrity sha512-QxmkOilO7w94hPiJRYXPTMmS/7yvQ+joueh5dEn28I+M8FPHZUNn42eHwpTRhP1es97WLWlvwvTKkvKwdI4RQg==
+react-native-awesome-gallery@^0.3.5:
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/react-native-awesome-gallery/-/react-native-awesome-gallery-0.3.5.tgz#58b8fe3573a7154b5530aa7d2cdd9aa4ad348d66"
+  integrity sha512-oMY0to9mLYyUK7F4ibx5S/GUiB83m3hqpM8THlGulCGr6QcVfX6ZJklNHYYaWCziBIavjXY6Igyq39WrrQOhhw==
   dependencies:
     react-native-redash "^16.0.8"
 
