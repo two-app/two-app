@@ -21,7 +21,7 @@
     "@react-navigation/native-stack": "^6.7.0",
     "@react-navigation/stack": "^6.2.2",
     "@testing-library/react-native": "^9.0.0",
-    "@types/jest": "^27.4.1",
+    "@types/jest": "^28.1.4",
     "@types/jwt-encode": "^1.0.0",
     "@types/lodash": "^4.14.182",
     "@types/pluralize": "^0.0.29",
@@ -84,7 +84,7 @@
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.3.0",
     "eslint-plugin-react-native": "^4.0.0",
-    "jest": "^27.5.1",
+    "jest": "^28.1.2",
     "metro-react-native-babel-preset": "^0.71.3",
     "prettier": "2.6.2",
     "react-test-renderer": "18.0.0"
