@@ -50,7 +50,7 @@
     "react-native-gesture-handler": "^2.3.2",
     "react-native-get-random-values": "^1.8.0",
     "react-native-haptic-feedback": "^1.14.0",
-    "react-native-image-crop-picker": "^0.37.3",
+    "react-native-image-crop-picker": "^0.38.0",
     "react-native-image-resizer": "^1.4.5",
     "react-native-image-zoom-viewer": "^3.0.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
@@ -86,7 +86,7 @@
     "eslint-plugin-react-native": "^4.0.0",
     "jest": "^27.5.1",
     "metro-react-native-babel-preset": "^0.71.3",
-    "prettier": "2.6.2",
+    "prettier": "2.7.1",
     "react-test-renderer": "18.0.0"
   }
 }
