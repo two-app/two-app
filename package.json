@@ -29,7 +29,7 @@
     "@types/react-native": "^0.67.6",
     "@types/react-native-vector-icons": "^6.4.10",
     "@types/react-native-video": "^5.0.14",
-    "@types/react-test-renderer": "^17.0.1",
+    "@types/react-test-renderer": "^18.0.0",
     "@types/uuid": "^8.3.4",
     "axios": "^0.27.2",
     "ffmpeg-kit-react-native": "^4.5.1",
@@ -47,7 +47,7 @@
     "react-native-config": "^1.4.6",
     "react-native-fast-image": "^8.5.11",
     "react-native-fs": "^2.20.0",
-    "react-native-gesture-handler": "^2.3.2",
+    "react-native-gesture-handler": "^2.5.0",
     "react-native-get-random-values": "^1.8.0",
     "react-native-haptic-feedback": "^1.14.0",
     "react-native-image-crop-picker": "^0.38.0",
@@ -87,6 +87,6 @@
     "jest": "^27.5.1",
     "metro-react-native-babel-preset": "^0.71.3",
     "prettier": "2.7.1",
-    "react-test-renderer": "18.0.0"
+    "react-test-renderer": "18.2.0"
   }
 }
