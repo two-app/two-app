@@ -139,7 +139,7 @@ android {
         applicationId "com.two"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 107
+        versionCode 108
         versionName "1.0"
         multiDexEnabled true
     }
