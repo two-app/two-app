@@ -10,6 +10,7 @@ import {useAuthStore} from '../authentication/AuthenticationStore';
 
 import type {ErrorResponse} from './Response';
 import {mapErrorResponse} from './Response';
+import * as Sentry from '@sentry/react-native';
 
 const Gateway: AxiosInstance = Axios.create({
   baseURL: Config.API_URL,
@@ -38,6 +39,12 @@ Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
   }
 
   const token = useAuthStore.getState().tokens!!;
+  const user = useAuthStore.getState().user;
+
+  Sentry.setTag('access_token', token.accessToken);
+  Sentry.setTag('uid', user?.uid || 'undefined');
+  // @ts-ignore
+  Sentry.setTag('cid', user?.cid || 'undefined');
 
   if (config.url === '/refresh' && config.method === 'post') {
     config.headers.Authorization = `Bearer ${token.refreshToken}`;
@@ -55,6 +62,7 @@ Gateway.interceptors.response.use(
     return Promise.resolve(response);
   },
   (error: AxiosError<any>): Promise<ErrorResponse> => {
+    Sentry.captureException(error);
     if (error.response == null) {
       const requestOutput = showMethodAndURI(error.config);
       const reason = ` -- Failed to connect to server at ${Config.API_URL}`;
@@ -64,9 +72,6 @@ Gateway.interceptors.response.use(
         reason: 'Failed to reach Two.',
       });
     } else {
-      console.error(error);
-      console.error(JSON.stringify(error));
-
       const output = showRes(
         error.config,
         error.response.status,
