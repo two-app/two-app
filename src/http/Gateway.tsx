@@ -64,6 +64,9 @@ Gateway.interceptors.response.use(
         reason: 'Failed to reach Two.',
       });
     } else {
+      console.error(error);
+      console.error(JSON.stringify(error));
+
       const output = showRes(
         error.config,
         error.response.status,
