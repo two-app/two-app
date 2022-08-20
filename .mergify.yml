@@ -1,12 +1,14 @@
 pull_request_rules:
   - name: label dependabot PRs
     conditions:
+      - author=dependabot[bot]
       - -title=Bump .* from .* to .*$
     actions:
       label:
         add: [chore]
-  - name: merge scala-steward's PRs
+  - name: merge dependabot's PRs
     conditions:
+      - author=dependabot[bot]
       - -title=Bump .* from .* to .*$
       - status-success=test
       - status-success=build
