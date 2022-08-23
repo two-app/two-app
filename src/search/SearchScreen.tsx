@@ -17,7 +17,11 @@ export const SearchScreen = ({navigation}: Screen<'SearchScreen'>) => {
           alignItems: 'center',
           marginTop: 20,
         }}>
-        <Button text="Send me back!" onPress={() => navigation.goBack()} />
+        <Button
+          text="Send me back!"
+          onPress={() => navigation.goBack()}
+          style={{paddingHorizontal: 20}}
+        />
       </View>
     </ScrollContainer>
   );

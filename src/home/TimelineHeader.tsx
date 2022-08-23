@@ -24,7 +24,8 @@ export const TimelineHeader = ({selected, onSelected}: TimelineHeaderProps) => {
   const {navigate} = useNavigation<Routes>();
 
   return (
-    <View style={{paddingVertical: 20}}>
+    <View style={{paddingBottom: 20}}>
+      {/*
       <TouchableCard onPress={() => navigate('SearchScreen')}>
         <EvilIcon
           name="search"
@@ -32,7 +33,7 @@ export const TimelineHeader = ({selected, onSelected}: TimelineHeaderProps) => {
         />
         <Text style={{color: Colors.REGULAR}}>Find memories...</Text>
       </TouchableCard>
-
+      */}
       <Heading>Memories</Heading>
 
       <TouchableCard

@@ -37,6 +37,12 @@ const connectUser = (connection: ConnectRequest): Promise<User> =>
     }
   });
 
+const rawRefreshTokens = (): Promise<Tokens> =>
+  Gateway.post<Tokens>('/refresh').then(({data}) => {
+    useAuthStore.getState().set(data);
+    return data;
+  });
+
 const refreshTokens = (): Promise<MixedUser> =>
   Gateway.post<Tokens>('/refresh')
     .then(r => persistTokens(r.data))
@@ -58,4 +64,10 @@ const persistTokens = (tokens: Tokens): User | UnconnectedUser => {
   return useAuthStore.getState().set(tokens);
 };
 
-export default {login, registerUser, refreshTokens, connectUser};
+export default {
+  login,
+  registerUser,
+  rawRefreshTokens,
+  refreshTokens,
+  connectUser,
+};

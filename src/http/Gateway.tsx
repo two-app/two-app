@@ -7,6 +7,8 @@ import type {
 import Axios from 'axios';
 import Config from 'react-native-config';
 import {useAuthStore} from '../authentication/AuthenticationStore';
+import createAuthRefreshInterceptor from 'axios-auth-refresh';
+import type {Tokens} from '../authentication/AuthenticationModel';
 
 import type {ErrorResponse} from './Response';
 import {mapErrorResponse} from './Response';
@@ -25,6 +27,19 @@ const showReq = (config: AxiosRequestConfig): string =>
 
 const showRes = (req: AxiosRequestConfig, code: number, res: any): string =>
   `${showMethodAndURI(req)} ${code} -- ${JSON.stringify(res ?? {})}`;
+
+// Function that will be called to refresh authorization
+const refreshAuthLogic = (failedRequest: any): Promise<any> => {
+  console.log('Request failed, refreshing token...');
+  return Gateway.post<Tokens>('/refresh').then(({data}) => {
+    useAuthStore.getState().set(data);
+    failedRequest.response.config.headers.Authorization = `Bearer ${data.accessToken}`;
+    return Promise.resolve();
+  });
+};
+
+// Instantiate the refresh interceptor
+createAuthRefreshInterceptor(Gateway, refreshAuthLogic);
 
 Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
   console.log('>> ' + showReq(config));
@@ -47,7 +62,9 @@ Gateway.interceptors.request.use((config: AxiosRequestConfig) => {
   Sentry.setTag('cid', user?.cid || 'undefined');
 
   if (config.url === '/refresh' && config.method === 'post') {
+    console.log('Appending refresh token instead of access token');
     config.headers.Authorization = `Bearer ${token.refreshToken}`;
+    console.log(config.headers);
   } else {
     config.headers.Authorization = `Bearer ${token.accessToken}`;
   }

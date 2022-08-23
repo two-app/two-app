@@ -30,9 +30,15 @@ export const GroupedIcon = ({focused, onPress}: IconProps) => {
     <TouchableOpacity
       style={s.container}
       onPress={onPress}
+      disabled={true}
       accessibilityLabel={'Open grouped Timeline'}>
-      <AntIcon name="tagso" style={[getIconStyle(focused), {marginTop: 2}]} />
-      <Text style={getTextStyle(focused)}>GROUPED</Text>
+      <AntIcon
+        name="tagso"
+        style={[getIconStyle(focused), {marginTop: 2, color: Colors.FADED}]}
+      />
+      <Text style={[getTextStyle(focused), {color: Colors.FADED}]}>
+        GROUPED
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -42,6 +48,7 @@ export const GridIcon = ({focused, onPress}: IconProps) => {
     <TouchableOpacity
       style={s.container}
       onPress={onPress}
+      disabled={true}
       accessibilityLabel={'Open grid Timeline'}>
       <MaterialIcon
         name="grid-on"
