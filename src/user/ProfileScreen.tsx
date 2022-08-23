@@ -1,6 +1,7 @@
 import type {ComponentClass} from 'react';
 import {useEffect} from 'react';
 import {
+  Alert,
   View,
   Text,
   StyleSheet,
@@ -50,11 +51,13 @@ export const ProfileScreen = ({navigation}: Screen<'ProfileScreen'>) => {
       icon: EvilIcon,
       iconName: 'location',
       text: 'Location Settings',
+      onPress: () => Alert.alert('Location', "We're not using Location yet!"),
     },
     {
       icon: EvilIcon,
       iconName: 'archive',
       text: 'Terms and Conditions',
+      onPress: () => Linking.openURL(Config.TERMS_URL),
     },
     {
       icon: EvilIcon,

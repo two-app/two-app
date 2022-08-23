@@ -33,6 +33,7 @@
     "@types/react-test-renderer": "^18.0.0",
     "@types/uuid": "^8.3.4",
     "axios": "^0.27.2",
+    "axios-auth-refresh": "^3.3.3",
     "ffmpeg-kit-react-native": "^4.5.1",
     "form-data": "^4.0.0",
     "jwt-decode": "^3.1.2",
