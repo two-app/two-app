@@ -1,0 +1,60 @@
+name: App Store Publish
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ios:
+    name: Publish iOS App Store
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.1.0
+        with:
+          ref: 'master'
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "two@two.date"
+          git config --global user.name "Two Bot"
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16'
+
+      - uses: c-hive/gha-yarn-cache@v1
+
+      - run: yarn install --non-interactive --frozen-lockfile --network-timeout 100000
+
+      - name: Install Pods
+        run: cd ios; pod install; cd ../
+
+      - name: Fastlane Alpha
+        run: |
+          cd ios
+          bundle install
+          bundle exec fastlane release --env beta
+          cd ../
+        env:
+          ENVFILE: .env.prod
+          FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
+          FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
+          APPLE_APP_STORE_CONNECT_API_KEY: ${{ secrets.APPLE_APP_STORE_CONNECT_API_KEY }}
+          APPLE_APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APPLE_APP_STORE_CONNECT_API_KEY_ID }}
+          APPLE_APP_STORE_CONNECT_API_KEY_ISSUER_ID: ${{ secrets.APPLE_APP_STORE_CONNECT_API_KEY_ISSUER_ID }}
+          FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.APPLE_APPLICATION_SPECIFIC_PASSWORD }}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{ secrets.MATCH_GIT_BASIC_AUTHORIZATION }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Merge Version Changes
+        run: |
+          git reset --hard
+          git clean -f -d
+          git pull --rebase
+
+      - name: Push Changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
