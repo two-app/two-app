@@ -34,7 +34,7 @@
     "@types/uuid": "^8.3.4",
     "axios": "^0.27.2",
     "axios-auth-refresh": "^3.3.3",
-    "ffmpeg-kit-react-native": "^4.5.1",
+    "ffmpeg-kit-react-native": "^4.5.2",
     "form-data": "^4.0.0",
     "jwt-decode": "^3.1.2",
     "jwt-encode": "^1.0.1",
