@@ -44,7 +44,7 @@
     "prop-types": "^15.8.1",
     "react": "18.2.0",
     "react-dom": "^18.2.0",
-    "react-native": "0.68.0",
+    "react-native": "0.69.4",
     "react-native-awesome-gallery": "^0.3.5",
     "react-native-config": "^1.4.6",
     "react-native-fast-image": "^8.5.11",
