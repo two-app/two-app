@@ -35,4 +35,28 @@ platform :ios do
       xcodeproj: "two.xcodeproj"
     )
   end
+
+  lane :release do
+    File.write('AppStoreConnectApiKey.p8', ENV["APPLE_APP_STORE_CONNECT_API_KEY"])
+
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APPLE_APP_STORE_CONNECT_API_KEY_ID"],
+      issuer_id: ENV["APPLE_APP_STORE_CONNECT_API_KEY_ISSUER_ID"],
+      key_filepath: "./fastlane/AppStoreConnectApiKey.p8",
+      in_house: false
+    )
+
+    match(type: "appstore", readonly: is_ci, api_key: api_key)
+
+    increment_build_number(xcodeproj: "two.xcodeproj")
+    gym(export_method: "app-store")
+
+    upload_to_app_store
+
+    commit_version_bump(
+      message: "iOS 🍏 build number bump [skip ci]",
+      force: true,
+      xcodeproj: "two.xcodeproj"
+    )
+  end
 end
